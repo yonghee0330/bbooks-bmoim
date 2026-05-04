@@ -1,0 +1,459 @@
+/* ===========================
+   RESET & BASE
+=========================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #f2f5f0;
+  color: #1e2b1e;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+#site-header {
+  background-color: #2a3d2a;
+  color: #f2f5f0;
+  text-align: center;
+  padding: 60px 24px 48px;
+  position: relative;
+  overflow: hidden;
+}
+
+#site-header::before {
+  content: '';
+  position: absolute;
+  top: -70px;
+  right: -70px;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  pointer-events: none;
+}
+
+#site-header::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+}
+
+.header-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.header-badge {
+  display: inline-block;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: #a8c4a0;
+  border: 1px solid #a8c4a0;
+  border-radius: 20px;
+  padding: 4px 16px;
+  margin-bottom: 14px;
+}
+
+.brand-name {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: #a8c4a0;
+  margin-bottom: 10px;
+}
+
+.site-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: clamp(26px, 5vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #f2f5f0;
+  margin-bottom: 14px;
+}
+
+.site-subtitle {
+  font-size: 14px;
+  font-weight: 300;
+  color: #7fa882;
+  letter-spacing: 0.06em;
+  margin-bottom: 28px;
+}
+
+.header-divider {
+  width: 36px;
+  height: 1px;
+  background: #6a9b6e;
+  margin: 0 auto 18px;
+}
+
+.header-notice {
+  font-size: 12px;
+  color: #5a7a5c;
+  letter-spacing: 0.03em;
+}
+
+/* ===========================
+   FILTER BAR
+=========================== */
+#filter-bar {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px 16px;
+  background-color: #f2f5f0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #d8e4d4;
+}
+
+.filter-btn {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 24px;
+  border: 1.5px solid #b8ccb4;
+  background: transparent;
+  color: #4a6b4a;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.filter-btn:hover {
+  border-color: #2a3d2a;
+  color: #2a3d2a;
+}
+
+.filter-btn.active {
+  background-color: #2a3d2a;
+  border-color: #2a3d2a;
+  color: #f2f5f0;
+}
+
+/* ===========================
+   MAIN LAYOUT
+=========================== */
+#main-content {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+/* ===========================
+   VENUE SECTION
+=========================== */
+.venue-section {
+  margin-bottom: 60px;
+  transition: opacity 0.3s ease;
+}
+
+.venue-section.hidden {
+  display: none;
+}
+
+.venue-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 6px 16px;
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+
+.seminar-label {
+  background-color: #2a3d2a;
+  color: #f2f5f0;
+}
+
+.table-label {
+  background-color: #4a7a52;
+  color: #f2f5f0;
+}
+
+.venue-icon {
+  font-size: 14px;
+}
+
+/* ===========================
+   CARDS GRID
+=========================== */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* ===========================
+   MEETING CARD
+=========================== */
+.meeting-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #ddebd8;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  animation: fadeInUp 0.4s ease both;
+}
+
+.meeting-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(42, 61, 42, 0.13);
+  border-color: #8ab88e;
+}
+
+/* 카드 상단 색상 포인트 — 그린 계열 팔레트 */
+.meeting-card[data-index="1"]  { --accent: #3d6b44; }
+.meeting-card[data-index="2"]  { --accent: #5a8a6a; }
+.meeting-card[data-index="3"]  { --accent: #4a7a5a; }
+.meeting-card[data-index="4"]  { --accent: #6a9b72; }
+.meeting-card[data-index="5"]  { --accent: #3a5e42; }
+.meeting-card[data-index="6"]  { --accent: #5e8a5e; }
+.meeting-card[data-index="7"]  { --accent: #4e7a60; }
+.meeting-card[data-index="8"]  { --accent: #6e9b78; }
+.meeting-card[data-index="9"]  { --accent: #426e4a; }
+.meeting-card[data-index="10"] { --accent: #5a8060; }
+
+.card-top {
+  padding: 22px 22px 16px;
+  border-top: 3px solid var(--accent, #3d6b44);
+  flex: 1;
+}
+
+.card-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.host-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #7a9a7c;
+  letter-spacing: 0.04em;
+}
+
+.seat-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent, #3d6b44);
+  background-color: color-mix(in srgb, var(--accent, #3d6b44) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent, #3d6b44) 28%, transparent);
+  padding: 2px 10px;
+  border-radius: 12px;
+  letter-spacing: 0.03em;
+}
+
+.special-seat {
+  background-color: #fff8ec;
+  color: #b8761a;
+  border-color: #f0c882;
+}
+
+.card-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e2b1e;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.card-theme {
+  font-size: 13px;
+  color: #5a6e5c;
+  line-height: 1.65;
+  font-weight: 300;
+}
+
+.regular-badge {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #6a8a6c;
+  background: #edf5ec;
+  padding: 3px 10px;
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+}
+
+.card-bottom {
+  padding: 14px 22px 18px;
+  background: #f6faf5;
+  border-top: 1px solid #ddebd8;
+}
+
+/* ===========================
+   SCHEDULE LIST
+=========================== */
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.schedule-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.schedule-no {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent, #3d6b44);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.schedule-text {
+  font-size: 13px;
+  color: #3a4e3c;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* ===========================
+   CARD FOOTER ROW
+=========================== */
+.card-footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fee-tag {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e2b1e;
+}
+
+.apply-btn {
+  display: inline-block;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #f2f5f0;
+  background-color: var(--accent, #3d6b44);
+  padding: 8px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.apply-btn:hover {
+  opacity: 0.85;
+  transform: scale(1.03);
+}
+
+/* ===========================
+   ANIMATION
+=========================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.meeting-card:nth-child(1)  { animation-delay: 0.05s; }
+.meeting-card:nth-child(2)  { animation-delay: 0.10s; }
+.meeting-card:nth-child(3)  { animation-delay: 0.15s; }
+.meeting-card:nth-child(4)  { animation-delay: 0.20s; }
+.meeting-card:nth-child(5)  { animation-delay: 0.25s; }
+.meeting-card:nth-child(6)  { animation-delay: 0.30s; }
+.meeting-card:nth-child(7)  { animation-delay: 0.35s; }
+.meeting-card:nth-child(8)  { animation-delay: 0.40s; }
+.meeting-card:nth-child(9)  { animation-delay: 0.45s; }
+.meeting-card:nth-child(10) { animation-delay: 0.50s; }
+
+/* ===========================
+   FOOTER
+=========================== */
+#site-footer {
+  text-align: center;
+  padding: 28px 16px;
+  border-top: 1px solid #d0dece;
+  background-color: #f2f5f0;
+}
+
+.footer-text {
+  font-size: 12px;
+  color: #7a9a7c;
+  letter-spacing: 0.04em;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 600px) {
+  #site-header {
+    padding: 44px 20px 36px;
+  }
+
+  .site-title {
+    font-size: 24px;
+  }
+
+  #filter-bar {
+    gap: 6px;
+    padding: 14px 12px;
+  }
+
+  .filter-btn {
+    font-size: 12px;
+    padding: 7px 14px;
+  }
+
+  #main-content {
+    padding: 28px 14px 60px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .card-title {
+    font-size: 16px;
+  }
+}
