@@ -294,7 +294,11 @@
       </article>
 
       <!-- 5/27 달뒤북스 희희낙락 · 매장테이블 (신규) -->
-      <article class="meeting-card" data-venue="table" data-date="0527">
+      <article class="meeting-card has-poster" data-venue="table" data-date="0527">
+        <div class="poster-thumb" onclick="openLightbox('images/희희낙락.png', '희희낙락 포스터')">
+          <img src="images/희희낙락.png" alt="희희낙락 포스터" class="poster-img" />
+          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
+        </div>
         <div class="card-top">
           <div class="card-meta-row">
             <span class="host-name">달뒤북스</span>
@@ -370,6 +374,14 @@
 
     </div>
   </main>
+
+  <!-- LIGHTBOX -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-inner" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+  </div>
 
   <!-- FOOTER -->
   <footer id="site-footer">
