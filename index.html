@@ -29,307 +29,346 @@
     <button class="filter-btn" data-filter="table">☕ 매장테이블</button>
   </nav>
 
-  <!-- MAIN -->
+  <!-- MAIN: 날짜순 정렬 -->
   <main id="main-content">
+    <div class="cards-grid">
 
-    <!-- 세미나실 섹션 -->
-    <section class="venue-section" id="seminar-section">
-      <div class="venue-label seminar-label">
-        <span class="venue-icon">📌</span>
-        <span>장소 1 · 세미나실</span>
-      </div>
+      <!-- 5/14 동서남북book · 세미나실 -->
+      <article class="meeting-card" data-venue="seminar" data-date="0514">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">동서남북</span>
+            <span class="seat-badge">8명</span>
+          </div>
+          <h2 class="card-title">동서남북book</h2>
+          <p class="card-theme">그림책을 소재로 이야기를 나누며, 그림책에 어울리는 클래식 음악으로 감정을 기록하기</p>
+          <span class="venue-tag seminar-tag">📌 세미나실</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/14 (목) 오전 11:00 – 13:00</span>
+            </div>
+            <div class="schedule-item">
+              <span class="schedule-no">②</span>
+              <span class="schedule-text">5/21 (목) 오전 11:00 – 13:00</span>
+            </div>
+          </div>
+          <div class="card-footer-row">
+            <span class="fee-tag">회차당 ₩10,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-      <div class="cards-grid">
+      <!-- 5/15 앗트책방 · 세미나실 -->
+      <article class="meeting-card" data-venue="seminar" data-date="0515">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">앗트책방</span>
+            <span class="seat-badge">8명</span>
+          </div>
+          <h2 class="card-title">영화 한편, 이야기 한잔</h2>
+          <p class="card-theme">최근 본 영화 또는 추천하고픈 영화에 대해 이야기 나누기</p>
+          <span class="venue-tag seminar-tag">📌 세미나실</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/15 (금) 오후 18:00 – 19:30</span>
+            </div>
+          </div>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩5,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-        <!-- 동서남북book -->
-        <article class="meeting-card" data-venue="seminar" data-index="1">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">동서남북</span>
-              <span class="seat-badge">6명</span>
-            </div>
-            <h2 class="card-title">동서남북book</h2>
-            <p class="card-theme">그림책을 읽으며 마음을 힐링하고<br />그림책에 어울리는 클래식 음악을 추천하며 감정을 기록하기</p>
+      <!-- 5/16 사소한 수집소 · 세미나실 -->
+      <article class="meeting-card" data-venue="seminar" data-date="0516">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">사소한 수집소</span>
+            <span class="seat-badge">7명</span>
           </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/14 (목) 오전 11:00 – 13:00</span>
-              </div>
-              <div class="schedule-item">
-                <span class="schedule-no">②</span>
-                <span class="schedule-text">5/21 (목) 오전 11:00 – 13:00</span>
-              </div>
-            </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩10,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          <h2 class="card-title">드로잉 '슥슥'</h2>
+          <p class="card-theme">프롤로그_낙서키링만들기</p>
+          <span class="venue-tag seminar-tag">📌 세미나실</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/16 (토) 오후 14:00 – 16:00</span>
             </div>
           </div>
-        </article>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩10,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-        <!-- 앗트책방 -->
-        <article class="meeting-card" data-venue="seminar" data-index="2">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">앗트책방</span>
-              <span class="seat-badge">5명</span>
-            </div>
-            <h2 class="card-title">영화 한편, 이야기 한잔</h2>
-            <p class="card-theme">추천 영화를 보고 영화에 대해 이야기 나누기</p>
+      <!-- 5/17 책방,파도 · 세미나실 -->
+      <article class="meeting-card" data-venue="seminar" data-date="0517">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">책방, 파도</span>
+            <span class="seat-badge">5명</span>
           </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/15 (금) 오후 18:00 – 19:30</span>
-              </div>
-            </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩5,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          <h2 class="card-title">오붓이 책꾸×교환독서</h2>
+          <p class="card-theme">소장하고 싶은 책을 읽으며 오리고 붙이고 꾸미기</p>
+          <span class="venue-tag seminar-tag">📌 세미나실</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/17 (일) 오후 13:00 – 15:00</span>
             </div>
           </div>
-        </article>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩10,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-        <!-- 사소한 수집소 -->
-        <article class="meeting-card" data-venue="seminar" data-index="3">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">사소한 수집소</span>
-              <span class="seat-badge">7명</span>
-            </div>
-            <h2 class="card-title">드로잉 '슥슥'</h2>
-            <p class="card-theme">프롤로그_낙서키링만들기</p>
+      <!-- 5/18 새미,콤마 · 매장테이블 -->
+      <article class="meeting-card" data-venue="table" data-date="0518">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">새미, 콤마</span>
+            <span class="seat-badge">5명</span>
           </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/16 (토) 오후 14:00 – 16:00</span>
-              </div>
-            </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩10,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          <h2 class="card-title">새미,콤마 책수다</h2>
+          <p class="card-theme">어른들을 위한 그림책 보며 수다떨기 💛</p>
+          <span class="venue-tag table-tag">☕ 매장테이블</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/18 (월) 오전 10:30 – 12:00</span>
             </div>
           </div>
-        </article>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩10,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-        <!-- 책방, 파도 -->
-        <article class="meeting-card" data-venue="seminar" data-index="4">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">책방, 파도</span>
-              <span class="seat-badge">5명</span>
-            </div>
-            <h2 class="card-title">오붓이 책꾸×교환독서</h2>
-            <p class="card-theme">소장하고 싶은 책을 읽으며 오리고 붙이고 꾸미기</p>
+      <!-- 5/20 다온글방 티블렌딩 · 세미나실 -->
+      <article class="meeting-card" data-venue="seminar" data-date="0520">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">다온글방</span>
+            <span class="seat-badge">7명</span>
           </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/17 (일) 오후 13:00 – 15:00</span>
-              </div>
+          <h2 class="card-title">티블렌딩 for the 가족</h2>
+          <p class="card-theme">'가족'을 위해 만든 티블렌딩</p>
+          <span class="venue-tag seminar-tag">📌 세미나실</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/20 (수) 오전 11:00 – 13:00</span>
             </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩10,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+            <div class="schedule-item">
+              <span class="schedule-no">②</span>
+              <span class="schedule-text">5/20 (수) 오후 19:00 – 21:00</span>
             </div>
           </div>
-        </article>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩20,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-        <!-- 다온글방 -->
-        <article class="meeting-card" data-venue="seminar" data-index="5">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">다온글방</span>
-              <span class="seat-badge">6명</span>
-            </div>
-            <h2 class="card-title">다온글방 티블렌딩</h2>
-            <p class="card-theme">'가족'을 주제로 만드는 티블렌딩</p>
+      <!-- 5/20 달뒤북스 익명의 독서중독자들 · 매장테이블 -->
+      <article class="meeting-card" data-venue="table" data-date="0520">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">달뒤북스</span>
+            <span class="seat-badge">7명</span>
           </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/20 (수) 오전 11:00 – 13:00</span>
-              </div>
-              <div class="schedule-item">
-                <span class="schedule-no">②</span>
-                <span class="schedule-text">5/20 (수) 오후 19:00 – 21:00</span>
-              </div>
-            </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩20,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          <h2 class="card-title">익명의 독서중독자들</h2>
+          <p class="card-theme">5월 모임 책 《내가 이런 데서 일할 사람이 아닌데》</p>
+          <span class="venue-tag table-tag">☕ 매장테이블</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/20 (수) 오후 17:00 – 18:30</span>
             </div>
           </div>
-        </article>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩10,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-        <!-- 달뒤북스 -->
-        <article class="meeting-card" data-venue="seminar" data-index="6">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">달뒤북스</span>
-              <span class="seat-badge">7명</span>
-            </div>
-            <h2 class="card-title">익명의 독서중독자들</h2>
-            <p class="card-theme">5월 모임 책 《이것은 왜 직업이 아니란 말인가》</p>
+      <!-- 5/22 또봐만화방 · 매장테이블 (신규) -->
+      <article class="meeting-card" data-venue="table" data-date="0522">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">또봐 만화방</span>
+            <span class="seat-badge">5명</span>
           </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/20 (수) 오후 17:00 – 18:00</span>
-              </div>
-            </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩10,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          <h2 class="card-title">심야만화방</h2>
+          <p class="card-theme">좋아하는 만화책과 간식 들고 만나요. 또봐만화책 이용가능 🍿</p>
+          <span class="venue-tag table-tag">☕ 매장테이블</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/22 (금) 오후 19:00 – 23:00</span>
             </div>
           </div>
-        </article>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩10,000 (음료제공)</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-        <!-- 해피니스북스토어 -->
-        <article class="meeting-card" data-venue="seminar" data-index="7">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">해피니스북스토어</span>
-              <span class="seat-badge">6명</span>
-            </div>
-            <h2 class="card-title">숨,쉼 심리학 스터디 & 북클럽</h2>
-            <p class="card-theme">심리학도서 선정하여 같이 읽고 나누는 시간</p>
-            <span class="regular-badge">매월 넷째 주 토요일 정기모임</span>
+      <!-- 5/23 해피니스북스토어 · 세미나실 -->
+      <article class="meeting-card" data-venue="seminar" data-date="0523">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">해피니스북스토어</span>
+            <span class="seat-badge">6명</span>
           </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/23 (토) 오후 14:00 – 16:00</span>
-              </div>
-            </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩5,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          <h2 class="card-title">숨,쉼 심리학 스터디 & 북클럽</h2>
+          <p class="card-theme">심리학도서 선정하여 같이 읽고 나누는 시간</p>
+          <span class="regular-badge">매월 넷째 주 토요일 정기모임</span>
+          <span class="venue-tag seminar-tag">📌 세미나실</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/23 (토) 오후 14:00 – 16:00</span>
             </div>
           </div>
-        </article>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩5,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-        <!-- 모퉁이 우표점 -->
-        <article class="meeting-card" data-venue="seminar" data-index="8">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">모퉁이 우표점</span>
-              <span class="seat-badge special-seat">1명</span>
-            </div>
-            <h2 class="card-title">한 사람을 위한 편지</h2>
-            <p class="card-theme">타자기로 쓰고 우표를 붙여 편지를 보냅니다</p>
-            <span class="regular-badge">매월 마지막 주 수요일 정기모임</span>
+      <!-- 5/27 모퉁이 우표점 · 세미나실 -->
+      <article class="meeting-card" data-venue="seminar" data-date="0527">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">모퉁이 우표점</span>
+            <span class="seat-badge special-seat">1명</span>
           </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/27 (수) 오전 11:00 – 13:00</span>
-              </div>
-            </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩30,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          <h2 class="card-title">한 사람을 위한 편지</h2>
+          <p class="card-theme">타자기로 쓰고 우표를 붙여 편지를 보냅니다</p>
+          <span class="regular-badge">매월 마지막 주 수요일 정기모임</span>
+          <span class="venue-tag seminar-tag">📌 세미나실</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/27 (수) 오전 11:00 – 13:00</span>
             </div>
           </div>
-        </article>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩30,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-        <!-- 영국정원 -->
-        <article class="meeting-card" data-venue="seminar" data-index="9">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">영국정원</span>
-              <span class="seat-badge">5명</span>
-            </div>
-            <h2 class="card-title">영어 북클럽</h2>
-            <p class="card-theme">자유 독서 후 책에 대해 대화 나누기</p>
+      <!-- 5/27 달뒤북스 희희낙락 · 매장테이블 (신규) -->
+      <article class="meeting-card" data-venue="table" data-date="0527">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">달뒤북스</span>
+            <span class="seat-badge">3명</span>
           </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/29 (금) 오후 13:00 – 14:30</span>
-              </div>
-            </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩10,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-            </div>
-          </div>
-        </article>
-
-        <!-- 썬북친구 -->
-        <article class="meeting-card" data-venue="seminar" data-index="10">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">썬북친구</span>
-              <span class="seat-badge">5명</span>
-            </div>
-            <h2 class="card-title">책갈피 산책</h2>
-            <p class="card-theme">한 시간 독서 후 한 시간 책 소개 및 대화</p>
-          </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/30 (토) 오후 14:00 – 16:00</span>
-              </div>
-            </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩5,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          <h2 class="card-title">희희낙락</h2>
+          <p class="card-theme">희곡 읽기 모임</p>
+          <span class="venue-tag table-tag">☕ 매장테이블</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/27 (수) 오후 18:00 – 19:30</span>
             </div>
           </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- 매장테이블 섹션 -->
-    <section class="venue-section" id="table-section">
-      <div class="venue-label table-label">
-        <span class="venue-icon">☕</span>
-        <span>장소 2 · 매장테이블</span>
-      </div>
-
-      <div class="cards-grid">
-
-        <!-- 새미, 콤마 -->
-        <article class="meeting-card" data-venue="table" data-index="1">
-          <div class="card-top">
-            <div class="card-meta-row">
-              <span class="host-name">새미, 콤마</span>
-              <span class="seat-badge">5명</span>
-            </div>
-            <h2 class="card-title">새미,콤마 책수다</h2>
-            <p class="card-theme">엄마는 월요일을 좋아해! 💛</p>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩10,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
           </div>
-          <div class="card-bottom">
-            <div class="schedule-list">
-              <div class="schedule-item">
-                <span class="schedule-no">①</span>
-                <span class="schedule-text">5/18 (월) 오전 10:30 – 12:00</span>
-              </div>
-            </div>
-            <div class="card-footer-row">
-              <span class="fee-tag">₩10,000</span>
-              <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+        </div>
+      </article>
+
+      <!-- 5/29 영국정원 · 세미나실 -->
+      <article class="meeting-card" data-venue="seminar" data-date="0529">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">영국정원</span>
+            <span class="seat-badge">5명</span>
+          </div>
+          <h2 class="card-title">영어 북클럽</h2>
+          <p class="card-theme">자유 독서 후 책에 대해 대화 나누기</p>
+          <span class="venue-tag seminar-tag">📌 세미나실</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/29 (금) 오후 13:00 – 14:30</span>
             </div>
           </div>
-        </article>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩10,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
-      </div>
-    </section>
+      <!-- 5/30 썬북친구 · 세미나실 -->
+      <article class="meeting-card" data-venue="seminar" data-date="0530">
+        <div class="card-top">
+          <div class="card-meta-row">
+            <span class="host-name">썬북친구</span>
+            <span class="seat-badge">5명</span>
+          </div>
+          <h2 class="card-title">책갈피 산책</h2>
+          <p class="card-theme">한 시간 독서 후 한 시간 책 소개 및 대화</p>
+          <span class="venue-tag seminar-tag">📌 세미나실</span>
+        </div>
+        <div class="card-bottom">
+          <div class="schedule-list">
+            <div class="schedule-item">
+              <span class="schedule-no">①</span>
+              <span class="schedule-text">5/30 (토) 오후 14:00 – 16:00</span>
+            </div>
+          </div>
+          <div class="card-footer-row">
+            <span class="fee-tag">₩5,000</span>
+            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
+          </div>
+        </div>
+      </article>
 
+    </div>
   </main>
 
   <!-- FOOTER -->

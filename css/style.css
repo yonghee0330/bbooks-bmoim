@@ -457,3 +457,21 @@ body {
     font-size: 16px;
   }
 }
+
+/* 날짜순 레이아웃 - venue-tag */
+.venue-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-top: 8px;
+}
+.seminar-tag {
+  background: #fff3e0;
+  color: #e65100;
+}
+.table-tag {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
