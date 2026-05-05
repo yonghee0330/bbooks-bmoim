@@ -56,6 +56,28 @@ document.addEventListener('keydown', (e) => {
 
 
 /* ══════════════════════════════════════
+   신청 현황 - 공통 설정
+══════════════════════════════════════ */
+const RESPONSE_SHEET_ID = '1C64dZrpedaMX26oPPwDOkG1SJ-IvfADnIH5loE-qYQ4';
+const RESPONSE_GID = '1930206116';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${RESPONSE_SHEET_ID}/export?format=csv&gid=${RESPONSE_GID}`;
+
+function parseCSVLine(line) {
+  const cells = [];
+  let cell = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQ && line[i+1] === '"') { cell += '"'; i++; }
+      else inQ = !inQ;
+    } else if (ch === ',' && !inQ) { cells.push(cell); cell = ''; }
+    else cell += ch;
+  }
+  cells.push(cell);
+  return cells;
+}
+
+/* ══════════════════════════════════════
    신청 현황 v3 - prefix 직접 검색 (정확)
 ══════════════════════════════════════ */
 const MEETING_PREFIXES_V3 = [
