@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>비북스 0.1평 서점 디렉토리</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: #faf7f2;
+  color: #2d2417;
+}
+header {
+  background: #2d2417;
+  color: #fff;
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+header h1 { font-size: 18px; font-weight: 800; color: #e8c98a; }
+header p { font-size: 12px; color: #a89878; margin-top: 3px; }
+.header-right { display: flex; gap: 10px; align-items: center; }
+.stat-badge {
+  background: rgba(232,201,138,0.15);
+  border: 1px solid rgba(232,201,138,0.3);
+  color: #e8c98a;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* 필터 */
+.filter-bar {
+  background: #fff;
+  padding: 16px 32px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #ede5d5;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.filter-bar input {
+  flex: 1;
+  min-width: 200px;
+  padding: 9px 16px;
+  border: 1.5px solid #e2d8c8;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: inherit;
+  background: #faf7f2;
+}
+.filter-bar input:focus { outline: none; border-color: #2d2417; }
+.filter-btn {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1.5px solid #e2d8c8;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b5c40;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.filter-btn.active, .filter-btn:hover {
+  background: #2d2417;
+  color: #e8c98a;
+  border-color: #2d2417;
+}
+.refresh-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: #e8c98a;
+  color: #2d2417;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.refresh-btn:hover { background: #d4b068; }
+
+/* 테이블 */
+.table-wrap {
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 0 20px 60px;
+}
+.store-count {
+  font-size: 13px;
+  color: #7a6a50;
+  margin-bottom: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+thead {
+  background: #2d2417;
+  color: #e8c98a;
+}
+thead th {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: left;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+tbody tr {
+  border-bottom: 1px solid #f5f0e8;
+  transition: background 0.15s;
+}
+tbody tr:hover { background: #fdf9f4; }
+tbody tr.empty-row { opacity: 0.45; }
+td {
+  padding: 11px 16px;
+  font-size: 13px;
+  vertical-align: middle;
+}
+.td-no { color: #a89878; font-size: 12px; width: 48px; }
+.td-loc {
+  font-weight: 700;
+  color: #2d2417;
+  font-size: 12px;
+  width: 60px;
+  font-family: monospace;
+}
+.td-store { font-weight: 600; color: #2d2417; min-width: 130px; }
+.td-owner { color: #6b5c40; min-width: 100px; }
+.td-region { color: #7a6a50; font-size: 12px; }
+.td-sns { min-width: 200px; }
+
+.sns-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  margin: 2px 2px 2px 0;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.sns-link:hover { transform: translateY(-1px); opacity: 0.85; }
+.sns-instagram { background: #fce4f0; color: #c13584; }
+.sns-facebook { background: #e8eeff; color: #1877f2; }
+.sns-youtube { background: #ffecec; color: #ff0000; }
+.sns-naver { background: #e6f7e6; color: #03c75a; }
+.sns-etc { background: #f0f0f0; color: #555; }
+
+.no-sns {
+  font-size: 12px;
+  color: #c8baa8;
+  font-style: italic;
+}
+.empty-name { color: #c8baa8; font-style: italic; }
+
+/* 로딩 */
+#loading {
+  text-align: center;
+  padding: 60px;
+  color: #7a6a50;
+  font-size: 14px;
+}
+.spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #e2d8c8;
+  border-top-color: #2d2417;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* 업데이트 안내 */
+.update-notice {
+  background: #fffbf0;
+  border: 1px solid #f0d890;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: #7a6218;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>📚 비북스 0.1평 서점 디렉토리</h1>
+    <p>구글 시트 데이터 자동 연동 · 시트 수정 시 새로고침으로 반영</p>
+  </div>
+  <div class="header-right">
+    <div class="stat-badge" id="statBadge">로딩 중...</div>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <input type="text" id="searchInput" placeholder="🔍 서점명, 서점주명, 지역으로 검색..." oninput="filterTable()" />
+  <button class="filter-btn active" onclick="setFilter('all', this)">전체</button>
+  <button class="filter-btn" onclick="setFilter('sns', this)">SNS 있음</button>
+  <button class="filter-btn" onclick="setFilter('nosns', this)">SNS 없음</button>
+  <button class="filter-btn" onclick="setFilter('empty', this)">빈 자리</button>
+  <button class="refresh-btn" onclick="loadData()">🔄 새로고침</button>
+</div>
+
+<div class="table-wrap">
+  <div class="update-notice">
+    💡 구글 시트에서 SNS 주소를 수정하면 이 페이지의 <strong>🔄 새로고침</strong> 버튼을 눌러 반영하세요.
+  </div>
+  <div class="store-count" id="storeCount"></div>
+  <div id="loading">
+    <div class="spinner"></div><br/>데이터 불러오는 중...
+  </div>
+  <table id="storeTable" style="display:none;">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>위치</th>
+        <th>서점명</th>
+        <th>서점주</th>
+        <th>지역</th>
+        <th>SNS / 홍보채널</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+
+<script>
+const SHEET_ID = '1F52A9d0aBitMNrn_yWqAPCzpBDqnMkSIrcBrer15VvQ';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+
+let allRows = [];
+let currentFilter = 'all';
+
+function parseSNS(raw) {
+  if (!raw || raw.trim() === '' || raw.trim() === '-') return [];
+  return raw.split(/[\n,]/)
+    .map(s => s.trim())
+    .filter(s => s && s !== '-' && (s.startsWith('http') || s.startsWith('www.')))
+    .map(s => s.startsWith('www.') ? 'https://' + s : s);
+}
+
+function getSNSType(url) {
+  if (url.includes('instagram.com')) return { type: 'instagram', label: '📷 Instagram', cls: 'sns-instagram' };
+  if (url.includes('facebook.com')) return { type: 'facebook', label: '📘 Facebook', cls: 'sns-facebook' };
+  if (url.includes('youtube.com')) return { type: 'youtube', label: '▶ YouTube', cls: 'sns-youtube' };
+  if (url.includes('blog.naver.com') || url.includes('naver.com')) return { type: 'naver', label: '📝 블로그', cls: 'sns-naver' };
+  return { type: 'etc', label: '🔗 링크', cls: 'sns-etc' };
+}
+
+function parseCSV(text) {
+  const lines = text.split('\r\n').concat(text.split('\n')).filter((v, i, a) => a.indexOf(v) === i);
+  const rows = [];
+  let inQuote = false, cur = '', cells = [];
+
+  for (const line of text.split(/\r?\n/)) {
+    let row = [];
+    let cell = '';
+    let inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') {
+        if (inQ && line[i+1] === '"') { cell += '"'; i++; }
+        else inQ = !inQ;
+      } else if (ch === ',' && !inQ) {
+        row.push(cell); cell = '';
+      } else {
+        cell += ch;
+      }
+    }
+    row.push(cell);
+    rows.push(row);
+  }
+  return rows;
+}
+
+async function loadData() {
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('storeTable').style.display = 'none';
+
+  try {
+    const res = await fetch(CSV_URL + '&t=' + Date.now());
+    const text = await res.text();
+    const rows = parseCSV(text);
+
+    // 헤더 행 찾기 (No, 위치, 서점명 포함)
+    let headerIdx = rows.findIndex(r => r[0] === 'No' || (r[2] && r[2] === '서점명'));
+    if (headerIdx === -1) headerIdx = 1;
+
+    allRows = [];
+    for (let i = headerIdx + 1; i < rows.length; i++) {
+      const r = rows[i];
+      if (!r || r.length < 4) continue;
+      const no = r[0]?.trim() || '';
+      const loc = r[1]?.trim() || '';
+      const store = r[2]?.trim() || '';
+      const owner = r[3]?.trim() || '';
+      const region = r[13]?.trim() || r[14]?.trim() || '';
+      const snsRaw = r[11]?.trim() || '';
+      const sns = parseSNS(snsRaw);
+      if (!loc) continue;
+      allRows.push({ no, loc, store, owner, region, sns, isEmpty: !store });
+    }
+
+    const total = allRows.length;
+    const withSNS = allRows.filter(r => !r.isEmpty && r.sns.length > 0).length;
+    const occupied = allRows.filter(r => !r.isEmpty).length;
+    document.getElementById('statBadge').textContent = `총 ${occupied}개 서점 · SNS ${withSNS}개`;
+
+    filterTable();
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('storeTable').style.display = 'table';
+  } catch(e) {
+    document.getElementById('loading').innerHTML = '⚠️ 데이터를 불러올 수 없습니다. 구글 시트 공유 설정을 확인해주세요.';
+  }
+}
+
+function setFilter(type, btn) {
+  currentFilter = type;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterTable();
+}
+
+function filterTable() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const tbody = document.getElementById('tableBody');
+  tbody.innerHTML = '';
+  let shown = 0;
+
+  for (const row of allRows) {
+    // 필터
+    if (currentFilter === 'sns' && (row.isEmpty || row.sns.length === 0)) continue;
+    if (currentFilter === 'nosns' && (row.isEmpty || row.sns.length > 0)) continue;
+    if (currentFilter === 'empty' && !row.isEmpty) continue;
+
+    // 검색
+    if (q) {
+      const haystack = [row.store, row.owner, row.region, row.loc].join(' ').toLowerCase();
+      if (!haystack.includes(q)) continue;
+    }
+
+    shown++;
+    const tr = document.createElement('tr');
+    if (row.isEmpty) tr.classList.add('empty-row');
+
+    // SNS 링크 HTML
+    let snsHtml = '';
+    if (row.sns.length > 0) {
+      snsHtml = row.sns.map(url => {
+        const { label, cls } = getSNSType(url);
+        return `<a href="${url}" target="_blank" rel="noopener" class="sns-link ${cls}">${label}</a>`;
+      }).join('');
+    } else if (!row.isEmpty) {
+      snsHtml = '<span class="no-sns">미등록</span>';
+    }
+
+    tr.innerHTML = `
+      <td class="td-no">${row.no || '–'}</td>
+      <td class="td-loc">${row.loc}</td>
+      <td class="td-store">${row.store || '<span class="empty-name">빈 자리</span>'}</td>
+      <td class="td-owner">${row.owner || ''}</td>
+      <td class="td-region">${row.region || ''}</td>
+      <td class="td-sns">${snsHtml}</td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  document.getElementById('storeCount').textContent = `${shown}개 표시 중`;
+}
+
+loadData();
+</script>
+</body>
+</html>
