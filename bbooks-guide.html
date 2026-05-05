@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>비북스 일일지기 가이드</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #fdf8f3;
+    color: #2d2d2d;
+    padding: 20px;
+    min-height: 100vh;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+  }
+
+  /* 헤더 */
+  .header {
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    color: #fff;
+    padding: 28px 36px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left h1 {
+    font-size: 26px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    margin-bottom: 4px;
+  }
+  .header-left p {
+    font-size: 13px;
+    color: #aaa;
+    font-weight: 400;
+  }
+  .header-badge {
+    background: #e8c98a;
+    color: #1a1a1a;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+
+  /* 매니저 안내 */
+  .manager-bar {
+    background: #f5f0e8;
+    padding: 10px 36px;
+    font-size: 13px;
+    color: #6b5c40;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid #ede5d5;
+  }
+  .manager-bar span { font-weight: 700; }
+
+  /* 메인 그리드 */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .section {
+    padding: 24px 28px;
+    border-right: 1px solid #f0ebe3;
+    border-bottom: 1px solid #f0ebe3;
+  }
+  .section:nth-child(2) { border-right: none; }
+  .section:nth-child(3) { border-right: 1px solid #f0ebe3; border-bottom: none; }
+  .section:nth-child(4) { border-right: none; border-bottom: none; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid currentColor;
+  }
+  .section-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+  }
+  .section-time {
+    font-size: 11px;
+    font-weight: 500;
+    opacity: 0.7;
+    margin-left: auto;
+  }
+
+  /* 오픈 */
+  .open .section-header { color: #e8a020; border-color: #e8a020; }
+  .open .section-icon { background: #fff8ec; }
+
+  /* 계산 */
+  .pos .section-header { color: #3b7dd8; border-color: #3b7dd8; }
+  .pos .section-icon { background: #eff5ff; }
+
+  /* 클로즈 */
+  .close .section-header { color: #5c5c8a; border-color: #5c5c8a; }
+  .close .section-icon { background: #f0f0f8; }
+
+  /* 기타 */
+  .etc .section-header { color: #4a9e6b; border-color: #4a9e6b; }
+  .etc .section-icon { background: #f0faf4; }
+
+  /* 체크리스트 */
+  .checklist { list-style: none; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 13px;
+    line-height: 1.55;
+    padding: 5px 0;
+    border-bottom: 1px dashed #f0ebe3;
+    color: #333;
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .check-dot {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .open .check-dot { border-color: #e8a020; }
+  .pos .check-dot { border-color: #3b7dd8; }
+  .close .check-dot { border-color: #5c5c8a; }
+  .etc .check-dot { border-color: #4a9e6b; }
+
+  .sub-note {
+    font-size: 11.5px;
+    color: #888;
+    margin-left: 26px;
+    margin-top: -2px;
+    margin-bottom: 3px;
+    line-height: 1.5;
+  }
+
+  .tip-box {
+    background: #fff8ec;
+    border-left: 3px solid #e8a020;
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #7a5c1e;
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+  .tip-box.blue { background: #eff5ff; border-color: #3b7dd8; color: #1e3c7a; }
+  .tip-box.purple { background: #f0f0f8; border-color: #5c5c8a; color: #3a3a6a; }
+  .tip-box.green { background: #f0faf4; border-color: #4a9e6b; color: #1e5c3a; }
+
+  /* 비밀번호 박스 */
+  .pw-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #2d2d2d;
+    color: #e8c98a;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 6px;
+    letter-spacing: 2px;
+    margin: 3px 0;
+  }
+
+  /* 푸터 */
+  .footer {
+    background: #f9f6f0;
+    padding: 14px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #ede5d5;
+  }
+  .footer-left {
+    font-size: 11.5px;
+    color: #999;
+  }
+  .footer-contact {
+    font-size: 12px;
+    color: #6b5c40;
+    display: flex;
+    gap: 16px;
+  }
+  .footer-contact span { font-weight: 700; }
+
+  @media print {
+    body { background: white; padding: 0; }
+    .page { box-shadow: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="header-left">
+      <h1>📖 비북스 일일지기 가이드</h1>
+      <p>B.BOOKS Daily Crew Operation Guide</p>
+    </div>
+    <div class="header-badge">오픈 ~ 클로즈</div>
+  </div>
+
+  <!-- 매니저 -->
+  <div class="manager-bar">
+    🙋 문의는 매니저에게 &nbsp;|&nbsp; <span>OM : 호세</span> &nbsp;|&nbsp; <span>BM : 써든리</span>
+    &nbsp;|&nbsp; 크루톡방에 특이사항 공유해 주세요
+  </div>
+
+  <!-- 메인 그리드 -->
+  <div class="grid">
+
+    <!-- ① 오픈 -->
+    <div class="section open">
+      <div class="section-header">
+        <div class="section-icon">☀️</div>
+        <div class="section-title">오픈</div>
+        <div class="section-time">10:00</div>
+      </div>
+      <ul class="checklist">
+        <li><span class="check-dot"></span>건물 밖 입간판 내놓기</li>
+        <p class="sub-note">내부용(계단 입구) + 외부용(전봇대 앞)</p>
+        <li><span class="check-dot"></span>문 열기 &nbsp;<span class="pw-box">🔑 050811</span></li>
+        <p class="sub-note">※ 추후 페이스 인식으로 변경 예정</p>
+        <li><span class="check-dot"></span>조명 켜기</li>
+        <p class="sub-note">좌하 환풍기 제외, 나머지 세 개 ON</p>
+        <li><span class="check-dot"></span>천정 냉난방기 켜기 (안쪽만)</li>
+        <li><span class="check-dot"></span>음악 켜기</li>
+        <p class="sub-note">아이패드 → 스포티파이 → 블루투스 스탠모어 연결<br/>비북스 무드 유지하면 자율 선곡 OK 🎵</p>
+        <li><span class="check-dot"></span>오픈 인스타 게시 (개인 계정)</li>
+        <p class="sub-note">비북스 본계에서도 함께 업로드 예정</p>
+      </ul>
+    </div>
+
+    <!-- ② 계산 (포스) -->
+    <div class="section pos">
+      <div class="section-header">
+        <div class="section-icon">💳</div>
+        <div class="section-title">계산 (토스 포스)</div>
+      </div>
+      <ul class="checklist">
+        <li><span class="check-dot"></span>바탕화면 <strong>토스 포스</strong> 실행</li>
+        <li><span class="check-dot"></span>'판매' 탭 → 바코드 스캔 or 제목 검색</li>
+        <li><span class="check-dot"></span>결제 방식 선택 → 카드 / 계좌이체 / 현금</li>
+        <p class="sub-note">현금은 가급적 계좌이체 권장<br/>불가피한 경우 작업실 서랍 현금시제 사용 + 봉투에 내역 기입</p>
+        <li><span class="check-dot"></span>전자영수증 원하면 핸드폰 번호로 발행</li>
+        <li><span class="check-dot"></span>회원 등록 제안 → "간단히 등록 도와드릴까요?"</li>
+        <p class="sub-note">포스 고객정보 → 연락처 항목을 이름(지역)으로 수정<br/>메모란에 취향 키워드 3개 기입</p>
+      </ul>
+      <div class="tip-box blue">
+        📌 별도 바코드 없는 도서 = <strong>비북스 자체 상품</strong><br/>
+        📌 바코드 붙은 도서·굿즈 = <strong>0.1평 서점주 상품</strong><br/>
+        🎁 연락처 등록 시 1% 적립 프로모션 세팅 중 (비북스 부담)
+      </div>
+    </div>
+
+    <!-- ③ 클로즈 -->
+    <div class="section close">
+      <div class="section-header">
+        <div class="section-icon">🌙</div>
+        <div class="section-title">클로즈</div>
+        <div class="section-time">18:00</div>
+      </div>
+      <ul class="checklist">
+        <li><span class="check-dot"></span>클로즈 인스타 게시</li>
+        <p class="sub-note">그날의 서점 일지처럼 간단히 작성 ✍️</p>
+        <li><span class="check-dot"></span>음악 끄기</li>
+        <li><span class="check-dot"></span>냉난방기 끄기</li>
+        <li><span class="check-dot"></span>조명 끄기</li>
+        <li><span class="check-dot"></span>문 닫기</li>
+        <li><span class="check-dot"></span>입간판 들이기</li>
+        <li><span class="check-dot"></span>특이사항 크루톡방 or 매니저에게 공유</li>
+      </ul>
+      <div class="tip-box purple">
+        ※ 오픈의 역순으로 진행하시면 됩니다 🙂<br/>
+        다음날 참고사항도 함께 남겨주세요!
+      </div>
+    </div>
+
+    <!-- ④ 기타 사항 -->
+    <div class="section etc">
+      <div class="section-header">
+        <div class="section-icon">💡</div>
+        <div class="section-title">기타 안내</div>
+      </div>
+      <ul class="checklist">
+        <li><span class="check-dot"></span>운영비(식대·비품) → 비북스 카드 사용 가능</li>
+        <p class="sub-note">부천페이 또는 체크카드</p>
+        <li><span class="check-dot"></span>자리 비울 시 입구에 <strong>'자리비움'</strong> 표기</li>
+        <p class="sub-note">장시간 비울 경우 크루톡방에 대체자 요청</p>
+        <li><span class="check-dot"></span>0.1평 서점 문의 → 인스타 or 신청 QR 안내</li>
+        <li><span class="check-dot"></span>작업실 서가 1칸 개인 도서 비치 가능</li>
+      </ul>
+      <div class="tip-box green">
+        🍞 식사: 자리 비우기 어려우면 샌드위치·토스트 또는 주방 간편식 활용<br/>
+        👕 크루 유니폼·앞치마 준비 중 — 의견 환영합니다 ^^
+      </div>
+    </div>
+
+  </div><!-- /grid -->
+
+  <!-- 푸터 -->
+  <div class="footer">
+    <div class="footer-left">비북스 크루 가이드 v1.0 · 지속 업데이트 예정</div>
+    <div class="footer-contact">
+      문의 <span>OM 호세</span> · <span>BM 써든리</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
