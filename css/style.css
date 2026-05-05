@@ -480,15 +480,16 @@ body {
 .poster-thumb {
   position: relative;
   width: 100%;
-  height: 180px;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: 10px 10px 0 0;
   cursor: pointer;
+  background: #f5f0e8;
 }
 .poster-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.3s ease;
   display: block;
 }
