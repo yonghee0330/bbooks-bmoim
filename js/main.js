@@ -101,7 +101,9 @@ const MEETING_PREFIXES_V3 = [
 function getAllMeetingIds(raw) {
   const found = [];
   for (const { prefix, id } of MEETING_PREFIXES_V3) {
-    if (raw.includes(prefix)) found.push(id);
+    // 텍스트 시작이거나 ", " 뒤에 오는 경우만 매칭 (부분 포함 오탐 방지)
+    const pattern = new RegExp('(?:^|,\\s*)' + prefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    if (pattern.test(raw)) found.push(id);
   }
   return found;
 }
