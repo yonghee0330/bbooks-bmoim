@@ -626,3 +626,29 @@ body {
   pointer-events: none;
   cursor: not-allowed;
 }
+
+/* ── 회차별 신청 현황 (인라인) ── */
+.schedule-item { position: relative; flex-wrap: wrap; }
+.sub-capacity-bar {
+  width: 100%;
+  margin: 5px 0 4px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sub-progress-track {
+  flex: 1; height: 4px;
+  background: #e2e8f0; border-radius: 10px; overflow: hidden;
+}
+.sub-progress-fill {
+  height: 100%; border-radius: 10px;
+  background: linear-gradient(90deg, #1a3a6b, #2563eb);
+  transition: width 0.5s ease;
+}
+.sub-progress-fill.almost { background: linear-gradient(90deg, #f59e0b, #f97316); }
+.sub-progress-fill.full-bar { background: linear-gradient(90deg, #dc2626, #ef4444); }
+.sub-count {
+  font-size: 11px; font-weight: 700; color: #1a3a6b;
+  white-space: nowrap;
+}
+.sub-count.full { color: #dc2626; }

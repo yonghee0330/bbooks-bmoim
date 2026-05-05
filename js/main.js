@@ -273,3 +273,62 @@ async function loadCapacityV2() {
 // 기존 타이머 교체
 loadCapacityV2();
 setInterval(loadCapacityV2, 3 * 60 * 1000);
+
+/* ── 회차별 신청 현황 (다온글방, 동서남북) ── */
+async function loadSubCapacity() {
+  try {
+    const res = await fetch(CSV_URL);
+    const text = await res.text();
+    const lines = text.split(/\r?\n/).filter(l => l.trim());
+
+    // 전체 카운트 (v2 방식)
+    const counts = {};
+    for (let i = 1; i < lines.length; i++) {
+      const cells = parseCSVLine(lines[i]);
+      if (cells.length < 4) continue;
+      const meetingCell = cells[3] || '';
+      const meetings = splitMeetings(meetingCell);
+      for (const m of meetings) {
+        const id = getMeetingIdV2(m);
+        if (id) counts[id] = (counts[id] || 0) + 1;
+      }
+    }
+
+    // 회차별 sub-meeting 처리
+    document.querySelectorAll('[data-sub-meeting]').forEach(item => {
+      const mid = item.dataset.subMeeting;
+      const capacity = parseInt(item.dataset.subCapacity) || 0;
+      const applied = counts[mid] || 0;
+      const pct = capacity > 0 ? Math.min(100, Math.round(applied / capacity * 100)) : 0;
+      const isFull = applied >= capacity;
+      const fillClass = pct >= 100 ? 'full-bar' : pct >= 70 ? 'almost' : '';
+
+      // 기존 sub-bar 제거
+      const old = item.querySelector('.sub-capacity-bar');
+      if (old) old.remove();
+
+      const bar = document.createElement('div');
+      bar.className = 'sub-capacity-bar';
+      bar.innerHTML = `
+        <div class="sub-progress-track">
+          <div class="sub-progress-fill ${fillClass}" style="width:${pct}%"></div>
+        </div>
+        <span class="sub-count ${isFull ? 'full' : ''}">${applied}/${capacity}명${isFull ? ' 마감' : ''}</span>
+      `;
+      item.appendChild(bar);
+    });
+
+    // data-meeting="multi" 카드는 전체 현황 바 숨기기 (회차별로만 표시)
+    document.querySelectorAll('[data-meeting="multi"]').forEach(card => {
+      const old = card.querySelector('.capacity-bar');
+      if (old) old.remove();
+    });
+
+    console.log('회차별 현황 업데이트:', counts);
+  } catch(e) {
+    console.warn('회차별 현황 로드 실패:', e);
+  }
+}
+
+loadSubCapacity();
+setInterval(loadSubCapacity, 3 * 60 * 1000);
