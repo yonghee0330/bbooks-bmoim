@@ -22,6 +22,114 @@
     </div>
   </header>
 
+
+  <!-- CALENDAR SECTION -->
+  <section id="calendar-section">
+    <div class="cal-inner">
+      <div class="cal-header">
+        <h2 class="cal-title">5월 모임 일정</h2>
+        <p class="cal-subtitle">날짜를 클릭하면 해당 모임으로 이동합니다</p>
+      </div>
+      <div class="cal-grid">
+        <div class="cal-day-header">일</div>
+        <div class="cal-day-header">월</div>
+        <div class="cal-day-header">화</div>
+        <div class="cal-day-header">수</div>
+        <div class="cal-day-header">목</div>
+        <div class="cal-day-header">금</div>
+        <div class="cal-day-header">토</div>
+        <!-- 빈칸 4개 (5/1=목) -->
+        <div class="cal-cell empty"></div>
+        <div class="cal-cell empty"></div>
+        <div class="cal-cell empty"></div>
+        <div class="cal-cell empty"></div>
+        <!-- 1~3 -->
+        <div class="cal-cell"><span class="cal-date">1</span></div>
+        <div class="cal-cell"><span class="cal-date">2</span></div>
+        <div class="cal-cell"><span class="cal-date">3</span></div>
+        <!-- 4~10 -->
+        <div class="cal-cell"><span class="cal-date">4</span></div>
+        <div class="cal-cell holiday"><span class="cal-date">5</span><span class="cal-holiday-label">어린이날</span></div>
+        <div class="cal-cell"><span class="cal-date">6</span></div>
+        <div class="cal-cell"><span class="cal-date">7</span></div>
+        <div class="cal-cell"><span class="cal-date">8</span></div>
+        <div class="cal-cell"><span class="cal-date">9</span></div>
+        <div class="cal-cell"><span class="cal-date">10</span></div>
+        <!-- 11~17 -->
+        <div class="cal-cell"><span class="cal-date">11</span></div>
+        <div class="cal-cell"><span class="cal-date">12</span></div>
+        <div class="cal-cell"><span class="cal-date">13</span></div>
+        <div class="cal-cell"><span class="cal-date">14</span></div>
+        <div class="cal-cell has-event" onclick="scrollToCard(1,'seminar')">
+          <span class="cal-date">14</span>
+          <div class="cal-event seminar-event">동서남북book①<span class="cal-venue-dot seminar-dot"></span></div>
+        </div>
+        <div class="cal-cell has-event" onclick="scrollToCard(2,'seminar')">
+          <span class="cal-date">15</span>
+          <div class="cal-event seminar-event">영화 한편<span class="cal-venue-dot seminar-dot"></span></div>
+        </div>
+        <div class="cal-cell has-event" onclick="scrollToCard(3,'seminar')">
+          <span class="cal-date">16</span>
+          <div class="cal-event seminar-event">드로잉 슥슥<span class="cal-venue-dot seminar-dot"></span></div>
+        </div>
+        <!-- 17~23 -->
+        <div class="cal-cell has-event" onclick="scrollToCard(4,'seminar')">
+          <span class="cal-date">17</span>
+          <div class="cal-event seminar-event">오붓이 책꾸<span class="cal-venue-dot seminar-dot"></span></div>
+        </div>
+        <div class="cal-cell has-event" onclick="scrollToCard(1,'table')">
+          <span class="cal-date">18</span>
+          <div class="cal-event table-event">새미,콤마 책수다<span class="cal-venue-dot table-dot"></span></div>
+        </div>
+        <div class="cal-cell"><span class="cal-date">19</span></div>
+        <div class="cal-cell has-event multi-event" onclick="scrollToCard(5,'seminar')">
+          <span class="cal-date">20</span>
+          <div class="cal-event seminar-event">티블렌딩①②<span class="cal-venue-dot seminar-dot"></span></div>
+          <div class="cal-event table-event">익명의 독서중독자들<span class="cal-venue-dot table-dot"></span></div>
+        </div>
+        <div class="cal-cell has-event" onclick="scrollToCard(1,'seminar')">
+          <span class="cal-date">21</span>
+          <div class="cal-event seminar-event">동서남북book②<span class="cal-venue-dot seminar-dot"></span></div>
+        </div>
+        <div class="cal-cell has-event" onclick="scrollToCard(2,'table')">
+          <span class="cal-date">22</span>
+          <div class="cal-event table-event">심야만화방<span class="cal-venue-dot table-dot"></span></div>
+        </div>
+        <div class="cal-cell has-event" onclick="scrollToCard(7,'seminar')">
+          <span class="cal-date">23</span>
+          <div class="cal-event seminar-event">숨,쉼 심리학<span class="cal-venue-dot seminar-dot"></span></div>
+        </div>
+        <!-- 24~30 -->
+        <div class="cal-cell"><span class="cal-date">24</span></div>
+        <div class="cal-cell"><span class="cal-date">25</span></div>
+        <div class="cal-cell"><span class="cal-date">26</span></div>
+        <div class="cal-cell has-event multi-event" onclick="scrollToCard(8,'seminar')">
+          <span class="cal-date">27</span>
+          <div class="cal-event seminar-event">한 사람을 위한 편지<span class="cal-venue-dot seminar-dot"></span></div>
+          <div class="cal-event table-event">희희낙락<span class="cal-venue-dot table-dot"></span></div>
+        </div>
+        <div class="cal-cell"><span class="cal-date">28</span></div>
+        <div class="cal-cell has-event" onclick="scrollToCard(9,'seminar')">
+          <span class="cal-date">29</span>
+          <div class="cal-event seminar-event">영어 북클럽<span class="cal-venue-dot seminar-dot"></span></div>
+        </div>
+        <div class="cal-cell has-event" onclick="scrollToCard(10,'seminar')">
+          <span class="cal-date">30</span>
+          <div class="cal-event seminar-event">책갈피 산책<span class="cal-venue-dot seminar-dot"></span></div>
+        </div>
+        <!-- 31 + 빈칸 -->
+        <div class="cal-cell"><span class="cal-date">31</span></div>
+        <div class="cal-cell empty"></div><div class="cal-cell empty"></div>
+        <div class="cal-cell empty"></div><div class="cal-cell empty"></div>
+        <div class="cal-cell empty"></div><div class="cal-cell empty"></div>
+      </div>
+      <div class="cal-legend">
+        <span class="legend-item"><span class="legend-dot seminar-dot"></span>📌 세미나실</span>
+        <span class="legend-item"><span class="legend-dot table-dot"></span>☕ 매장테이블</span>
+      </div>
+    </div>
+  </section>
+
   <!-- FILTER BAR -->
   <nav id="filter-bar">
     <button class="filter-btn active" data-filter="all">전체</button>

@@ -183,3 +183,20 @@ async function loadCapacityV3() {
 
 loadCapacityV3();
 setInterval(loadCapacityV3, 3 * 60 * 1000);
+
+/* ===========================
+   CALENDAR → CARD SCROLL
+=========================== */
+function scrollToCard(index, venue) {
+  const filterBtn = document.querySelector(`.filter-btn[data-filter="${venue}"]`);
+  if (filterBtn) filterBtn.click();
+  const card = document.querySelector(`[data-venue="${venue}"][data-index="${index}"]`);
+  if (card) {
+    setTimeout(() => {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.style.outline = '2px solid #2a3d2a';
+      card.style.outlineOffset = '4px';
+      setTimeout(() => { card.style.outline = ''; card.style.outlineOffset = ''; }, 1800);
+    }, 120);
+  }
+}
