@@ -200,3 +200,96 @@ function scrollToCard(index, venue) {
     }, 120);
   }
 }
+
+/* ===========================
+   BOOKING MODAL
+=========================== */
+let selectedVenue = '세미나실';
+let selectedTime  = '오전 (10:00~13:00)';
+let selectedDate  = null;
+
+function openBooking(date) {
+  selectedDate = date;
+  document.getElementById('modal-date-num').textContent = date;
+  // 입력 초기화
+  ['book-purpose','book-people','book-name','book-phone','book-memo']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+  // 토글 초기화
+  document.querySelectorAll('.toggle-group .toggle-btn').forEach(btn => btn.classList.remove('active'));
+  const venueFirst = document.querySelector('[data-val="세미나실"]');
+  const timeFirst  = document.querySelector('[data-val="오전 (10:00~13:00)"]');
+  if (venueFirst) venueFirst.classList.add('active');
+  if (timeFirst)  timeFirst.classList.add('active');
+  selectedVenue = '세미나실';
+  selectedTime  = '오전 (10:00~13:00)';
+  document.getElementById('booking-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBookingModal(event, force) {
+  if (force || (event && event.target === document.getElementById('booking-modal'))) {
+    document.getElementById('booking-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
+
+function selectVenue(btn) {
+  document.querySelectorAll('.toggle-group').forEach((grp, i) => {
+    if (i === 0) grp.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  });
+  btn.classList.add('active');
+  selectedVenue = btn.dataset.val;
+}
+
+function selectTime(btn) {
+  document.querySelectorAll('.toggle-group').forEach((grp, i) => {
+    if (i === 1) grp.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+  });
+  btn.classList.add('active');
+  selectedTime = btn.dataset.val;
+}
+
+function submitBooking() {
+  const purpose = document.getElementById('book-purpose').value.trim();
+  const people  = document.getElementById('book-people').value.trim();
+  const name    = document.getElementById('book-name').value.trim();
+  const phone   = document.getElementById('book-phone').value.trim();
+  const memo    = document.getElementById('book-memo').value.trim();
+
+  if (!purpose || !people || !name || !phone) {
+    alert('사용 목적, 인원, 성함, 연락처는 필수 입력 항목입니다 😊');
+    return;
+  }
+
+  // 카카오톡 오픈채팅 or 인스타 DM 또는 구글 폼으로 연결
+  // 일단 구글 폼 파라미터 방식으로 링크 생성 (나중에 실제 폼 URL로 교체)
+  const msg = encodeURIComponent(
+    `[비북스 공간 대관 신청]\n` +
+    `📅 날짜: 5월 ${selectedDate}일\n` +
+    `🏠 공간: ${selectedVenue}\n` +
+    `⏰ 시간대: ${selectedTime}\n` +
+    `📌 목적: ${purpose}\n` +
+    `👥 인원: ${people}명\n` +
+    `👤 성함: ${name}\n` +
+    `📞 연락처: ${phone}\n` +
+    (memo ? `📝 요청사항: ${memo}` : '')
+  );
+
+  // 카카오 오픈채팅 or 비북스 공식 채널 연결 (추후 URL 교체)
+  // 현재는 인스타 DM으로 연결
+  window.open('https://www.instagram.com/bbooks.official/', '_blank', 'noopener');
+
+  closeBookingModal(null, true);
+  showToast();
+}
+
+function showToast() {
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+// ESC 키로 모달 닫기
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeBookingModal(null, true);
+});
