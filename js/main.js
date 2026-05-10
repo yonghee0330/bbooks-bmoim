@@ -277,7 +277,7 @@ function submitBooking() {
 
   // 카카오 오픈채팅 or 비북스 공식 채널 연결 (추후 URL 교체)
   // 현재는 인스타 DM으로 연결
-  window.open('https://www.instagram.com/bbooks.official/', '_blank', 'noopener');
+  window.open('https://forms.gle/CmF6aGUF1piRameXA', '_blank', 'noopener');
 
   closeBookingModal(null, true);
   showToast();

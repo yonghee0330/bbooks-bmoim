@@ -1008,3 +1008,11 @@ body {
 @media (max-width: 480px) {
   .refund-grid { grid-template-columns: 1fr; }
 }
+
+/* has-event 셀도 대관 신청 가능 */
+.cal-cell.has-event {
+  cursor: pointer;
+}
+.cal-cell.has-event:hover .cal-book-hint {
+  opacity: 1;
+}
