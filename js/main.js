@@ -261,23 +261,20 @@ function submitBooking() {
     return;
   }
 
-  // 카카오톡 오픈채팅 or 인스타 DM 또는 구글 폼으로 연결
-  // 일단 구글 폼 파라미터 방식으로 링크 생성 (나중에 실제 폼 URL로 교체)
-  const msg = encodeURIComponent(
-    `[비북스 공간 대관 신청]\n` +
-    `📅 날짜: 5월 ${selectedDate}일\n` +
-    `🏠 공간: ${selectedVenue}\n` +
-    `⏰ 시간대: ${selectedTime}\n` +
-    `📌 목적: ${purpose}\n` +
-    `👥 인원: ${people}명\n` +
-    `👤 성함: ${name}\n` +
-    `📞 연락처: ${phone}\n` +
-    (memo ? `📝 요청사항: ${memo}` : '')
-  );
+  // 구글 폼 pre-fill URL 생성
+  const BASE = 'https://docs.google.com/forms/d/e/1FAIpQLSdYHRxPmGLufs2MeRrQZRplQRJSC9LJDCoIZ8ykx_qDNkoEOg/viewform';
+  const params = new URLSearchParams({
+    'entry.308776795':  `5월 ${selectedDate}일`,   // 대관 날짜
+    'entry.1548099271': selectedVenue,               // 대관 장소
+    'entry.257892746':  selectedTime,                // 시간대
+    'entry.351736836':  purpose,                     // 사용 목적
+    'entry.1186703695': people,                      // 인원
+    'entry.311018962':  name,                        // 성함
+    'entry.280868670':  phone,                       // 연락처
+    'entry.400647263':  memo,                        // 요청사항
+  });
 
-  // 카카오 오픈채팅 or 비북스 공식 채널 연결 (추후 URL 교체)
-  // 현재는 인스타 DM으로 연결
-  window.open('https://forms.gle/CmF6aGUF1piRameXA', '_blank', 'noopener');
+  window.open(`${BASE}?${params.toString()}`, '_blank', 'noopener');
 
   closeBookingModal(null, true);
   showToast();
