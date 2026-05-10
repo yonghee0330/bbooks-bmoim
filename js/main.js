@@ -209,21 +209,9 @@ let selectedTime  = '오전 (10:00~13:00)';
 let selectedDate  = null;
 
 function openBooking(date) {
-  selectedDate = date;
-  document.getElementById('modal-date-num').textContent = date;
-  // 입력 초기화
-  ['book-purpose','book-people','book-name','book-phone','book-memo']
-    .forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
-  // 토글 초기화
-  document.querySelectorAll('.toggle-group .toggle-btn').forEach(btn => btn.classList.remove('active'));
-  const venueFirst = document.querySelector('[data-val="세미나실"]');
-  const timeFirst  = document.querySelector('[data-val="오전 (10:00~13:00)"]');
-  if (venueFirst) venueFirst.classList.add('active');
-  if (timeFirst)  timeFirst.classList.add('active');
-  selectedVenue = '세미나실';
-  selectedTime  = '오전 (10:00~13:00)';
-  document.getElementById('booking-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  const FORM = 'https://docs.google.com/forms/d/e/1FAIpQLSdYHRxPmGLufs2MeRrQZRplQRJSC9LJDCoIZ8ykx_qDNkoEOg/viewform';
+  const params = new URLSearchParams({ 'entry.308776795': `5월 ${date}일` });
+  window.open(`${FORM}?${params.toString()}`, '_blank', 'noopener');
 }
 
 function closeBookingModal(event, force) {
