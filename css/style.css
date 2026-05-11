@@ -1016,3 +1016,39 @@ body {
 .cal-cell.has-event:hover .cal-book-hint {
   opacity: 1;
 }
+
+/* ===========================
+   CALENDAR TABS
+=========================== */
+.cal-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+.cal-tab {
+  padding: 7px 20px;
+  border-radius: 20px;
+  border: 1px solid #c8dfc4;
+  background: #fff;
+  color: #5a7a5a;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+  transition: all .15s;
+}
+.cal-tab:hover {
+  background: #eaf5ea;
+  border-color: #4a9e6b;
+}
+.cal-tab.active {
+  background: #2a3d2a;
+  border-color: #2a3d2a;
+  color: #fff;
+}
+/* 탭 필터 시 숨김 */
+.cal-cell.hide-cell {
+  visibility: hidden;
+  pointer-events: none;
+}

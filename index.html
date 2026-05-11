@@ -29,6 +29,11 @@
       <div class="cal-header">
         <h2 class="cal-title">5월 모임 & 대관 일정</h2>
         <p class="cal-subtitle">모임 날짜 클릭 → 신청 / 빈 날짜 클릭 → 공간 대관 신청</p>
+        <div class="cal-tabs">
+          <button class="cal-tab active" data-tab="all" onclick="switchCalTab('all',this)">전체</button>
+          <button class="cal-tab" data-tab="bmoim" onclick="switchCalTab('bmoim',this)">🌿 비모임</button>
+          <button class="cal-tab" data-tab="booking" onclick="switchCalTab('booking',this)">🏠 대관</button>
+        </div>
       </div>
       <div class="cal-grid">
         <div class="cal-day-header">일</div>

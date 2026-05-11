@@ -278,3 +278,32 @@ function showToast() {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeBookingModal(null, true);
 });
+
+/* ===========================
+   CALENDAR TAB FILTER
+=========================== */
+function switchCalTab(tab, btn) {
+  // 탭 버튼 활성화
+  document.querySelectorAll('.cal-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const cells = document.querySelectorAll('.cal-grid .cal-cell:not(.empty)');
+
+  cells.forEach(cell => {
+    cell.classList.remove('hide-cell');
+
+    const hasBmoim  = cell.classList.contains('has-event');  // 비모임(점주 모임)
+    const hasBooking = cell.querySelector('.booking-badge');  // 대관 신청
+
+    if (tab === 'all') {
+      // 전체 — 모두 보이기
+      cell.classList.remove('hide-cell');
+    } else if (tab === 'bmoim') {
+      // 비모임만 — has-event 있는 셀만
+      if (!hasBmoim) cell.classList.add('hide-cell');
+    } else if (tab === 'booking') {
+      // 대관만 — booking-badge 있는 셀만
+      if (!hasBooking) cell.classList.add('hide-cell');
+    }
+  });
+}
