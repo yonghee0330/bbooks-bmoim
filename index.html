@@ -626,5 +626,118 @@
   <!-- 완료 토스트 -->
   <div id="toast" class="toast">✅ 신청이 접수되었습니다! 곧 연락드릴게요 😊</div>
   <script src="js/main.js"></script>
+
+  <!-- 대관 신청 현황 캘린더 반영 -->
+  <script>
+  const BOOKING_API = 'https://script.google.com/macros/s/AKfycbz_MdyXsui_8UYFf_PnOcI0W0B_AOb7bwxZ13MgqU3KYfERgRVkUca9N5lKTE8uUN_u/exec';
+
+  // 날짜 문자열에서 숫자 추출 (예: "5월 11일" → 11)
+  function parseDate(str) {
+    const m = String(str).match(/(\d+)일/);
+    return m ? parseInt(m[1]) : null;
+  }
+
+  // 시간대 문자열 → 짧은 표현
+  function parseTime(str) {
+    str = String(str);
+    if (str.includes('8시') || str.includes('오전')) return '오전';
+    if (str.includes('오후') || str.includes('13') || str.includes('14') || str.includes('15') || str.includes('16')) return '오후';
+    if (str.includes('저녁') || str.includes('17') || str.includes('18') || str.includes('19') || str.includes('20') || str.includes('21')) return '저녁';
+    return str.replace(/^\d+\.\s*/, '').split(':')[0].trim().substring(0,6);
+  }
+
+  // 장소 → 짧게
+  function parseVenue(str) {
+    str = String(str);
+    if (str.includes('세미나')) return '세미나실';
+    if (str.includes('테이블') || str.includes('매장')) return '매장테이블';
+    return str;
+  }
+
+  // 대관 모달 표시
+  function showBookingDetail(bookings) {
+    const overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);';
+    
+    const box = document.createElement('div');
+    box.style.cssText = 'background:#fff;border-radius:16px;max-width:380px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.25);animation:modalIn .2s ease;';
+    
+    const header = `<div style="background:#2a3d2a;color:#fff;padding:20px 24px;">
+      <div style="font-size:11px;background:rgba(255,255,255,0.15);display:inline-block;padding:2px 10px;border-radius:20px;margin-bottom:8px;">🏠 대관 신청 현황</div>
+      <div style="font-family:serif;font-size:18px;font-weight:700;">총 ${bookings.length}건</div>
+    </div>`;
+    
+    const items = bookings.map(b => `
+      <div style="padding:14px 20px;border-bottom:1px solid #f0ebe3;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+          <span style="font-size:13px;font-weight:700;color:#2a3d2a;">${b.purpose}</span>
+          <span style="font-size:11px;background:#e8f0e8;color:#2a3d2a;padding:2px 8px;border-radius:10px;">${b.venue}</span>
+        </div>
+        <div style="font-size:12px;color:#7a9a7a;">⏰ ${b.time} &nbsp;|&nbsp; 👥 ${b.people} &nbsp;|&nbsp; 👤 ${b.name}</div>
+      </div>`).join('');
+    
+    box.innerHTML = header + `<div>${items}</div>
+      <div style="padding:14px 20px;text-align:right;">
+        <button onclick="this.closest('[style*=fixed]').remove()" style="background:#2a3d2a;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:sans-serif;">닫기</button>
+      </div>`;
+    
+    overlay.appendChild(box);
+    overlay.addEventListener('click', e => { if(e.target===overlay) overlay.remove(); });
+    document.body.appendChild(overlay);
+  }
+
+  // 캘린더에 대관 현황 배지 추가
+  async function loadBookings() {
+    try {
+      const res = await fetch(BOOKING_API);
+      const json = await res.json();
+      if (!json.data) return;
+
+      // 날짜별로 그룹핑
+      const byDate = {};
+      json.data.forEach(row => {
+        const date = parseDate(row['1. 대관 날짜를 적어주세요. (예: 5월 10일) ']);
+        if (!date) return;
+        if (!byDate[date]) byDate[date] = [];
+        byDate[date].push({
+          purpose: row['4. 대관 사용 목적을 간략히 적어주세요. (예: 독서모임 / 북토크 / 음악 공연  등등 ) '] || '',
+          time:    parseTime(row['3. 대관 시간대를 골라주세요. '] || ''),
+          venue:   parseVenue(row['2. 대관 장소를 골라주세요. '] || ''),
+          people:  row['5. 이용 인원을 적어주세요. '] || '',
+          name:    row['6. 신청자 분 성함을 적어주세요. '] || '',
+        });
+      });
+
+      // 캘린더 셀에 배지 추가
+      Object.entries(byDate).forEach(([date, bookings]) => {
+        // 해당 날짜 셀 찾기
+        const cells = document.querySelectorAll('.cal-grid .cal-cell');
+        cells.forEach(cell => {
+          const dateEl = cell.querySelector('.cal-date');
+          if (dateEl && parseInt(dateEl.textContent) === parseInt(date) && !cell.classList.contains('empty')) {
+            // 이미 배지 없으면 추가
+            if (!cell.querySelector('.booking-badge')) {
+              const badge = document.createElement('div');
+              badge.className = 'booking-badge';
+              badge.style.cssText = 'font-size:8.5px;font-weight:700;background:#fdf3e4;color:#c87820;border:1px solid #f6d860;border-radius:4px;padding:2px 4px;margin-top:2px;cursor:pointer;display:flex;align-items:center;gap:2px;';
+              badge.innerHTML = '📋 대관 ' + bookings.length + '건';
+              badge.onclick = (e) => {
+                e.stopPropagation();
+                showBookingDetail(bookings);
+              };
+              cell.appendChild(badge);
+            }
+          }
+        });
+      });
+    } catch(e) {
+      console.log('대관 데이터 로딩 실패:', e);
+    }
+  }
+
+  // 페이지 로드 시 실행
+  window.addEventListener('load', loadBookings);
+  </script>
+
 </body>
 </html>
