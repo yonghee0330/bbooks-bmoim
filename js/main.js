@@ -310,15 +310,68 @@ function switchCalTab(tab, btn) {
 
 /* ===========================
    SPACE GALLERY SLIDER
+   전략: 탭 필터 시 DOM에서 clone하여 보이는 슬라이드만 트랙에 표시
 =========================== */
 let slideIndex = 0;
-let visibleSlides = [];
 let autoTimer = null;
+let currentType = 'all';
+
+// 원본 슬라이드 데이터 저장용
+let allSlideData = [];
 
 function initSlider() {
-  visibleSlides = Array.from(document.querySelectorAll('.slide'));
-  buildDots();
-  goToSlide(0);
+  const allSlides = Array.from(document.querySelectorAll('.slide'));
+  // 원본 저장
+  allSlideData = allSlides.map(s => ({
+    el: s.cloneNode(true),
+    space: s.dataset.space
+  }));
+  renderSlider('all');
+  startAuto();
+}
+
+function renderSlider(type) {
+  currentType = type;
+  const track = document.getElementById('sliderTrack');
+  if (!track) return;
+
+  // 필터링
+  const filtered = type === 'all'
+    ? allSlideData
+    : allSlideData.filter(d => d.space === type);
+
+  // 트랙 비우고 다시 채우기
+  track.innerHTML = '';
+  filtered.forEach(d => track.appendChild(d.el.cloneNode(true)));
+
+  slideIndex = 0;
+  buildDots(filtered.length);
+  track.style.transition = 'none';
+  track.style.transform = 'translateX(0)';
+}
+
+function buildDots(count) {
+  const dots = document.getElementById('sliderDots');
+  if (!dots) return;
+  dots.innerHTML = Array.from({length: count}, (_, i) =>
+    `<button class="dot ${i===0?'active':''}" onclick="goToSlide(${i})"></button>`
+  ).join('');
+}
+
+function goToSlide(idx) {
+  const track = document.getElementById('sliderTrack');
+  const slides = track ? track.querySelectorAll('.slide') : [];
+  if (!slides.length) return;
+  slideIndex = (idx + slides.length) % slides.length;
+  track.style.transition = 'transform 0.4s cubic-bezier(.4,0,.2,1)';
+  track.style.transform = `translateX(-${slideIndex * 100}%)`;
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===slideIndex));
+}
+
+function moveSlide(dir) {
+  const track = document.getElementById('sliderTrack');
+  const slides = track ? track.querySelectorAll('.slide') : [];
+  goToSlide(slideIndex + dir);
   startAuto();
 }
 
@@ -327,52 +380,10 @@ function startAuto() {
   autoTimer = setInterval(() => moveSlide(1), 4000);
 }
 
-function buildDots() {
-  const dots = document.getElementById('sliderDots');
-  if (!dots) return;
-  dots.innerHTML = visibleSlides.map((_, i) =>
-    `<button class="dot ${i===0?'active':''}" onclick="goToSlide(${i})"></button>`
-  ).join('');
-}
-
-function goToSlide(idx) {
-  if (visibleSlides.length === 0) return;
-  slideIndex = (idx + visibleSlides.length) % visibleSlides.length;
-  // 현재 보여야 할 슬라이드 기준으로 transform 계산
-  // 전체 트랙에서 visibleSlides[slideIndex]의 실제 위치 찾기
-  const allSlides = Array.from(document.querySelectorAll('.slide'));
-  const targetSlide = visibleSlides[slideIndex];
-  const realIdx = allSlides.indexOf(targetSlide);
-  const track = document.getElementById('sliderTrack');
-  if (track) track.style.transform = `translateX(-${realIdx * 100}%)`;
-  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===slideIndex));
-}
-
-function moveSlide(dir) {
-  goToSlide(slideIndex + dir);
-  startAuto();
-}
-
 function filterSpace(type, btn) {
   document.querySelectorAll('.space-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-
-  const allSlides = Array.from(document.querySelectorAll('.slide'));
-  allSlides.forEach(s => {
-    const match = type === 'all' || s.dataset.space === type;
-    // display:none 대신 width:0 + overflow:hidden 방식으로 숨김
-    if (match) {
-      s.classList.remove('hidden-slide');
-      s.style.minWidth = '100%';
-    } else {
-      s.classList.add('hidden-slide');
-      s.style.minWidth = '0';
-    }
-  });
-  visibleSlides = allSlides.filter(s => !s.classList.contains('hidden-slide'));
-  slideIndex = 0;
-  buildDots();
-  goToSlide(0);
+  renderSlider(type);
   startAuto();
 }
 
