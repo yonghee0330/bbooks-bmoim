@@ -23,7 +23,62 @@
   </header>
 
 
-  <!-- CALENDAR SECTION -->
+  <!-- SPACE GALLERY SECTION -->
+  <section id="space-gallery">
+    <div class="gallery-inner">
+      <div class="gallery-header">
+        <h2 class="gallery-title">비북스 공간 소개</h2>
+        <p class="gallery-subtitle">책이 있는 공간에서, 당신의 모임을 펼쳐보세요</p>
+        <div class="space-tabs">
+          <button class="space-tab active" onclick="filterSpace('all',this)">전체</button>
+          <button class="space-tab" onclick="filterSpace('whole',this)">🏠 매장 전체</button>
+          <button class="space-tab" onclick="filterSpace('table',this)">☕ 매장 모임 테이블</button>
+          <button class="space-tab" onclick="filterSpace('seminar',this)">📚 세미나실</button>
+        </div>
+      </div>
+      <div class="slider-wrap">
+        <div class="slider-track" id="sliderTrack">
+          <div class="slide" data-space="whole">
+            <img src="images/space_01.jpg" alt="매장 전체 전경"/>
+            <div class="slide-caption">
+              <span class="slide-tag whole-tag">🏠 매장 전체</span>
+              <div class="slide-title">비북스 매장 전체</div>
+              <div class="slide-desc">책장이 가득한 따뜻한 공간. 독립서점의 아늑함 속에서 특별한 자리를 만들어보세요.</div>
+            </div>
+          </div>
+          <div class="slide" data-space="whole">
+            <img src="images/space_02.jpg" alt="매장 전체 전경 2"/>
+            <div class="slide-caption">
+              <span class="slide-tag whole-tag">🏠 매장 전체</span>
+              <div class="slide-title">비북스 매장 전체 ②</div>
+              <div class="slide-desc">소파와 의자가 어우러진 자유로운 배치. 북토크, 전시, 소규모 행사에 어울립니다.</div>
+            </div>
+          </div>
+          <div class="slide" data-space="whole">
+            <img src="images/space_03.jpg" alt="매장 전체 전경 3"/>
+            <div class="slide-caption">
+              <span class="slide-tag whole-tag">🏠 매장 전체</span>
+              <div class="slide-title">비북스 매장 전체 ③</div>
+              <div class="slide-desc">책으로 둘러싸인 고요한 공간. 낮부터 밤까지, 당신의 모임에 맞게 변합니다.</div>
+            </div>
+          </div>
+          <div class="slide" data-space="table">
+            <img src="images/space_04.jpg" alt="매장 모임 테이블"/>
+            <div class="slide-caption">
+              <span class="slide-tag table-tag">☕ 매장 모임 테이블</span>
+              <div class="slide-title">매장 모임 테이블</div>
+              <div class="slide-desc">책장 사이에 자리한 원목 테이블. 5~6인 소규모 모임, 독서 모임, 스터디에 딱입니다.</div>
+            </div>
+          </div>
+        </div>
+        <button class="slider-btn prev" onclick="moveSlide(-1)">&#8249;</button>
+        <button class="slider-btn next" onclick="moveSlide(1)">&#8250;</button>
+        <div class="slider-dots" id="sliderDots"></div>
+      </div>
+    </div>
+  </section>
+
+<!-- CALENDAR SECTION -->
   <section id="calendar-section">
     <div class="cal-inner">
       <div class="cal-header">

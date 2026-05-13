@@ -307,3 +307,54 @@ function switchCalTab(tab, btn) {
     }
   });
 }
+
+/* ===========================
+   SPACE GALLERY SLIDER
+=========================== */
+let slideIndex = 0;
+let visibleSlides = [];
+
+function initSlider() {
+  visibleSlides = Array.from(document.querySelectorAll('.slide'));
+  buildDots();
+  goToSlide(0);
+
+  // 자동 슬라이드 (4초)
+  setInterval(() => moveSlide(1), 4000);
+}
+
+function buildDots() {
+  const dots = document.getElementById('sliderDots');
+  if (!dots) return;
+  dots.innerHTML = visibleSlides.map((_, i) =>
+    `<button class="dot ${i===0?'active':''}" onclick="goToSlide(${i})"></button>`
+  ).join('');
+}
+
+function goToSlide(idx) {
+  const track = document.getElementById('sliderTrack');
+  if (!track) return;
+  slideIndex = (idx + visibleSlides.length) % visibleSlides.length;
+  track.style.transform = `translateX(-${slideIndex * 100}%)`;
+  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===slideIndex));
+}
+
+function moveSlide(dir) {
+  goToSlide(slideIndex + dir);
+}
+
+function filterSpace(type, btn) {
+  document.querySelectorAll('.space-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const allSlides = Array.from(document.querySelectorAll('.slide'));
+  allSlides.forEach(s => {
+    const match = type === 'all' || s.dataset.space === type;
+    s.style.display = match ? '' : 'none';
+  });
+  visibleSlides = allSlides.filter(s => s.style.display !== 'none');
+  buildDots();
+  goToSlide(0);
+}
+
+window.addEventListener('load', initSlider);
