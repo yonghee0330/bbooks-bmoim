@@ -310,51 +310,36 @@ function switchCalTab(tab, btn) {
 
 /* ===========================
    SPACE GALLERY SLIDER
-   전략: 탭 필터 시 DOM에서 clone하여 보이는 슬라이드만 트랙에 표시
 =========================== */
 let slideIndex = 0;
 let autoTimer = null;
-let currentType = 'all';
-
-// 원본 슬라이드 데이터 저장용
 let allSlideData = [];
+let currentFilter = 'all';
 
 function initSlider() {
-  const allSlides = Array.from(document.querySelectorAll('.slide'));
-  // 원본 저장
-  allSlideData = allSlides.map(s => ({
-    el: s.cloneNode(true),
-    space: s.dataset.space
-  }));
-  renderSlider('all');
+  const slides = Array.from(document.querySelectorAll('#sliderTrack .slide'));
+  allSlideData = slides.map(s => ({ html: s.outerHTML, space: s.dataset.space }));
+  renderSlides('all');
   startAuto();
 }
 
-function renderSlider(type) {
-  currentType = type;
+function renderSlides(type) {
+  currentFilter = type;
   const track = document.getElementById('sliderTrack');
   if (!track) return;
-
-  // 필터링
-  const filtered = type === 'all'
-    ? allSlideData
-    : allSlideData.filter(d => d.space === type);
-
-  // 트랙 비우고 다시 채우기
-  track.innerHTML = '';
-  filtered.forEach(d => track.appendChild(d.el.cloneNode(true)));
-
+  const filtered = type === 'all' ? allSlideData : allSlideData.filter(d => d.space === type);
+  track.innerHTML = filtered.map(d => d.html).join('');
   slideIndex = 0;
-  buildDots(filtered.length);
   track.style.transition = 'none';
   track.style.transform = 'translateX(0)';
+  buildDots(filtered.length);
 }
 
 function buildDots(count) {
-  const dots = document.getElementById('sliderDots');
-  if (!dots) return;
-  dots.innerHTML = Array.from({length: count}, (_, i) =>
-    `<button class="dot ${i===0?'active':''}" onclick="goToSlide(${i})"></button>`
+  const wrap = document.getElementById('sliderDots');
+  if (!wrap) return;
+  wrap.innerHTML = Array.from({length: count}, (_, i) =>
+    `<button class="dot${i===0?' active':''}" onclick="goToSlide(${i})"></button>`
   ).join('');
 }
 
@@ -362,15 +347,13 @@ function goToSlide(idx) {
   const track = document.getElementById('sliderTrack');
   const slides = track ? track.querySelectorAll('.slide') : [];
   if (!slides.length) return;
-  slideIndex = (idx + slides.length) % slides.length;
+  slideIndex = ((idx % slides.length) + slides.length) % slides.length;
   track.style.transition = 'transform 0.4s cubic-bezier(.4,0,.2,1)';
   track.style.transform = `translateX(-${slideIndex * 100}%)`;
-  document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===slideIndex));
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === slideIndex));
 }
 
 function moveSlide(dir) {
-  const track = document.getElementById('sliderTrack');
-  const slides = track ? track.querySelectorAll('.slide') : [];
   goToSlide(slideIndex + dir);
   startAuto();
 }
@@ -383,7 +366,7 @@ function startAuto() {
 function filterSpace(type, btn) {
   document.querySelectorAll('.space-tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  renderSlider(type);
+  renderSlides(type);
   startAuto();
 }
 
