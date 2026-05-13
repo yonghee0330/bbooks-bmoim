@@ -313,14 +313,18 @@ function switchCalTab(tab, btn) {
 =========================== */
 let slideIndex = 0;
 let visibleSlides = [];
+let autoTimer = null;
 
 function initSlider() {
   visibleSlides = Array.from(document.querySelectorAll('.slide'));
   buildDots();
   goToSlide(0);
+  startAuto();
+}
 
-  // 자동 슬라이드 (4초)
-  setInterval(() => moveSlide(1), 4000);
+function startAuto() {
+  if (autoTimer) clearInterval(autoTimer);
+  autoTimer = setInterval(() => moveSlide(1), 4000);
 }
 
 function buildDots() {
@@ -332,15 +336,21 @@ function buildDots() {
 }
 
 function goToSlide(idx) {
-  const track = document.getElementById('sliderTrack');
-  if (!track) return;
+  if (visibleSlides.length === 0) return;
   slideIndex = (idx + visibleSlides.length) % visibleSlides.length;
-  track.style.transform = `translateX(-${slideIndex * 100}%)`;
+  // 현재 보여야 할 슬라이드 기준으로 transform 계산
+  // 전체 트랙에서 visibleSlides[slideIndex]의 실제 위치 찾기
+  const allSlides = Array.from(document.querySelectorAll('.slide'));
+  const targetSlide = visibleSlides[slideIndex];
+  const realIdx = allSlides.indexOf(targetSlide);
+  const track = document.getElementById('sliderTrack');
+  if (track) track.style.transform = `translateX(-${realIdx * 100}%)`;
   document.querySelectorAll('.dot').forEach((d,i) => d.classList.toggle('active', i===slideIndex));
 }
 
 function moveSlide(dir) {
   goToSlide(slideIndex + dir);
+  startAuto();
 }
 
 function filterSpace(type, btn) {
@@ -350,11 +360,20 @@ function filterSpace(type, btn) {
   const allSlides = Array.from(document.querySelectorAll('.slide'));
   allSlides.forEach(s => {
     const match = type === 'all' || s.dataset.space === type;
-    s.style.display = match ? '' : 'none';
+    // display:none 대신 width:0 + overflow:hidden 방식으로 숨김
+    if (match) {
+      s.classList.remove('hidden-slide');
+      s.style.minWidth = '100%';
+    } else {
+      s.classList.add('hidden-slide');
+      s.style.minWidth = '0';
+    }
   });
-  visibleSlides = allSlides.filter(s => s.style.display !== 'none');
+  visibleSlides = allSlides.filter(s => !s.classList.contains('hidden-slide'));
+  slideIndex = 0;
   buildDots();
   goToSlide(0);
+  startAuto();
 }
 
 window.addEventListener('load', initSlider);
