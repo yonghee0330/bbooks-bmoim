@@ -1109,11 +1109,18 @@ body {
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(42,61,42,0.15);
   background: #fff;
+  width: 100%;
+}
+.slider-viewport {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 16px 16px 0 0;
 }
 .slider-track {
   display: flex;
   transition: transform 0.4s cubic-bezier(.4,0,.2,1);
   will-change: transform;
+  width: 100%;
 }
 .slide {
   min-width: 100%;
@@ -1121,9 +1128,7 @@ body {
   position: relative;
   flex-shrink: 0;
   flex-grow: 0;
-}
-.slide.hidden-slide {
-  display: none !important;
+  box-sizing: border-box;
 }
 .slide img {
   width: 100%;
