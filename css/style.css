@@ -1111,23 +1111,18 @@ body {
   background: #fff;
   width: 100%;
 }
-.slider-viewport {
-  width: 100%;
-  overflow: hidden;
-  border-radius: 16px 16px 0 0;
-}
 .slider-track {
   display: flex;
+  flex-wrap: nowrap;
   transition: transform 0.4s cubic-bezier(.4,0,.2,1);
   will-change: transform;
-  width: 100%;
 }
 .slide {
   min-width: 100%;
+  max-width: 100%;
   width: 100%;
+  flex: 0 0 100%;
   position: relative;
-  flex-shrink: 0;
-  flex-grow: 0;
   box-sizing: border-box;
 }
 .slide img {
@@ -1166,7 +1161,7 @@ body {
 /* 슬라이더 버튼 */
 .slider-btn {
   position: absolute;
-  top: calc(380px / 2 - 20px);
+  top: 170px;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -1188,23 +1183,22 @@ body {
 
 /* 도트 */
 .slider-dots {
-  position: absolute;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
+  justify-content: center;
   gap: 6px;
+  padding: 10px 0 6px;
+  background: #fff;
 }
 .dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.5);
+  background: #c8dfc4;
   cursor: pointer;
   transition: all .2s;
   border: none;
 }
-.dot.active { background: #fff; width: 20px; border-radius: 4px; }
+.dot.active { background: #2a3d2a; width: 20px; border-radius: 4px; }
 
 @media (max-width: 600px) {
   .slide img { height: 220px; }
