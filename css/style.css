@@ -1113,11 +1113,17 @@ body {
 .slider-track {
   display: flex;
   transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+  will-change: transform;
 }
 .slide {
   min-width: 100%;
+  width: 100%;
   position: relative;
   flex-shrink: 0;
+  flex-grow: 0;
+}
+.slide.hidden-slide {
+  display: none !important;
 }
 .slide img {
   width: 100%;
