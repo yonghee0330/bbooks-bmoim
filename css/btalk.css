@@ -1,0 +1,807 @@
+/* b.talks — 작가와의 만남 (btalk.html) */
+
+.page-btalk {
+  /* 포스터 톤: 잔디 딥 그린 + 크림 타이포 + 포인트 레드 */
+  --bt-forest: #2d3b2d;
+  --bt-forest-deep: #1f2920;
+  --bt-forest-soft: #3d5140;
+  --bt-cream-fg: #ece8dc;
+  --bt-cream-pale: #e5e1c1;
+  --bt-red: #b52f28;
+  --bt-red-deep: #94261f;
+  --bt-paper-warm: #f7f4ec;
+  --bt-paper: #ebe6dc;
+  --bt-ink: #1e241e;
+  --bt-muted: #5a6356;
+  --bt-card-border: #d5d0c4;
+  --bt-radius: 14px;
+  --bt-shadow: 0 10px 36px rgba(25, 35, 25, 0.1);
+  --bt-navy: var(--bt-forest);
+  --bt-navy-soft: var(--bt-forest-soft);
+  --bt-accent: var(--bt-red);
+  --bt-accent-soft: var(--bt-cream-pale);
+  --bt-cream: var(--bt-paper-warm);
+  font-family: 'Noto Sans KR', sans-serif;
+  background: linear-gradient(180deg, var(--bt-paper-warm) 0%, var(--bt-paper) 50%, #e3ddd2 100%);
+  color: var(--bt-ink);
+  min-height: 100vh;
+}
+
+/* 상단 네비 */
+.btalk-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(247, 244, 236, 0.94);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(45, 59, 45, 0.1);
+  padding: 12px 20px;
+}
+.btalk-nav-inner {
+  max-width: 920px;
+  margin: 0 auto;
+}
+.btalk-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--bt-navy);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+.btalk-back:hover {
+  color: var(--bt-navy-soft);
+  transform: translateX(-2px);
+}
+
+/* 히어로 — 포스터와 같은 딥 그린 + 크림 글자 */
+.btalk-hero {
+  background: linear-gradient(165deg, var(--bt-forest-deep) 0%, var(--bt-forest) 42%, #354535 100%);
+  color: var(--bt-cream-fg);
+  text-align: center;
+  padding: 44px 22px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.btalk-hero::before {
+  content: '';
+  position: absolute;
+  top: -35%;
+  right: -25%;
+  width: 75%;
+  max-width: 440px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(181, 47, 40, 0.14) 0%, transparent 68%);
+  pointer-events: none;
+}
+.btalk-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -35%;
+  left: -20%;
+  width: 55%;
+  max-width: 300px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+.btalk-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+}
+.btalk-badge {
+  display: inline-block;
+  font-family: 'Noto Serif KR', serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--bt-cream-pale);
+  border: 1px solid rgba(229, 225, 193, 0.35);
+  border-radius: 20px;
+  padding: 5px 14px;
+  margin-bottom: 20px;
+}
+.btalk-title-lines {
+  margin: 0 0 18px;
+  padding: 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 6.2vw, 44px);
+  line-height: 1.18;
+  letter-spacing: -0.03em;
+  color: var(--bt-cream-pale);
+}
+.btalk-title-line {
+  display: block;
+}
+.btalk-hero-books {
+  font-size: 15px;
+  font-weight: 400;
+  color: rgba(236, 232, 220, 0.92);
+  line-height: 1.55;
+  margin-bottom: 14px;
+}
+.btalk-hero-books strong {
+  font-weight: 700;
+  color: #fff;
+}
+.btalk-brand {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 13px;
+  color: rgba(229, 225, 193, 0.72);
+  letter-spacing: 0.1em;
+  margin-bottom: 22px;
+}
+.btalk-hero-divider {
+  width: 48px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--bt-red), transparent);
+  margin: 0 auto 22px;
+  border-radius: 2px;
+  opacity: 0.95;
+}
+.btalk-hero-signing {
+  margin: 0 auto 22px;
+  max-width: 440px;
+  padding: 14px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--bt-cream-fg);
+  text-align: center;
+  background: rgba(181, 47, 40, 0.28);
+  border: 1px solid rgba(255, 220, 210, 0.35);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+.btalk-hero-signing strong {
+  color: #fff;
+  font-weight: 700;
+}
+.btalk-hero-signing-icon {
+  margin-right: 8px;
+}
+.btalk-meta-grid {
+  display: grid;
+  gap: 12px;
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto;
+}
+.btalk-meta-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(236, 232, 220, 0.95);
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.btalk-meta-note {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.88;
+  font-weight: 400;
+}
+.btalk-meta-icon {
+  flex-shrink: 0;
+  width: 22px;
+  text-align: center;
+  opacity: 0.9;
+}
+.btalk-meta-label {
+  font-weight: 700;
+  color: var(--bt-cream-pale);
+  min-width: 52px;
+}
+
+/* 포스터 2장 */
+.btalk-poster-section {
+  padding: 36px 20px 44px;
+  background: linear-gradient(180deg, #e8e4da 0%, var(--bt-paper-warm) 100%);
+  border-bottom: 1px solid rgba(45, 59, 45, 0.08);
+}
+.btalk-poster-inner {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.btalk-poster-heading {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--bt-forest-deep);
+  text-align: center;
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.btalk-poster-lead {
+  text-align: center;
+  font-size: 14px;
+  color: var(--bt-muted);
+  margin-bottom: 24px;
+  line-height: 1.55;
+}
+.btalk-poster-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 720px) {
+  .btalk-poster-grid {
+    grid-template-columns: 1fr;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
+.btalk-poster-grid.is-random-one {
+  grid-template-columns: 1fr;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.btalk-poster-card {
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #1a221a;
+  box-shadow: 0 12px 40px rgba(20, 28, 20, 0.18), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btalk-poster-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 48px rgba(20, 28, 20, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+.btalk-poster-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 본문 래퍼 */
+.btalk-main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 40px 20px 72px;
+}
+
+.btalk-section {
+  margin-bottom: 48px;
+}
+.btalk-section-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--bt-forest-deep);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.btalk-section-lead {
+  font-size: 14px;
+  color: var(--bt-muted);
+  margin-bottom: 22px;
+  line-height: 1.6;
+}
+
+/* 작가 소개 카드 */
+.btalk-author-card {
+  background: #fff;
+  border-radius: var(--bt-radius);
+  border: 1px solid var(--bt-card-border);
+  box-shadow: var(--bt-shadow);
+  padding: 24px 22px;
+  display: grid;
+  gap: 14px;
+}
+.btalk-author-name {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--bt-navy);
+}
+.btalk-author-role {
+  font-size: 14px;
+  color: var(--bt-muted);
+}
+.btalk-author-books {
+  font-size: 14px;
+  color: var(--bt-ink);
+  line-height: 1.65;
+}
+.btalk-author-books em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--bt-navy);
+}
+
+/* 책 카드 그리드 */
+.btalk-books {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+@media (max-width: 640px) {
+  .btalk-books {
+    grid-template-columns: 1fr;
+  }
+}
+
+.btalk-book-wrap {
+  position: relative;
+}
+.btalk-book-card {
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  height: 100%;
+  text-align: left;
+  font: inherit;
+  padding: 0;
+  background: #fff;
+  border-radius: var(--bt-radius);
+  border: 2px solid var(--bt-card-border);
+  box-shadow: 0 4px 16px rgba(28, 38, 28, 0.05);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.btalk-book-card:hover {
+  border-color: rgba(28, 38, 28, 0.22);
+  box-shadow: 0 8px 28px rgba(28, 38, 28, 0.1);
+}
+.btalk-book-wrap button:focus-visible {
+  outline: 2px solid var(--bt-accent);
+  outline-offset: 3px;
+}
+.btalk-book-wrap.is-selected .btalk-book-card {
+  border-color: var(--bt-navy);
+  box-shadow: 0 0 0 1px var(--bt-navy), 0 12px 36px rgba(28, 38, 28, 0.14);
+  transform: translateY(-2px);
+}
+.btalk-book-cover {
+  aspect-ratio: 2 / 3;
+  max-height: 280px;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+  background: #e8e4dc;
+}
+.btalk-book-body {
+  padding: 16px 16px 18px;
+}
+.btalk-book-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--bt-navy);
+  margin-bottom: 6px;
+  line-height: 1.35;
+}
+.btalk-book-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--bt-red-deep);
+  margin-bottom: 10px;
+}
+.btalk-book-desc {
+  font-size: 13px;
+  color: var(--bt-muted);
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+/* 도서 선택 — 라디오 영역 */
+.btalk-form-block {
+  background: #fff;
+  border-radius: var(--bt-radius);
+  border: 1px solid var(--bt-card-border);
+  box-shadow: var(--bt-shadow);
+  padding: 22px 20px 24px;
+  margin-bottom: 20px;
+}
+.btalk-form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--bt-navy);
+  margin-bottom: 10px;
+}
+.btalk-form-label .req {
+  color: #b45309;
+  font-weight: 600;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.btalk-field {
+  margin-bottom: 18px;
+}
+.btalk-field:last-child {
+  margin-bottom: 0;
+}
+.btalk-input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 15px;
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #d4cec2;
+  border-radius: 10px;
+  background: #fdfcfa;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.btalk-input:focus {
+  outline: none;
+  border-color: var(--bt-navy);
+  box-shadow: 0 0 0 3px rgba(28, 38, 28, 0.08);
+}
+
+.btalk-check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  padding: 12px 14px;
+  background: #f8f6f0;
+  border-radius: 10px;
+  border: 1px solid #e5dfd4;
+}
+.btalk-check-row input {
+  margin-top: 4px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--bt-navy);
+  flex-shrink: 0;
+}
+.btalk-check-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--bt-ink);
+}
+.btalk-check-hint {
+  display: none;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #166534;
+  background: #ecfdf3;
+  border: 1px solid #bbf7d0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+.btalk-check-row-wrap.is-on .btalk-check-hint {
+  display: block;
+}
+
+.btalk-radio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.btalk-radio-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #e0d8c8;
+  background: #fdfcfa;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.btalk-radio-item:hover {
+  border-color: rgba(28, 38, 28, 0.25);
+}
+.btalk-radio-item.is-checked {
+  border-color: var(--bt-navy);
+  background: rgba(28, 38, 28, 0.04);
+}
+.btalk-radio-item input {
+  accent-color: var(--bt-navy);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.btalk-radio-item.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+.btalk-radio-item.is-disabled span {
+  cursor: not-allowed;
+}
+.btalk-radio-item span {
+  font-size: 14px;
+  color: var(--bt-ink);
+  line-height: 1.45;
+}
+
+.btalk-owner-book-hint {
+  display: none;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #92400e;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  padding: 10px 12px;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+.btalk-owner-book-hint.is-visible {
+  display: block;
+}
+
+/* 금액 요약 */
+.btalk-total-box {
+  background: linear-gradient(135deg, var(--bt-forest-deep) 0%, var(--bt-forest) 55%, var(--bt-forest-soft) 100%);
+  color: var(--bt-cream-fg);
+  border-radius: var(--bt-radius);
+  padding: 20px 22px;
+  margin-bottom: 20px;
+}
+.btalk-total-rows {
+  font-size: 14px;
+  line-height: 1.8;
+  opacity: 0.95;
+  margin-bottom: 12px;
+}
+.btalk-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.btalk-total-row span:last-child {
+  font-weight: 600;
+  white-space: nowrap;
+}
+.btalk-total-final {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: 'Noto Serif KR', serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+.btalk-total-final span:last-child {
+  font-size: 24px;
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.15);
+}
+
+/* 계좌 안내 블록 */
+.btalk-bank-preview {
+  background: #fff;
+  border: 1px dashed var(--bt-card-border);
+  border-radius: var(--bt-radius);
+  padding: 18px 20px;
+  font-size: 14px;
+  color: var(--bt-muted);
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+.btalk-bank-preview strong {
+  color: var(--bt-navy);
+  font-weight: 700;
+}
+
+.btalk-submit {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #fff;
+  background: linear-gradient(180deg, var(--bt-red) 0%, var(--bt-red-deep) 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  box-shadow: 0 6px 22px rgba(148, 38, 31, 0.35);
+  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btalk-submit:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 8px 28px rgba(148, 38, 31, 0.42);
+}
+.btalk-submit:active {
+  transform: scale(0.99);
+}
+.btalk-submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 아카이브 */
+.btalk-archive {
+  background: #fff;
+  border: 1px solid var(--bt-card-border);
+  border-radius: var(--bt-radius);
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--bt-shadow);
+}
+.btalk-archive-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--bt-navy);
+  margin-bottom: 10px;
+}
+.btalk-archive-placeholder {
+  font-size: 14px;
+  color: var(--bt-muted);
+}
+
+/* 푸터 */
+.btalk-footer {
+  text-align: center;
+  padding: 28px 20px 40px;
+  font-size: 12px;
+  color: var(--bt-muted);
+}
+
+/* 모달 */
+.btalk-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  background: rgba(20, 28, 22, 0.58);
+  backdrop-filter: blur(4px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.btalk-modal-overlay.is-open {
+  display: flex;
+}
+.btalk-modal-overlay[aria-hidden='true'] {
+  pointer-events: none;
+}
+.btalk-modal {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.25);
+  animation: btalkModalIn 0.22s ease;
+}
+@keyframes btalkModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.btalk-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--bt-muted);
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btalk-modal-close:hover {
+  background: #ebe6dc;
+  color: var(--bt-forest);
+}
+.btalk-modal-head {
+  padding: 28px 24px 16px;
+  text-align: center;
+  border-bottom: 1px solid #ebe6dc;
+}
+.btalk-modal-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--bt-forest-deep);
+  background: rgba(45, 59, 45, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+.btalk-modal-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--bt-navy);
+}
+.btalk-modal-body {
+  padding: 22px 24px 24px;
+}
+.btalk-modal-amount {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.btalk-modal-amount-label {
+  font-size: 13px;
+  color: var(--bt-muted);
+  margin-bottom: 6px;
+}
+.btalk-modal-amount-value {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--bt-navy);
+  letter-spacing: -0.02em;
+}
+.btalk-modal-bank {
+  background: #f8f6f0;
+  border: 1px solid #e5dfd4;
+  border-radius: 12px;
+  padding: 18px 16px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.btalk-modal-bank-name {
+  font-size: 14px;
+  color: var(--bt-muted);
+  margin-bottom: 8px;
+}
+.btalk-modal-account {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: clamp(17px, 4.5vw, 22px);
+  font-weight: 700;
+  color: var(--bt-navy);
+  letter-spacing: 0.04em;
+  word-break: break-all;
+  line-height: 1.4;
+}
+.btalk-modal-holder {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--bt-ink);
+  font-weight: 600;
+}
+.btalk-modal-copy {
+  width: 100%;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--bt-navy);
+  background: #fff;
+  border: 2px solid var(--bt-navy);
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btalk-modal-copy:hover {
+  background: var(--bt-forest);
+  border-color: var(--bt-forest);
+  color: #fff;
+}
+.btalk-modal-note {
+  font-size: 12px;
+  color: var(--bt-muted);
+  text-align: center;
+  line-height: 1.55;
+}

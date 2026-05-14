@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>b.talks — 작가와의 만남 | 비북스</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/btalk.css" />
+</head>
+<body class="page-btalk">
+
+  <nav class="btalk-nav" aria-label="페이지 이동">
+    <div class="btalk-nav-inner">
+      <a class="btalk-back" href="index.html">← 비북스 모임으로 돌아가기</a>
+    </div>
+  </nav>
+
+  <header class="btalk-hero">
+    <div class="btalk-hero-inner">
+      <p class="btalk-badge">b.talks · 월간 북토크 비.톡스</p>
+      <h1 class="btalk-title-lines" aria-label="낮선 사람과 낮선 책이 모일 때">
+        <span class="btalk-title-line">낮선 사람과</span>
+        <span class="btalk-title-line">낮선 책이</span>
+        <span class="btalk-title-line">모일 때</span>
+      </h1>
+      <p class="btalk-hero-books">《철학책 독서 모임》, 《동료에게 말 걸기》 <strong>박동수</strong> 작가</p>
+      <p class="btalk-brand">b.talks — 작가와의 만남</p>
+      <div class="btalk-hero-divider" aria-hidden="true"></div>
+      <p class="btalk-hero-signing" role="note">
+        <span class="btalk-hero-signing-icon" aria-hidden="true">✍️</span>
+        행사 후 <strong>작가 사인회</strong>가 있습니다
+      </p>
+      <div class="btalk-meta-grid">
+        <div class="btalk-meta-item">
+          <span class="btalk-meta-icon" aria-hidden="true">📅</span>
+          <div><span class="btalk-meta-label">일시</span> 2026년 5월 30일 (토) 오후 4:00 ~ 6:00</div>
+        </div>
+        <div class="btalk-meta-item">
+          <span class="btalk-meta-icon" aria-hidden="true">📍</span>
+          <div><span class="btalk-meta-label">장소</span> 비북스 — 부천시 원미구 부천로136번길 24, b02호</div>
+        </div>
+        <div class="btalk-meta-item">
+          <span class="btalk-meta-icon" aria-hidden="true">💳</span>
+          <div><span class="btalk-meta-label">참가비</span> 10,000원 <small class="btalk-meta-note">(0.1평 점주 무료 · 신청 시 도서 구매 가능)</small></div>
+        </div>
+        <div class="btalk-meta-item">
+          <span class="btalk-meta-icon" aria-hidden="true">👥</span>
+          <div><span class="btalk-meta-label">모집</span> 40명</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="btalk-poster-section" aria-labelledby="poster-heading">
+    <div class="btalk-poster-inner">
+      <h2 id="poster-heading" class="btalk-poster-heading">5월 행사 포스터</h2>
+      <p class="btalk-poster-lead">접속할 때마다 두 가지 공식 포스터 중 하나가 무작위로 표시됩니다.</p>
+      <div class="btalk-poster-grid" id="btalk-poster-grid">
+        <figure class="btalk-poster-card" data-poster-index="0">
+          <img src="images/btalk-poster-01.png" alt="b.talks 포스터 1 — 박동수 작가와 낮선 사람과 낮선 책이 모일 때" width="800" height="1200" loading="lazy" decoding="async" />
+        </figure>
+        <figure class="btalk-poster-card" data-poster-index="1">
+          <img src="images/btalk-poster-02.png" alt="b.talks 포스터 2 — 잔디밭 위 원을 그리며 춤추는 다섯 사람의 일러스트와 행사 정보" width="800" height="1200" loading="lazy" decoding="async" />
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <main class="btalk-main">
+    <section class="btalk-section" aria-labelledby="author-heading">
+      <h2 id="author-heading" class="btalk-section-title">만남을 이끄는 작가</h2>
+      <p class="btalk-section-lead">사월의 책 편집장이자, 오늘의 철학을 이야기하는 에세이스트를 소개합니다.</p>
+      <div class="btalk-author-card">
+        <div>
+          <div class="btalk-author-name">박동수</div>
+          <div class="btalk-author-role">사월의 책 편집장</div>
+        </div>
+        <p class="btalk-author-books">
+          저서 <em>《철학책 독서모임》</em>, <em>《동료에게 말 걸기》</em> — 어제의 철학이 아닌, 지금 이 자리에서의 철학을 함께 읽습니다.
+        </p>
+      </div>
+    </section>
+
+    <section class="btalk-section" aria-labelledby="books-heading">
+      <h2 id="books-heading" class="btalk-section-title">작가의 책</h2>
+      <p class="btalk-section-lead">카드를 눌러도 신청 폼의 도서 옵션이 함께 바뀝니다. 두 권 모두 신청은 아래 목록에서 선택해 주세요.</p>
+      <div class="btalk-books">
+        <div class="btalk-book-wrap" id="book-wrap-1" data-book="book1">
+          <button type="button" class="btalk-book-card" id="btn-book-1" aria-pressed="false">
+            <img class="btalk-book-cover" src="https://image.aladin.co.kr/product/29675/18/cover500/8937492016_1.jpg" alt="《철학책 독서모임》 표지" width="500" height="750" loading="lazy" />
+            <div class="btalk-book-body">
+              <div class="btalk-book-title">철학책 독서 모임</div>
+              <div class="btalk-book-price">17,000원</div>
+              <p class="btalk-book-desc">어제의 철학에서 벗어나 오늘의 철학을 읽자는 제안. 편집자가 동료들과 함께 읽은 열 권의 철학책 이야기</p>
+            </div>
+          </button>
+        </div>
+        <div class="btalk-book-wrap" id="book-wrap-2" data-book="book2">
+          <button type="button" class="btalk-book-card" id="btn-book-2" aria-pressed="false">
+            <img class="btalk-book-cover" src="https://image.aladin.co.kr/product/37519/85/cover500/8937492326_1.jpg" alt="《동료에게 말걸기》 표지" width="500" height="750" loading="lazy" />
+            <div class="btalk-book-body">
+              <div class="btalk-book-title">동료에게 말 걸기</div>
+              <div class="btalk-book-price">18,000원</div>
+              <p class="btalk-book-desc">분열의 시대, 바로 옆 사람에게 말을 거는 일에서 시작하는 새로운 철학 탐구</p>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="btalk-section" aria-labelledby="form-heading">
+      <h2 id="form-heading" class="btalk-section-title">참가 신청</h2>
+      <p class="btalk-section-lead">아래 정보를 입력한 뒤 <strong>신청하기</strong>를 누르면 입금 안내 팝업이 열립니다. (구글 폼 연동은 추후 예정)</p>
+
+      <form id="btalk-form" class="btalk-form" novalidate>
+        <div class="btalk-form-block">
+          <div class="btalk-field">
+            <label class="btalk-form-label" for="bt-name">이름 <span class="req">필수</span></label>
+            <input class="btalk-input" type="text" id="bt-name" name="name" required autocomplete="name" placeholder="홍길동" />
+          </div>
+          <div class="btalk-field">
+            <label class="btalk-form-label" for="bt-phone">연락처 <span class="req">필수</span></label>
+            <input class="btalk-input" type="tel" id="bt-phone" name="phone" required autocomplete="tel" placeholder="010-0000-0000" />
+          </div>
+
+          <div class="btalk-field">
+            <div class="btalk-check-row-wrap" id="owner-wrap">
+              <label class="btalk-check-row">
+                <input type="checkbox" id="bt-owner" name="owner" />
+                <span class="btalk-check-text">0.1평 점주입니다 <span style="color:#166534;font-weight:600">(참가비 무료)</span></span>
+              </label>
+              <p class="btalk-check-hint" id="owner-free-hint">0.1평 점주는 참가비가 면제됩니다. 도서는 1권 이상 구매해 주세요.</p>
+            </div>
+            <p class="btalk-owner-book-hint" id="owner-book-hint" role="status">점주 신청 시 「선택 안 함」은 사용할 수 없습니다. 도서를 1권 이상 선택해 주세요.</p>
+          </div>
+
+          <fieldset class="btalk-field" style="border:none;padding:0;margin:0">
+            <legend class="btalk-form-label">작가 도서 구입 신청</legend>
+            <div class="btalk-radio-list" id="book-options">
+              <label class="btalk-radio-item is-checked" id="opt-wrap-none" data-value="none">
+                <input type="radio" name="book" value="none" id="opt-none" checked />
+                <span>선택 안 함</span>
+              </label>
+              <label class="btalk-radio-item" id="opt-wrap-book1" data-value="book1">
+                <input type="radio" name="book" value="book1" id="opt-book1" />
+                <span>철학책 독서 모임 (17,000원)</span>
+              </label>
+              <label class="btalk-radio-item" id="opt-wrap-book2" data-value="book2">
+                <input type="radio" name="book" value="book2" id="opt-book2" />
+                <span>동료에게 말 걸기 (18,000원)</span>
+              </label>
+              <label class="btalk-radio-item" id="opt-wrap-both" data-value="both">
+                <input type="radio" name="book" value="both" id="opt-both" />
+                <span>두 권 모두 (35,000원)</span>
+              </label>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="btalk-total-box" aria-live="polite">
+          <div class="btalk-total-rows" id="bt-total-rows"></div>
+          <div class="btalk-total-final">
+            <span>최종 결제 금액</span>
+            <span id="bt-total-amount">10,000원</span>
+          </div>
+        </div>
+
+        <div class="btalk-bank-preview" id="bt-bank-preview">
+          입금은 <strong>카카오뱅크 3333-3725-33252</strong> (예금주 비북스)로 부탁드립니다.<br />
+          아래 금액은 <strong id="bt-preview-sum">회비 10,000원</strong>과 도서 금액을 합산한 안내입니다. 신청하기를 누르면 동일 내용이 팝업으로 표시됩니다.
+        </div>
+
+        <button type="submit" class="btalk-submit" id="bt-submit">신청하기</button>
+      </form>
+    </section>
+
+    <section class="btalk-archive" aria-labelledby="archive-heading">
+      <h2 id="archive-heading" class="btalk-archive-title">아카이브</h2>
+      <p class="btalk-archive-placeholder">지난 b.talks 기록은 준비 중입니다.</p>
+    </section>
+  </main>
+
+  <footer class="btalk-footer">
+    © 비북스 b.talks · 작가와의 만남
+  </footer>
+
+  <div class="btalk-modal-overlay" id="bt-modal" role="dialog" aria-modal="true" aria-labelledby="bt-modal-title" aria-hidden="true">
+    <div class="btalk-modal" role="document">
+      <button type="button" class="btalk-modal-close" id="bt-modal-close" aria-label="닫기">×</button>
+      <div class="btalk-modal-head">
+        <span class="btalk-modal-badge">입금 안내</span>
+        <h3 class="btalk-modal-title" id="bt-modal-title">참가 신청이 접수되었습니다</h3>
+      </div>
+      <div class="btalk-modal-body">
+        <div class="btalk-modal-amount">
+          <div class="btalk-modal-amount-label">입금하실 금액</div>
+          <div class="btalk-modal-amount-value" id="bt-modal-amount">10,000원</div>
+        </div>
+        <div class="btalk-modal-bank">
+          <div class="btalk-modal-bank-name">카카오뱅크 · 예금주 비북스</div>
+          <div class="btalk-modal-account" id="bt-modal-account">3333-3725-33252</div>
+        </div>
+        <button type="button" class="btalk-modal-copy" id="bt-copy-btn">계좌번호 복사하기</button>
+        <p class="btalk-modal-note">입금자명은 신청 시 기재하신 이름과 동일하게 부탁드립니다. 확인 후 순차적으로 연락드릴게요.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    var posterGrid = document.getElementById('btalk-poster-grid');
+    if (posterGrid) {
+      var posterFigs = posterGrid.querySelectorAll('.btalk-poster-card');
+      if (posterFigs.length === 2) {
+        var showIdx = Math.floor(Math.random() * 2);
+        posterFigs.forEach(function (fig, i) {
+          fig.hidden = i !== showIdx;
+        });
+        posterGrid.classList.add('is-random-one');
+      }
+    }
+
+    var FEE = 10000;
+    var BOOK = { none: 0, book1: 17000, book2: 18000, both: 35000 };
+    var ACCOUNT = '3333-3725-33252';
+    var SUBMIT_URL =
+      'https://script.google.com/macros/s/AKfycbxeUYWfkYtCZp1rWrjQhDoaL1kdXK5vhHJ1DogC8HG-0vHnmffB3787qulsVXAuLaqk/exec';
+
+    var form = document.getElementById('btalk-form');
+    var submitBtn = document.getElementById('bt-submit');
+    var submitLabelDefault = submitBtn ? submitBtn.textContent : '신청하기';
+    var owner = document.getElementById('bt-owner');
+    var ownerWrap = document.getElementById('owner-wrap');
+    var ownerBookHint = document.getElementById('owner-book-hint');
+    var optNone = document.getElementById('opt-none');
+    var optNoneWrap = document.getElementById('opt-wrap-none');
+    var radios = form.querySelectorAll('input[name="book"]');
+    var totalRows = document.getElementById('bt-total-rows');
+    var totalAmountEl = document.getElementById('bt-total-amount');
+    var previewSum = document.getElementById('bt-preview-sum');
+    var modal = document.getElementById('bt-modal');
+    var modalAmount = document.getElementById('bt-modal-amount');
+    var copyBtn = document.getElementById('bt-copy-btn');
+    var btn1 = document.getElementById('btn-book-1');
+    var btn2 = document.getElementById('btn-book-2');
+    var wrap1 = document.getElementById('book-wrap-1');
+    var wrap2 = document.getElementById('book-wrap-2');
+
+    function getBookValue() {
+      var c = form.querySelector('input[name="book"]:checked');
+      return c ? c.value : 'none';
+    }
+
+    function computeTotal() {
+      var isOwner = owner.checked;
+      var bookKey = getBookValue();
+      var fee = isOwner ? 0 : FEE;
+      var bookPrice = BOOK[bookKey] != null ? BOOK[bookKey] : 0;
+      return fee + bookPrice;
+    }
+
+    function getBookChoiceLabel(bookKey) {
+      switch (bookKey) {
+        case 'book1':
+          return '철학책 독서 모임';
+        case 'book2':
+          return '동료에게 말 걸기';
+        case 'both':
+          return '두 권 모두';
+        default:
+          return '선택 안 함';
+      }
+    }
+
+    function setBookValue(v) {
+      var r = form.querySelector('input[name="book"][value="' + v + '"]');
+      if (r && !r.disabled) {
+        r.checked = true;
+        syncRadioClasses();
+        updateTotals();
+        syncCards();
+      }
+    }
+
+    function syncRadioClasses() {
+      var labels = document.querySelectorAll('#book-options .btalk-radio-item');
+      labels.forEach(function (lab) {
+        var inp = lab.querySelector('input');
+        lab.classList.toggle('is-checked', inp && inp.checked);
+        lab.classList.toggle('is-disabled', inp && inp.disabled);
+      });
+    }
+
+    function syncCards() {
+      var v = getBookValue();
+      var s1 = v === 'book1' || v === 'both';
+      var s2 = v === 'book2' || v === 'both';
+      wrap1.classList.toggle('is-selected', s1);
+      wrap2.classList.toggle('is-selected', s2);
+      btn1.setAttribute('aria-pressed', s1 ? 'true' : 'false');
+      btn2.setAttribute('aria-pressed', s2 ? 'true' : 'false');
+    }
+
+    function formatWon(n) {
+      return n.toLocaleString('ko-KR') + '원';
+    }
+
+    function updateTotals() {
+      var isOwner = owner.checked;
+      var bookKey = getBookValue();
+      var total = computeTotal();
+      var fee = isOwner ? 0 : FEE;
+      var bookPrice = BOOK[bookKey] != null ? BOOK[bookKey] : 0;
+
+      var feeLine = isOwner
+        ? '<div class="btalk-total-row"><span>참가비 (0.1평 점주)</span><span>0원</span></div>'
+        : '<div class="btalk-total-row"><span>참가비</span><span>' + formatWon(FEE) + '</span></div>';
+
+      var bookLabel = '도서';
+      if (bookKey === 'book1') bookLabel = '도서 · 철학책 독서 모임';
+      else if (bookKey === 'book2') bookLabel = '도서 · 동료에게 말 걸기';
+      else if (bookKey === 'both') bookLabel = '도서 · 두 권 모두';
+
+      var bookLine =
+        '<div class="btalk-total-row"><span>' +
+        bookLabel +
+        '</span><span>' +
+        formatWon(bookPrice) +
+        '</span></div>';
+
+      totalRows.innerHTML = feeLine + bookLine;
+      totalAmountEl.textContent = formatWon(total);
+
+      var parts = [];
+      if (fee > 0) parts.push('회비 ' + formatWon(fee));
+      else parts.push('회비 면제(점주)');
+      if (bookPrice > 0) parts.push('도서 ' + formatWon(bookPrice));
+      else parts.push('도서 없음');
+      previewSum.textContent = parts.join(' + ');
+
+      modalAmount.textContent = formatWon(total);
+    }
+
+    function applyOwnerRules() {
+      var isOwner = owner.checked;
+      ownerWrap.classList.toggle('is-on', isOwner);
+      ownerBookHint.classList.toggle('is-visible', isOwner);
+
+      optNone.disabled = isOwner;
+      if (isOwner && getBookValue() === 'none') {
+        document.getElementById('opt-book1').checked = true;
+      }
+      syncRadioClasses();
+      updateTotals();
+      syncCards();
+    }
+
+    owner.addEventListener('change', applyOwnerRules);
+    radios.forEach(function (r) {
+      r.addEventListener('change', function () {
+        syncRadioClasses();
+        updateTotals();
+        syncCards();
+      });
+    });
+
+    btn1.addEventListener('click', function () {
+      setBookValue('book1');
+    });
+    btn2.addEventListener('click', function () {
+      setBookValue('book2');
+    });
+
+    function openModal() {
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.getElementById('bt-modal-close').focus();
+    }
+    function closeModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    document.getElementById('bt-modal-close').addEventListener('click', closeModal);
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+
+    copyBtn.addEventListener('click', function () {
+      function ok() {
+        copyBtn.textContent = '복사되었습니다 ✓';
+        setTimeout(function () {
+          copyBtn.textContent = '계좌번호 복사하기';
+        }, 2000);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(ACCOUNT).then(ok).catch(function () {
+          window.prompt('계좌번호를 복사해 주세요', ACCOUNT);
+        });
+      } else {
+        window.prompt('계좌번호를 복사해 주세요', ACCOUNT);
+      }
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = document.getElementById('bt-name').value.trim();
+      var phone = document.getElementById('bt-phone').value.trim();
+      if (!name) {
+        alert('이름을 입력해 주세요.');
+        document.getElementById('bt-name').focus();
+        return;
+      }
+      if (!phone) {
+        alert('연락처를 입력해 주세요.');
+        document.getElementById('bt-phone').focus();
+        return;
+      }
+      if (owner.checked && getBookValue() === 'none') {
+        alert('0.1평 점주는 도서를 1권 이상 선택해 주세요.');
+        return;
+      }
+
+      updateTotals();
+
+      var bookKey = getBookValue();
+      var payload = new URLSearchParams();
+      payload.set('name', name);
+      payload.set('phone', phone);
+      payload.set('isOwner', owner.checked ? '예' : '아니오');
+      payload.set('bookChoice', getBookChoiceLabel(bookKey));
+      payload.set('totalAmount', String(computeTotal()));
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = '신청 중...';
+
+      fetch(SUBMIT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: payload,
+      })
+        .then(function () {
+          updateTotals();
+          openModal();
+        })
+        .catch(function () {
+          alert('잠시 후 다시 시도해주세요');
+        })
+        .finally(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = submitLabelDefault;
+        });
+    });
+
+    syncRadioClasses();
+    updateTotals();
+    syncCards();
+  })();
+  </script>
+</body>
+</html>
