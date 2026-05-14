@@ -684,6 +684,11 @@
 
   <!-- 완료 토스트 -->
   <div id="toast" class="toast">✅ 신청이 접수되었습니다! 곧 연락드릴게요 😊</div>
+
+  <button type="button" id="scroll-to-top" class="scroll-to-top" aria-label="맨 위로 이동" title="맨 위로">
+    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+  </button>
+
   <script src="js/main.js"></script>
 
   <!-- 대관 신청 현황 캘린더 반영 -->
@@ -796,6 +801,22 @@
 
   // 페이지 로드 시 실행
   window.addEventListener('load', loadBookings);
+  </script>
+
+  <script>
+  (function () {
+    var btn = document.getElementById('scroll-to-top');
+    if (!btn) return;
+    function syncScrollTopBtn() {
+      if (window.scrollY > 100) btn.classList.add('is-visible');
+      else btn.classList.remove('is-visible');
+    }
+    window.addEventListener('scroll', syncScrollTopBtn, { passive: true });
+    syncScrollTopBtn();
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  })();
   </script>
 
 </body>
