@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>비북스 b.moim | 모임 개설 신청</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy: #0A1F44;
+      --navy-light: #1a3565;
+      --blue: #4a8cff;
+      --blue-pale: #eaf1ff;
+      --cream: #faf8f4;
+      --border: #e4e1d8;
+      --text: #1a1a2e;
+      --text-muted: #6b6b7e;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Noto Sans KR', sans-serif; background: var(--cream); color: var(--text); }
+
+    header {
+      background: var(--navy);
+      padding: 20px 24px;
+    }
+    .logo {
+      font-family: 'Noto Serif KR', serif;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .logo span {
+      display: block;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      margin-top: 2px;
+      letter-spacing: 0.05em;
+    }
+
+    .hero {
+      background: var(--navy);
+      padding: 48px 24px 64px;
+      text-align: center;
+      position: relative;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 28px;
+      background: var(--cream);
+      border-radius: 28px 28px 0 0;
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--blue);
+      border: 1px solid rgba(74,140,255,0.35);
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(22px, 5vw, 30px);
+      color: #fff;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 14px;
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .field { margin-bottom: 16px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .req::after { content: ' *'; color: #e24b4a; }
+
+    input[type=text], input[type=number], textarea, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: #fff;
+      -webkit-appearance: none;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(74,140,255,0.1);
+    }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+    .hint { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
+
+    .radio-group { display: flex; gap: 12px; flex-wrap: wrap; }
+    .radio-option { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; }
+    .radio-option input { width: 16px; height: 16px; accent-color: var(--navy); cursor: pointer; }
+
+    .session-grid { display: flex; flex-direction: column; gap: 8px; }
+    .session-row { display: flex; gap: 8px; align-items: center; }
+    .session-num {
+      font-size: 12px; font-weight: 500; color: var(--text-muted);
+      background: var(--cream); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 10px 12px;
+      white-space: nowrap; flex-shrink: 0;
+    }
+
+    .suffix-wrap { position: relative; }
+    .suffix-wrap input { padding-right: 32px; }
+    .suffix-wrap::after {
+      content: '원';
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      font-size: 13px; color: var(--text-muted); pointer-events: none;
+    }
+
+    .submit-btn {
+      width: 100%; padding: 16px;
+      background: var(--navy); color: #fff;
+      border: none; border-radius: var(--radius);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 15px; font-weight: 700;
+      cursor: pointer; letter-spacing: 0.03em;
+      transition: background 0.15s;
+      margin-top: 8px;
+    }
+    .submit-btn:hover { background: var(--navy-light); }
+    .submit-btn:disabled { background: #bbb; cursor: not-allowed; }
+
+    #success-msg {
+      display: none;
+      background: #eaf3de; border: 1px solid #c0dd97;
+      border-radius: var(--radius); padding: 32px 24px;
+      text-align: center;
+    }
+    #success-msg h2 { font-size: 20px; color: #3b6d11; margin-bottom: 8px; }
+    #success-msg p { font-size: 14px; color: #639922; line-height: 1.7; }
+
+    #error-msg {
+      display: none;
+      background: #fcebeb; border: 1px solid #f7c1c1;
+      border-radius: var(--radius-sm); padding: 12px 16px;
+      font-size: 13px; color: #a32d2d; text-align: center; margin-top: 10px;
+    }
+
+    footer {
+      text-align: center; font-size: 12px; color: var(--text-muted);
+      padding: 24px; border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 480px) {
+      .card { padding: 18px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="https://moim.bbooks.co.kr" class="logo">
+    비북스 b.moim
+    <span>느슨하고 단단하게 함께 자라가는 모임</span>
+  </a>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">모임 개설 신청</div>
+  <h1>비북스에서 당신의 모임을<br/>펼쳐보세요</h1>
+</div>
+
+<div class="container">
+  <form id="form" novalidate>
+
+    <!-- 기본 정보 -->
+    <div class="card">
+      <div class="card-title">기본 정보</div>
+
+      <div class="field">
+        <label class="req">신청 월</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="month" value="6월" checked /> <span>6월</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="meetingName" class="req">모임명</label>
+        <input type="text" id="meetingName" placeholder="예) 동서남북book, 심야만화방" maxlength="50" />
+      </div>
+
+      <div class="field">
+        <label for="description" class="req">모임 소개</label>
+        <textarea id="description" placeholder="모임에 참여하고 싶어지는 매력적인 소개 문구를 적어주세요" maxlength="500"></textarea>
+        <p class="hint">페이지에 그대로 표시됩니다</p>
+      </div>
+
+      <div class="field">
+        <label for="hostName" class="req">호스트</label>
+        <input type="text" id="hostName" placeholder="이름 또는 닉네임" />
+      </div>
+    </div>
+
+    <!-- 공간 & 일정 -->
+    <div class="card">
+      <div class="card-title">공간 & 일정</div>
+
+      <div class="field">
+        <label class="req">희망 공간</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="space" value="세미나실" /> <span>📌 세미나실</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="space" value="매장테이블" /> <span>☕ 매장테이블</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="req">희망 날짜·시간</label>
+        <div class="session-grid">
+          <div class="session-row">
+            <div class="session-num">1회차</div>
+            <input type="text" id="session1" placeholder="예) 6/12 (목) 14:00–16:00" />
+          </div>
+          <div class="session-row">
+            <div class="session-num">2회차</div>
+            <input type="text" id="session2" placeholder="선택" />
+          </div>
+          <div class="session-row">
+            <div class="session-num">3회차</div>
+            <input type="text" id="session3" placeholder="선택" />
+          </div>
+          <div class="session-row">
+            <div class="session-num">4회차</div>
+            <input type="text" id="session4" placeholder="선택" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 세부 사항 -->
+    <div class="card">
+      <div class="card-title">세부 사항</div>
+
+      <div class="field">
+        <label for="capacity" class="req">모임 정원</label>
+        <input type="number" id="capacity" min="1" max="50" placeholder="명" />
+      </div>
+
+      <div class="field">
+        <label for="fee" class="req">참가비</label>
+        <div class="suffix-wrap">
+          <input type="number" id="fee" min="5000" step="1000" placeholder="최소 5,000원" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="req">재료 준비 여부</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="hasMaterials" value="있음" /> <span>있음</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="hasMaterials" value="없음" /> <span>없음</span>
+          </label>
+        </div>
+        <p class="hint">재료 준비 여부에 따라 환불 규정이 달라집니다</p>
+      </div>
+    </div>
+
+    <!-- 연락처 -->
+    <div class="card">
+      <div class="card-title">호스트 연락처</div>
+
+      <div class="field">
+        <label for="contact" class="req">연락처</label>
+        <input type="text" id="contact" placeholder="전화번호 또는 인스타그램 계정 (@포함)" />
+      </div>
+
+      <div class="field">
+        <label for="notes">기타 요청사항</label>
+        <textarea id="notes" placeholder="추가로 전달할 내용이 있으면 적어주세요"></textarea>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">신청서 제출하기 →</button>
+    <div id="error-msg">제출 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>
+
+  </form>
+
+  <div id="success-msg">
+    <h2>✅ 신청이 접수되었습니다!</h2>
+    <p>비북스 담당자가 확인 후 연락드릴게요.<br/>문의: 비북스 인스타그램 DM</p>
+  </div>
+</div>
+
+<footer>© 2026 · 비북스 b.moim · 느슨하고 단단하게 함께 자라가는 모임</footer>
+
+<script>
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2WEJpCaLlmZwM7F5ysNV0Qcj2xaGB3k1GAwxnCaLt5OwLp6fMauAXRa3XSHjNE7V6/exec';
+
+  document.getElementById('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const month        = document.querySelector('input[name="month"]:checked');
+    const space        = document.querySelector('input[name="space"]:checked');
+    const hasMaterials = document.querySelector('input[name="hasMaterials"]:checked');
+    const meetingName  = document.getElementById('meetingName').value.trim();
+    const description  = document.getElementById('description').value.trim();
+    const hostName     = document.getElementById('hostName').value.trim();
+    const session1     = document.getElementById('session1').value.trim();
+    const capacity     = document.getElementById('capacity').value.trim();
+    const fee          = document.getElementById('fee').value.trim();
+    const contact      = document.getElementById('contact').value.trim();
+
+    if (!meetingName)  { alert('모임명을 입력해 주세요.'); return; }
+    if (!description)  { alert('모임 소개를 입력해 주세요.'); return; }
+    if (!hostName)     { alert('호스트 이름을 입력해 주세요.'); return; }
+    if (!space)        { alert('희망 공간을 선택해 주세요.'); return; }
+    if (!session1)     { alert('1회차 날짜·시간을 입력해 주세요.'); return; }
+    if (!capacity)     { alert('모임 정원을 입력해 주세요.'); return; }
+    if (!fee || Number(fee) < 5000) { alert('참가비는 최소 5,000원 이상으로 설정해 주세요.'); return; }
+    if (!hasMaterials) { alert('재료 준비 여부를 선택해 주세요.'); return; }
+    if (!contact)      { alert('연락처를 입력해 주세요.'); return; }
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = '제출 중...';
+    document.getElementById('error-msg').style.display = 'none';
+
+    const params = new URLSearchParams({
+      month:        month.value,
+      meetingName,
+      description,
+      hostName,
+      space:        space.value,
+      session1,
+      session2:     document.getElementById('session2').value.trim(),
+      session3:     document.getElementById('session3').value.trim(),
+      session4:     document.getElementById('session4').value.trim(),
+      capacity,
+      fee,
+      hasMaterials: hasMaterials.value,
+      contact,
+      notes:        document.getElementById('notes').value.trim(),
+    });
+
+    fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params.toString()
+    }).then(function() {
+      document.getElementById('form').style.display = 'none';
+      const s = document.getElementById('success-msg');
+      s.style.display = 'block';
+      s.scrollIntoView({ behavior: 'smooth' });
+    }).catch(function() {
+      document.getElementById('error-msg').style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = '신청서 제출하기 →';
+    });
+  });
+</script>
+
+</body>
+</html>
