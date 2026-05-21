@@ -3,821 +3,775 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>비북스 b.moim | 5월 모임 & 대관 신청</title>
+  <title>비북스 b.moim | 모임 개설 신청</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── 디자인 토큰 ── */
+    :root {
+      --navy: #0A1F44;
+      --navy-light: #1a3565;
+      --blue: #4a8cff;
+      --blue-pale: #eaf1ff;
+      --cream: #faf8f4;
+      --border: #e4e1d8;
+      --text: #1a1a2e;
+      --text-muted: #6b6b7e;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── 헤더 ── */
+    header {
+      background: var(--navy);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Noto Serif KR', serif;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.3px;
+    }
+
+    .logo span {
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      display: block;
+      letter-spacing: 0.05em;
+      margin-top: 1px;
+    }
+
+    /* ── 히어로 ── */
+    .hero {
+      background: var(--navy);
+      padding: 48px 24px 56px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 24px;
+      background: var(--cream);
+      border-radius: 24px 24px 0 0;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--blue);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid rgba(74,140,255,0.35);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.8;
+    }
+
+    /* ── 메인 컨테이너 ── */
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    /* ── 섹션 카드 ── */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--navy);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── 폼 요소 ── */
+    .field {
+      margin-bottom: 18px;
+    }
+
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .required::after {
+      content: ' *';
+      color: #e24b4a;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      background: #fff;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(74,140,255,0.12);
+    }
+
+    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6b7e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 5px;
+      line-height: 1.5;
+    }
+
+    /* ── 라디오/체크박스 그룹 ── */
+    .radio-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .radio-option input[type="radio"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--navy);
+      cursor: pointer;
+    }
+
+    .radio-option span {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    /* ── 회차 입력 ── */
+    .session-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .session-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 11px 12px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── 참가비 인풋 그룹 ── */
+    .input-suffix {
+      position: relative;
+    }
+
+    .input-suffix input {
+      padding-right: 36px;
+    }
+
+    .input-suffix::after {
+      content: '원';
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    /* ── 정보 박스 ── */
+    .info-box {
+      background: var(--blue-pale);
+      border: 1px solid rgba(74,140,255,0.2);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 13px;
+      color: #185FA5;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .info-box strong { font-weight: 700; }
+
+    /* ── 제출 버튼 ── */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--navy);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      letter-spacing: 0.03em;
+    }
+
+    .submit-btn:hover { background: var(--navy-light); }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { background: #bbb; cursor: not-allowed; }
+
+    /* ── 성공 메시지 ── */
+    #success-msg {
+      display: none;
+      background: #EAF3DE;
+      border: 1px solid #C0DD97;
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    #success-msg h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #3B6D11;
+      margin-bottom: 8px;
+    }
+
+    #success-msg p {
+      font-size: 14px;
+      color: #639922;
+      line-height: 1.7;
+    }
+
+    /* ── 에러 메시지 ── */
+    #error-msg {
+      display: none;
+      background: #FCEBEB;
+      border: 1px solid #F7C1C1;
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: #A32D2D;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    /* ── 푸터 ── */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    /* ── 파일 업로드 ── */
+    .upload-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-sm);
+      padding: 28px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      position: relative;
+    }
+
+    .upload-zone:hover,
+    .upload-zone.drag-over {
+      border-color: var(--blue);
+      background: var(--blue-pale);
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    .upload-zone input[type="file"]:focus { box-shadow: none; }
+
+    .upload-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .upload-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .upload-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .upload-preview {
+      display: none;
+      margin-top: 12px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .upload-preview img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .upload-preview-name {
+      font-size: 12px;
+      color: var(--text-muted);
+      padding: 6px 10px;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .upload-remove {
+      font-size: 12px;
+      color: #e24b4a;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+    }
+
+    .upload-progress {
+      display: none;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--blue);
+      text-align: center;
+    }
+
+    /* ── 반응형 ── */
+    @media (max-width: 480px) {
+      .card { padding: 20px 16px; }
+      .session-row { flex-direction: column; }
+      .session-label { width: 60px; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header id="site-header">
-    <div class="header-inner">
-      <div class="header-badge">2026. 05</div>
-      <p class="brand-name">비북스 b.moim</p>
-      <h1 class="site-title">5월 모임 & 대관 신청</h1>
-      <p class="site-subtitle">느슨하고 단단하게 함께 자라가는 모임</p>
-      <div class="header-divider"></div>
-      <p class="header-notice">모임을 클릭하면 구글폼 신청 페이지로 연결됩니다</p>
-    </div>
-  </header>
+<header>
+  <a href="https://moim.bbooks.co.kr" class="logo">
+    비북스 b.moim
+    <span>느슨하고 단단하게 함께 자라가는 모임</span>
+  </a>
+</header>
 
+<div class="hero">
+  <div class="hero-badge">모임 개설 신청</div>
+  <h1>비북스에서 당신의 모임을<br />펼쳐보세요</h1>
+  <p>매달 운영되는 비모임에 함께해요<br />신청 후 담당자가 확인 후 연락드립니다</p>
+</div>
 
-  <!-- SPACE GALLERY SECTION -->
-  <section id="space-gallery">
-    <div class="gallery-inner">
-      <div class="gallery-header">
-        <h2 class="gallery-title">비북스 공간 소개</h2>
-        <p class="gallery-subtitle">책이 있는 공간에서, 당신의 모임을 펼쳐보세요</p>
-        <div class="space-tabs">
-          <button class="space-tab active" onclick="filterSpace('all',this)">전체</button>
-          <button class="space-tab" onclick="filterSpace('whole',this)">🏠 매장 전체</button>
-          <button class="space-tab" onclick="filterSpace('table',this)">☕ 매장 모임 테이블</button>
-          <button class="space-tab" onclick="filterSpace('seminar',this)">📚 세미나실</button>
-        </div>
-      </div>
-      <div class="slider-wrap">
-        <div class="slider-track" id="sliderTrack">
-          <div class="slide" data-space="whole">
-            <img src="images/space_01.jpg" alt="비북스 매장 전체"/>
-            <div class="slide-caption">
-              <span class="slide-tag whole-tag">🏠 매장 전체</span>
-              <div class="slide-title">비북스 매장 전체</div>
-              <div class="slide-desc">책장이 가득한 따뜻한 공간. 독립서점의 아늑함 속에서 당신만의 특별한 자리를 만들어보세요.</div>
-            </div>
-          </div>
-          <div class="slide" data-space="whole">
-            <img src="images/space_02.jpg" alt="비북스 매장 전체 ②"/>
-            <div class="slide-caption">
-              <span class="slide-tag whole-tag">🏠 매장 전체</span>
-              <div class="slide-title">비북스 매장 전체 ②</div>
-              <div class="slide-desc">소파와 의자가 어우러진 자유로운 배치. 북토크, 전시, 소규모 행사에 어울립니다.</div>
-            </div>
-          </div>
-          <div class="slide" data-space="whole">
-            <img src="images/space_03.jpg" alt="비북스 매장 전체 ③"/>
-            <div class="slide-caption">
-              <span class="slide-tag whole-tag">🏠 매장 전체</span>
-              <div class="slide-title">비북스 매장 전체 ③</div>
-              <div class="slide-desc">책으로 둘러싸인 고요한 공간. 낮부터 밤까지, 당신의 모임에 맞게 변합니다.</div>
-            </div>
-          </div>
-          <div class="slide" data-space="table">
-            <img src="images/table_01.jpg" alt="매장 모임 테이블"/>
-            <div class="slide-caption">
-              <span class="slide-tag table-tag">☕ 매장 모임 테이블</span>
-              <div class="slide-title">매장 모임 테이블</div>
-              <div class="slide-desc">책장 사이에 자리한 아늑한 원목 테이블. 4~6인 소규모 독서 모임·스터디·티타임에 딱입니다.</div>
-            </div>
-          </div>
-          <div class="slide" data-space="table">
-            <img src="images/table_02.jpg" alt="매장 모임 테이블 ②"/>
-            <div class="slide-caption">
-              <span class="slide-tag table-tag">☕ 매장 모임 테이블</span>
-              <div class="slide-title">매장 모임 테이블 ②</div>
-              <div class="slide-desc">테이블을 붙여 넓게 사용할 수 있어요. 더 많은 인원의 모임도 가능합니다.</div>
-            </div>
-          </div>
-          <div class="slide" data-space="table">
-            <img src="images/table_03.jpg" alt="매장 모임 테이블 ③"/>
-            <div class="slide-caption">
-              <span class="slide-tag table-tag">☕ 매장 모임 테이블</span>
-              <div class="slide-title">매장 모임 테이블 ③</div>
-              <div class="slide-desc">사방이 책으로 둘러싸인 공간에서 6~8인 모임도 넉넉하게. 조용하고 집중력 있는 자리입니다.</div>
-            </div>
-          </div>
-          <div class="slide" data-space="seminar">
-            <img src="images/seminar_01.jpg" alt="세미나실"/>
-            <div class="slide-caption">
-              <span class="slide-tag seminar-tag">📚 세미나실</span>
-              <div class="slide-title">세미나실</div>
-              <div class="slide-desc">대형 화이트보드와 원목 테이블, 가득 찬 책장이 어우러진 독립 공간. 강의·워크숍·팀 모임에 최적입니다.</div>
-            </div>
-          </div>
-          <div class="slide" data-space="seminar">
-            <img src="images/seminar_02.jpg" alt="세미나실 보드게임"/>
-            <div class="slide-caption">
-              <span class="slide-tag seminar-tag">📚 세미나실</span>
-              <div class="slide-title">세미나실 — 보드게임 비치</div>
-              <div class="slide-desc">다빈치코드, 루미큐브, 딕싯 등 다양한 보드게임이 준비되어 있어요. 모임 후 가볍게 즐기기 좋습니다.</div>
-            </div>
-          </div>
-          <div class="slide" data-space="seminar">
-            <img src="images/seminar_03.jpg" alt="세미나실 내장 전원"/>
-            <div class="slide-caption">
-              <span class="slide-tag seminar-tag">📚 세미나실</span>
-              <div class="slide-title">세미나실 — 테이블 내장 전원</div>
-              <div class="slide-desc">테이블에 콘센트 + USB 포트가 내장되어 있어 노트북·스마트폰 충전이 편리합니다.</div>
-            </div>
-          </div>
-        </div>
-        <button class="slider-btn prev" onclick="moveSlide(-1)">&#8249;</button>
-        <button class="slider-btn next" onclick="moveSlide(1)">&#8250;</button>
-        <div class="slider-dots" id="sliderDots"></div>
-      </div>
-    </div>
-  </section>
+<div class="container">
 
-<!-- CALENDAR SECTION -->
-  <section id="calendar-section">
-    <div class="cal-inner">
-      <div class="cal-header">
-        <h2 class="cal-title">5월 모임 & 대관 일정</h2>
-        <p class="cal-subtitle">모임 날짜 클릭 → 신청 / 빈 날짜 클릭 → 공간 대관 신청</p>
-        <div class="cal-tabs">
-          <button class="cal-tab active" data-tab="all" onclick="switchCalTab('all',this)">전체</button>
-          <button class="cal-tab" data-tab="bmoim" onclick="switchCalTab('bmoim',this)">🌿 비모임</button>
-          <button class="cal-tab" data-tab="booking" onclick="switchCalTab('booking',this)">🏠 대관</button>
-        </div>
-      </div>
-      <div class="cal-grid">
-        <div class="cal-day-header">일</div>
-        <div class="cal-day-header">월</div>
-        <div class="cal-day-header">화</div>
-        <div class="cal-day-header">수</div>
-        <div class="cal-day-header">목</div>
-        <div class="cal-day-header">금</div>
-        <div class="cal-day-header">토</div>
-<!-- 빈칸 5개 (5/1=금) -->
-        <div class="cal-cell empty"></div>
-        <div class="cal-cell empty"></div>
-        <div class="cal-cell empty"></div>
-        <div class="cal-cell empty"></div>
-        <div class="cal-cell empty"></div>
-        <!-- 1~2 (금,토) -->
-        <div class="cal-cell bookable" onclick="openBooking(1)"><span class="cal-date">1</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell bookable" onclick="openBooking(2)"><span class="cal-date">2</span><div class="cal-book-hint">대관 신청</div></div>
-        <!-- 3~9 (일~토) -->
-        <div class="cal-cell bookable" onclick="openBooking(3)"><span class="cal-date">3</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell bookable" onclick="openBooking(4)"><span class="cal-date">4</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell holiday"><span class="cal-date">5</span><span class="cal-holiday-label">어린이날</span></div>
-        <div class="cal-cell bookable" onclick="openBooking(6)"><span class="cal-date">6</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell bookable" onclick="openBooking(7)"><span class="cal-date">7</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell bookable" onclick="openBooking(8)"><span class="cal-date">8</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell bookable" onclick="openBooking(9)"><span class="cal-date">9</span><div class="cal-book-hint">대관 신청</div></div>
-        <!-- 10~16 (일~토) -->
-        <div class="cal-cell bookable" onclick="openBooking(10)"><span class="cal-date">10</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell bookable" onclick="openBooking(11)"><span class="cal-date">11</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell bookable" onclick="openBooking(12)"><span class="cal-date">12</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell bookable" onclick="openBooking(13)"><span class="cal-date">13</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell has-event" onclick="openBooking(14)"><span class="cal-date">14</span><div class="cal-book-hint">대관 신청</div><div class="cal-event seminar-event" onclick="event.stopPropagation();scrollToCard(1,'seminar')">동서남북book①<span class="cal-venue-dot seminar-dot"></span></div></div>
-        <div class="cal-cell has-event" onclick="openBooking(15)"><span class="cal-date">15</span><div class="cal-book-hint">대관 신청</div><div class="cal-event seminar-event" onclick="event.stopPropagation();scrollToCard(2,'seminar')">영화 한편<span class="cal-venue-dot seminar-dot"></span></div></div>
-        <div class="cal-cell has-event" onclick="openBooking(16)"><span class="cal-date">16</span><div class="cal-book-hint">대관 신청</div><div class="cal-event seminar-event" onclick="event.stopPropagation();scrollToCard(3,'seminar')">드로잉 슥슥<span class="cal-venue-dot seminar-dot"></span></div></div>
-        <!-- 17~23 (일~토) -->
-        <div class="cal-cell has-event" onclick="openBooking(17)"><span class="cal-date">17</span><div class="cal-book-hint">대관 신청</div><div class="cal-event seminar-event" onclick="event.stopPropagation();scrollToCard(4,'seminar')">오붓이 책꾸<span class="cal-venue-dot seminar-dot"></span></div></div>
-        <div class="cal-cell has-event" onclick="openBooking(18)"><span class="cal-date">18</span><div class="cal-book-hint">대관 신청</div><div class="cal-event table-event" onclick="event.stopPropagation();scrollToCard(1,'table')">새미,콤마 책수다<span class="cal-venue-dot table-dot"></span></div></div>
-        <div class="cal-cell bookable" onclick="openBooking(19)"><span class="cal-date">19</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell has-event multi-event" onclick="openBooking(20)"><span class="cal-date">20</span><div class="cal-book-hint">대관 신청</div><div class="cal-event seminar-event" onclick="event.stopPropagation();scrollToCard(5,'seminar')">티블렌딩①②<span class="cal-venue-dot seminar-dot"></span></div><div class="cal-event table-event" onclick="event.stopPropagation();scrollToCard(6,'table')">익명의 독서중독자들<span class="cal-venue-dot table-dot"></span></div></div>
-        <div class="cal-cell has-event" onclick="openBooking(21)"><span class="cal-date">21</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell has-event" onclick="openBooking(22)"><span class="cal-date">22</span><div class="cal-book-hint">대관 신청</div><div class="cal-event table-event" onclick="event.stopPropagation();scrollToCard(2,'table')">심야만화방<span class="cal-venue-dot table-dot"></span></div></div>
-        <div class="cal-cell has-event" onclick="openBooking(23)"><span class="cal-date">23</span><div class="cal-book-hint">대관 신청</div><div class="cal-event seminar-event" onclick="event.stopPropagation();scrollToCard(7,'seminar')">숨,쉼 심리학<span class="cal-venue-dot seminar-dot"></span></div></div>
-        <!-- 24~30 (일~토) -->
-        <div class="cal-cell bookable" onclick="openBooking(24)"><span class="cal-date">24</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell bookable" onclick="openBooking(25)"><span class="cal-date">25</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell bookable" onclick="openBooking(26)"><span class="cal-date">26</span><div class="cal-book-hint">대관 신청</div></div>
-        <div class="cal-cell has-event multi-event" onclick="openBooking(27)"><span class="cal-date">27</span><div class="cal-book-hint">대관 신청</div><div class="cal-event seminar-event" onclick="event.stopPropagation();scrollToCard(8,'seminar')">한 사람을 위한 편지<span class="cal-venue-dot seminar-dot"></span></div><div class="cal-event table-event" onclick="event.stopPropagation();scrollToCard(3,'table')">희희낙락<span class="cal-venue-dot table-dot"></span></div></div>
-        <div class="cal-cell bookable" onclick="openBooking(28)"><span class="cal-date">28</span><div class="cal-book-hint">대관 신청</div><div class="cal-event seminar-event" onclick="event.stopPropagation();scrollToCard(1,'seminar')">동서남북book②<span class="cal-venue-dot seminar-dot"></span></div></div>
-        <div class="cal-cell has-event" onclick="openBooking(29)"><span class="cal-date">29</span><div class="cal-book-hint">대관 신청</div><div class="cal-event seminar-event" onclick="event.stopPropagation();scrollToCard(9,'seminar')">영어 북클럽<span class="cal-venue-dot seminar-dot"></span></div></div>
-        <div class="cal-cell has-event" onclick="openBooking(30)"><span class="cal-date">30</span><div class="cal-book-hint">대관 신청</div><div class="cal-event seminar-event" onclick="event.stopPropagation();scrollToCard(10,'seminar')">책갈피 산책<span class="cal-venue-dot seminar-dot"></span></div></div>
-        <!-- 31 (일) -->
-        <div class="cal-cell bookable" onclick="openBooking(31)"><span class="cal-date">31</span><div class="cal-book-hint">대관 신청</div></div>
-      </div>
-      <div class="cal-legend">
-        <span class="legend-item"><span class="legend-dot seminar-dot"></span>📌 세미나실</span>
-        <span class="legend-item"><span class="legend-dot table-dot"></span>☕ 매장테이블</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- FILTER BAR -->
-  <nav id="filter-bar">
-    <button class="filter-btn active" data-filter="all">전체</button>
-    <button class="filter-btn" data-filter="seminar">📌 세미나실</button>
-    <button class="filter-btn" data-filter="table">☕ 매장테이블</button>
-  </nav>
-
-  <!-- MAIN: 날짜순 정렬 -->
-  <main id="main-content">
-    <div class="cards-grid">
-
-      <!-- 5/14 동서남북book · 세미나실 -->
-      <article class="meeting-card has-poster" data-venue="seminar" data-date="0514" data-meeting="multi" data-capacity="6">
-        <div class="poster-thumb ratio-3x2" onclick="openLightbox('images/동서남북.jpg', '동서남북 포스터')">
-          <img src="images/동서남북.jpg" alt="동서남북 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">동서남북</span>
-            <span class="seat-badge">회차당 6명</span>
-          </div>
-          <h2 class="card-title">동서남북book</h2>
-          <p class="card-theme">그림책을 소재로 이야기를 나누며, 그림책에 어울리는 클래식 음악으로 감정을 기록하기</p>
-          <span class="venue-tag seminar-tag">📌 세미나실</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item" data-sub-meeting="0514-1" data-sub-capacity="6">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/14 (목) 오전 11:00 – 13:00</span>
-            </div>
-            <div class="schedule-item" data-sub-meeting="0528-1" data-sub-capacity="6">
-              <span class="schedule-no">②</span>
-              <span class="schedule-text">5/28 (목) 오전 11:00 – 13:00</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">회차당 ₩10,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/15 앗트책방 · 세미나실 -->
-      <article class="meeting-card has-poster" data-venue="seminar" data-date="0515" data-meeting="0515" data-capacity="8">
-        <div class="poster-thumb" onclick="openLightbox('images/앗트책방.jpg', '앗트책방 포스터')">
-          <img src="images/앗트책방.jpg" alt="앗트책방 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">앗트책방</span>
-            <span class="seat-badge">8명</span>
-          </div>
-          <h2 class="card-title">영화 한편, 이야기 한잔</h2>
-          <p class="card-theme">최근 본 영화 또는 추천하고픈 영화에 대해 이야기 나누기</p>
-          <span class="venue-tag seminar-tag">📌 세미나실</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/15 (금) 오후 18:00 – 19:30</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩10,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/16 사소한 수집소 · 세미나실 -->
-      <article class="meeting-card has-poster" data-venue="seminar" data-date="0516" data-meeting="0516" data-capacity="7">
-        <div class="poster-thumb" onclick="openLightbox('images/사소한수집소.jpg', '사소한 수집소 포스터')">
-          <img src="images/사소한수집소.jpg" alt="사소한 수집소 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">사소한 수집소</span>
-            <span class="seat-badge">7명</span>
-          </div>
-          <h2 class="card-title">드로잉 '슥슥'</h2>
-          <p class="card-theme">프롤로그_낙서키링만들기</p>
-          <span class="venue-tag seminar-tag">📌 세미나실</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/16 (토) 오후 14:00 – 16:00</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩10,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/17 책방,파도 · 세미나실 -->
-      <article class="meeting-card has-poster" data-venue="seminar" data-date="0517" data-meeting="0517" data-capacity="5">
-        <div class="poster-thumb" onclick="openLightbox('images/책방파도.jpg', '책방,파도 포스터')">
-          <img src="images/책방파도.jpg" alt="책방,파도 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">책꾸×교환독서</span>
-            <span class="seat-badge">5명</span>
-          </div>
-          <h2 class="card-title">오붓이 책꾸×교환독서</h2>
-          <p class="card-theme">소장하고 싶은 책을 읽으며 오리고 붙이고 꾸미기</p>
-          <span class="venue-tag seminar-tag">📌 세미나실</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/17 (일) 오후 13:00 – 15:00</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩10,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/18 새미,콤마 · 매장테이블 -->
-      <article class="meeting-card has-poster" data-venue="table" data-date="0518" data-meeting="0518" data-capacity="5">
-        <div class="poster-thumb" onclick="openLightbox('images/새미콤마.jpg', '새미,콤마 포스터')">
-          <img src="images/새미콤마.jpg" alt="새미,콤마 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">새미, 콤마</span>
-            <span class="seat-badge">5명</span>
-          </div>
-          <h2 class="card-title">새미,콤마 책수다</h2>
-          <p class="card-theme">어른들을 위한 그림책 보며 수다떨기 💛</p>
-          <span class="venue-tag table-tag">☕ 매장테이블</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/18 (월) 오전 10:30 – 12:00</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩10,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/20 다온글방 티블렌딩 · 세미나실 -->
-      <article class="meeting-card has-poster" data-venue="seminar" data-date="0520" data-meeting="multi" data-capacity="6">
-        <div class="poster-thumb ratio-1x1" onclick="openLightbox('images/다온글방.jpg', '다온글방 포스터')">
-          <img src="images/다온글방.jpg" alt="다온글방 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">다온글방</span>
-            <span class="seat-badge">회차당 6명</span>
-          </div>
-          <h2 class="card-title">티블렌딩 for the 가족</h2>
-          <p class="card-theme">'가족'을 위해 만든 티블렌딩</p>
-          <span class="venue-tag seminar-tag">📌 세미나실</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item" data-sub-meeting="0520a" data-sub-capacity="6">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/20 (수) 오전 11:00 – 13:00</span>
-            </div>
-            <div class="schedule-item" data-sub-meeting="0520b" data-sub-capacity="6">
-              <span class="schedule-no">②</span>
-              <span class="schedule-text">5/20 (수) 오후 19:00 – 21:00</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩20,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/20 달뒤북스 익명의 독서중독자들 · 매장테이블 -->
-      <article class="meeting-card has-poster" data-venue="table" data-date="0520" data-meeting="0520c" data-capacity="7">
-        <div class="poster-thumb ratio-1x1" onclick="openLightbox('images/달뒤북스_익명.jpg', '달뒤북스 포스터')">
-          <img src="images/달뒤북스_익명.jpg" alt="달뒤북스 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">달뒤북스</span>
-            <span class="seat-badge">7명</span>
-          </div>
-          <h2 class="card-title">익명의 독서중독자들</h2>
-          <p class="card-theme">5월 모임 책 《내가 이런 데서 일할 사람이 아닌데》</p>
-          <span class="venue-tag table-tag">☕ 매장테이블</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/20 (수) 오후 17:00 – 18:30</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩10,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/22 또봐만화방 · 매장테이블 (신규) -->
-      <article class="meeting-card has-poster" data-venue="table" data-date="0522" data-meeting="0522" data-capacity="5">
-        <div class="poster-thumb ratio-1x1" onclick="openLightbox('images/또봐만화방.jpg', '또봐만화방 포스터')">
-          <img src="images/또봐만화방.jpg" alt="또봐만화방 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">또봐 만화방</span>
-            <span class="seat-badge">5명</span>
-          </div>
-          <h2 class="card-title">심야만화방</h2>
-          <p class="card-theme">좋아하는 만화책과 간식 들고 만나요. 또봐만화책 이용가능 🍿</p>
-          <span class="venue-tag table-tag">☕ 매장테이블</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/22 (금) 오후 19:00 – 23:00</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩10,000 (음료제공)</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/23 해피니스북스토어 · 세미나실 -->
-      <article class="meeting-card has-poster" data-venue="seminar" data-date="0523" data-meeting="0523" data-capacity="6">
-        <div class="poster-thumb ratio-1x1" onclick="openLightbox('images/해피니스북스토어.jpg', '해피니스북스토어 포스터')">
-          <img src="images/해피니스북스토어.jpg" alt="해피니스북스토어 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">해피니스북스토어</span>
-            <span class="seat-badge">6명</span>
-          </div>
-          <h2 class="card-title">숨,쉼 심리학 스터디 & 북클럽</h2>
-          <p class="card-theme">심리학도서 선정하여 같이 읽고 나누는 시간</p>
-          <span class="regular-badge">매월 넷째 주 토요일 정기모임</span>
-          <span class="venue-tag seminar-tag">📌 세미나실</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/23 (토) 오후 14:00 – 16:00</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩10,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/27 모퉁이 우표점 · 세미나실 -->
-      <article class="meeting-card has-poster" data-venue="seminar" data-date="0527" data-meeting="0527a" data-capacity="1">
-        <div class="poster-thumb ratio-3x2" onclick="openLightbox('images/모퉁이우표점.jpg?v=20260517', '모퉁이우표점 포스터')">
-          <img src="images/모퉁이우표점.jpg?v=20260517" alt="모퉁이우표점 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">모퉁이 우표점</span>
-            <span class="seat-badge special-seat">1명</span>
-          </div>
-          <h2 class="card-title">한 사람을 위한 편지</h2>
-          <p class="card-theme">타자기로 쓰고 우표를 붙여 편지를 보냅니다</p>
-          <span class="regular-badge">매월 마지막 주 수요일 정기모임</span>
-          <span class="venue-tag seminar-tag">📌 세미나실</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/27 (수) 오전 11:00 – 13:00</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩30,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/27 달뒤북스 희희낙락 · 매장테이블 (신규) -->
-      <article class="meeting-card has-poster" data-venue="table" data-date="0527" data-meeting="0527b" data-capacity="3">
-        <div class="poster-thumb" onclick="openLightbox('images/희희낙락.png', '희희낙락 포스터')">
-          <img src="images/희희낙락.png" alt="희희낙락 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">달뒤북스</span>
-            <span class="seat-badge">3명</span>
-          </div>
-          <h2 class="card-title">희희낙락</h2>
-          <p class="card-theme">희곡 읽기 모임</p>
-          <span class="venue-tag table-tag">☕ 매장테이블</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/27 (수) 오후 18:00 – 19:30</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩10,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/29 영국정원 · 세미나실 -->
-      <article class="meeting-card has-poster" data-venue="seminar" data-date="0529" data-meeting="0529" data-capacity="5">
-        <div class="poster-thumb ratio-3x2" onclick="openLightbox('images/영국정원.jpg', '영국정원 포스터')">
-          <img src="images/영국정원.jpg" alt="영국정원 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">영국정원</span>
-            <span class="seat-badge">5명</span>
-          </div>
-          <h2 class="card-title">영어 북클럽</h2>
-          <p class="card-theme">자유 독서 후 책에 대해 대화 나누기</p>
-          <span class="venue-tag seminar-tag">📌 세미나실</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/29 (금) 오후 13:00 – 14:30</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩10,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-      <!-- 5/30 썬북친구 · 세미나실 -->
-      <article class="meeting-card has-poster" data-venue="seminar" data-date="0530" data-meeting="0530" data-capacity="5">
-        <div class="poster-thumb" onclick="openLightbox('images/썬북친구.jpg', '썬북친구 포스터')">
-          <img src="images/썬북친구.jpg" alt="썬북친구 포스터" class="poster-img" />
-          <div class="poster-overlay"><span>🔍 포스터 보기</span></div>
-        </div>
-        <div class="card-top">
-          <div class="card-meta-row">
-            <span class="host-name">썬북친구</span>
-            <span class="seat-badge">5명</span>
-          </div>
-          <h2 class="card-title">책갈피 산책</h2>
-          <p class="card-theme">한 시간 독서 후 한 시간 책 소개 및 대화</p>
-          <span class="venue-tag seminar-tag">📌 세미나실</span>
-        </div>
-        <div class="card-bottom">
-          <div class="schedule-list">
-            <div class="schedule-item">
-              <span class="schedule-no">①</span>
-              <span class="schedule-text">5/30 (토) 오후 14:00 – 16:00</span>
-            </div>
-          </div>
-          <div class="card-footer-row">
-            <span class="fee-tag">₩10,000</span>
-            <a href="https://forms.gle/uoTLg9tv8wX5LP8p8" target="_blank" class="apply-btn" rel="noopener">신청하기 →</a>
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </main>
-
-  <!-- LIGHTBOX -->
-  <div id="lightbox" onclick="closeLightbox()">
-    <div class="lightbox-inner" onclick="event.stopPropagation()">
-      <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-      <img id="lightbox-img" src="" alt="" />
-    </div>
+  <div class="info-box">
+    <strong>신청 안내</strong><br />
+    포스터 이미지는 JPG·PNG·GIF 형식으로 직접 업로드해 주세요 (최대 5MB).
   </div>
 
-  <!-- 환불 규정 -->
-  <section id="refund-section">
-    <div class="refund-inner">
-      <h3 class="refund-title">💳 환불 규정</h3>
-      <div class="refund-grid">
-        <div class="refund-card">
-          <div class="refund-card-title">🎨 사전 재료 준비가 있는 모임</div>
-          <ul class="refund-list">
-            <li><span class="refund-badge full">100% 환불</span> 모임 2일 전 취소까지</li>
-            <li><span class="refund-badge half">50% 환불</span> 모임 1일 전 취소까지</li>
-            <li><span class="refund-badge none">환불 불가</span> 당일 취소</li>
-          </ul>
-        </div>
-        <div class="refund-card">
-          <div class="refund-card-title">📚 재료 준비가 없는 모임</div>
-          <ul class="refund-list">
-            <li><span class="refund-badge full">100% 환불</span> 모임 1일 전 취소까지</li>
-            <li><span class="refund-badge none">환불 불가</span> 당일 취소</li>
-          </ul>
+  <form id="apply-form" novalidate>
+
+    <!-- 1. 기본 정보 -->
+    <div class="card">
+      <div class="card-title">기본 정보</div>
+
+      <div class="field">
+        <label class="required">신청 월</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="month" value="6월" required checked />
+            <span>6월</span>
+          </label>
         </div>
       </div>
-      <p class="refund-notice">* 취소 문의는 비북스 공식 인스타그램 DM으로 부탁드립니다</p>
-    </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer id="site-footer">
-    <p class="footer-text">© 2025 · 비북스 b.moim · 느슨하고 단단하게 함께 자라가는 모임</p>
-  </footer>
-
-
-  <!-- 대관 신청 모달 -->
-  <div id="booking-modal" class="modal-overlay" onclick="closeBookingModal(event)">
-    <div class="modal-box">
-      <button class="modal-close" onclick="closeBookingModal(null, true)">✕</button>
-      <div class="modal-header">
-        <span class="modal-badge">🏠 공간 대관</span>
-        <h3 class="modal-title">5월 <span id="modal-date-num"></span>일 대관 신청</h3>
-        <p class="modal-subtitle">비북스 세미나실 · 매장 테이블 대관 문의</p>
+      <div class="field">
+        <label for="meetingName" class="required">모임명</label>
+        <input type="text" id="meetingName" name="meetingName" placeholder="예) 동서남북book, 심야만화방" maxlength="50" required />
       </div>
-      <div class="modal-body">
-        <div class="modal-field">
-          <label>공간 선택</label>
-          <div class="toggle-group">
-            <button class="toggle-btn active" data-val="세미나실" onclick="selectVenue(this)">📌 세미나실</button>
-            <button class="toggle-btn" data-val="매장 테이블" onclick="selectVenue(this)">☕ 매장 테이블</button>
-          </div>
-        </div>
-        <div class="modal-field">
-          <label>시간대</label>
-          <div class="toggle-group">
-            <button class="toggle-btn active" data-val="오전 (10:00~13:00)" onclick="selectTime(this)">오전</button>
-            <button class="toggle-btn" data-val="오후 (13:00~17:00)" onclick="selectTime(this)">오후</button>
-            <button class="toggle-btn" data-val="저녁 (17:00~21:00)" onclick="selectTime(this)">저녁</button>
-          </div>
-        </div>
-        <div class="modal-field">
-          <label>사용 목적</label>
-          <input type="text" id="book-purpose" placeholder="예: 독서모임, 스터디, 생일파티 등"/>
-        </div>
-        <div class="modal-field">
-          <label>인원</label>
-          <input type="number" id="book-people" placeholder="예: 6" min="1" max="20"/>
-        </div>
-        <div class="modal-field">
-          <label>성함</label>
-          <input type="text" id="book-name" placeholder="신청자 이름"/>
-        </div>
-        <div class="modal-field">
-          <label>연락처</label>
-          <input type="tel" id="book-phone" placeholder="010-0000-0000"/>
-        </div>
-        <div class="modal-field">
-          <label>요청사항 <span class="optional">선택</span></label>
-          <textarea id="book-memo" placeholder="추가 요청사항이 있으면 적어주세요"></textarea>
-        </div>
+
+      <div class="field">
+        <label for="description" class="required">모임 소개</label>
+        <textarea id="description" name="description" placeholder="모임에 참여하고 싶어지는 매력적인 소개 문구를 적어주세요" maxlength="500" required></textarea>
+        <p class="hint">페이지에 그대로 표시됩니다 · 모임의 분위기와 특색이 잘 드러나게 써주세요</p>
       </div>
-      <div class="modal-footer">
-        <button class="modal-submit" onclick="submitBooking()">신청 문의 보내기 →</button>
-        <p class="modal-notice">* 제출 후 비북스 담당자가 확인 후 연락드립니다</p>
+
+      <div class="field">
+        <label for="hostName" class="required">호스트명</label>
+        <input type="text" id="hostName" name="hostName" placeholder="이름 또는 닉네임" required />
       </div>
     </div>
+
+    <!-- 2. 공간 & 일정 -->
+    <div class="card">
+      <div class="card-title">공간 & 일정</div>
+
+      <div class="field">
+        <label class="required">희망 공간</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="space" value="세미나실" required />
+            <span>📌 세미나실</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="space" value="매장테이블" />
+            <span>☕ 매장테이블</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="required">희망 날짜·시간</label>
+        <div class="session-row" style="margin-bottom: 8px;">
+          <div class="session-label">1회차</div>
+          <input type="text" id="session1" name="session1" placeholder="예) 6/12 (목) 14:00–16:00" required />
+        </div>
+        <div class="session-row" style="margin-bottom: 8px;">
+          <div class="session-label">2회차</div>
+          <input type="text" id="session2" name="session2" placeholder="선택" />
+        </div>
+        <div class="session-row" style="margin-bottom: 8px;">
+          <div class="session-label">3회차</div>
+          <input type="text" id="session3" name="session3" placeholder="선택" />
+        </div>
+        <div class="session-row">
+          <div class="session-label">4회차</div>
+          <input type="text" id="session4" name="session4" placeholder="선택" />
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 모임 세부 -->
+    <div class="card">
+      <div class="card-title">모임 세부 사항</div>
+
+      <div class="field">
+        <label for="capacity" class="required">모임 정원</label>
+        <input type="number" id="capacity" name="capacity" min="1" max="50" placeholder="명" required />
+      </div>
+
+      <div class="field">
+        <label for="fee" class="required">참가비</label>
+        <div class="input-suffix">
+          <input type="number" id="fee" name="fee" min="5000" step="1000" placeholder="최소 5,000원" required />
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="required">사전 재료 준비 여부</label>
+        <div class="radio-group">
+          <label class="radio-option">
+            <input type="radio" name="hasMaterials" value="있음" required />
+            <span>있음</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="hasMaterials" value="없음" />
+            <span>없음</span>
+          </label>
+        </div>
+        <p class="hint">재료 준비 여부에 따라 환불 규정이 달라집니다</p>
+      </div>
+    </div>
+
+    <!-- 4. 호스트 연락처 & 포스터 -->
+    <div class="card">
+      <div class="card-title">연락처 & 포스터</div>
+
+      <div class="field">
+        <label for="contact" class="required">호스트 연락처</label>
+        <input type="text" id="contact" name="contact" placeholder="전화번호 또는 인스타그램 계정(@포함)" required />
+      </div>
+
+      <div class="field">
+        <label>포스터 이미지</label>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="posterFile" name="posterFile" accept="image/jpeg,image/png,image/gif,image/webp" />
+          <span class="upload-icon">🖼️</span>
+          <span class="upload-label">클릭하거나 이미지를 끌어다 놓으세요</span>
+          <span class="upload-sub">JPG · PNG · GIF · WEBP · 최대 5MB · 선택 사항</span>
+        </div>
+        <div class="upload-preview" id="upload-preview">
+          <img id="preview-img" src="" alt="포스터 미리보기" />
+          <div class="upload-preview-name">
+            <span id="preview-name"></span>
+            <button type="button" class="upload-remove" id="remove-file">✕ 제거</button>
+          </div>
+        </div>
+        <div class="upload-progress" id="upload-progress">이미지 변환 중...</div>
+      </div>
+
+      <div class="field">
+        <label for="notes">기타 요청사항</label>
+        <textarea id="notes" name="notes" placeholder="추가로 전달할 내용이 있으면 적어주세요"></textarea>
+      </div>
+    </div>
+
+    <!-- 제출 -->
+    <button type="submit" class="submit-btn" id="submit-btn">신청서 제출하기 →</button>
+    <div id="error-msg">제출 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>
+
+  </form>
+
+  <div id="success-msg">
+    <h2>✅ 신청이 접수되었습니다!</h2>
+    <p>비북스 담당자가 검토 후 3일 이내 연락드릴게요.<br />문의: 비북스 인스타그램 DM</p>
   </div>
 
-  <!-- 완료 토스트 -->
-  <div id="toast" class="toast">✅ 신청이 접수되었습니다! 곧 연락드릴게요 😊</div>
+</div>
 
-  <button type="button" id="scroll-to-top" class="scroll-to-top" aria-label="맨 위로 이동" title="맨 위로">
-    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
-  </button>
+<footer>
+  © 2026 · 비북스 b.moim · 느슨하고 단단하게 함께 자라가는 모임
+</footer>
 
-  <script src="js/main.js"></script>
+<script>
+  // ⚠️ Apps Script 배포 후 받은 웹 앱 URL로 교체하세요
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwFDKZu2Nr4G00QSi3a8bD_be0xkTeXCjocJdaf7X8vGTPV0zD5qK1s-Yeh8nuLWvI/exec';
 
-  <!-- 대관 신청 현황 캘린더 반영 -->
-  <script>
-  const BOOKING_API = 'https://script.google.com/macros/s/AKfycbz_MdyXsui_8UYFf_PnOcI0W0B_AOb7bwxZ13MgqU3KYfERgRVkUca9N5lKTE8uUN_u/exec';
+  const form = document.getElementById('apply-form');
+  const submitBtn = document.getElementById('submit-btn');
+  const successMsg = document.getElementById('success-msg');
+  const errorMsg = document.getElementById('error-msg');
+  const uploadZone = document.getElementById('upload-zone');
+  const posterFileInput = document.getElementById('posterFile');
+  const uploadPreview = document.getElementById('upload-preview');
+  const previewImg = document.getElementById('preview-img');
+  const previewName = document.getElementById('preview-name');
+  const removeFileBtn = document.getElementById('remove-file');
+  const uploadProgress = document.getElementById('upload-progress');
 
-  // 날짜 문자열에서 숫자 추출 (예: "5월 11일" → 11)
-  function parseDate(str) {
-    const m = String(str).match(/(\d+)일/);
-    return m ? parseInt(m[1]) : null;
+  let posterData = null; // { base64, fileName, mimeType }
+
+  // ── 파일 선택 처리 ──
+  function handleFile(file) {
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      alert('이미지 파일만 업로드 가능합니다 (JPG, PNG, GIF, WEBP)');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert('파일 크기는 5MB 이하로 올려주세요.');
+      return;
+    }
+
+    uploadProgress.style.display = 'block';
+
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const dataUrl = ev.target.result;
+      const base64 = dataUrl.split(',')[1];
+      posterData = { base64, fileName: file.name, mimeType: file.type };
+
+      previewImg.src = dataUrl;
+      previewName.textContent = file.name + ' (' + (file.size / 1024).toFixed(0) + 'KB)';
+      uploadPreview.style.display = 'block';
+      uploadZone.style.display = 'none';
+      uploadProgress.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
   }
 
-  // 시간대 문자열 → 짧은 표현
-  function parseTime(str) {
-    str = String(str);
-    if (str.includes('8시') || str.includes('오전')) return '오전';
-    if (str.includes('오후') || str.includes('13') || str.includes('14') || str.includes('15') || str.includes('16')) return '오후';
-    if (str.includes('저녁') || str.includes('17') || str.includes('18') || str.includes('19') || str.includes('20') || str.includes('21')) return '저녁';
-    return str.replace(/^\d+\.\s*/, '').split(':')[0].trim().substring(0,6);
-  }
+  posterFileInput.addEventListener('change', function() {
+    handleFile(this.files[0]);
+  });
 
-  // 장소 → 짧게
-  function parseVenue(str) {
-    str = String(str);
-    if (str.includes('세미나')) return '세미나실';
-    if (str.includes('테이블') || str.includes('매장')) return '매장테이블';
-    return str;
-  }
+  // 드래그 앤 드롭
+  uploadZone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    uploadZone.classList.add('drag-over');
+  });
+  uploadZone.addEventListener('dragleave', function() {
+    uploadZone.classList.remove('drag-over');
+  });
+  uploadZone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    uploadZone.classList.remove('drag-over');
+    handleFile(e.dataTransfer.files[0]);
+  });
 
-  // 대관 모달 표시
-  function showBookingDetail(bookings) {
-    const overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);';
-    
-    const box = document.createElement('div');
-    box.style.cssText = 'background:#fff;border-radius:16px;max-width:380px;width:100%;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.25);animation:modalIn .2s ease;';
-    
-    const header = `<div style="background:#2a3d2a;color:#fff;padding:20px 24px;">
-      <div style="font-size:11px;background:rgba(255,255,255,0.15);display:inline-block;padding:2px 10px;border-radius:20px;margin-bottom:8px;">🏠 대관 신청 현황</div>
-      <div style="font-family:serif;font-size:18px;font-weight:700;">총 ${bookings.length}건</div>
-    </div>`;
-    
-    const items = bookings.map(b => `
-      <div style="padding:14px 20px;border-bottom:1px solid #f0ebe3;">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-          <span style="font-size:13px;font-weight:700;color:#2a3d2a;">${b.purpose}</span>
-          <span style="font-size:11px;background:#e8f0e8;color:#2a3d2a;padding:2px 8px;border-radius:10px;">${b.venue}</span>
-        </div>
-        <div style="font-size:12px;color:#7a9a7a;">⏰ ${b.time} &nbsp;|&nbsp; 👥 ${b.people} &nbsp;|&nbsp; 👤 ${b.name}</div>
-      </div>`).join('');
-    
-    box.innerHTML = header + `<div>${items}</div>
-      <div style="padding:14px 20px;text-align:right;">
-        <button onclick="this.closest('[style*=fixed]').remove()" style="background:#2a3d2a;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:sans-serif;">닫기</button>
-      </div>`;
-    
-    overlay.appendChild(box);
-    overlay.addEventListener('click', e => { if(e.target===overlay) overlay.remove(); });
-    document.body.appendChild(overlay);
-  }
+  // 파일 제거
+  removeFileBtn.addEventListener('click', function() {
+    posterData = null;
+    posterFileInput.value = '';
+    previewImg.src = '';
+    uploadPreview.style.display = 'none';
+    uploadZone.style.display = 'block';
+  });
 
-  // 캘린더에 대관 현황 배지 추가
-  async function loadBookings() {
+  // ── 폼 제출 ──
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const month = form.querySelector('input[name="month"]:checked');
+    const space = form.querySelector('input[name="space"]:checked');
+    const hasMaterials = form.querySelector('input[name="hasMaterials"]:checked');
+
+    if (!month) { alert('신청 월을 선택해 주세요.'); return; }
+    if (!space) { alert('희망 공간을 선택해 주세요.'); return; }
+    if (!hasMaterials) { alert('재료 준비 여부를 선택해 주세요.'); return; }
+
+    const payload = {
+      month: month.value,
+      meetingName: document.getElementById('meetingName').value.trim(),
+      description: document.getElementById('description').value.trim(),
+      hostName: document.getElementById('hostName').value.trim(),
+      space: space.value,
+      session1: document.getElementById('session1').value.trim(),
+      session2: document.getElementById('session2').value.trim(),
+      session3: document.getElementById('session3').value.trim(),
+      session4: document.getElementById('session4').value.trim(),
+      capacity: document.getElementById('capacity').value.trim(),
+      fee: document.getElementById('fee').value.trim(),
+      hasMaterials: hasMaterials.value,
+      contact: document.getElementById('contact').value.trim(),
+      notes: document.getElementById('notes').value.trim(),
+    };
+
+    if (!payload.meetingName || !payload.description || !payload.hostName ||
+        !payload.session1 || !payload.capacity || !payload.fee || !payload.contact) {
+      alert('필수 항목(*)을 모두 입력해 주세요.');
+      return;
+    }
+    if (Number(payload.fee) < 5000) {
+      alert('참가비는 최소 5,000원 이상으로 설정해 주세요.');
+      return;
+    }
+
+    // 포스터 첨부 (선택)
+    if (posterData) {
+      payload.posterBase64 = posterData.base64;
+      payload.posterFileName = posterData.fileName;
+      payload.posterMimeType = posterData.mimeType;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = posterData ? '이미지 업로드 중...' : '제출 중...';
+    errorMsg.style.display = 'none';
+
     try {
-      const res = await fetch(BOOKING_API);
-      const json = await res.json();
-      if (!json.data) return;
-
-      // 날짜별로 그룹핑
-      const byDate = {};
-      json.data.forEach(row => {
-        const date = parseDate(row['1. 대관 날짜를 적어주세요. (예: 5월 10일) ']);
-        if (!date) return;
-        if (!byDate[date]) byDate[date] = [];
-        byDate[date].push({
-          purpose: row['4. 대관 사용 목적을 간략히 적어주세요. (예: 독서모임 / 북토크 / 음악 공연  등등 ) '] || '',
-          time:    parseTime(row['3. 대관 시간대를 골라주세요. '] || ''),
-          venue:   parseVenue(row['2. 대관 장소를 골라주세요. '] || ''),
-          people:  row['5. 이용 인원을 적어주세요. '] || '',
-          name:    row['6. 신청자 분 성함을 적어주세요. '] || '',
-        });
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
       });
 
-      // 캘린더 셀에 배지 추가
-      Object.entries(byDate).forEach(([date, bookings]) => {
-        // 해당 날짜 셀 찾기
-        const cells = document.querySelectorAll('.cal-grid .cal-cell');
-        cells.forEach(cell => {
-          const dateEl = cell.querySelector('.cal-date');
-          if (dateEl && parseInt(dateEl.textContent) === parseInt(date) && !cell.classList.contains('empty')) {
-            // 이미 배지 없으면 추가
-            if (!cell.querySelector('.booking-badge')) {
-              const badge = document.createElement('div');
-              badge.className = 'booking-badge';
-              badge.style.cssText = 'font-size:8.5px;font-weight:700;background:#fdf3e4;color:#c87820;border:1px solid #f6d860;border-radius:4px;padding:2px 4px;margin-top:2px;cursor:pointer;display:flex;align-items:center;gap:2px;';
-              badge.innerHTML = '📋 대관 ' + bookings.length + '건';
-              badge.onclick = (e) => {
-                e.stopPropagation();
-                showBookingDetail(bookings);
-              };
-              cell.appendChild(badge);
-            }
-          }
-        });
-      });
-    } catch(e) {
-      console.log('대관 데이터 로딩 실패:', e);
-    }
-  }
+      form.style.display = 'none';
+      successMsg.style.display = 'block';
+      successMsg.scrollIntoView({ behavior: 'smooth' });
 
-  // 페이지 로드 시 실행
-  window.addEventListener('load', loadBookings);
-  </script>
-
-  <script>
-  (function () {
-    var btn = document.getElementById('scroll-to-top');
-    if (!btn) return;
-    function syncScrollTopBtn() {
-      if (window.scrollY > 100) btn.classList.add('is-visible');
-      else btn.classList.remove('is-visible');
+    } catch (err) {
+      errorMsg.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = '신청서 제출하기 →';
     }
-    window.addEventListener('scroll', syncScrollTopBtn, { passive: true });
-    syncScrollTopBtn();
-    btn.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  })();
-  </script>
+  });
+</script>
 
 </body>
 </html>
