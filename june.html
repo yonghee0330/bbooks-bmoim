@@ -428,6 +428,16 @@
       transition: width .4s ease;
     }
     .cap-bar-fill.full { background: #dc2626; }
+    .cap-session-row { margin-bottom: 8px; }
+    .cap-session-row:last-child { margin-bottom: 0; }
+    .cap-session-label {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px; color: var(--muted); margin-bottom: 4px;
+    }
+    .cap-session-label strong { color: var(--text); }
+    .cap-session-label .remain { font-weight: 700; }
+    .cap-session-label .remain.urgent { color: #dc2626; }
+    .cap-session-label .remain.closed { color: #dc2626; }
     .btn-apply.full {
       background: var(--muted); cursor: not-allowed;
       opacity: 1 !important;
@@ -580,11 +590,20 @@
           <div class="meta-row"><span class="mi">👥</span>회차당 3명</div>
         </div>
         <div id="cap-dong" class="cap-wrap">
-          <div class="cap-row">
-            <div class="cap-label">신청 현황 <span id="cap-dong-txt">—</span></div>
-            <div id="cap-dong-remain" class="cap-remain">확인 중…</div>
+          <div class="cap-session-row">
+            <div class="cap-session-label">
+              <strong>① 6/11(목)</strong>
+              <span id="cap-dong-s1-remain" class="remain">확인 중…</span>
+            </div>
+            <div class="cap-bar-bg"><div id="cap-dong-s1-bar" class="cap-bar-fill" style="width:0%"></div></div>
           </div>
-          <div class="cap-bar-bg"><div id="cap-dong-bar" class="cap-bar-fill" style="width:0%"></div></div>
+          <div class="cap-session-row">
+            <div class="cap-session-label">
+              <strong>② 6/18(목)</strong>
+              <span id="cap-dong-s2-remain" class="remain">확인 중…</span>
+            </div>
+            <div class="cap-bar-bg"><div id="cap-dong-s2-bar" class="cap-bar-fill" style="width:0%"></div></div>
+          </div>
         </div>
         <div class="moim-foot">
           <div>
@@ -659,11 +678,20 @@
           <div class="meta-row"><span class="mi">📚</span>모임 도서 &lt;구덩이&gt; 구매 조건</div>
         </div>
         <div id="cap-tuesday" class="cap-wrap">
-          <div class="cap-row">
-            <div class="cap-label">신청 현황 <span id="cap-tuesday-txt">—</span></div>
-            <div id="cap-tuesday-remain" class="cap-remain">확인 중…</div>
+          <div class="cap-session-row">
+            <div class="cap-session-label">
+              <strong>① 6/14(일)</strong>
+              <span id="cap-tuesday-s1-remain" class="remain">확인 중…</span>
+            </div>
+            <div class="cap-bar-bg"><div id="cap-tuesday-s1-bar" class="cap-bar-fill" style="width:0%"></div></div>
           </div>
-          <div class="cap-bar-bg"><div id="cap-tuesday-bar" class="cap-bar-fill" style="width:0%"></div></div>
+          <div class="cap-session-row">
+            <div class="cap-session-label">
+              <strong>② 6/21(일)</strong>
+              <span id="cap-tuesday-s2-remain" class="remain">확인 중…</span>
+            </div>
+            <div class="cap-bar-bg"><div id="cap-tuesday-s2-bar" class="cap-bar-fill" style="width:0%"></div></div>
+          </div>
         </div>
         <div class="moim-foot">
           <div>
@@ -1010,49 +1038,68 @@ function updateCap(key, data, moimName, hasSession) {
   const btn = document.getElementById('btn-' + key);
   const m   = MOIMS[key];
 
-  let count, totalCap, isFull;
-
   if (hasSession) {
-    // 회차별 정원이 다를 수 있으므로 caps 객체 우선, 없으면 cap 동일 적용
-    const sessions = m.sessions;
-    count    = 0;
-    totalCap = 0;
+    // 회차별로 각각 바 업데이트
     let allFull = true;
-    sessions.forEach(s => {
-      const c   = data[moimName + '_' + s.value] || 0;
-      const cap = m.caps ? (m.caps[s.value] || m.cap) : m.cap;
-      count    += c;
-      totalCap += cap;
-      if (c < cap) allFull = false;
+    m.sessions.forEach((s, idx) => {
+      const sNum  = idx + 1;
+      const cap   = m.caps ? (m.caps[s.value] || m.cap) : m.cap;
+      const count = data[moimName + '_' + s.value] || 0;
+      const isFull  = count >= cap;
+      const remain  = cap - count;
+      const pct     = Math.min(100, Math.round(count / cap * 100));
+
+      const remEl = document.getElementById('cap-' + key + '-s' + sNum + '-remain');
+      const barEl = document.getElementById('cap-' + key + '-s' + sNum + '-bar');
+
+      if (remEl) {
+        if (isFull) {
+          remEl.textContent = '마감';
+          remEl.className   = 'remain closed';
+        } else {
+          remEl.textContent = count + '/' + cap + '명 · 잔여 ' + remain + '자리';
+          remEl.className   = 'remain' + (remain <= 1 ? ' urgent' : '');
+        }
+      }
+      if (barEl) {
+        barEl.style.width = pct + '%';
+        barEl.className   = 'cap-bar-fill' + (isFull ? ' full' : '');
+      }
+      if (!isFull) allFull = false;
     });
-    isFull = allFull;
+
+    if (allFull && btn) {
+      btn.disabled = true;
+      btn.classList.add('full');
+      btn.textContent = '신청 마감';
+    }
+
   } else {
-    count    = data[moimName] || 0;
-    totalCap = m.cap;
-    isFull   = count >= m.cap;
-  }
+    // 단일 회차
+    const count  = data[moimName] || 0;
+    const cap    = m.cap;
+    const isFull = count >= cap;
+    const remain = cap - count;
+    const pct    = Math.min(100, Math.round(count / cap * 100));
 
-  const remain = totalCap - count;
-  const pct    = Math.min(100, Math.round(count / totalCap * 100));
+    const txt = document.getElementById('cap-' + key + '-txt');
+    const rem = document.getElementById('cap-' + key + '-remain');
+    const bar = document.getElementById('cap-' + key + '-bar');
 
-  const txt = document.getElementById('cap-' + key + '-txt');
-  const rem = document.getElementById('cap-' + key + '-remain');
-  const bar = document.getElementById('cap-' + key + '-bar');
-
-  if (txt) txt.textContent = count + '/' + totalCap + '명';
-  if (rem) {
-    rem.textContent = isFull ? '신청 마감' : '잔여 ' + remain + '자리';
-    rem.className   = 'cap-remain' + (remain <= 2 && !isFull ? ' urgent' : '');
-  }
-  if (bar) {
-    bar.style.width = pct + '%';
-    bar.className   = 'cap-bar-fill' + (isFull ? ' full' : '');
-  }
-
-  if (isFull && btn) {
-    btn.disabled = true;
-    btn.classList.add('full');
-    btn.textContent = '신청 마감';
+    if (txt) txt.textContent = count + '/' + cap + '명';
+    if (rem) {
+      rem.textContent = isFull ? '신청 마감' : '잔여 ' + remain + '자리';
+      rem.className   = 'cap-remain' + (remain <= 2 && !isFull ? ' urgent' : '');
+    }
+    if (bar) {
+      bar.style.width = pct + '%';
+      bar.className   = 'cap-bar-fill' + (isFull ? ' full' : '');
+    }
+    if (isFull && btn) {
+      btn.disabled = true;
+      btn.classList.add('full');
+      btn.textContent = '신청 마감';
+    }
   }
 }
 
