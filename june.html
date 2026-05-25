@@ -375,6 +375,28 @@
       border-radius: 12px;
     }
 
+    /* 포스터 이미지 슬롯 */
+    .poster-img-slot {
+      position: absolute; inset: 0;
+      z-index: 2;
+    }
+    .poster-img-slot img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .poster-img-slot img[src=""], .poster-img-slot img:not([src]) { display: none; }
+
+    /* ── 신청 인원 바 ─────────────────────── */
+    .cap-bar-wrap { margin-bottom: 14px; }
+    .cap-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+    .cap-bar-label { font-size: 11px; color: var(--muted); white-space: nowrap; min-width: 60px; }
+    .cap-bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+    .cap-bar-fill { height: 100%; border-radius: 99px; background: #3b82f6; transition: width .4s ease; width: 0%; }
+    .cap-bar-fill.full { background: #ef4444; }
+    .cap-bar-count { font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; min-width: 32px; text-align: right; }
+    .cap-bar-count.full { color: #ef4444; }
+    .btn-apply.sold-out { background: #94a3b8; cursor: not-allowed; }
+
     /* ── 공간 소개 ───────────────────────── */
     .space-section { margin-top: 48px; }
     .space-filter {
@@ -509,7 +531,10 @@
       <!-- 4주 -->
       <div class="cal-cell sun" onclick="openRent('2026-06-21')"><div class="cal-day">21</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-22')"><div class="cal-day">22</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-06-23')"><div class="cal-day">23</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="scrollToMoim('tuesday')">
+        <div class="cal-day">23</div>
+        <div class="cal-event ev-moim">화요일오후두시</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-06-24')"><div class="cal-day">24</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-25')"><div class="cal-day">25</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-26')"><div class="cal-day">26</div><div class="cal-rent-btn">대관</div></div>
@@ -541,8 +566,6 @@
         <div class="poster-badge">b.moim · 2026.06</div>
         <div class="poster-title">동서남북<br>book</div>
         <div class="poster-host">너라면</div>
-        <!-- 포스터 이미지 교체 시: poster-img-slot display:block -->
-        <div class="poster-img-slot"><img src="images/포스터-동서남북.jpg" alt="동서남북book 포스터"></div>
       </div>
       <div class="moim-body">
         <div class="moim-name">동서남북book</div>
@@ -561,12 +584,25 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>회차당 3명</div>
         </div>
+        <!-- 인원 바 -->
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-row">
+            <span class="cap-bar-label">① 6/11(목)</span>
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-dong-6월11일"></div></div>
+            <span class="cap-bar-count" id="cnt-dong-6월11일">-/3</span>
+          </div>
+          <div class="cap-bar-row">
+            <span class="cap-bar-label">② 6/18(목)</span>
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-dong-6월18일"></div></div>
+            <span class="cap-bar-count" id="cnt-dong-6월18일">-/3</span>
+          </div>
+        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 없음</div>
           </div>
-          <button class="btn-apply" onclick="openApply('동서남북book','dong')">신청하기</button>
+          <button class="btn-apply" id="apply-dong" onclick="openApply('동서남북book','dong')">신청하기</button>
         </div>
       </div>
     </div>
@@ -584,12 +620,18 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>7명</div>
         </div>
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-row">
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-drawing"></div></div>
+            <span class="cap-bar-count" id="cnt-drawing">-/7</span>
+          </div>
+        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 있음</div>
           </div>
-          <button class="btn-apply" onclick="openApply('드로잉 슥슥','drawing')">신청하기</button>
+          <button class="btn-apply" id="apply-drawing" onclick="openApply('드로잉 슥슥','drawing')">신청하기</button>
         </div>
       </div>
     </div>
@@ -601,23 +643,45 @@
         <div class="poster-badge">b.moim · 2026.06</div>
         <div class="poster-title">화요일<br>오후두시</div>
         <div class="poster-host">허당꼼</div>
-        <div class="poster-img-slot"><img src="images/포스터-화요일오후두시.jpg" alt="화요일오후두시 포스터"></div>
       </div>
       <div class="moim-body">
         <div class="moim-name">화요일오후두시</div>
         <div class="moim-desc">전시되어 있는 책 속 캐릭터 인형을 제작하는 수업. 비북스 0.1평 서점 도서 구매 조건으로 진행합니다.</div>
-        <div class="moim-meta">
+        <div class="session-tabs">
+          <button class="stab active" onclick="selectSession(this,'tue1')">① 6/14(일)</button>
+          <button class="stab" onclick="selectSession(this,'tue2')">② 6/23(월)</button>
+        </div>
+        <div class="moim-meta" id="tue1-meta">
           <div class="meta-row"><span class="mi">📅</span>6월 14일 (일) 오후 2:00 – 4:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
-          <div class="meta-row"><span class="mi">👥</span>4명</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
           <div class="meta-row"><span class="mi">📚</span>비북스 도서 1권 이상 구매 조건</div>
+        </div>
+        <div class="moim-meta" id="tue2-meta" style="display:none">
+          <div class="meta-row"><span class="mi">📅</span>6월 23일 (월) 오후 2:00 – 4:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>5명</div>
+          <div class="meta-row"><span class="mi">📚</span>비북스 도서 1권 이상 구매 조건</div>
+        </div>
+        <!-- 인원 바 -->
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-row">
+            <span class="cap-bar-label">① 6/14(일)</span>
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-tue-6월14일"></div></div>
+            <span class="cap-bar-count" id="cnt-tue-6월14일">-/6</span>
+          </div>
+          <div class="cap-bar-row">
+            <span class="cap-bar-label">② 6/23(월)</span>
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-tue-6월23일"></div></div>
+            <span class="cap-bar-count" id="cnt-tue-6월23일">-/5</span>
+          </div>
         </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 있음</div>
           </div>
-          <button class="btn-apply" onclick="openApply('화요일오후두시','tuesday')">신청하기</button>
+          <button class="btn-apply" id="apply-tuesday" onclick="openApply('화요일오후두시','tuesday')">신청하기</button>
         </div>
       </div>
     </div>
@@ -635,12 +699,18 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>6명</div>
         </div>
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-row">
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-afternoon"></div></div>
+            <span class="cap-bar-count" id="cnt-afternoon">-/6</span>
+          </div>
+        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">20,000원</div>
             <div class="moim-cap">재료 없음</div>
           </div>
-          <button class="btn-apply" onclick="openApply('책 숲에서 즐기는 애프터눈 티','afternoon')">신청하기</button>
+          <button class="btn-apply" id="apply-afternoon" onclick="openApply('책 숲에서 즐기는 애프터눈 티','afternoon')">신청하기</button>
         </div>
       </div>
     </div>
@@ -879,40 +949,112 @@
 
 <script>
 // ══ 설정 ═══════════════════════════════
-const API = 'https://script.google.com/macros/s/AKfycbwfZYQ9FtaMWm6ZqyPhd1tByTzrQV352jtQZYT0-lplGlR0WOKCW_V928gLmRptuPik4g/exec'; // ← 배포 후 URL 입력
+const API = 'https://script.google.com/macros/s/AKfycbwfZYQ9FtaMWm6ZqyPhd1tByTzrQV352jtQZYT0-lplGlR0WOKCW_V928gLmRptuPik4g/exec';
 
 // ══ 모임 데이터 ════════════════════════
+// session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
 const MOIMS = {
   dong: {
     name: '동서남북book',
     sessions: [
-      { label: '① 6/11(목) 오전 11:00–13:00', value: '1회차_6월11일' },
-      { label: '② 6/18(목) 오전 11:00–13:00', value: '2회차_6월18일' }
+      { label: '① 6/11(목) 오전 11:00–13:00', value: '6월11일' },
+      { label: '② 6/18(목) 오전 11:00–13:00', value: '6월18일' }
     ],
+    capacity: 3,
     amount: 10000,
     hasSession: true
   },
   drawing: {
     name: '드로잉 슥슥',
     sessions: [{ label: '6/13(토) 오후 1:30–3:30', value: '6월13일' }],
+    capacity: 7,
     amount: 10000,
     hasSession: false
   },
   tuesday: {
     name: '화요일오후두시',
-    sessions: [{ label: '6/14(일) 오후 2:00–4:00', value: '6월14일' }],
+    sessions: [
+      { label: '① 6/14(일) 오후 2:00–4:00', value: '6월14일' },
+      { label: '② 6/23(월) 오후 2:00–4:00', value: '6월23일' }
+    ],
+    capacity: { '6월14일': 6, '6월23일': 5 },
     amount: 10000,
-    hasSession: false
+    hasSession: true
   },
   afternoon: {
     name: '책 숲에서 즐기는 애프터눈 티',
     sessions: [{ label: '6/20(토) 오후 2:00–4:00', value: '6월20일' }],
+    capacity: 6,
     amount: 20000,
     hasSession: false
   }
 };
 
 let curMoimKey = '';
+
+// ══ 인원 바 로딩 ═══════════════════════
+async function loadCounts() {
+  try {
+    const res = await fetch(`${API}?action=count&month=6월`, { redirect: 'follow' });
+    const counts = await res.json();
+    if (counts.error) { console.warn('count error:', counts.error); return; }
+
+    // 동서남북 — 회차별 바
+    ['6월11일', '6월18일'].forEach(date => {
+      const cur = counts[`동서남북book_${date}`] || 0;
+      renderBar(`bar-dong-${date}`, `cnt-dong-${date}`, cur, MOIMS.dong.capacity);
+    });
+    // 두 회차 모두 마감이면 버튼 비활성
+    if ((counts['동서남북book_6월11일'] || 0) >= MOIMS.dong.capacity &&
+        (counts['동서남북book_6월18일'] || 0) >= MOIMS.dong.capacity) {
+      soldOut('apply-dong');
+    }
+
+    // 단일 회차 모임
+    [
+      { key: 'drawing',   name: '드로잉 슥슥',                       date: '6월13일' },
+      { key: 'afternoon', name: '책 숲에서 즐기는 애프터눈 티',       date: '6월20일' }
+    ].forEach(({ key, name, date }) => {
+      // Apps Script는 "모임명_날짜" 또는 "모임명" 둘 다 카운트함
+      const cur = counts[`${name}_${date}`] ?? counts[name] ?? 0;
+      renderBar(`bar-${key}`, `cnt-${key}`, cur, MOIMS[key].capacity);
+      if (cur >= MOIMS[key].capacity) soldOut(`apply-${key}`);
+    });
+
+    // 화요일오후두시 — 회차별
+    ['6월14일', '6월23일'].forEach(date => {
+      const cur = counts[`화요일오후두시_${date}`] || 0;
+      const cap = MOIMS.tuesday.capacity[date];
+      renderBar(`bar-tue-${date}`, `cnt-tue-${date}`, cur, cap);
+    });
+    if ((counts['화요일오후두시_6월14일'] || 0) >= MOIMS.tuesday.capacity['6월14일'] &&
+        (counts['화요일오후두시_6월23일'] || 0) >= MOIMS.tuesday.capacity['6월23일']) {
+      soldOut('apply-tuesday');
+    }
+
+  } catch(e) {
+    console.warn('인원 현황 로딩 실패:', e);
+  }
+}
+
+function renderBar(barId, cntId, cur, cap) {
+  const bar = document.getElementById(barId);
+  const cnt = document.getElementById(cntId);
+  if (!bar || !cnt) return;
+  const pct = Math.min(100, Math.round(cur / cap * 100));
+  bar.style.width = pct + '%';
+  bar.classList.toggle('full', cur >= cap);
+  cnt.textContent = `${cur}/${cap}`;
+  cnt.classList.toggle('full', cur >= cap);
+}
+
+function soldOut(btnId) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.disabled = true;
+  btn.textContent = '마감';
+  btn.classList.add('sold-out');
+}
 
 // ══ 모임 신청 모달 ══════════════════════
 function openApply(name, key) {
@@ -971,6 +1113,7 @@ async function submitApply() {
         </div>
         <button class="btn-apply" style="width:100%;margin-top:8px" onclick="closeOv('applyOv')">닫기</button>
       </div>`;
+    setTimeout(loadCounts, 1500); // 신청 후 인원 갱신
   } catch {
     flash('applyAlert', '신청 중 오류가 발생했습니다. 인스타그램 DM으로 문의해주세요.', 'e');
     setLoad('submitBtn', false, '신청하기');
@@ -1024,10 +1167,6 @@ function scrollToMoim(id) {
 
 // ══ API ══════════════════════════════════
 async function POST(data) {
-  if (!API || API === 'YOUR_APPS_SCRIPT_URL') {
-    console.log('API not set. Data:', data);
-    return { success: true };
-  }
   const r = await fetch(API, {
     method: 'POST', redirect: 'follow',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -1060,8 +1199,6 @@ function initSlider() {
 function showSlides(slides) {
   visibleSlides = slides;
   curSlide = 0;
-  const slider = q('#spaceSlider');
-  // 숨기기/보이기
   allSlides.forEach(s => s.style.display = 'none');
   visibleSlides.forEach(s => s.style.display = 'block');
   updateSlider();
@@ -1081,27 +1218,25 @@ function slideMove(dir) {
 }
 
 function updateSlider() {
-  // 슬라이더를 flex로 보이는 것만 순서대로
-  const slider = q('#spaceSlider');
-  visibleSlides.forEach((s, i) => {
-    s.style.order = i;
-  });
-  slider.style.transform = `translateX(-${curSlide * 100}%)`;
+  visibleSlides.forEach((s, i) => { s.style.order = i; });
+  q('#spaceSlider').style.transform = `translateX(-${curSlide * 100}%)`;
   document.querySelectorAll('.sdot').forEach((d, i) => {
     d.classList.toggle('active', i === curSlide);
   });
 }
 
 function buildDots() {
-  const dots = q('#sliderDots');
-  dots.innerHTML = visibleSlides.map((_, i) =>
+  q('#sliderDots').innerHTML = visibleSlides.map((_, i) =>
     `<div class="sdot${i===0?' active':''}" onclick="goSlide(${i})"></div>`
   ).join('');
 }
 
 function goSlide(i) { curSlide = i; updateSlider(); }
 
-window.addEventListener('DOMContentLoaded', initSlider);
+window.addEventListener('DOMContentLoaded', () => {
+  initSlider();
+  loadCounts();
+});
 
 // ══ 유틸 ════════════════════════════════
 const q = sel => document.querySelector(sel);
