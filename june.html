@@ -151,6 +151,7 @@
     }
     .ev-moim { background: #dbeafe; color: #1d4ed8; }
     .ev-rent { background: #f1f5f9; color: var(--muted); font-size: 9px; }
+    .cal-rent-done { background: #fef3c7; color: #92400e; font-size: 9px; font-weight: 700; }
     .cal-rent-btn {
       position: absolute; bottom: 3px; right: 3px;
       font-size: 9px; color: var(--muted);
@@ -998,6 +999,26 @@ async function loadCounts() {
     const res = await fetch(`${API}?action=count&month=6월`, { redirect: 'follow' });
     const counts = await res.json();
     if (counts.error) { console.warn('count error:', counts.error); return; }
+
+    // ── 대관 날짜 캘린더 반영 ──
+    const rentDates = counts._rentDates || [];
+    rentDates.forEach(dateStr => {
+      // dateStr: "2026-06-21" — openRent 파라미터와 매칭
+      const cell = document.querySelector(`.cal-cell[onclick*="openRent('${dateStr}')"]`);
+      if (!cell) return;
+      // 대관 버튼 → 대관완료 뱃지로 교체 (중복 방지)
+      if (!cell.querySelector('.cal-rent-done')) {
+        const btn = cell.querySelector('.cal-rent-btn');
+        if (btn) btn.remove();
+        const badge = document.createElement('div');
+        badge.className = 'cal-event cal-rent-done';
+        badge.textContent = '대관완료';
+        cell.appendChild(badge);
+        // 클릭 시 대관 모달 열리지 않도록
+        cell.style.pointerEvents = 'none';
+        cell.style.cursor = 'default';
+      }
+    });
 
     // 동서남북 — 회차별 바
     ['6월11일', '6월18일'].forEach(date => {
