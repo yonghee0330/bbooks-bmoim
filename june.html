@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>비북스 b.moim | 6월 모임 신청</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy: #0A1F44;
+      --navy2: #1a3558;
+      --accent: #4a8cff;
+      --green: #2e7d52;
+      --bg: #f5f7f3;
+      --white: #ffffff;
+      --text: #1e293b;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── 헤더 ─────────────────────────────── */
+    header {
+      background: var(--navy);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+    .header-sub { font-size: 12px; color: rgba(255,255,255,.55); }
+
+    /* ── 히어로 ───────────────────────────── */
+    .hero {
+      background: var(--navy);
+      padding: 48px 24px 40px;
+      text-align: center;
+      color: white;
+    }
+    .hero-badge {
+      display: inline-block;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12px;
+      color: rgba(255,255,255,.7);
+      margin-bottom: 16px;
+      letter-spacing: .06em;
+    }
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(24px, 5vw, 36px);
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 12px;
+    }
+    .hero p {
+      font-size: 14px;
+      color: rgba(255,255,255,.65);
+      line-height: 1.7;
+    }
+
+    /* ── 컨테이너 ─────────────────────────── */
+    .wrap { max-width: 760px; margin: 0 auto; padding: 32px 20px 80px; }
+    .sec-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+    .sec-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--accent);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    /* ── 캘린더 ───────────────────────────── */
+    .cal-wrap { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: 40px; }
+    .cal-head {
+      background: var(--navy); color: white;
+      padding: 14px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .cal-head strong { font-family: 'Noto Serif KR', serif; font-size: 17px; }
+    .cal-legend { display: flex; gap: 12px; font-size: 11px; color: rgba(255,255,255,.7); }
+    .cal-legend span { display: flex; align-items: center; gap: 4px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .dot-moim { background: #4a8cff; }
+    .dot-rent { background: #94a3b8; }
+
+    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); }
+    .cal-dow {
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+    }
+    .cal-dow.sun { color: #ef4444; }
+    .cal-dow.sat { color: #3b82f6; }
+    .cal-cell {
+      min-height: 68px;
+      padding: 6px 6px 4px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      font-size: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: background .15s;
+    }
+    .cal-cell:hover { background: #f0f6ff; }
+    .cal-cell:nth-child(7n) { border-right: none; }
+    .cal-cell.empty { background: #fafafa; cursor: default; }
+    .cal-cell.empty:hover { background: #fafafa; }
+    .cal-cell.today .cal-day { background: var(--navy); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+    .cal-day { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .cal-cell.sun .cal-day { color: #ef4444; }
+    .cal-cell.sat .cal-day { color: #3b82f6; }
+    .cal-event {
+      font-size: 10px;
+      padding: 2px 5px;
+      border-radius: 4px;
+      margin-bottom: 2px;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+    .ev-moim { background: #dbeafe; color: #1d4ed8; }
+    .ev-rent { background: #f1f5f9; color: var(--muted); font-size: 9px; }
+    .cal-rent-btn {
+      position: absolute; bottom: 3px; right: 3px;
+      font-size: 9px; color: var(--muted);
+      background: #f1f5f9; border-radius: 3px;
+      padding: 1px 4px; cursor: pointer;
+    }
+
+    /* ── 모임 카드 ────────────────────────── */
+    .moim-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media(min-width:600px) { .moim-grid { grid-template-columns: repeat(2,1fr); } }
+
+    .moim-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .moim-card:hover { box-shadow: 0 8px 32px rgba(10,31,68,.1); transform: translateY(-2px); }
+
+    /* 타이포 포스터 */
+    .moim-poster {
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .moim-poster.p1 { background: linear-gradient(135deg, #0A1F44 0%, #1a3558 100%); }
+    .moim-poster.p2 { background: linear-gradient(135deg, #2e3b1e 0%, #4a6741 100%); }
+    .moim-poster.p3 { background: linear-gradient(135deg, #3b1f5e 0%, #6b42a0 100%); }
+    .moim-poster.p4 { background: linear-gradient(135deg, #5e2a0e 0%, #a0561c 100%); }
+    .poster-deco {
+      position: absolute;
+      font-size: 80px;
+      opacity: .06;
+      right: -10px;
+      bottom: -10px;
+    }
+    .poster-badge {
+      font-size: 10px;
+      letter-spacing: .12em;
+      color: rgba(255,255,255,.5);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .poster-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(18px, 4vw, 24px);
+      font-weight: 700;
+      color: white;
+      text-align: center;
+      line-height: 1.4;
+      z-index: 1;
+    }
+    .poster-host {
+      font-size: 11px;
+      color: rgba(255,255,255,.5);
+      margin-top: 10px;
+      z-index: 1;
+    }
+    .poster-img-slot {
+      position: absolute; inset: 0;
+      display: none; /* 실제 이미지 있을 때 display:block */
+    }
+    .poster-img-slot img { width: 100%; height: 100%; object-fit: cover; }
+
+    .moim-body { padding: 18px; }
+    .moim-name {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 17px; font-weight: 700;
+      color: var(--navy); margin-bottom: 6px;
+    }
+    .moim-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+    .moim-meta { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+    .meta-row { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: var(--text); }
+    .meta-row .mi { color: var(--muted); width: 14px; flex-shrink: 0; text-align: center; font-size: 13px; }
+    .moim-foot {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .moim-price { font-size: 15px; font-weight: 700; color: var(--navy); }
+    .moim-cap { font-size: 11px; color: var(--muted); }
+    .btn-apply {
+      background: var(--navy); color: white;
+      border: none; border-radius: 8px;
+      padding: 9px 18px; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      transition: opacity .15s;
+    }
+    .btn-apply:hover { opacity: .85; }
+    .btn-apply:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* 회차 탭 */
+    .session-tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .stab {
+      padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
+      border: 1px solid var(--border); background: var(--bg); color: var(--muted);
+      cursor: pointer; font-family: inherit; transition: all .15s;
+    }
+    .stab.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+    /* ── 대관 안내 ────────────────────────── */
+    .rent-box {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px; margin-top: 40px;
+    }
+    .rent-box h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .rent-box p { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+    .btn-rent {
+      background: var(--bg); color: var(--navy);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 20px; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: all .15s;
+    }
+    .btn-rent:hover { background: var(--navy); color: white; border-color: var(--navy); }
+
+    /* ── 모달 ─────────────────────────────── */
+    .ov {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.5); z-index: 200;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .ov.on { display: flex; }
+    .modal {
+      background: white; border-radius: 16px;
+      padding: 28px; width: 100%; max-width: 420px;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 18px; font-weight: 700; color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .modal-sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+    .fg { margin-bottom: 14px; }
+    .fg label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
+    .fg input, .fg select, .fg textarea {
+      width: 100%; padding: 11px 13px;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: var(--text);
+      outline: none; transition: border-color .15s;
+    }
+    .fg input:focus, .fg select:focus { border-color: var(--accent); }
+    .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .modal-foot { display: flex; gap: 8px; margin-top: 6px; }
+    .modal-foot .btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .btn-cancel { background: var(--bg); color: var(--text); }
+    .btn-submit { background: var(--navy); color: white; }
+    .btn-submit:disabled { opacity: .5; cursor: not-allowed; }
+
+    .alert { padding: 10px 13px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; }
+    .ae { background: #fee2e2; color: #991b1b; }
+    .ao { background: #dcfce7; color: #166534; }
+
+    /* 입금 안내 */
+    .pay-box {
+      background: #f0f6ff; border: 1px solid #bfdbfe;
+      border-radius: 10px; padding: 16px; margin: 14px 0;
+      font-size: 14px; line-height: 1.8;
+    }
+    .pay-box strong { color: var(--navy); }
+    .pay-amount { font-size: 22px; font-weight: 700; color: var(--navy); }
+
+    .spin { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.3); border-top-color: white; border-radius: 50%; animation: rot .6s linear infinite; vertical-align: middle; margin-right: 4px; }
+    @keyframes rot { to { transform: rotate(360deg); } }
+
+    /* ── 환불 정책 ────────────────────────── */
+    .refund { margin-top: 40px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .refund h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+    .refund p { font-size: 12px; color: var(--muted); line-height: 1.8; }
+
+    /* ── 푸터 ─────────────────────────────── */
+    footer {
+      background: var(--navy); color: rgba(255,255,255,.55);
+      text-align: center; padding: 28px 20px;
+      font-size: 12px; line-height: 1.8;
+    }
+    footer a { color: rgba(255,255,255,.7); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="https://moim.bbooks.co.kr">b<span>.</span>moim</a>
+  <div class="header-sub">비북스 월간 모임</div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">2026 · 06</div>
+  <h1>6월 모임 & 대관 신청</h1>
+  <p>느슨하고 단단하게 함께 자라가는 모임<br>모임을 클릭하면 신청 페이지로 연결됩니다</p>
+</div>
+
+<div class="wrap">
+
+  <!-- ── 캘린더 ── -->
+  <div style="margin-bottom:8px">
+    <div class="sec-label">Calendar</div>
+    <div class="sec-title">6월 일정</div>
+  </div>
+  <div class="cal-wrap">
+    <div class="cal-head">
+      <strong>2026년 6월</strong>
+      <div class="cal-legend">
+        <span><span class="dot dot-moim"></span> 비모임</span>
+        <span><span class="dot dot-rent"></span> 대관 가능</span>
+      </div>
+    </div>
+    <div class="cal-grid">
+      <div class="cal-dow sun">일</div>
+      <div class="cal-dow">월</div>
+      <div class="cal-dow">화</div>
+      <div class="cal-dow">수</div>
+      <div class="cal-dow">목</div>
+      <div class="cal-dow">금</div>
+      <div class="cal-dow sat">토</div>
+
+      <!-- 1주: 6/1은 월요일 -->
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell"><div class="cal-day">1</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">2</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">3</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">4</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">5</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat"><div class="cal-day">6</div><div class="cal-rent-btn">대관</div></div>
+
+      <!-- 2주 -->
+      <div class="cal-cell sun"><div class="cal-day">7</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">8</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">9</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">10</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="scrollToMoim('dongseobukbook')">
+        <div class="cal-day">11</div>
+        <div class="cal-event ev-moim">동서남북book</div>
+      </div>
+      <div class="cal-cell"><div class="cal-day">12</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="scrollToMoim('drawing')">
+        <div class="cal-day">13</div>
+        <div class="cal-event ev-moim">드로잉 슥슥</div>
+      </div>
+
+      <!-- 3주 -->
+      <div class="cal-cell sun" onclick="scrollToMoim('tuesday')">
+        <div class="cal-day">14</div>
+        <div class="cal-event ev-moim">화요일오후두시</div>
+      </div>
+      <div class="cal-cell"><div class="cal-day">15</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">16</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">17</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="scrollToMoim('dongseobukbook')">
+        <div class="cal-day">18</div>
+        <div class="cal-event ev-moim">동서남북book②</div>
+      </div>
+      <div class="cal-cell"><div class="cal-day">19</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="scrollToMoim('afternoon')">
+        <div class="cal-day">20</div>
+        <div class="cal-event ev-moim">애프터눈 티</div>
+      </div>
+
+      <!-- 4주 -->
+      <div class="cal-cell sun"><div class="cal-day">21</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">22</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">23</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">24</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">25</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">26</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat"><div class="cal-day">27</div><div class="cal-rent-btn">대관</div></div>
+
+      <!-- 5주 -->
+      <div class="cal-cell sun"><div class="cal-day">28</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">29</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell"><div class="cal-day">30</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell empty"></div>
+    </div>
+  </div>
+
+  <!-- ── 모임 카드 ── -->
+  <div style="margin-bottom:16px">
+    <div class="sec-label">b.moim</div>
+    <div class="sec-title">6월 개설 모임</div>
+  </div>
+
+  <div class="moim-grid">
+
+    <!-- 동서남북book -->
+    <div class="moim-card" id="dongseobukbook">
+      <div class="moim-poster p1">
+        <div class="poster-deco">📖</div>
+        <div class="poster-badge">b.moim · 2026.06</div>
+        <div class="poster-title">동서남북<br>book</div>
+        <div class="poster-host">너라면</div>
+        <!-- 포스터 이미지 교체 시: poster-img-slot display:block -->
+        <div class="poster-img-slot"><img src="images/포스터-동서남북.jpg" alt="동서남북book 포스터"></div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">동서남북book</div>
+        <div class="moim-desc">그림책과 클래식음악의 콜라보레이션. 낯선 시선이 낯익은 시선으로 물들어가는 기록모임입니다.</div>
+        <div class="session-tabs">
+          <button class="stab active" onclick="selectSession(this,'dong1')">① 6/11(목)</button>
+          <button class="stab" onclick="selectSession(this,'dong2')">② 6/18(목)</button>
+        </div>
+        <div class="moim-meta" id="dong1-meta">
+          <div class="meta-row"><span class="mi">📅</span>6월 11일 (목) 오전 11:00 – 13:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>회차당 3명</div>
+        </div>
+        <div class="moim-meta" id="dong2-meta" style="display:none">
+          <div class="meta-row"><span class="mi">📅</span>6월 18일 (목) 오전 11:00 – 13:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>회차당 3명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" onclick="openApply('동서남북book','dong')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 드로잉 슥슥 -->
+    <div class="moim-card" id="drawing">
+      <div class="moim-poster p2">
+        <div class="poster-deco">🎨</div>
+        <div class="poster-badge">b.moim · 2026.06</div>
+        <div class="poster-title">드로잉<br>'슥슥'</div>
+        <div class="poster-host">사소한수집소_인유</div>
+        <div class="poster-img-slot"><img src="images/포스터-드로잉슥슥.jpg" alt="드로잉 슥슥 포스터"></div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">드로잉 '슥슥'</div>
+        <div class="moim-desc">삶의 '낙'서를 위한 낙낙한 모임. 프롤로그_낙서키링만들기</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>6월 13일 (토) 오후 1:30 – 3:30</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>7명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 있음</div>
+          </div>
+          <button class="btn-apply" onclick="openApply('드로잉 슥슥','drawing')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 화요일오후두시 -->
+    <div class="moim-card" id="tuesday">
+      <div class="moim-poster p3">
+        <div class="poster-deco">🧸</div>
+        <div class="poster-badge">b.moim · 2026.06</div>
+        <div class="poster-title">화요일<br>오후두시</div>
+        <div class="poster-host">허당꼼</div>
+        <div class="poster-img-slot"><img src="images/포스터-화요일오후두시.jpg" alt="화요일오후두시 포스터"></div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">화요일오후두시</div>
+        <div class="moim-desc">전시되어 있는 책 속 캐릭터 인형을 제작하는 수업. 비북스 0.1평 서점 도서 구매 조건으로 진행합니다.</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>6월 14일 (일) 오후 2:00 – 4:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>4명</div>
+          <div class="meta-row"><span class="mi">📚</span>비북스 도서 1권 이상 구매 조건</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 있음</div>
+          </div>
+          <button class="btn-apply" onclick="openApply('화요일오후두시','tuesday')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 애프터눈 티 -->
+    <div class="moim-card" id="afternoon">
+      <div class="moim-poster p4">
+        <div class="poster-deco">🫖</div>
+        <div class="poster-badge">b.moim · 2026.06</div>
+        <div class="poster-title">책 숲에서<br>즐기는<br>애프터눈 티</div>
+        <div class="poster-host">지선화 (다온글방)</div>
+        <div class="poster-img-slot"><img src="images/포스터-애프터눈티.jpg" alt="애프터눈 티 포스터"></div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">책 숲에서 즐기는 애프터눈 티</div>
+        <div class="moim-desc">애프터눈 티 탄생 스토리를 알아보고, 약간의 담소와 함께 1인 애프터눈 티를 즐겨요!</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>6월 20일 (토) 오후 2:00 – 4:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">20,000원</div>
+            <div class="moim-cap">재료 없음</div>
+          </div>
+          <button class="btn-apply" onclick="openApply('책 숲에서 즐기는 애프터눈 티','afternoon')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── 대관 안내 ── -->
+  <div class="rent-box">
+    <h3>🏠 공간 대관 문의</h3>
+    <p>비북스 세미나실과 매장 테이블을 대관하실 수 있어요.<br>
+    일정 확인 후 담당자가 연락드립니다.</p>
+    <button class="btn-rent" onclick="openRent()">대관 신청하기</button>
+  </div>
+
+  <!-- ── 환불 정책 ── -->
+  <div class="refund">
+    <h3>💳 환불 규정</h3>
+    <p>
+      <strong>재료 준비가 있는 모임</strong><br>
+      · 모임 2일 전 취소: 100% 환불<br>
+      · 모임 1일 전 취소: 50% 환불<br>
+      · 당일 취소: 환불 불가<br><br>
+      <strong>재료 준비가 없는 모임</strong><br>
+      · 모임 1일 전 취소: 100% 환불<br>
+      · 당일 취소: 환불 불가<br><br>
+      취소 문의는 비북스 공식 인스타그램 DM으로 부탁드립니다.
+    </p>
+  </div>
+
+</div>
+
+<!-- ══ 모달: 모임 신청 ══ -->
+<div class="ov" id="applyOv">
+  <div class="modal">
+    <div class="modal-title" id="modalMoimName"></div>
+    <div class="modal-sub" id="modalMoimDate"></div>
+    <div id="applyAlert"></div>
+    <div id="applyForm">
+      <div class="fg-row">
+        <div class="fg"><label>이름 *</label><input type="text" id="aName" placeholder="이름"/></div>
+        <div class="fg"><label>연락처 *</label><input type="tel" id="aPhone" placeholder="010-0000-0000"/></div>
+      </div>
+      <div id="sessionSelectWrap" style="display:none">
+        <div class="fg"><label>회차 선택 *</label>
+          <select id="aSession">
+            <option value="">회차를 선택해주세요</option>
+          </select>
+        </div>
+      </div>
+      <div class="pay-box">
+        <div style="font-size:12px;color:#1d4ed8;margin-bottom:4px">입금 안내</div>
+        <div class="pay-amount" id="modalAmount"></div>
+        <div style="font-size:12px;margin-top:6px">
+          <strong>카카오뱅크 3333-3725-33252</strong> (예금주 비북스)<br>
+          입금자명은 신청 시 이름과 동일하게 부탁드립니다.
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-cancel" onclick="closeOv('applyOv')">취소</button>
+        <button class="btn btn-submit" id="submitBtn" onclick="submitApply()">신청하기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 모달: 대관 신청 ══ -->
+<div class="ov" id="rentOv">
+  <div class="modal">
+    <div class="modal-title">🏠 공간 대관 신청</div>
+    <div class="modal-sub">비북스 담당자가 확인 후 연락드립니다</div>
+    <div id="rentAlert"></div>
+    <div class="fg"><label>공간 선택 *</label>
+      <select id="rSpace">
+        <option value="">선택해주세요</option>
+        <option value="세미나실">📌 세미나실</option>
+        <option value="매장 테이블">☕ 매장 테이블</option>
+      </select>
+    </div>
+    <div class="fg-row">
+      <div class="fg"><label>희망 날짜 *</label><input type="date" id="rDate"/></div>
+      <div class="fg"><label>시간대</label>
+        <select id="rTime">
+          <option value="오전">오전</option>
+          <option value="오후">오후</option>
+          <option value="저녁">저녁</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg-row">
+      <div class="fg"><label>성함 *</label><input type="text" id="rName" placeholder="이름"/></div>
+      <div class="fg"><label>연락처 *</label><input type="tel" id="rPhone" placeholder="010-0000-0000"/></div>
+    </div>
+    <div class="fg"><label>사용 목적</label><input type="text" id="rPurpose" placeholder="독서모임, 스터디 등"/></div>
+    <div class="fg"><label>인원</label><input type="number" id="rCount" placeholder="예: 6"/></div>
+    <div class="modal-foot">
+      <button class="btn btn-cancel" onclick="closeOv('rentOv')">취소</button>
+      <button class="btn btn-submit" id="rentBtn" onclick="submitRent()">신청하기</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div style="margin-bottom:4px">
+    <a href="https://moim.bbooks.co.kr">← 비모임 홈으로</a>
+  </div>
+  © 2026 · 비북스 b.moim · 느슨하고 단단하게 함께 자라가는 모임
+</footer>
+
+<script>
+// ══ 설정 ═══════════════════════════════
+const API = 'https://script.google.com/macros/s/AKfycbwfZYQ9FtaMWm6ZqyPhd1tByTzrQV352jtQZYT0-lplGlR0WOKCW_V928gLmRptuPik4g/exec'; // ← 배포 후 URL 입력
+
+// ══ 모임 데이터 ════════════════════════
+const MOIMS = {
+  dong: {
+    name: '동서남북book',
+    sessions: [
+      { label: '① 6/11(목) 오전 11:00–13:00', value: '1회차_6월11일' },
+      { label: '② 6/18(목) 오전 11:00–13:00', value: '2회차_6월18일' }
+    ],
+    amount: 10000,
+    hasSession: true
+  },
+  drawing: {
+    name: '드로잉 슥슥',
+    sessions: [{ label: '6/13(토) 오후 1:30–3:30', value: '6월13일' }],
+    amount: 10000,
+    hasSession: false
+  },
+  tuesday: {
+    name: '화요일오후두시',
+    sessions: [{ label: '6/14(일) 오후 2:00–4:00', value: '6월14일' }],
+    amount: 10000,
+    hasSession: false
+  },
+  afternoon: {
+    name: '책 숲에서 즐기는 애프터눈 티',
+    sessions: [{ label: '6/20(토) 오후 2:00–4:00', value: '6월20일' }],
+    amount: 20000,
+    hasSession: false
+  }
+};
+
+let curMoimKey = '';
+
+// ══ 모임 신청 모달 ══════════════════════
+function openApply(name, key) {
+  curMoimKey = key;
+  const m = MOIMS[key];
+  q('#modalMoimName').textContent = m.name;
+  q('#modalMoimDate').textContent = m.sessions.map(s => s.label).join(' / ');
+  q('#modalAmount').textContent = m.amount.toLocaleString() + '원';
+  q('#applyAlert').innerHTML = '';
+  q('#aName').value = ''; q('#aPhone').value = '';
+
+  const sw = q('#sessionSelectWrap');
+  if (m.hasSession) {
+    sw.style.display = 'block';
+    const sel = q('#aSession');
+    sel.innerHTML = '<option value="">회차를 선택해주세요</option>';
+    m.sessions.forEach(s => { sel.innerHTML += `<option value="${s.value}">${s.label}</option>`; });
+  } else {
+    sw.style.display = 'none';
+  }
+  openOv('applyOv');
+}
+
+async function submitApply() {
+  const name = q('#aName').value.trim();
+  const phone = q('#aPhone').value.trim();
+  const m = MOIMS[curMoimKey];
+  let session = m.hasSession ? q('#aSession').value : m.sessions[0].value;
+
+  if (!name || !phone) { flash('applyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
+  if (m.hasSession && !session) { flash('applyAlert', '회차를 선택해주세요.', 'e'); return; }
+
+  setLoad('submitBtn', true, '신청 중...');
+  try {
+    await POST({
+      action: 'apply',
+      month: '6월',
+      moimName: m.name,
+      session,
+      name,
+      phone,
+      amount: m.amount,
+      date: new Date().toLocaleString('ko-KR')
+    });
+    q('#applyForm').innerHTML = `
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:40px;margin-bottom:12px">✅</div>
+        <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px">신청 완료!</div>
+        <div class="pay-box" style="text-align:left">
+          <div style="font-size:12px;color:#1d4ed8;margin-bottom:4px">입금해주세요</div>
+          <div class="pay-amount">${m.amount.toLocaleString()}원</div>
+          <div style="font-size:12px;margin-top:6px">
+            <strong>카카오뱅크 3333-3725-33252</strong><br>(예금주 비북스)<br>
+            입금자명: <strong>${name}</strong>
+          </div>
+        </div>
+        <button class="btn-apply" style="width:100%;margin-top:8px" onclick="closeOv('applyOv')">닫기</button>
+      </div>`;
+  } catch {
+    flash('applyAlert', '신청 중 오류가 발생했습니다. 인스타그램 DM으로 문의해주세요.', 'e');
+    setLoad('submitBtn', false, '신청하기');
+  }
+}
+
+// ══ 대관 신청 ════════════════════════════
+function openRent() {
+  q('#rName').value=''; q('#rPhone').value='';
+  q('#rPurpose').value=''; q('#rCount').value='';
+  q('#rentAlert').innerHTML='';
+  openOv('rentOv');
+}
+
+async function submitRent() {
+  const space=q('#rSpace').value, date=q('#rDate').value;
+  const name=q('#rName').value.trim(), phone=q('#rPhone').value.trim();
+  if (!space||!date||!name||!phone) { flash('rentAlert','필수 항목을 입력해주세요.','e'); return; }
+  setLoad('rentBtn',true,'신청 중...');
+  try {
+    await POST({
+      action:'rent', month:'6월', space, date, time:q('#rTime').value,
+      name, phone, purpose:q('#rPurpose').value, count:q('#rCount').value,
+      reqDate:new Date().toLocaleString('ko-KR')
+    });
+    flash('rentAlert','✅ 대관 신청이 접수되었습니다! 담당자가 연락드릴게요.','o');
+    setLoad('rentBtn',false,'신청하기');
+  } catch {
+    flash('rentAlert','오류가 발생했습니다. 인스타그램 DM으로 문의해주세요.','e');
+    setLoad('rentBtn',false,'신청하기');
+  }
+}
+
+// ══ 회차 탭 ══════════════════════════════
+function selectSession(btn, id) {
+  const card = btn.closest('.moim-card');
+  card.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  card.querySelectorAll('.moim-meta').forEach(m => m.style.display = 'none');
+  const target = document.getElementById(id + '-meta');
+  if (target) target.style.display = 'flex';
+}
+
+// ══ 캘린더 스크롤 ════════════════════════
+function scrollToMoim(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ══ API ══════════════════════════════════
+async function POST(data) {
+  if (!API || API === 'YOUR_APPS_SCRIPT_URL') {
+    console.log('API not set. Data:', data);
+    return { success: true };
+  }
+  const r = await fetch(API, {
+    method: 'POST', redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(data)
+  });
+  return r.json();
+}
+
+// ══ 유틸 ════════════════════════════════
+const q = sel => document.querySelector(sel);
+function flash(id, msg, type) {
+  const el = q(`#${id}`);
+  el.innerHTML = `<div class="alert ${type==='e'?'ae':'ao'}">${msg}</div>`;
+  if (type!=='o') setTimeout(()=>{el.innerHTML='';}, 5000);
+}
+function setLoad(id, on, txt) {
+  const b = q(`#${id}`); b.disabled = on;
+  b.innerHTML = on ? `<span class="spin"></span>${txt}` : txt;
+}
+function openOv(id)  { q(`#${id}`).classList.add('on'); }
+function closeOv(id) { q(`#${id}`).classList.remove('on'); }
+document.querySelectorAll('.ov').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target===ov) ov.classList.remove('on'); });
+});
+</script>
+</body>
+</html>
