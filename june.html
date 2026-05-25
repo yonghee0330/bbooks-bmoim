@@ -8,15 +8,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --navy: #0A1F44;
-      --navy2: #1a3558;
-      --accent: #4a8cff;
+      --navy: #1a4a2e;
+      --navy2: #255c3a;
+      --accent: #3aaa6a;
       --green: #2e7d52;
       --bg: #f5f7f3;
       --white: #ffffff;
-      --text: #1e293b;
-      --muted: #64748b;
-      --border: #e2e8f0;
+      --text: #1c2b22;
+      --muted: #6b7c72;
+      --border: #dce5de;
       --radius: 12px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -329,6 +329,49 @@
     .refund h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
     .refund p { font-size: 12px; color: var(--muted); line-height: 1.8; }
 
+    /* ── 공간 소개 ───────────────────────── */
+    .space-section { margin-top: 48px; }
+    .space-filter {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .sf-btn {
+      padding: 7px 16px; border-radius: 20px; font-size: 13px; font-weight: 700;
+      border: 1px solid var(--border); background: var(--white); color: var(--muted);
+      cursor: pointer; font-family: inherit; transition: all .15s;
+    }
+    .sf-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+    .space-slider-wrap { position: relative; overflow: hidden; border-radius: var(--radius); }
+    .space-slider { display: flex; transition: transform .35s ease; }
+    .space-slide {
+      min-width: 100%; background: var(--white);
+      border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    }
+    .space-img-wrap { position: relative; height: 220px; overflow: hidden; background: var(--bg); }
+    .space-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .space-img-tag {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--navy); color: white;
+      padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+    }
+    .space-info { padding: 18px; }
+    .space-info h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .space-info p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .slider-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 12px;
+    }
+    .slider-dots { display: flex; gap: 6px; }
+    .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background .2s; }
+    .sdot.active { background: var(--navy); }
+    .slider-arrows { display: flex; gap: 6px; }
+    .sarr {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 14px; transition: all .15s;
+    }
+    .sarr:hover { background: var(--navy); color: white; border-color: var(--navy); }
+
     /* ── 푸터 ─────────────────────────────── */
     footer {
       background: var(--navy); color: rgba(255,255,255,.55);
@@ -342,13 +385,13 @@
 
 <header>
   <a class="logo" href="https://moim.bbooks.co.kr">b<span>.</span>moim</a>
-  <div class="header-sub">비북스 월간 모임</div>
+  <a href="https://moim.bbooks.co.kr" style="background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">← 5월 모임 신청</a>
 </header>
 
 <div class="hero">
   <div class="hero-badge">2026 · 06</div>
   <h1>6월 모임 & 대관 신청</h1>
-  <p>느슨하고 단단하게 함께 자라가는 모임<br>모임을 클릭하면 신청 페이지로 연결됩니다</p>
+  <p>느슨하고 단단하게 함께 자라가는 모임</p>
 </div>
 
 <div class="wrap">
@@ -377,23 +420,23 @@
 
       <!-- 1주: 6/1은 월요일 -->
       <div class="cal-cell empty"></div>
-      <div class="cal-cell"><div class="cal-day">1</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">2</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">3</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">4</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">5</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell sat"><div class="cal-day">6</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-01')"><div class="cal-day">1</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-02')"><div class="cal-day">2</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-03')"><div class="cal-day">3</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-04')"><div class="cal-day">4</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-05')"><div class="cal-day">5</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-06-06')"><div class="cal-day">6</div><div class="cal-rent-btn">대관</div></div>
 
       <!-- 2주 -->
-      <div class="cal-cell sun"><div class="cal-day">7</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">8</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">9</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">10</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-06-07')"><div class="cal-day">7</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-08')"><div class="cal-day">8</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-09')"><div class="cal-day">9</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-10')"><div class="cal-day">10</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="scrollToMoim('dongseobukbook')">
         <div class="cal-day">11</div>
         <div class="cal-event ev-moim">동서남북book</div>
       </div>
-      <div class="cal-cell"><div class="cal-day">12</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-12')"><div class="cal-day">12</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell sat" onclick="scrollToMoim('drawing')">
         <div class="cal-day">13</div>
         <div class="cal-event ev-moim">드로잉 슥슥</div>
@@ -404,32 +447,32 @@
         <div class="cal-day">14</div>
         <div class="cal-event ev-moim">화요일오후두시</div>
       </div>
-      <div class="cal-cell"><div class="cal-day">15</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">16</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">17</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-15')"><div class="cal-day">15</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-16')"><div class="cal-day">16</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-17')"><div class="cal-day">17</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="scrollToMoim('dongseobukbook')">
         <div class="cal-day">18</div>
         <div class="cal-event ev-moim">동서남북book②</div>
       </div>
-      <div class="cal-cell"><div class="cal-day">19</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-19')"><div class="cal-day">19</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell sat" onclick="scrollToMoim('afternoon')">
         <div class="cal-day">20</div>
         <div class="cal-event ev-moim">애프터눈 티</div>
       </div>
 
       <!-- 4주 -->
-      <div class="cal-cell sun"><div class="cal-day">21</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">22</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">23</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">24</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">25</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">26</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell sat"><div class="cal-day">27</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-06-21')"><div class="cal-day">21</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-22')"><div class="cal-day">22</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-23')"><div class="cal-day">23</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-24')"><div class="cal-day">24</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-25')"><div class="cal-day">25</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-26')"><div class="cal-day">26</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-06-27')"><div class="cal-day">27</div><div class="cal-rent-btn">대관</div></div>
 
       <!-- 5주 -->
-      <div class="cal-cell sun"><div class="cal-day">28</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">29</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell"><div class="cal-day">30</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-06-28')"><div class="cal-day">28</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-29')"><div class="cal-day">29</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-30')"><div class="cal-day">30</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
@@ -571,11 +614,136 @@
     <h3>🏠 공간 대관 문의</h3>
     <p>비북스 세미나실과 매장 테이블을 대관하실 수 있어요.<br>
     일정 확인 후 담당자가 연락드립니다.</p>
-    <button class="btn-rent" onclick="openRent()">대관 신청하기</button>
+    <button class="btn-rent" onclick="openRent('')">대관 신청하기</button>
   </div>
 
-  <!-- ── 환불 정책 ── -->
-  <div class="refund">
+  <!-- ── 공간 소개 ── -->
+  <div class="space-section">
+    <div style="margin-bottom:16px">
+      <div class="sec-label">Space</div>
+      <div class="sec-title">비북스 공간 소개</div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:16px">책이 있는 공간에서, 당신의 모임을 펼쳐보세요</p>
+    <div class="space-filter">
+      <button class="sf-btn active" onclick="filterSpace('all',this)">전체</button>
+      <button class="sf-btn" onclick="filterSpace('main',this)">🏠 매장 전체</button>
+      <button class="sf-btn" onclick="filterSpace('table',this)">☕ 매장 모임 테이블</button>
+      <button class="sf-btn" onclick="filterSpace('seminar',this)">📚 세미나실</button>
+    </div>
+    <div class="space-slider-wrap">
+      <div class="space-slider" id="spaceSlider">
+
+        <div class="space-slide" data-type="main">
+          <div class="space-img-wrap">
+            <img src="images/space_01.jpg" alt="비북스 매장 전체" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">🏠 매장 전체</span>
+          </div>
+          <div class="space-info">
+            <h3>비북스 매장 전체</h3>
+            <p>책장이 가득한 따뜻한 공간. 독립서점의 아늑함 속에서 당신만의 특별한 자리를 만들어보세요.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="main">
+          <div class="space-img-wrap">
+            <img src="images/space_02.jpg" alt="비북스 매장 전체 ②" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">🏠 매장 전체</span>
+          </div>
+          <div class="space-info">
+            <h3>비북스 매장 전체 ②</h3>
+            <p>소파와 의자가 어우러진 자유로운 배치. 북토크, 전시, 소규모 행사에 어울립니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="main">
+          <div class="space-img-wrap">
+            <img src="images/space_03.jpg" alt="비북스 매장 전체 ③" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">🏠 매장 전체</span>
+          </div>
+          <div class="space-info">
+            <h3>비북스 매장 전체 ③</h3>
+            <p>책으로 둘러싸인 고요한 공간. 낮부터 밤까지, 당신의 모임에 맞게 변합니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="table">
+          <div class="space-img-wrap">
+            <img src="images/table_01.jpg" alt="매장 모임 테이블" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">☕ 매장 모임 테이블</span>
+          </div>
+          <div class="space-info">
+            <h3>매장 모임 테이블</h3>
+            <p>책장 사이에 자리한 아늑한 원목 테이블. 4~6인 소규모 독서 모임·스터디·티타임에 딱입니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="table">
+          <div class="space-img-wrap">
+            <img src="images/table_02.jpg" alt="매장 모임 테이블 ②" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">☕ 매장 모임 테이블</span>
+          </div>
+          <div class="space-info">
+            <h3>매장 모임 테이블 ②</h3>
+            <p>테이블을 붙여 넓게 사용할 수 있어요. 더 많은 인원의 모임도 가능합니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="table">
+          <div class="space-img-wrap">
+            <img src="images/table_03.jpg" alt="매장 모임 테이블 ③" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">☕ 매장 모임 테이블</span>
+          </div>
+          <div class="space-info">
+            <h3>매장 모임 테이블 ③</h3>
+            <p>사방이 책으로 둘러싸인 공간에서 6~8인 모임도 넉넉하게. 조용하고 집중력 있는 자리입니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="seminar">
+          <div class="space-img-wrap">
+            <img src="images/seminar_01.jpg" alt="세미나실" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">📚 세미나실</span>
+          </div>
+          <div class="space-info">
+            <h3>세미나실</h3>
+            <p>대형 화이트보드와 원목 테이블, 가득 찬 책장이 어우러진 독립 공간. 강의·워크숍·팀 모임에 최적입니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="seminar">
+          <div class="space-img-wrap">
+            <img src="images/seminar_02.jpg" alt="세미나실 보드게임" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">📚 세미나실</span>
+          </div>
+          <div class="space-info">
+            <h3>세미나실 — 보드게임</h3>
+            <p>다빈치코드, 루미큐브, 딕싯 등 다양한 보드게임이 준비되어 있어요. 모임 후 가볍게 즐기기 좋습니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="seminar">
+          <div class="space-img-wrap">
+            <img src="images/seminar_03.jpg" alt="세미나실 내장 전원" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">📚 세미나실</span>
+          </div>
+          <div class="space-info">
+            <h3>세미나실 — 테이블 내장 전원</h3>
+            <p>테이블에 콘센트 + USB 포트가 내장되어 있어 노트북·스마트폰 충전이 편리합니다.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="slider-nav">
+      <div class="slider-dots" id="sliderDots"></div>
+      <div class="slider-arrows">
+        <button class="sarr" onclick="slideMove(-1)">‹</button>
+        <button class="sarr" onclick="slideMove(1)">›</button>
+      </div>
+    </div>
+  </div>
+
+
     <h3>💳 환불 규정</h3>
     <p>
       <strong>재료 준비가 있는 모임</strong><br>
@@ -662,9 +830,6 @@
 </div>
 
 <footer>
-  <div style="margin-bottom:4px">
-    <a href="https://moim.bbooks.co.kr">← 비모임 홈으로</a>
-  </div>
   © 2026 · 비북스 b.moim · 느슨하고 단단하게 함께 자라가는 모임
 </footer>
 
@@ -769,10 +934,12 @@ async function submitApply() {
 }
 
 // ══ 대관 신청 ════════════════════════════
-function openRent() {
+function openRent(date) {
   q('#rName').value=''; q('#rPhone').value='';
   q('#rPurpose').value=''; q('#rCount').value='';
   q('#rentAlert').innerHTML='';
+  if (date) q('#rDate').value = date;
+  else q('#rDate').value = '';
   openOv('rentOv');
 }
 
@@ -824,6 +991,60 @@ async function POST(data) {
   });
   return r.json();
 }
+
+// ══ 공간 슬라이더 ════════════════════════
+let allSlides = [], visibleSlides = [], curSlide = 0;
+
+function initSlider() {
+  allSlides = Array.from(document.querySelectorAll('.space-slide'));
+  showSlides(allSlides);
+}
+
+function showSlides(slides) {
+  visibleSlides = slides;
+  curSlide = 0;
+  const slider = q('#spaceSlider');
+  // 숨기기/보이기
+  allSlides.forEach(s => s.style.display = 'none');
+  visibleSlides.forEach(s => s.style.display = 'block');
+  updateSlider();
+  buildDots();
+}
+
+function filterSpace(type, btn) {
+  document.querySelectorAll('.sf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = type === 'all' ? allSlides : allSlides.filter(s => s.dataset.type === type);
+  showSlides(filtered);
+}
+
+function slideMove(dir) {
+  curSlide = (curSlide + dir + visibleSlides.length) % visibleSlides.length;
+  updateSlider();
+}
+
+function updateSlider() {
+  // 슬라이더를 flex로 보이는 것만 순서대로
+  const slider = q('#spaceSlider');
+  visibleSlides.forEach((s, i) => {
+    s.style.order = i;
+  });
+  slider.style.transform = `translateX(-${curSlide * 100}%)`;
+  document.querySelectorAll('.sdot').forEach((d, i) => {
+    d.classList.toggle('active', i === curSlide);
+  });
+}
+
+function buildDots() {
+  const dots = q('#sliderDots');
+  dots.innerHTML = visibleSlides.map((_, i) =>
+    `<div class="sdot${i===0?' active':''}" onclick="goSlide(${i})"></div>`
+  ).join('');
+}
+
+function goSlide(i) { curSlide = i; updateSlider(); }
+
+window.addEventListener('DOMContentLoaded', initSlider);
 
 // ══ 유틸 ════════════════════════════════
 const q = sel => document.querySelector(sel);
