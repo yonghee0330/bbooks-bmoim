@@ -532,12 +532,12 @@
       </div>
 
       <!-- 4주 -->
-      <div class="cal-cell sun" onclick="scrollToMoim('tuesday')">
-        <div class="cal-day">21</div>
+<div class="cal-cell sun" onclick="openRent('2026-06-21')"><div class="cal-day">21</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-22')"><div class="cal-day">22</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="scrollToMoim('tuesday')">
+        <div class="cal-day">23</div>
         <div class="cal-event ev-moim">화요일오후두시</div>
       </div>
-      <div class="cal-cell" onclick="openRent('2026-06-22')"><div class="cal-day">22</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-06-23')"><div class="cal-day">23</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-24')"><div class="cal-day">24</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-25')"><div class="cal-day">25</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-26')"><div class="cal-day">26</div><div class="cal-rent-btn">대관</div></div>
@@ -663,7 +663,7 @@
         <div class="moim-desc">전시되어 있는 책 속 캐릭터 인형을 제작하는 수업. 비북스 0.1평 서점 도서 구매 조건으로 진행합니다.</div>
         <div class="session-tabs">
           <button class="stab active" onclick="selectSession(this,'tue1')">① 6/14(일)</button>
-          <button class="stab" onclick="selectSession(this,'tue2')">② 6/21(일)</button>
+          <button class="stab" onclick="selectSession(this,'tue2')">② 6/23(화)</button>
         </div>
         <div class="moim-meta" id="tue1-meta">
           <div class="meta-row"><span class="mi">📅</span>6월 14일 (일) 오후 2:00 – 4:00</div>
@@ -672,7 +672,7 @@
           <div class="meta-row"><span class="mi">📚</span>모임 도서 &lt;구덩이&gt; 구매 조건</div>
         </div>
         <div class="moim-meta" id="tue2-meta" style="display:none">
-          <div class="meta-row"><span class="mi">📅</span>6월 21일 (일) 오후 2:00 – 4:00</div>
+          <div class="meta-row"><span class="mi">📅</span>6월 23일 (화) 오후 2:00 – 4:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>5명</div>
           <div class="meta-row"><span class="mi">📚</span>모임 도서 &lt;구덩이&gt; 구매 조건</div>
@@ -687,7 +687,7 @@
           </div>
           <div class="cap-session-row">
             <div class="cap-session-label">
-              <strong>② 6/21(일)</strong>
+              <strong>② 6/23(화)</strong>
               <span id="cap-tuesday-s2-remain" class="remain">확인 중…</span>
             </div>
             <div class="cap-bar-bg"><div id="cap-tuesday-s2-bar" class="cap-bar-fill" style="width:0%"></div></div>
@@ -978,12 +978,12 @@ const MOIMS = {
   dong: {
     name: '동서남북book',
     sessions: [
-      { label: '① 6/11(목) 오전 11:00–13:00', value: '1회차_6월11일' },
-      { label: '② 6/18(목) 오전 11:00–13:00', value: '2회차_6월18일' }
+      { label: '① 6/11(목) 오전 11:00–13:00', value: '6월11일' },
+      { label: '② 6/18(목) 오전 11:00–13:00', value: '6월18일' }
     ],
     amount: 10000,
     hasSession: true,
-    cap: 3  // 회차당 정원 (총 6명, 회차별 3명)
+    cap: 3
   },
   drawing: {
     name: '드로잉 슥슥',
@@ -995,12 +995,12 @@ const MOIMS = {
   tuesday: {
     name: '화요일오후두시',
     sessions: [
-      { label: '① 6/14(일) 오후 2:00–4:00', value: '1회차_6월14일' },
-      { label: '② 6/21(일) 오후 2:00–4:00', value: '2회차_6월21일' }
+      { label: '① 6/14(일) 오후 2:00–4:00', value: '6월14일' },
+      { label: '② 6/23(화) 오후 2:00–4:00', value: '6월23일' }
     ],
     amount: 10000,
     hasSession: true,
-    caps: { '1회차_6월14일': 6, '2회차_6월21일': 5 },
+    caps: { '6월14일': 6, '6월23일': 5 },
     cap: 6
   },
   afternoon: {
