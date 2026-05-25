@@ -171,9 +171,30 @@
     }
     .moim-card:hover { box-shadow: 0 8px 32px rgba(10,31,68,.1); transform: translateY(-2px); }
 
-    /* 타이포 포스터 */
+    /* 이미지 포스터 — 이미지 있을 때 */
+    .moim-poster-img {
+      width: 100%;
+      cursor: zoom-in;
+      position: relative;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+    .moim-poster-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .moim-poster-img:hover::after {
+      content: '🔍 크게 보기';
+      position: absolute; bottom: 10px; right: 10px;
+      background: rgba(0,0,0,.55); color: white;
+      font-size: 11px; padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    /* 타이포 포스터 — 이미지 없을 때 */
     .moim-poster {
-      height: 200px;
+      min-height: 200px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -215,11 +236,6 @@
       margin-top: 10px;
       z-index: 1;
     }
-    .poster-img-slot {
-      position: absolute; inset: 0;
-      display: none; /* 실제 이미지 있을 때 display:block */
-    }
-    .poster-img-slot img { width: 100%; height: 100%; object-fit: cover; }
 
     .moim-body { padding: 18px; }
     .moim-name {
@@ -402,47 +418,6 @@
     }
     .sarr:hover { background: var(--navy); color: white; border-color: var(--navy); }
 
-    /* ── 신청 현황 프로그레스 바 ─────────── */
-    .cap-wrap {
-      margin-bottom: 14px;
-      padding: 10px 12px;
-      background: var(--bg);
-      border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-    .cap-row {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 6px;
-    }
-    .cap-label { font-size: 12px; font-weight: 700; color: var(--text); }
-    .cap-label span { color: var(--navy); }
-    .cap-remain { font-size: 12px; color: var(--muted); }
-    .cap-remain.urgent { color: #dc2626; font-weight: 700; }
-    .cap-bar-bg {
-      height: 6px; border-radius: 3px;
-      background: var(--border); overflow: hidden;
-    }
-    .cap-bar-fill {
-      height: 100%; border-radius: 3px;
-      background: linear-gradient(90deg, var(--navy), var(--accent));
-      transition: width .4s ease;
-    }
-    .cap-bar-fill.full { background: #dc2626; }
-    .cap-session-row { margin-bottom: 8px; }
-    .cap-session-row:last-child { margin-bottom: 0; }
-    .cap-session-label {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 11px; color: var(--muted); margin-bottom: 4px;
-    }
-    .cap-session-label strong { color: var(--text); }
-    .cap-session-label .remain { font-weight: 700; }
-    .cap-session-label .remain.urgent { color: #dc2626; }
-    .cap-session-label .remain.closed { color: #dc2626; }
-    .btn-apply.full {
-      background: var(--muted); cursor: not-allowed;
-      opacity: 1 !important;
-    }
-
     /* ── 푸터 ─────────────────────────────── */
     footer {
       background: var(--navy); color: rgba(255,255,255,.55);
@@ -532,12 +507,9 @@
       </div>
 
       <!-- 4주 -->
-<div class="cal-cell sun" onclick="openRent('2026-06-21')"><div class="cal-day">21</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-06-21')"><div class="cal-day">21</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-22')"><div class="cal-day">22</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="scrollToMoim('tuesday')">
-        <div class="cal-day">23</div>
-        <div class="cal-event ev-moim">화요일오후두시</div>
-      </div>
+      <div class="cal-cell" onclick="openRent('2026-06-23')"><div class="cal-day">23</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-24')"><div class="cal-day">24</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-25')"><div class="cal-day">25</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-26')"><div class="cal-day">26</div><div class="cal-rent-btn">대관</div></div>
@@ -589,40 +561,20 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>회차당 3명</div>
         </div>
-        <div id="cap-dong" class="cap-wrap">
-          <div class="cap-session-row">
-            <div class="cap-session-label">
-              <strong>① 6/11(목)</strong>
-              <span id="cap-dong-s1-remain" class="remain">확인 중…</span>
-            </div>
-            <div class="cap-bar-bg"><div id="cap-dong-s1-bar" class="cap-bar-fill" style="width:0%"></div></div>
-          </div>
-          <div class="cap-session-row">
-            <div class="cap-session-label">
-              <strong>② 6/18(목)</strong>
-              <span id="cap-dong-s2-remain" class="remain">확인 중…</span>
-            </div>
-            <div class="cap-bar-bg"><div id="cap-dong-s2-bar" class="cap-bar-fill" style="width:0%"></div></div>
-          </div>
-        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 없음</div>
           </div>
-          <button id="btn-dong" class="btn-apply" onclick="openApply('동서남북book','dong')">신청하기</button>
+          <button class="btn-apply" onclick="openApply('동서남북book','dong')">신청하기</button>
         </div>
       </div>
     </div>
 
     <!-- 드로잉 슥슥 -->
     <div class="moim-card" id="drawing">
-      <div class="moim-poster p2">
-        <div class="poster-deco">🎨</div>
-        <div class="poster-badge">b.moim · 2026.06</div>
-        <div class="poster-title">드로잉<br>'슥슥'</div>
-        <div class="poster-host">사소한수집소_인유</div>
-        <div class="poster-img-slot"><img src="images/포스터-드로잉슥슥.jpg" alt="드로잉 슥슥 포스터"></div>
+      <div class="moim-poster-img" onclick="openLightbox('images/슥슥_6월포스터.jpeg','드로잉 슥슥 포스터')">
+        <img src="images/슥슥_6월포스터.jpeg" alt="드로잉 슥슥 포스터">
       </div>
       <div class="moim-body">
         <div class="moim-name">드로잉 '슥슥'</div>
@@ -632,19 +584,12 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>7명</div>
         </div>
-        <div id="cap-drawing" class="cap-wrap">
-          <div class="cap-row">
-            <div class="cap-label">신청 현황 <span id="cap-drawing-txt">—</span></div>
-            <div id="cap-drawing-remain" class="cap-remain">확인 중…</div>
-          </div>
-          <div class="cap-bar-bg"><div id="cap-drawing-bar" class="cap-bar-fill" style="width:0%"></div></div>
-        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 있음</div>
           </div>
-          <button id="btn-drawing" class="btn-apply" onclick="openApply('드로잉 슥슥','drawing')">신청하기</button>
+          <button class="btn-apply" onclick="openApply('드로잉 슥슥','drawing')">신청하기</button>
         </div>
       </div>
     </div>
@@ -661,56 +606,26 @@
       <div class="moim-body">
         <div class="moim-name">화요일오후두시</div>
         <div class="moim-desc">전시되어 있는 책 속 캐릭터 인형을 제작하는 수업. 비북스 0.1평 서점 도서 구매 조건으로 진행합니다.</div>
-        <div class="session-tabs">
-          <button class="stab active" onclick="selectSession(this,'tue1')">① 6/14(일)</button>
-          <button class="stab" onclick="selectSession(this,'tue2')">② 6/23(화)</button>
-        </div>
-        <div class="moim-meta" id="tue1-meta">
+        <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>6월 14일 (일) 오후 2:00 – 4:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
-          <div class="meta-row"><span class="mi">👥</span>6명</div>
-          <div class="meta-row"><span class="mi">📚</span>모임 도서 &lt;구덩이&gt; 구매 조건</div>
-        </div>
-        <div class="moim-meta" id="tue2-meta" style="display:none">
-          <div class="meta-row"><span class="mi">📅</span>6월 23일 (화) 오후 2:00 – 4:00</div>
-          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
-          <div class="meta-row"><span class="mi">👥</span>5명</div>
-          <div class="meta-row"><span class="mi">📚</span>모임 도서 &lt;구덩이&gt; 구매 조건</div>
-        </div>
-        <div id="cap-tuesday" class="cap-wrap">
-          <div class="cap-session-row">
-            <div class="cap-session-label">
-              <strong>① 6/14(일)</strong>
-              <span id="cap-tuesday-s1-remain" class="remain">확인 중…</span>
-            </div>
-            <div class="cap-bar-bg"><div id="cap-tuesday-s1-bar" class="cap-bar-fill" style="width:0%"></div></div>
-          </div>
-          <div class="cap-session-row">
-            <div class="cap-session-label">
-              <strong>② 6/23(화)</strong>
-              <span id="cap-tuesday-s2-remain" class="remain">확인 중…</span>
-            </div>
-            <div class="cap-bar-bg"><div id="cap-tuesday-s2-bar" class="cap-bar-fill" style="width:0%"></div></div>
-          </div>
+          <div class="meta-row"><span class="mi">👥</span>4명</div>
+          <div class="meta-row"><span class="mi">📚</span>비북스 도서 1권 이상 구매 조건</div>
         </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 있음</div>
           </div>
-          <button id="btn-tuesday" class="btn-apply" onclick="openApply('화요일오후두시','tuesday')">신청하기</button>
+          <button class="btn-apply" onclick="openApply('화요일오후두시','tuesday')">신청하기</button>
         </div>
       </div>
     </div>
 
     <!-- 애프터눈 티 -->
     <div class="moim-card" id="afternoon">
-      <div class="moim-poster p4 has-img" onclick="openLightbox('images/다온글방.png','책 숲에서 즐기는 애프터눈 티 포스터')">
-        <div class="poster-deco">🫖</div>
-        <div class="poster-badge">b.moim · 2026.06</div>
-        <div class="poster-title">책 숲에서<br>즐기는<br>애프터눈 티</div>
-        <div class="poster-host">지선화 (다온글방)</div>
-        <div class="poster-img-slot" style="display:block"><img src="images/다온글방.png" alt="애프터눈 티 포스터"></div>
+      <div class="moim-poster-img" onclick="openLightbox('images/다온글방.png','책 숲에서 즐기는 애프터눈 티 포스터')">
+        <img src="images/다온글방.png" alt="애프터눈 티 포스터">
       </div>
       <div class="moim-body">
         <div class="moim-name">책 숲에서 즐기는 애프터눈 티</div>
@@ -720,19 +635,12 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>6명</div>
         </div>
-        <div id="cap-afternoon" class="cap-wrap">
-          <div class="cap-row">
-            <div class="cap-label">신청 현황 <span id="cap-afternoon-txt">—</span></div>
-            <div id="cap-afternoon-remain" class="cap-remain">확인 중…</div>
-          </div>
-          <div class="cap-bar-bg"><div id="cap-afternoon-bar" class="cap-bar-fill" style="width:0%"></div></div>
-        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">20,000원</div>
             <div class="moim-cap">재료 없음</div>
           </div>
-          <button id="btn-afternoon" class="btn-apply" onclick="openApply('책 숲에서 즐기는 애프터눈 티','afternoon')">신청하기</button>
+          <button class="btn-apply" onclick="openApply('책 숲에서 즐기는 애프터눈 티','afternoon')">신청하기</button>
         </div>
       </div>
     </div>
@@ -978,135 +886,31 @@ const MOIMS = {
   dong: {
     name: '동서남북book',
     sessions: [
-      { label: '① 6/11(목) 오전 11:00–13:00', value: '6월11일' },
-      { label: '② 6/18(목) 오전 11:00–13:00', value: '6월18일' }
+      { label: '① 6/11(목) 오전 11:00–13:00', value: '1회차_6월11일' },
+      { label: '② 6/18(목) 오전 11:00–13:00', value: '2회차_6월18일' }
     ],
     amount: 10000,
-    hasSession: true,
-    cap: 3
+    hasSession: true
   },
   drawing: {
     name: '드로잉 슥슥',
     sessions: [{ label: '6/13(토) 오후 1:30–3:30', value: '6월13일' }],
     amount: 10000,
-    hasSession: false,
-    cap: 7
+    hasSession: false
   },
   tuesday: {
     name: '화요일오후두시',
-    sessions: [
-      { label: '① 6/14(일) 오후 2:00–4:00', value: '6월14일' },
-      { label: '② 6/23(화) 오후 2:00–4:00', value: '6월23일' }
-    ],
+    sessions: [{ label: '6/14(일) 오후 2:00–4:00', value: '6월14일' }],
     amount: 10000,
-    hasSession: true,
-    caps: { '6월14일': 6, '6월23일': 5 },
-    cap: 6
+    hasSession: false
   },
   afternoon: {
     name: '책 숲에서 즐기는 애프터눈 티',
     sessions: [{ label: '6/20(토) 오후 2:00–4:00', value: '6월20일' }],
     amount: 20000,
-    hasSession: false,
-    cap: 6
+    hasSession: false
   }
 };
-
-// ══ 신청 현황 로드 ═══════════════════════
-async function loadCapacity() {
-  try {
-    const r = await fetch(API + '?action=count&month=6월', {
-      redirect: 'follow',
-      mode: 'cors'
-    });
-    const data = await r.json();
-    // 에러 응답 체크
-    if (data.error) throw new Error(data.error);
-    updateCap('dong',     data, '동서남북book', true);
-    updateCap('drawing',  data, '드로잉 슥슥',  false);
-    updateCap('tuesday',  data, '화요일오후두시', true);
-    updateCap('afternoon',data, '책 숲에서 즐기는 애프터눈 티', false);
-  } catch(e) {
-    ['dong','drawing','tuesday','afternoon'].forEach(k => {
-      const el = document.getElementById('cap-' + k);
-      if (el) el.style.display = 'none';
-    });
-  }
-}
-
-function updateCap(key, data, moimName, hasSession) {
-  const btn = document.getElementById('btn-' + key);
-  const m   = MOIMS[key];
-
-  if (hasSession) {
-    // 회차별로 각각 바 업데이트
-    let allFull = true;
-    m.sessions.forEach((s, idx) => {
-      const sNum  = idx + 1;
-      const cap   = m.caps ? (m.caps[s.value] || m.cap) : m.cap;
-      const count = data[moimName + '_' + s.value] || 0;
-      const isFull  = count >= cap;
-      const remain  = cap - count;
-      const pct     = Math.min(100, Math.round(count / cap * 100));
-
-      const remEl = document.getElementById('cap-' + key + '-s' + sNum + '-remain');
-      const barEl = document.getElementById('cap-' + key + '-s' + sNum + '-bar');
-
-      if (remEl) {
-        if (isFull) {
-          remEl.textContent = '마감';
-          remEl.className   = 'remain closed';
-        } else {
-          remEl.textContent = count + '/' + cap + '명 · 잔여 ' + remain + '자리';
-          remEl.className   = 'remain' + (remain <= 1 ? ' urgent' : '');
-        }
-      }
-      if (barEl) {
-        barEl.style.width = pct + '%';
-        barEl.className   = 'cap-bar-fill' + (isFull ? ' full' : '');
-      }
-      if (!isFull) allFull = false;
-    });
-
-    if (allFull && btn) {
-      btn.disabled = true;
-      btn.classList.add('full');
-      btn.textContent = '신청 마감';
-    }
-
-  } else {
-    // 단일 회차
-    const count  = data[moimName] || 0;
-    const cap    = m.cap;
-    const isFull = count >= cap;
-    const remain = cap - count;
-    const pct    = Math.min(100, Math.round(count / cap * 100));
-
-    const txt = document.getElementById('cap-' + key + '-txt');
-    const rem = document.getElementById('cap-' + key + '-remain');
-    const bar = document.getElementById('cap-' + key + '-bar');
-
-    if (txt) txt.textContent = count + '/' + cap + '명';
-    if (rem) {
-      rem.textContent = isFull ? '신청 마감' : '잔여 ' + remain + '자리';
-      rem.className   = 'cap-remain' + (remain <= 2 && !isFull ? ' urgent' : '');
-    }
-    if (bar) {
-      bar.style.width = pct + '%';
-      bar.className   = 'cap-bar-fill' + (isFull ? ' full' : '');
-    }
-    if (isFull && btn) {
-      btn.disabled = true;
-      btn.classList.add('full');
-      btn.textContent = '신청 마감';
-    }
-  }
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  initSlider();
-  loadCapacity();
-});
 
 let curMoimKey = '';
 
@@ -1167,7 +971,6 @@ async function submitApply() {
         </div>
         <button class="btn-apply" style="width:100%;margin-top:8px" onclick="closeOv('applyOv')">닫기</button>
       </div>`;
-    loadCapacity(); // 신청 후 현황 갱신
   } catch {
     flash('applyAlert', '신청 중 오류가 발생했습니다. 인스타그램 DM으로 문의해주세요.', 'e');
     setLoad('submitBtn', false, '신청하기');
@@ -1297,6 +1100,8 @@ function buildDots() {
 }
 
 function goSlide(i) { curSlide = i; updateSlider(); }
+
+window.addEventListener('DOMContentLoaded', initSlider);
 
 // ══ 유틸 ════════════════════════════════
 const q = sel => document.querySelector(sel);
