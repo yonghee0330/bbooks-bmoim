@@ -402,16 +402,32 @@
     }
     .sarr:hover { background: var(--navy); color: white; border-color: var(--navy); }
 
-    /* ── 신청 현황 배지 ──────────────────── */
-    .cap-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      font-size: 11px; font-weight: 700;
-      padding: 3px 9px; border-radius: 20px;
+    /* ── 신청 현황 프로그레스 바 ─────────── */
+    .cap-wrap {
+      margin-bottom: 14px;
+      padding: 10px 12px;
+      background: var(--bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .cap-row {
+      display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 6px;
     }
-    .cap-badge.open  { background: #dcfce7; color: #166534; }
-    .cap-badge.full  { background: #fee2e2; color: #991b1b; }
-    .cap-badge.loading { background: #f1f5f9; color: var(--muted); }
+    .cap-label { font-size: 12px; font-weight: 700; color: var(--text); }
+    .cap-label span { color: var(--navy); }
+    .cap-remain { font-size: 12px; color: var(--muted); }
+    .cap-remain.urgent { color: #dc2626; font-weight: 700; }
+    .cap-bar-bg {
+      height: 6px; border-radius: 3px;
+      background: var(--border); overflow: hidden;
+    }
+    .cap-bar-fill {
+      height: 100%; border-radius: 3px;
+      background: linear-gradient(90deg, var(--navy), var(--accent));
+      transition: width .4s ease;
+    }
+    .cap-bar-fill.full { background: #dc2626; }
     .btn-apply.full {
       background: var(--muted); cursor: not-allowed;
       opacity: 1 !important;
@@ -560,11 +576,17 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>회차당 3명</div>
         </div>
+        <div id="cap-dong" class="cap-wrap">
+          <div class="cap-row">
+            <div class="cap-label">신청 현황 <span id="cap-dong-txt">—</span></div>
+            <div id="cap-dong-remain" class="cap-remain">확인 중…</div>
+          </div>
+          <div class="cap-bar-bg"><div id="cap-dong-bar" class="cap-bar-fill" style="width:0%"></div></div>
+        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 없음</div>
-            <div id="cap-dong" class="cap-badge loading">확인 중…</div>
           </div>
           <button id="btn-dong" class="btn-apply" onclick="openApply('동서남북book','dong')">신청하기</button>
         </div>
@@ -588,11 +610,17 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>7명</div>
         </div>
+        <div id="cap-drawing" class="cap-wrap">
+          <div class="cap-row">
+            <div class="cap-label">신청 현황 <span id="cap-drawing-txt">—</span></div>
+            <div id="cap-drawing-remain" class="cap-remain">확인 중…</div>
+          </div>
+          <div class="cap-bar-bg"><div id="cap-drawing-bar" class="cap-bar-fill" style="width:0%"></div></div>
+        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 있음</div>
-            <div id="cap-drawing" class="cap-badge loading">확인 중…</div>
           </div>
           <button id="btn-drawing" class="btn-apply" onclick="openApply('드로잉 슥슥','drawing')">신청하기</button>
         </div>
@@ -617,11 +645,17 @@
           <div class="meta-row"><span class="mi">👥</span>4명</div>
           <div class="meta-row"><span class="mi">📚</span>비북스 도서 1권 이상 구매 조건</div>
         </div>
+        <div id="cap-tuesday" class="cap-wrap">
+          <div class="cap-row">
+            <div class="cap-label">신청 현황 <span id="cap-tuesday-txt">—</span></div>
+            <div id="cap-tuesday-remain" class="cap-remain">확인 중…</div>
+          </div>
+          <div class="cap-bar-bg"><div id="cap-tuesday-bar" class="cap-bar-fill" style="width:0%"></div></div>
+        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 있음</div>
-            <div id="cap-tuesday" class="cap-badge loading">확인 중…</div>
           </div>
           <button id="btn-tuesday" class="btn-apply" onclick="openApply('화요일오후두시','tuesday')">신청하기</button>
         </div>
@@ -645,11 +679,17 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>6명</div>
         </div>
+        <div id="cap-afternoon" class="cap-wrap">
+          <div class="cap-row">
+            <div class="cap-label">신청 현황 <span id="cap-afternoon-txt">—</span></div>
+            <div id="cap-afternoon-remain" class="cap-remain">확인 중…</div>
+          </div>
+          <div class="cap-bar-bg"><div id="cap-afternoon-bar" class="cap-bar-fill" style="width:0%"></div></div>
+        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">20,000원</div>
             <div class="moim-cap">재료 없음</div>
-            <div id="cap-afternoon" class="cap-badge loading">확인 중…</div>
           </div>
           <button id="btn-afternoon" class="btn-apply" onclick="openApply('책 숲에서 즐기는 애프터눈 티','afternoon')">신청하기</button>
         </div>
@@ -947,37 +987,44 @@ async function loadCapacity() {
 }
 
 function updateCap(key, data, moimName, hasSession) {
-  const badge = document.getElementById('cap-' + key);
-  const btn   = document.getElementById('btn-' + key);
-  const cap   = MOIMS[key].cap;
-  if (!badge || !btn) return;
+  const btn = document.getElementById('btn-' + key);
+  const cap = MOIMS[key].cap;
+
+  let count, totalCap, isFull;
 
   if (hasSession) {
-    // 동서남북book: 회차별 카운트, 둘 다 마감이면 버튼 마감
     const c1 = data[moimName + '_1회차_6월11일'] || 0;
     const c2 = data[moimName + '_2회차_6월18일'] || 0;
-    const allFull = c1 >= cap && c2 >= cap;
-    const totalApplied = c1 + c2;
-    const totalCap = cap * 2;
-    badge.className = 'cap-badge ' + (allFull ? 'full' : 'open');
-    badge.textContent = allFull
-      ? '신청 마감'
-      : `${totalApplied}/${totalCap}명 신청중`;
-    if (allFull) {
-      btn.disabled = true;
-      btn.classList.add('full');
-      btn.textContent = '신청 마감';
-    }
+    count    = c1 + c2;
+    totalCap = cap * 2;
+    isFull   = c1 >= cap && c2 >= cap;
   } else {
-    const count = data[moimName] || 0;
-    const isFull = count >= cap;
-    badge.className = 'cap-badge ' + (isFull ? 'full' : 'open');
-    badge.textContent = isFull ? '신청 마감' : `${count}/${cap}명 신청중`;
-    if (isFull) {
-      btn.disabled = true;
-      btn.classList.add('full');
-      btn.textContent = '신청 마감';
-    }
+    count    = data[moimName] || 0;
+    totalCap = cap;
+    isFull   = count >= cap;
+  }
+
+  const remain = totalCap - count;
+  const pct    = Math.min(100, Math.round(count / totalCap * 100));
+
+  const txt = document.getElementById('cap-' + key + '-txt');
+  const rem = document.getElementById('cap-' + key + '-remain');
+  const bar = document.getElementById('cap-' + key + '-bar');
+
+  if (txt) txt.textContent = count + '/' + totalCap + '명';
+  if (rem) {
+    rem.textContent = isFull ? '신청 마감' : '잔여 ' + remain + '자리';
+    rem.className   = 'cap-remain' + (remain <= 2 && !isFull ? ' urgent' : '');
+  }
+  if (bar) {
+    bar.style.width = pct + '%';
+    bar.className   = 'cap-bar-fill' + (isFull ? ' full' : '');
+  }
+
+  if (isFull && btn) {
+    btn.disabled = true;
+    btn.classList.add('full');
+    btn.textContent = '신청 마감';
   }
 }
 
