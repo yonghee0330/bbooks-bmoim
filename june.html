@@ -398,6 +398,16 @@
     .cap-bar-count.full { color: #ef4444; }
     .btn-apply.sold-out { background: #94a3b8; cursor: not-allowed; }
 
+    /* ── 시간 슬롯 ──────────────────────── */
+    .tslot {
+      padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 700;
+      border: 1px solid var(--border); background: var(--bg); color: var(--text);
+      cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap;
+    }
+    .tslot:hover { border-color: var(--accent); color: var(--navy); }
+    .tslot.active { background: var(--navy); color: white; border-color: var(--navy); }
+    .tslot.blocked { background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0; cursor: not-allowed; text-decoration: line-through; }
+
     /* ── 공간 소개 ───────────────────────── */
     .space-section { margin-top: 48px; }
     .space-filter {
@@ -647,7 +657,7 @@
       </div>
       <div class="moim-body">
         <div class="moim-name">화요일오후두시</div>
-        <div class="moim-desc">전시되어 있는 책 속 캐릭터 인형을 제작하는 수업. 비북스 0.1평 서점 도서 구매 조건으로 진행합니다.</div>
+        <div class="moim-desc">전시되어 있는 책 속 캐릭터 인형을 제작하는 수업. 모임 도서 &lt;구덩이&gt; 구매 조건으로 진행합니다.</div>
         <div class="session-tabs">
           <button class="stab active" onclick="selectSession(this,'tue1')">① 6/14(일)</button>
           <button class="stab" onclick="selectSession(this,'tue2')">② 6/23(월)</button>
@@ -656,13 +666,13 @@
           <div class="meta-row"><span class="mi">📅</span>6월 14일 (일) 오후 2:00 – 4:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>6명</div>
-          <div class="meta-row"><span class="mi">📚</span>비북스 도서 1권 이상 구매 조건</div>
+          <div class="meta-row"><span class="mi">📚</span>모임 도서 &lt;구덩이&gt; 구매 조건</div>
         </div>
         <div class="moim-meta" id="tue2-meta" style="display:none">
           <div class="meta-row"><span class="mi">📅</span>6월 23일 (월) 오후 2:00 – 4:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>5명</div>
-          <div class="meta-row"><span class="mi">📚</span>비북스 도서 1권 이상 구매 조건</div>
+          <div class="meta-row"><span class="mi">📚</span>모임 도서 &lt;구덩이&gt; 구매 조건</div>
         </div>
         <!-- 인원 바 -->
         <div class="cap-bar-wrap">
@@ -921,15 +931,16 @@
         <option value="매장 테이블">☕ 매장 테이블</option>
       </select>
     </div>
-    <div class="fg-row">
-      <div class="fg"><label>희망 날짜 *</label><input type="date" id="rDate"/></div>
-      <div class="fg"><label>시간대</label>
-        <select id="rTime">
-          <option value="오전">오전</option>
-          <option value="오후">오후</option>
-          <option value="저녁">저녁</option>
-        </select>
+    <div class="fg">
+      <label>희망 날짜 *</label>
+      <input type="date" id="rDate" onchange="renderTimeSlots()"/>
+    </div>
+    <div class="fg">
+      <label>시작 시간 * <span id="rTimeNote" style="font-weight:400;color:var(--muted)"></span></label>
+      <div id="timeSlots" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+        <div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>
       </div>
+      <input type="hidden" id="rTime"/>
     </div>
     <div class="fg-row">
       <div class="fg"><label>성함 *</label><input type="text" id="rName" placeholder="이름"/></div>
@@ -1142,23 +1153,82 @@ async function submitApply() {
 }
 
 // ══ 대관 신청 ════════════════════════════
+
+// 날짜별 사용 불가 시작시간 (모임·기존 대관)
+// 형식: 'YYYY-MM-DD': [차단시작h, ...] — 해당 시간 + 이전 1슬롯도 겹침 처리
+const BLOCKED_SLOTS = {
+  '2026-06-11': [11],   // 동서남북① 11:00–13:00
+  '2026-06-13': [13],   // 드로잉 슥슥 13:30–15:30
+  '2026-06-14': [14],   // 화요일오후두시① 14:00–16:00
+  '2026-06-18': [11],   // 동서남북② 11:00–13:00
+  '2026-06-20': [14],   // 애프터눈 티 14:00–16:00
+  '2026-06-21': [14],   // 대관 (오후)
+  '2026-06-23': [14],   // 화요일오후두시② 14:00–16:00
+  '2026-06-24': [10],   // 대관 (오전)
+};
+
+// 전체 슬롯: 08:00–20:00 (2시간 단위, 마지막 시작 20시=20:00–22:00)
+const ALL_SLOTS = [8,10,12,14,16,18,20];
+
+function renderTimeSlots() {
+  const date = q('#rDate').value; // 'YYYY-MM-DD'
+  const wrap = q('#timeSlots');
+  q('#rTime').value = '';
+
+  if (!date) {
+    wrap.innerHTML = '<div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>';
+    return;
+  }
+
+  const blocked = BLOCKED_SLOTS[date] || [];
+  // 차단된 시작시간 기준으로 겹치는 슬롯 계산
+  // 모임이 h시 시작 2시간이면, h-2 슬롯(h-2~h)과 h 슬롯(h~h+2) 모두 겹침
+  const blockedSet = new Set();
+  blocked.forEach(h => {
+    blockedSet.add(h);       // 동일 시작
+    blockedSet.add(h - 2);   // 앞 슬롯도 겹침
+  });
+
+  wrap.innerHTML = ALL_SLOTS.map(h => {
+    const label = `${String(h).padStart(2,'0')}:00–${String(h+2).padStart(2,'0')}:00`;
+    const isBlocked = blockedSet.has(h);
+    return `<button type="button" class="tslot${isBlocked ? ' blocked' : ''}"
+      ${isBlocked ? 'disabled title="이미 사용 중인 시간대"' : `onclick="selectSlot(this,'${h}:00–${h+2}:00')"`}
+    >${label}</button>`;
+  }).join('');
+}
+
+function selectSlot(btn, value) {
+  q('#timeSlots').querySelectorAll('.tslot').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  q('#rTime').value = value;
+}
+
 function openRent(date) {
   q('#rName').value=''; q('#rPhone').value='';
   q('#rPurpose').value=''; q('#rCount').value='';
+  q('#rTime').value='';
   q('#rentAlert').innerHTML='';
-  if (date) q('#rDate').value = date;
-  else q('#rDate').value = '';
+  if (date) {
+    q('#rDate').value = date;
+    renderTimeSlots();
+  } else {
+    q('#rDate').value = '';
+    q('#timeSlots').innerHTML = '<div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>';
+  }
   openOv('rentOv');
 }
 
 async function submitRent() {
   const space=q('#rSpace').value, date=q('#rDate').value;
+  const time=q('#rTime').value;
   const name=q('#rName').value.trim(), phone=q('#rPhone').value.trim();
   if (!space||!date||!name||!phone) { flash('rentAlert','필수 항목을 입력해주세요.','e'); return; }
+  if (!time) { flash('rentAlert','시작 시간을 선택해주세요.','e'); return; }
   setLoad('rentBtn',true,'신청 중...');
   try {
     await POST({
-      action:'rent', month:'6월', space, date, time:q('#rTime').value,
+      action:'rent', month:'6월', space, date, time,
       name, phone, purpose:q('#rPurpose').value, count:q('#rCount').value,
       reqDate:new Date().toLocaleString('ko-KR')
     });
