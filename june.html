@@ -329,6 +329,36 @@
     .refund h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
     .refund p { font-size: 12px; color: var(--muted); line-height: 1.8; }
 
+    /* ── 라이트박스 ───────────────────────── */
+    .lightbox {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.88); z-index: 300;
+      align-items: center; justify-content: center;
+      padding: 20px; cursor: zoom-out;
+    }
+    .lightbox.on { display: flex; }
+    .lightbox img {
+      max-width: 100%; max-height: 90vh;
+      border-radius: 10px;
+      object-fit: contain;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+    }
+    .lb-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,.15); color: white;
+      border: none; font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .moim-poster.has-img { cursor: zoom-in; }
+    .moim-poster.has-img:hover::after {
+      content: '🔍 크게 보기';
+      position: absolute; bottom: 10px; right: 10px;
+      background: rgba(0,0,0,.55); color: white;
+      font-size: 11px; padding: 4px 10px;
+      border-radius: 12px;
+    }
+
     /* ── 공간 소개 ───────────────────────── */
     .space-section { margin-top: 48px; }
     .space-filter {
@@ -582,12 +612,12 @@
 
     <!-- 애프터눈 티 -->
     <div class="moim-card" id="afternoon">
-      <div class="moim-poster p4">
+      <div class="moim-poster p4 has-img" onclick="openLightbox('images/다온글방.png','책 숲에서 즐기는 애프터눈 티 포스터')">
         <div class="poster-deco">🫖</div>
         <div class="poster-badge">b.moim · 2026.06</div>
         <div class="poster-title">책 숲에서<br>즐기는<br>애프터눈 티</div>
         <div class="poster-host">지선화 (다온글방)</div>
-        <div class="poster-img-slot"><img src="images/포스터-애프터눈티.jpg" alt="애프터눈 티 포스터"></div>
+        <div class="poster-img-slot" style="display:block"><img src="images/다온글방.png" alt="애프터눈 티 포스터"></div>
       </div>
       <div class="moim-body">
         <div class="moim-name">책 숲에서 즐기는 애프터눈 티</div>
@@ -757,6 +787,12 @@
     </p>
   </div>
 
+</div>
+
+<!-- ══ 라이트박스 ══ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <img id="lbImg" src="" alt=""/>
 </div>
 
 <!-- ══ 모달: 모임 신청 ══ -->
@@ -991,6 +1027,19 @@ async function POST(data) {
   });
   return r.json();
 }
+
+// ══ 라이트박스 ══════════════════════════
+function openLightbox(src, alt) {
+  q('#lbImg').src = src;
+  q('#lbImg').alt = alt || '';
+  q('#lightbox').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+  q('#lightbox').classList.remove('on');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
 
 // ══ 공간 슬라이더 ════════════════════════
 let allSlides = [], visibleSlides = [], curSlide = 0;
