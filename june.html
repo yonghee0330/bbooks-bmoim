@@ -407,6 +407,7 @@
     .tslot:hover { border-color: var(--accent); color: var(--navy); }
     .tslot.active { background: var(--navy); color: white; border-color: var(--navy); }
     .tslot.blocked { background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0; cursor: not-allowed; text-decoration: line-through; }
+    .tslot.has-rent { border-color: #f59e0b; color: #92400e; background: #fffbeb; }
 
     /* ── 공간 소개 ───────────────────────── */
     .space-section { margin-top: 48px; }
@@ -1011,23 +1012,29 @@ async function loadCounts() {
     const counts = await res.json();
     if (counts.error) { console.warn('count error:', counts.error); return; }
 
-    // ── 대관 날짜 캘린더 반영 ──
-    const rentDates = counts._rentDates || [];
-    rentDates.forEach(dateStr => {
-      // dateStr: "2026-06-21" — openRent 파라미터와 매칭
+    // ── 대관 날짜 캘린더 반영 + 시간 슬롯 데이터 채우기 ──
+    const rentEntries = counts._rentDates || [];
+    rentSlotsByDate = {};
+    rentEntries.forEach(entry => {
+      // entry: { date: "2026-06-21", time: "14:00–16:00" } 또는 구형 문자열 "2026-06-21"
+      const dateStr = typeof entry === 'string' ? entry : entry.date;
+      const timeStr = typeof entry === 'string' ? null : entry.time;
+
+      // 캘린더 뱃지
       const cell = document.querySelector(`.cal-cell[onclick*="openRent('${dateStr}')"]`);
-      if (!cell) return;
-      // 대관 버튼 → 대관완료 뱃지로 교체 (중복 방지)
-      if (!cell.querySelector('.cal-rent-done')) {
-        const btn = cell.querySelector('.cal-rent-btn');
-        if (btn) btn.remove();
+      if (cell && !cell.querySelector('.cal-rent-done')) {
         const badge = document.createElement('div');
         badge.className = 'cal-event cal-rent-done';
-        badge.textContent = '대관완료';
-        cell.appendChild(badge);
-        // 클릭 시 대관 모달 열리지 않도록
-        cell.style.pointerEvents = 'none';
-        cell.style.cursor = 'default';
+        badge.textContent = '대관있음';
+        const dayEl = cell.querySelector('.cal-day');
+        if (dayEl && dayEl.nextSibling) cell.insertBefore(badge, dayEl.nextSibling);
+        else cell.appendChild(badge);
+      }
+
+      // 시간 슬롯 데이터 누적
+      if (timeStr) {
+        if (!rentSlotsByDate[dateStr]) rentSlotsByDate[dateStr] = [];
+        if (!rentSlotsByDate[dateStr].includes(timeStr)) rentSlotsByDate[dateStr].push(timeStr);
       }
     });
 
@@ -1154,24 +1161,25 @@ async function submitApply() {
 
 // ══ 대관 신청 ════════════════════════════
 
-// 날짜별 사용 불가 시작시간 (모임·기존 대관)
-// 형식: 'YYYY-MM-DD': [차단시작h, ...] — 해당 시간 + 이전 1슬롯도 겹침 처리
-const BLOCKED_SLOTS = {
+// 모임 고정 시간 (시작h 기준, 2시간 블록)
+const MOIM_SLOTS = {
   '2026-06-11': [11],   // 동서남북① 11:00–13:00
-  '2026-06-13': [13],   // 드로잉 슥슥 13:30–15:30
+  '2026-06-13': [13],   // 드로잉 슥슥 13:30–15:30 (13시 슬롯)
   '2026-06-14': [14],   // 화요일오후두시① 14:00–16:00
   '2026-06-18': [11],   // 동서남북② 11:00–13:00
   '2026-06-20': [14],   // 애프터눈 티 14:00–16:00
-  '2026-06-21': [14],   // 대관 (오후)
   '2026-06-23': [14],   // 화요일오후두시② 14:00–16:00
-  '2026-06-24': [10],   // 대관 (오전)
 };
 
-// 전체 슬롯: 08:00–20:00 (2시간 단위, 마지막 시작 20시=20:00–22:00)
+// API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
+// 형식: { 'YYYY-MM-DD': ['10:00–12:00', ...] }
+let rentSlotsByDate = {};
+
+// 전체 슬롯: 08:00–22:00 (2시간 단위)
 const ALL_SLOTS = [8,10,12,14,16,18,20];
 
 function renderTimeSlots() {
-  const date = q('#rDate').value; // 'YYYY-MM-DD'
+  const date = q('#rDate').value;
   const wrap = q('#timeSlots');
   q('#rTime').value = '';
 
@@ -1180,21 +1188,33 @@ function renderTimeSlots() {
     return;
   }
 
-  const blocked = BLOCKED_SLOTS[date] || [];
-  // 차단된 시작시간 기준으로 겹치는 슬롯 계산
-  // 모임이 h시 시작 2시간이면, h-2 슬롯(h-2~h)과 h 슬롯(h~h+2) 모두 겹침
-  const blockedSet = new Set();
-  blocked.forEach(h => {
-    blockedSet.add(h);       // 동일 시작
-    blockedSet.add(h - 2);   // 앞 슬롯도 겹침
+  // 모임 차단 슬롯 — 해당 시간 + 앞 슬롯도 겹침
+  const moimBlocked = new Set();
+  (MOIM_SLOTS[date] || []).forEach(h => {
+    moimBlocked.add(h);
+    moimBlocked.add(h - 2);
+  });
+
+  // 대관 이미 있는 슬롯 (선택은 가능하되 안내 표시)
+  const rentTaken = new Set();
+  (rentSlotsByDate[date] || []).forEach(timeStr => {
+    // "10:00–12:00" → 시작 h 추출
+    const h = parseInt(timeStr.split(':')[0], 10);
+    rentTaken.add(h);
   });
 
   wrap.innerHTML = ALL_SLOTS.map(h => {
     const label = `${String(h).padStart(2,'0')}:00–${String(h+2).padStart(2,'0')}:00`;
-    const isBlocked = blockedSet.has(h);
-    return `<button type="button" class="tslot${isBlocked ? ' blocked' : ''}"
-      ${isBlocked ? 'disabled title="이미 사용 중인 시간대"' : `onclick="selectSlot(this,'${h}:00–${h+2}:00')"`}
-    >${label}</button>`;
+    const isBlocked = moimBlocked.has(h);  // 모임 있음 → 선택 불가
+    const hasRent = rentTaken.has(h);       // 대관 있음 → 선택 가능, 안내만
+
+    if (isBlocked) {
+      return `<button type="button" class="tslot blocked" disabled title="모임이 있는 시간대">${label}</button>`;
+    }
+    if (hasRent) {
+      return `<button type="button" class="tslot has-rent" onclick="selectSlot(this,'${label}')" title="대관 신청이 있는 시간대">${label} <span style="font-size:10px;opacity:.7">대관있음</span></button>`;
+    }
+    return `<button type="button" class="tslot" onclick="selectSlot(this,'${label}')">${label}</button>`;
   }).join('');
 }
 
