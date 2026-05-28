@@ -1115,7 +1115,7 @@
     <div class="modal-sub">비북스 담당자가 확인 후 연락드립니다</div>
     <div id="rentAlert"></div>
     <div class="fg"><label>공간 선택 *</label>
-      <select id="rSpace">
+      <select id="rSpace" onchange="renderTimeSlots()">
         <option value="">선택해주세요</option>
         <option value="세미나실">📌 세미나실</option>
         <option value="매장 테이블">☕ 매장 테이블</option>
@@ -1229,7 +1229,7 @@ async function loadCounts() {
     const counts = await res.json();
     if (counts.error) { console.warn('count error:', counts.error); return; }
 
-    // ── 대관 날짜 캘린더 반영 + 시간 슬롯 데이터 채우기 ──
+    // ── 대관 날짜 캘린더 반영 + 시간 슬롯 데이터 채우기(공간별) ──
     const rentEntries = counts._rentDates || [];
     rentSlotsByDate = {};
     rentEntries.forEach(entry => {
@@ -1238,6 +1238,8 @@ async function loadCounts() {
       const dateStr = normalizeRentDate(rawDate);
       if (!dateStr) return;
       const timeStr = typeof entry === 'string' ? null : (entry.time || entry.시간 || entry.timeSlot);
+      const rawSpace = typeof entry === 'string' ? '' : (entry.space || entry.venue || entry.place || entry.장소);
+      const space = normalizeSpace(rawSpace) || '_any';
 
       // 캘린더 뱃지
       const cell = document.querySelector(`.cal-cell[onclick*="openRent('${dateStr}')"]`);
@@ -1250,10 +1252,11 @@ async function loadCounts() {
         else cell.appendChild(badge);
       }
 
-      // 시간 슬롯 데이터 누적 (해당 2시간 블록만 차단)
+      // 시간 슬롯 데이터 누적 (해당 구간만 차단, 공간별)
       if (timeStr) {
-        if (!rentSlotsByDate[dateStr]) rentSlotsByDate[dateStr] = [];
-        if (!rentSlotsByDate[dateStr].includes(timeStr)) rentSlotsByDate[dateStr].push(timeStr);
+        if (!rentSlotsByDate[dateStr]) rentSlotsByDate[dateStr] = {};
+        if (!rentSlotsByDate[dateStr][space]) rentSlotsByDate[dateStr][space] = [];
+        if (!rentSlotsByDate[dateStr][space].includes(timeStr)) rentSlotsByDate[dateStr][space].push(timeStr);
       }
     });
 
@@ -1396,22 +1399,22 @@ const TT_STEP_MIN = 30;
 const TT_START_MIN = 8 * 60;
 const TT_END_MIN = 22 * 60;
 
-// 비모임 고정 일정 (실제 시간 기준, 겹치면 차단)
+// 비모임 고정 일정 (공간별 실제 시간 기준, 겹치면 차단)
 const SCHEDULED_MOIM_BLOCKS = [
-  { date: '2026-06-11', start: '11:00', end: '13:00', tag: '동서남북 ①' },
-  { date: '2026-06-13', start: '13:30', end: '15:30', tag: '드로잉 슥슥' },
-  { date: '2026-06-14', start: '14:00', end: '16:00', tag: '화요일오후두시 ①' },
-  { date: '2026-06-18', start: '11:00', end: '13:00', tag: '동서남북 ②' },
-  { date: '2026-06-19', start: '18:00', end: '19:30', tag: '영화 한편' },
-  { date: '2026-06-20', start: '14:00', end: '16:00', tag: '애프터눈 티' },
-  { date: '2026-06-23', start: '14:00', end: '16:00', tag: '화요일오후두시 ②' },
-  { date: '2026-06-21', start: '15:00', end: '17:00', tag: '줌치풍경' },
-  { date: '2026-06-21', start: '15:00', end: '16:00', tag: '책잇기' },
-  { date: '2026-06-24', start: '19:00', end: '21:00', tag: '편지모임' },
+  { date: '2026-06-11', space: '세미나실',   start: '11:00', end: '13:00', tag: '동서남북 ①' },
+  { date: '2026-06-13', space: '세미나실',   start: '13:30', end: '15:30', tag: '드로잉 슥슥' },
+  { date: '2026-06-14', space: '세미나실',   start: '14:00', end: '16:00', tag: '화요일오후두시 ①' },
+  { date: '2026-06-18', space: '세미나실',   start: '11:00', end: '13:00', tag: '동서남북 ②' },
+  { date: '2026-06-19', space: '매장 테이블', start: '18:00', end: '19:30', tag: '영화 한편' },
+  { date: '2026-06-20', space: '세미나실',   start: '14:00', end: '16:00', tag: '애프터눈 티' },
+  { date: '2026-06-23', space: '세미나실',   start: '14:00', end: '16:00', tag: '화요일오후두시 ②' },
+  { date: '2026-06-21', space: '세미나실',   start: '15:00', end: '17:00', tag: '줌치풍경' },
+  { date: '2026-06-21', space: '매장 테이블', start: '15:00', end: '16:00', tag: '책잇기' },
+  { date: '2026-06-24', space: '세미나실',   start: '19:00', end: '21:00', tag: '편지모임' },
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
-// 형식: { 'YYYY-MM-DD': ['14:00–16:00', ...] }
+// 형식: { 'YYYY-MM-DD': { '세미나실': ['14:00–16:00', ...], '매장 테이블': [...] } }
 let rentSlotsByDate = {};
 
 function pad2(n) { return String(n).padStart(2, '0'); }
@@ -1424,6 +1427,14 @@ function minutesToHHMM(min) {
 
 function normalizeDash(s) {
   return String(s || '').replace(/~/g, '–').replace(/-/g, '–');
+}
+
+function normalizeSpace(spaceStr) {
+  const s = String(spaceStr || '').trim();
+  if (!s) return '';
+  if (s.includes('세미나')) return '세미나실';
+  if (s.includes('테이블') || s.includes('매장')) return '매장 테이블';
+  return s;
 }
 
 function normalizeRentDate(dateStr) {
@@ -1460,9 +1471,9 @@ function parseTimeRangeToMinutes(rangeStr) {
   return { startMin, endMin };
 }
 
-function getBlockedRangesForDate(date) {
+function getBlockedRangesForDate(date, space) {
   const moimRanges = SCHEDULED_MOIM_BLOCKS
-    .filter(b => b.date === date)
+    .filter(b => b.date === date && (!space || b.space === space))
     .map(b => {
       const startMin = parseHHMMToMinutes(b.start);
       const endMin = parseHHMMToMinutes(b.end);
@@ -1471,7 +1482,9 @@ function getBlockedRangesForDate(date) {
     })
     .filter(Boolean);
 
-  const rentRanges = (rentSlotsByDate[date] || [])
+  const bySpace = rentSlotsByDate[date] || {};
+  const spaceSlots = (bySpace[space] || []).concat(bySpace._any || []);
+  const rentRanges = spaceSlots
     .map(timeStr => {
       const r = parseTimeRangeToMinutes(timeStr);
       if (!r) return null;
@@ -1487,7 +1500,8 @@ function isMinuteInRange(min, range) {
 }
 
 function getCellKind(date, cellMin) {
-  const { moimRanges, rentRanges } = getBlockedRangesForDate(date);
+  const space = q('#rSpace')?.value || '';
+  const { moimRanges, rentRanges } = getBlockedRangesForDate(date, space);
   const moimHit = moimRanges.find(r => isMinuteInRange(cellMin, r));
   if (moimHit) return { kind: 'moim', tag: moimHit.tag };
   const rentHit = rentRanges.find(r => isMinuteInRange(cellMin, r));
@@ -1566,10 +1580,16 @@ function onCellClick(cellMin) {
 function renderTimeSlots() {
   const date = q('#rDate').value;
   const wrap = q('#timeSlots');
+  const space = q('#rSpace').value;
   // 날짜 바뀌면 선택 초기화
   if (!date) {
     clearSelection();
     wrap.innerHTML = '<div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>';
+    return;
+  }
+  if (!space) {
+    clearSelection();
+    wrap.innerHTML = '<div style="font-size:12px;color:var(--muted)">공간을 먼저 선택해주세요</div>';
     return;
   }
 
