@@ -1313,8 +1313,8 @@ function getCellKind(date, cellMin) {
   return null;
 }
 
-let ttStart = null;
-let ttEnd = null; // exclusive
+let ttStart = null; // minutes
+let ttEnd = null;   // minutes, exclusive
 
 function setTimeNote(text) {
   const el = q('#rTimeNote');
@@ -1369,30 +1369,16 @@ function onCellClick(cellMin) {
     ttStart = cellMin;
     ttEnd = null;
     q('#rTime').value = '';
-    setTimeNote(`시작: ${minutesToHHMM(ttStart)} (끝 시간을 선택하세요)`);
+    setTimeNote(`시작 구간: ${minutesToHHMM(ttStart)}–${minutesToHHMM(ttStart + TT_STEP_MIN)} (끝 구간을 선택하세요)`);
     renderTimeSlots();
     return;
   }
 
-  // 두 번째 클릭으로 "끝 시각(경계)" 결정
-  // - 사용자가 09:00을 끝으로 누르면 end=09:00
-  // - start와 같은 시각을 누르면 최소 30분(한 칸)로 처리
-  let startMin = ttStart;
-  let endMin = cellMin;
-
-  if (endMin === startMin) endMin = startMin + TT_STEP_MIN;
-
-  // end가 start보다 이르면 swap
-  if (endMin < startMin) {
-    const tmp = startMin;
-    startMin = endMin;
-    endMin = tmp;
-  }
-
-  // 최소 30분 보장
-  if (endMin < startMin + TT_STEP_MIN) endMin = startMin + TT_STEP_MIN;
-
-  applySelection(date, startMin, endMin);
+  // 두 번째 클릭으로 "끝 구간" 결정
+  // 셀은 [cellMin, cellMin+30) 구간을 뜻함 → 끝은 cellMin+30
+  const s = Math.min(ttStart, cellMin);
+  const e = Math.max(ttStart + TT_STEP_MIN, cellMin + TT_STEP_MIN);
+  applySelection(date, s, e);
 }
 
 function renderTimeSlots() {
@@ -1434,7 +1420,7 @@ function renderTimeSlots() {
     ].filter(Boolean).join(' ');
 
     const tag = kind?.tag ? `<span class="tag">${kind.tag}</span>` : '';
-    const time = `<span class="time">${minutesToHHMM(t)}</span>`;
+    const time = `<span class="time">${minutesToHHMM(t)}–${minutesToHHMM(t + TT_STEP_MIN)}</span>`;
     const handler = isDisabled ? '' : `onclick="onCellClick(${t})"`;
     const title = kind?.tag ? `title="${kind.tag}"` : '';
     return `<button type="button" class="${cls}" ${handler} ${title}>${time}${tag}</button>`;
