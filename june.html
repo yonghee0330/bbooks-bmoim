@@ -414,6 +414,37 @@
       .tslot { font-size: 11px; padding: 6px 8px; }
     }
 
+    /* 30분 시간표 */
+    .timetable {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .tcell {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      transition: all .15s;
+      font-family: inherit;
+      color: var(--text);
+    }
+    .tcell:hover { border-color: var(--accent); color: var(--navy); }
+    .tcell.disabled { background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0; cursor: not-allowed; }
+    .tcell.moim { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; cursor: not-allowed; }
+    .tcell.rent { background: #fffbeb; color: #92400e; border-color: #fcd34d; cursor: not-allowed; }
+    .tcell.in-range { background: rgba(10,31,68,.10); border-color: rgba(10,31,68,.25); }
+    .tcell.sel-start,
+    .tcell.sel-end { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .tcell .time { font-weight: 800; font-size: 12px; }
+    .tcell .tag { font-size: 10px; font-weight: 800; opacity: .9; white-space: nowrap; }
+
     /* ── 공간 소개 ───────────────────────── */
     .space-section { margin-top: 48px; }
     .space-filter {
@@ -949,7 +980,7 @@
       <input type="date" id="rDate" onchange="renderTimeSlots()"/>
     </div>
     <div class="fg">
-      <label>시작 시간 * <span id="rTimeNote" style="font-weight:400;color:var(--muted)"></span></label>
+      <label>대관 시간 * <span id="rTimeNote" style="font-weight:400;color:var(--muted)"></span></label>
       <div id="timeSlots" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
         <div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>
       </div>
@@ -1178,14 +1209,14 @@ async function submitApply() {
 // ══ 대관 신청 ════════════════════════════
 
 /**
- * 대관은 기본 2시간 단위로 진행하되, 시작 시간은 30분 단위로 선택합니다.
- * - 예: 12:00–14:00, 12:30–14:30, 13:00–15:00 ...
- * - 모임/기존 대관과 겹치는 슬롯은 자동 비활성화
+ * 30분 단위 시간표를 보여주고, 신청 시 "선택한 구간"만 채우는 방식.
+ * - 08:00~22:00, 30분 단위 셀
+ * - 모임/기존 대관 구간은 해당 셀만 비활성화
+ * - 사용자는 시작/끝을 선택해 연속 구간으로 신청
  */
-const RENT_DURATION_MIN = 120;
-const RENT_STEP_MIN = 30;
-const RENT_START_MIN = 8 * 60;
-const RENT_END_MIN = 22 * 60;
+const TT_STEP_MIN = 30;
+const TT_START_MIN = 8 * 60;
+const TT_END_MIN = 22 * 60;
 
 // 비모임 고정 일정 (실제 시간 기준, 겹치면 차단)
 const SCHEDULED_MOIM_BLOCKS = [
@@ -1209,8 +1240,8 @@ function minutesToHHMM(min) {
   return `${pad2(h)}:${pad2(m)}`;
 }
 
-function timeLabelFromMinutes(startMin, durationMin = RENT_DURATION_MIN) {
-  return `${minutesToHHMM(startMin)}–${minutesToHHMM(startMin + durationMin)}`;
+function normalizeDash(s) {
+  return String(s || '').replace(/~/g, '–').replace(/-/g, '–');
 }
 
 function normalizeRentDate(dateStr) {
@@ -1238,17 +1269,13 @@ function parseHHMMToMinutes(hhmm) {
 /** "14:00–16:00" / "14:00~16:00" / "14:00-16:00" 등 → { startMin, endMin } */
 function parseTimeRangeToMinutes(rangeStr) {
   if (!rangeStr) return null;
-  const s = String(rangeStr).trim();
+  const s = normalizeDash(String(rangeStr).trim());
   const m = s.match(/(\d{1,2}:\d{2})\s*[~–\-]\s*(\d{1,2}:\d{2})/);
   if (!m) return null;
   const startMin = parseHHMMToMinutes(m[1]);
   const endMin = parseHHMMToMinutes(m[2]);
   if (startMin == null || endMin == null) return null;
   return { startMin, endMin };
-}
-
-function rangesEqual(aStart, aEnd, bStart, bEnd) {
-  return aStart === bStart && aEnd === bEnd;
 }
 
 function getBlockedRangesForDate(date) {
@@ -1273,61 +1300,131 @@ function getBlockedRangesForDate(date) {
   return { moimRanges, rentRanges };
 }
 
-function getRentSlotBlockReason(date, startMin) {
-  if (!date || startMin == null) return null;
-  const endMin = startMin + RENT_DURATION_MIN;
+function isMinuteInRange(min, range) {
+  return min >= range.startMin && min < range.endMin;
+}
+
+function getCellKind(date, cellMin) {
   const { moimRanges, rentRanges } = getBlockedRangesForDate(date);
-
-  // "겹침"이 아니라, "정확히 같은 시간대"만 차단
-  const moimHit = moimRanges.find(r => rangesEqual(startMin, endMin, r.startMin, r.endMin));
+  const moimHit = moimRanges.find(r => isMinuteInRange(cellMin, r));
   if (moimHit) return { kind: 'moim', tag: moimHit.tag };
-
-  const rentHit = rentRanges.find(r => rangesEqual(startMin, endMin, r.startMin, r.endMin));
+  const rentHit = rentRanges.find(r => isMinuteInRange(cellMin, r));
   if (rentHit) return { kind: 'rent', tag: rentHit.tag };
-
   return null;
 }
 
-function isRentSlotBlocked(date, timeLabel) {
-  if (!date || !timeLabel) return true;
-  const start = parseHHMMToMinutes(String(timeLabel).split('–')[0]);
-  if (start == null) return true;
-  return Boolean(getRentSlotBlockReason(date, start));
+let ttStart = null;
+let ttEnd = null; // exclusive
+
+function setTimeNote(text) {
+  const el = q('#rTimeNote');
+  if (el) el.textContent = text || '';
+}
+
+function clearSelection() {
+  ttStart = null;
+  ttEnd = null;
+  q('#rTime').value = '';
+  setTimeNote('');
+}
+
+function selectionLabel() {
+  if (ttStart == null || ttEnd == null) return '';
+  return `${minutesToHHMM(ttStart)}–${minutesToHHMM(ttEnd)}`;
+}
+
+function isSelectionValid(date, startMin, endMin) {
+  if (!date || startMin == null || endMin == null) return false;
+  if (endMin <= startMin) return false;
+  if (startMin < TT_START_MIN || endMin > TT_END_MIN) return false;
+  if ((startMin - TT_START_MIN) % TT_STEP_MIN !== 0) return false;
+  if ((endMin - TT_START_MIN) % TT_STEP_MIN !== 0) return false;
+
+  for (let t = startMin; t < endMin; t += TT_STEP_MIN) {
+    if (getCellKind(date, t)) return false;
+  }
+  return true;
+}
+
+function applySelection(date, startMin, endMin) {
+  if (!isSelectionValid(date, startMin, endMin)) {
+    flash('rentAlert', '선택한 구간에 모임/대관이 포함되어 있어요. 다른 시간으로 골라주세요.', 'e');
+    clearSelection();
+    renderTimeSlots();
+    return;
+  }
+  ttStart = startMin;
+  ttEnd = endMin;
+  q('#rTime').value = selectionLabel();
+  setTimeNote(`선택됨: ${selectionLabel()}`);
+  renderTimeSlots();
+}
+
+function onCellClick(cellMin) {
+  const date = q('#rDate').value;
+  if (!date) return;
+  if (getCellKind(date, cellMin)) return;
+
+  if (ttStart == null) {
+    ttStart = cellMin;
+    ttEnd = null;
+    q('#rTime').value = '';
+    setTimeNote(`시작: ${minutesToHHMM(ttStart)} (끝 시간을 선택하세요)`);
+    renderTimeSlots();
+    return;
+  }
+
+  // 두 번째 클릭으로 끝 결정 (해당 셀의 끝 = +30분)
+  const endMin = cellMin + TT_STEP_MIN;
+  const s = Math.min(ttStart, cellMin);
+  const e = Math.max(ttStart + TT_STEP_MIN, cellMin + TT_STEP_MIN);
+  applySelection(date, s, e);
 }
 
 function renderTimeSlots() {
   const date = q('#rDate').value;
   const wrap = q('#timeSlots');
-  q('#rTime').value = '';
-
+  // 날짜 바뀌면 선택 초기화
   if (!date) {
+    clearSelection();
     wrap.innerHTML = '<div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>';
     return;
   }
 
-  const starts = [];
-  for (let t = RENT_START_MIN; t + RENT_DURATION_MIN <= RENT_END_MIN; t += RENT_STEP_MIN) {
-    starts.push(t);
+  // 선택이 있는데, 범위 밖/유효성 깨졌으면 초기화
+  if (ttStart != null && ttEnd != null && !isSelectionValid(date, ttStart, ttEnd)) {
+    clearSelection();
   }
 
-  wrap.innerHTML = starts.map(startMin => {
-    const label = timeLabelFromMinutes(startMin);
-    const reason = getRentSlotBlockReason(date, startMin);
+  const cells = [];
+  for (let t = TT_START_MIN; t < TT_END_MIN; t += TT_STEP_MIN) {
+    cells.push(t);
+  }
 
-    if (reason?.kind === 'moim') {
-      return `<button type="button" class="tslot blocked-moim" disabled title="비모임: ${reason.tag}">${label}<span class="tslot-tag">${reason.tag}</span></button>`;
-    }
-    if (reason?.kind === 'rent') {
-      return `<button type="button" class="tslot blocked has-rent" disabled title="이미 대관 신청이 있는 시간대">${label}<span class="tslot-tag">대관있음</span></button>`;
-    }
-    return `<button type="button" class="tslot" onclick="selectSlot(this,'${label}')">${label}</button>`;
+  wrap.classList.add('timetable');
+  wrap.innerHTML = cells.map(t => {
+    const kind = getCellKind(date, t);
+    const isDisabled = Boolean(kind);
+    const inRange = ttStart != null && ttEnd != null && t >= ttStart && t < ttEnd;
+    const isStart = ttStart != null && t === ttStart;
+    const isEndCell = ttEnd != null && (t + TT_STEP_MIN) === ttEnd;
+
+    const cls = [
+      'tcell',
+      isDisabled ? 'disabled' : '',
+      kind?.kind === 'moim' ? 'moim' : '',
+      kind?.kind === 'rent' ? 'rent' : '',
+      inRange ? 'in-range' : '',
+      isStart ? 'sel-start' : '',
+      isEndCell ? 'sel-end' : '',
+    ].filter(Boolean).join(' ');
+
+    const tag = kind?.tag ? `<span class="tag">${kind.tag}</span>` : '';
+    const time = `<span class="time">${minutesToHHMM(t)}</span>`;
+    const handler = isDisabled ? '' : `onclick="onCellClick(${t})"`;
+    const title = kind?.tag ? `title="${kind.tag}"` : '';
+    return `<button type="button" class="${cls}" ${handler} ${title}>${time}${tag}</button>`;
   }).join('');
-}
-
-function selectSlot(btn, value) {
-  q('#timeSlots').querySelectorAll('.tslot').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  q('#rTime').value = value;
 }
 
 function openRent(date) {
@@ -1335,6 +1432,7 @@ function openRent(date) {
   q('#rPurpose').value=''; q('#rCount').value='';
   q('#rTime').value='';
   q('#rentAlert').innerHTML='';
+  clearSelection();
   if (date) {
     q('#rDate').value = date;
     renderTimeSlots();
@@ -1351,7 +1449,11 @@ async function submitRent() {
   const name=q('#rName').value.trim(), phone=q('#rPhone').value.trim();
   if (!space||!date||!name||!phone) { flash('rentAlert','필수 항목을 입력해주세요.','e'); return; }
   if (!time) { flash('rentAlert','시작 시간을 선택해주세요.','e'); return; }
-  if (isRentSlotBlocked(date, time)) { flash('rentAlert','선택할 수 없는 시간대입니다. 다른 시간을 골라주세요.','e'); return; }
+  const parsed = parseTimeRangeToMinutes(time);
+  if (!parsed || !isSelectionValid(date, parsed.startMin, parsed.endMin)) {
+    flash('rentAlert','선택할 수 없는 시간대입니다. 다른 시간을 골라주세요.','e');
+    return;
+  }
   setLoad('rentBtn',true,'신청 중...');
   try {
     await POST({
@@ -1362,6 +1464,7 @@ async function submitRent() {
     flash('rentAlert','✅ 대관 신청이 접수되었습니다! 담당자가 연락드릴게요.','o');
     setLoad('rentBtn',false,'신청하기');
     await loadCounts();
+    clearSelection();
     if (q('#rDate').value) renderTimeSlots();
   } catch {
     flash('rentAlert','오류가 발생했습니다. 인스타그램 DM으로 문의해주세요.','e');
