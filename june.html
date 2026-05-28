@@ -1374,11 +1374,25 @@ function onCellClick(cellMin) {
     return;
   }
 
-  // 두 번째 클릭으로 끝 결정 (해당 셀의 끝 = +30분)
-  const endMin = cellMin + TT_STEP_MIN;
-  const s = Math.min(ttStart, cellMin);
-  const e = Math.max(ttStart + TT_STEP_MIN, cellMin + TT_STEP_MIN);
-  applySelection(date, s, e);
+  // 두 번째 클릭으로 "끝 시각(경계)" 결정
+  // - 사용자가 09:00을 끝으로 누르면 end=09:00
+  // - start와 같은 시각을 누르면 최소 30분(한 칸)로 처리
+  let startMin = ttStart;
+  let endMin = cellMin;
+
+  if (endMin === startMin) endMin = startMin + TT_STEP_MIN;
+
+  // end가 start보다 이르면 swap
+  if (endMin < startMin) {
+    const tmp = startMin;
+    startMin = endMin;
+    endMin = tmp;
+  }
+
+  // 최소 30분 보장
+  if (endMin < startMin + TT_STEP_MIN) endMin = startMin + TT_STEP_MIN;
+
+  applySelection(date, startMin, endMin);
 }
 
 function renderTimeSlots() {
