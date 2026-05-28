@@ -1247,9 +1247,8 @@ function parseTimeRangeToMinutes(rangeStr) {
   return { startMin, endMin };
 }
 
-function rangesOverlap(aStart, aEnd, bStart, bEnd) {
-  // [start, end) half-open
-  return aStart < bEnd && bStart < aEnd;
+function rangesEqual(aStart, aEnd, bStart, bEnd) {
+  return aStart === bStart && aEnd === bEnd;
 }
 
 function getBlockedRangesForDate(date) {
@@ -1279,10 +1278,11 @@ function getRentSlotBlockReason(date, startMin) {
   const endMin = startMin + RENT_DURATION_MIN;
   const { moimRanges, rentRanges } = getBlockedRangesForDate(date);
 
-  const moimHit = moimRanges.find(r => rangesOverlap(startMin, endMin, r.startMin, r.endMin));
+  // "겹침"이 아니라, "정확히 같은 시간대"만 차단
+  const moimHit = moimRanges.find(r => rangesEqual(startMin, endMin, r.startMin, r.endMin));
   if (moimHit) return { kind: 'moim', tag: moimHit.tag };
 
-  const rentHit = rentRanges.find(r => rangesOverlap(startMin, endMin, r.startMin, r.endMin));
+  const rentHit = rentRanges.find(r => rangesEqual(startMin, endMin, r.startMin, r.endMin));
   if (rentHit) return { kind: 'rent', tag: rentHit.tag };
 
   return null;
