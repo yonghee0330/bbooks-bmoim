@@ -410,6 +410,9 @@
     .tslot.blocked-moim { border-color: #93c5fd; color: #1d4ed8; background: #dbeafe; cursor: not-allowed; text-decoration: none; line-height: 1.35; }
     .tslot.has-rent.blocked { border-color: #fcd34d; color: #92400e; background: #fffbeb; text-decoration: none; line-height: 1.35; }
     .tslot-tag { display: block; font-size: 10px; font-weight: 700; margin-top: 2px; opacity: .85; }
+    @media (max-width: 480px) {
+      .tslot { font-size: 11px; padding: 6px 8px; }
+    }
 
     /* ── 공간 소개 ───────────────────────── */
     .space-section { margin-top: 48px; }
@@ -1174,25 +1177,40 @@ async function submitApply() {
 
 // ══ 대관 신청 ════════════════════════════
 
-// 비모임 고정 일정 (2시간 슬롯 시작 시각 = slotHour, 해당 블록만 차단)
+/**
+ * 대관은 기본 2시간 단위로 진행하되, 시작 시간은 30분 단위로 선택합니다.
+ * - 예: 12:00–14:00, 12:30–14:30, 13:00–15:00 ...
+ * - 모임/기존 대관과 겹치는 슬롯은 자동 비활성화
+ */
+const RENT_DURATION_MIN = 120;
+const RENT_STEP_MIN = 30;
+const RENT_START_MIN = 8 * 60;
+const RENT_END_MIN = 22 * 60;
+
+// 비모임 고정 일정 (실제 시간 기준, 겹치면 차단)
 const SCHEDULED_MOIM_BLOCKS = [
-  { date: '2026-06-11', slotHour: 11, tag: '동서남북 ①' },   // 11:00–13:00
-  { date: '2026-06-13', slotHour: 13, tag: '드로잉 슥슥' },   // 13:30–15:30 → 13:00–15:00 슬롯
-  { date: '2026-06-14', slotHour: 14, tag: '화요일오후두시 ①' },
-  { date: '2026-06-18', slotHour: 11, tag: '동서남북 ②' },
-  { date: '2026-06-20', slotHour: 14, tag: '애프터눈 티' },
-  { date: '2026-06-23', slotHour: 14, tag: '화요일오후두시 ②' },
+  { date: '2026-06-11', start: '11:00', end: '13:00', tag: '동서남북 ①' },
+  { date: '2026-06-13', start: '13:30', end: '15:30', tag: '드로잉 슥슥' },
+  { date: '2026-06-14', start: '14:00', end: '16:00', tag: '화요일오후두시 ①' },
+  { date: '2026-06-18', start: '11:00', end: '13:00', tag: '동서남북 ②' },
+  { date: '2026-06-20', start: '14:00', end: '16:00', tag: '애프터눈 티' },
+  { date: '2026-06-23', start: '14:00', end: '16:00', tag: '화요일오후두시 ②' },
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
 // 형식: { 'YYYY-MM-DD': ['14:00–16:00', ...] }
 let rentSlotsByDate = {};
 
-// 전체 슬롯: 08:00–22:00 (2시간 단위)
-const ALL_SLOTS = [8,10,12,14,16,18,20];
+function pad2(n) { return String(n).padStart(2, '0'); }
 
-function slotLabel(h) {
-  return `${String(h).padStart(2,'0')}:00–${String(h+2).padStart(2,'0')}:00`;
+function minutesToHHMM(min) {
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return `${pad2(h)}:${pad2(m)}`;
+}
+
+function timeLabelFromMinutes(startMin, durationMin = RENT_DURATION_MIN) {
+  return `${minutesToHHMM(startMin)}–${minutesToHHMM(startMin + durationMin)}`;
 }
 
 function normalizeRentDate(dateStr) {
@@ -1208,39 +1226,73 @@ function normalizeRentDate(dateStr) {
   return null;
 }
 
-/** 대관 시간 문자열 → 2시간 슬롯 시작 시(만) 반환 */
-function parseRentSlotHour(timeStr) {
-  if (!timeStr) return null;
-  const s = String(timeStr).trim();
-  let m = s.match(/(\d{1,2}):(\d{2})\s*[~–\-]\s*\d{1,2}:\d{2}/);
-  if (m) return parseInt(m[1], 10);
-  m = s.match(/(\d{1,2}):(\d{2})/);
-  if (m) return parseInt(m[1], 10);
-  m = s.match(/(\d{1,2})\s*시/);
-  if (m) return parseInt(m[1], 10);
-  return null;
+function parseHHMMToMinutes(hhmm) {
+  const m = String(hhmm).trim().match(/^(\d{1,2}):(\d{2})$/);
+  if (!m) return null;
+  const h = parseInt(m[1], 10);
+  const min = parseInt(m[2], 10);
+  if (Number.isNaN(h) || Number.isNaN(min)) return null;
+  return h * 60 + min;
 }
 
-function getBlockedSlotSets(date) {
-  const moimByHour = new Map();
-  SCHEDULED_MOIM_BLOCKS.filter(b => b.date === date).forEach(b => {
-    moimByHour.set(b.slotHour, b.tag);
-  });
+/** "14:00–16:00" / "14:00~16:00" / "14:00-16:00" 등 → { startMin, endMin } */
+function parseTimeRangeToMinutes(rangeStr) {
+  if (!rangeStr) return null;
+  const s = String(rangeStr).trim();
+  const m = s.match(/(\d{1,2}:\d{2})\s*[~–\-]\s*(\d{1,2}:\d{2})/);
+  if (!m) return null;
+  const startMin = parseHHMMToMinutes(m[1]);
+  const endMin = parseHHMMToMinutes(m[2]);
+  if (startMin == null || endMin == null) return null;
+  return { startMin, endMin };
+}
 
-  const rentByHour = new Map();
-  (rentSlotsByDate[date] || []).forEach(timeStr => {
-    const h = parseRentSlotHour(timeStr);
-    if (h != null) rentByHour.set(h, '대관있음');
-  });
+function rangesOverlap(aStart, aEnd, bStart, bEnd) {
+  // [start, end) half-open
+  return aStart < bEnd && bStart < aEnd;
+}
 
-  return { moimByHour, rentByHour };
+function getBlockedRangesForDate(date) {
+  const moimRanges = SCHEDULED_MOIM_BLOCKS
+    .filter(b => b.date === date)
+    .map(b => {
+      const startMin = parseHHMMToMinutes(b.start);
+      const endMin = parseHHMMToMinutes(b.end);
+      if (startMin == null || endMin == null) return null;
+      return { startMin, endMin, tag: b.tag, kind: 'moim' };
+    })
+    .filter(Boolean);
+
+  const rentRanges = (rentSlotsByDate[date] || [])
+    .map(timeStr => {
+      const r = parseTimeRangeToMinutes(timeStr);
+      if (!r) return null;
+      return { ...r, tag: '대관있음', kind: 'rent' };
+    })
+    .filter(Boolean);
+
+  return { moimRanges, rentRanges };
+}
+
+function getRentSlotBlockReason(date, startMin) {
+  if (!date || startMin == null) return null;
+  const endMin = startMin + RENT_DURATION_MIN;
+  const { moimRanges, rentRanges } = getBlockedRangesForDate(date);
+
+  const moimHit = moimRanges.find(r => rangesOverlap(startMin, endMin, r.startMin, r.endMin));
+  if (moimHit) return { kind: 'moim', tag: moimHit.tag };
+
+  const rentHit = rentRanges.find(r => rangesOverlap(startMin, endMin, r.startMin, r.endMin));
+  if (rentHit) return { kind: 'rent', tag: rentHit.tag };
+
+  return null;
 }
 
 function isRentSlotBlocked(date, timeLabel) {
   if (!date || !timeLabel) return true;
-  const h = parseInt(timeLabel.split(':')[0], 10);
-  const { moimByHour, rentByHour } = getBlockedSlotSets(date);
-  return moimByHour.has(h) || rentByHour.has(h);
+  const start = parseHHMMToMinutes(String(timeLabel).split('–')[0]);
+  if (start == null) return true;
+  return Boolean(getRentSlotBlockReason(date, start));
 }
 
 function renderTimeSlots() {
@@ -1253,18 +1305,20 @@ function renderTimeSlots() {
     return;
   }
 
-  const { moimByHour, rentByHour } = getBlockedSlotSets(date);
+  const starts = [];
+  for (let t = RENT_START_MIN; t + RENT_DURATION_MIN <= RENT_END_MIN; t += RENT_STEP_MIN) {
+    starts.push(t);
+  }
 
-  wrap.innerHTML = ALL_SLOTS.map(h => {
-    const label = slotLabel(h);
-    const moimTag = moimByHour.get(h);
-    const rentTag = rentByHour.get(h);
+  wrap.innerHTML = starts.map(startMin => {
+    const label = timeLabelFromMinutes(startMin);
+    const reason = getRentSlotBlockReason(date, startMin);
 
-    if (moimTag) {
-      return `<button type="button" class="tslot blocked-moim" disabled title="비모임: ${moimTag}">${label}<span class="tslot-tag">${moimTag}</span></button>`;
+    if (reason?.kind === 'moim') {
+      return `<button type="button" class="tslot blocked-moim" disabled title="비모임: ${reason.tag}">${label}<span class="tslot-tag">${reason.tag}</span></button>`;
     }
-    if (rentTag) {
-      return `<button type="button" class="tslot blocked has-rent" disabled title="이미 대관 신청이 있는 시간대">${label}<span class="tslot-tag">${rentTag}</span></button>`;
+    if (reason?.kind === 'rent') {
+      return `<button type="button" class="tslot blocked has-rent" disabled title="이미 대관 신청이 있는 시간대">${label}<span class="tslot-tag">대관있음</span></button>`;
     }
     return `<button type="button" class="tslot" onclick="selectSlot(this,'${label}')">${label}</button>`;
   }).join('');
