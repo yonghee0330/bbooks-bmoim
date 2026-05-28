@@ -208,6 +208,10 @@
     .moim-poster.p2 { background: linear-gradient(135deg, #2e3b1e 0%, #4a6741 100%); }
     .moim-poster.p3 { background: linear-gradient(135deg, #3b1f5e 0%, #6b42a0 100%); }
     .moim-poster.p4 { background: linear-gradient(135deg, #5e2a0e 0%, #a0561c 100%); }
+    .moim-poster.p5 { background: linear-gradient(135deg, #0f3d3e 0%, #1f7a76 100%); } /* 줌치풍경만들기 */
+    .moim-poster.p6 { background: linear-gradient(135deg, #111827 0%, #374151 100%); } /* 영화 한편 */
+    .moim-poster.p7 { background: linear-gradient(135deg, #1f4d3a 0%, #56a36b 100%); } /* 책잇기 */
+    .moim-poster.p8 { background: linear-gradient(135deg, #3f1d2b 0%, #b4535f 100%); } /* 편지모임 */
     .poster-deco {
       position: absolute;
       font-size: 80px;
@@ -574,7 +578,11 @@
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseobukbook')">동서남북book②</div>
         <div class="cal-rent-btn">대관</div>
       </div>
-      <div class="cal-cell" onclick="openRent('2026-06-19')"><div class="cal-day">19</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-19')">
+        <div class="cal-day">19</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('movie')">영화 한편</div>
+        <div class="cal-rent-btn">대관</div>
+      </div>
       <div class="cal-cell sat" onclick="openRent('2026-06-20')">
         <div class="cal-day">20</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('afternoon')">애프터눈 티</div>
@@ -582,14 +590,23 @@
       </div>
 
       <!-- 4주 -->
-      <div class="cal-cell sun" onclick="openRent('2026-06-21')"><div class="cal-day">21</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-06-21')">
+        <div class="cal-day">21</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('zoomchi')">줌치풍경</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('bookit')">책잇기</div>
+        <div class="cal-rent-btn">대관</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-06-22')"><div class="cal-day">22</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-23')">
         <div class="cal-day">23</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tuesday')">화요일오후두시</div>
         <div class="cal-rent-btn">대관</div>
       </div>
-      <div class="cal-cell" onclick="openRent('2026-06-24')"><div class="cal-day">24</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-06-24')">
+        <div class="cal-day">24</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('letter')">편지모임</div>
+        <div class="cal-rent-btn">대관</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-06-25')"><div class="cal-day">25</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-26')"><div class="cal-day">26</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-06-27')"><div class="cal-day">27</div><div class="cal-rent-btn">대관</div></div>
@@ -765,6 +782,135 @@
             <div class="moim-cap">재료 없음</div>
           </div>
           <button class="btn-apply" id="apply-afternoon" onclick="openApply('책 숲에서 즐기는 애프터눈 티','afternoon')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 줌치풍경만들기 -->
+    <div class="moim-card" id="zoomchi">
+      <div class="moim-poster p5">
+        <div class="poster-deco">🧵</div>
+        <div class="poster-badge">b.moim · 2026.06</div>
+        <div class="poster-title">줌치<br>풍경만들기</div>
+        <div class="poster-host">아심적중</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">줌치풍경만들기</div>
+        <div class="moim-desc">줌치가 한지라고? 한지에 바느질을? 바람과 함께 살랑살랑 풍경소리 들어봐요.</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>6월 21일 (일) 오후 3:00 – 5:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-row">
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-zoomchi"></div></div>
+            <span class="cap-bar-count" id="cnt-zoomchi">-/6</span>
+          </div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-zoomchi" onclick="openApply('줌치풍경만들기','zoomchi')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 영화 한편, 이야기 한잔 -->
+    <div class="moim-card" id="movie">
+      <div class="moim-poster p6">
+        <div class="poster-deco">🎬</div>
+        <div class="poster-badge">b.moim · 2026.06</div>
+        <div class="poster-title">영화 한편,<br>이야기 한잔</div>
+        <div class="poster-host">앗트</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">영화 한편, 이야기 한잔</div>
+        <div class="moim-desc">영화 &lt;어느 가족&gt;을 개인별로 관람한 후 각자 느낀 점, 인상 깊은 장면을 서로 이야기 나눠요.</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>6월 19일 (금) 오후 6:00 – 7:30</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>5명</div>
+        </div>
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-row">
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-movie"></div></div>
+            <span class="cap-bar-count" id="cnt-movie">-/5</span>
+          </div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-movie" onclick="openApply('영화 한편, 이야기 한잔','movie')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 책잇기 -->
+    <div class="moim-card" id="bookit">
+      <div class="moim-poster p7">
+        <div class="poster-deco">📚</div>
+        <div class="poster-badge">b.moim · 2026.06</div>
+        <div class="poster-title">책잇기</div>
+        <div class="poster-host">덕순</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">책잇기</div>
+        <div class="moim-desc">한달에 한두권 꾸준히 같이 읽어요. 6월의 책: 2026년 젊은작가상 수상집.</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>6월 21일 (일) 오후 3:00 – 4:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>5명</div>
+          <div class="meta-row"><span class="mi">📚</span>도서 지참: 2026년 젊은작가상 수상집</div>
+        </div>
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-row">
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-bookit"></div></div>
+            <span class="cap-bar-count" id="cnt-bookit">-/5</span>
+          </div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">5,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-bookit" onclick="openApply('책잇기','bookit')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 편지모임 -->
+    <div class="moim-card" id="letter">
+      <div class="moim-poster p8">
+        <div class="poster-deco">✉️</div>
+        <div class="poster-badge">b.moim · 2026.06</div>
+        <div class="poster-title">편지모임</div>
+        <div class="poster-host">모퉁이우표점</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">편지모임</div>
+        <div class="moim-desc">모퉁이우표점과 함께하는 편지 모임.</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>6월 24일 (수) 오후 7:00 – 9:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>1명</div>
+        </div>
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-row">
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-letter"></div></div>
+            <span class="cap-bar-count" id="cnt-letter">-/1</span>
+          </div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">30,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-letter" onclick="openApply('편지모임','letter')">신청하기</button>
         </div>
       </div>
     </div>
@@ -1043,6 +1189,34 @@ const MOIMS = {
     capacity: 6,
     amount: 20000,
     hasSession: false
+  },
+  zoomchi: {
+    name: '줌치풍경만들기',
+    sessions: [{ label: '6/21(일) 오후 3:00–5:00', value: '6월21일' }],
+    capacity: 6,
+    amount: 10000,
+    hasSession: false
+  },
+  movie: {
+    name: '영화 한편, 이야기 한잔',
+    sessions: [{ label: '6/19(금) 오후 6:00–7:30', value: '6월19일' }],
+    capacity: 5,
+    amount: 10000,
+    hasSession: false
+  },
+  bookit: {
+    name: '책잇기',
+    sessions: [{ label: '6/21(일) 오후 3:00–4:00', value: '6월21일_책잇기' }],
+    capacity: 5,
+    amount: 5000,
+    hasSession: false
+  },
+  letter: {
+    name: '편지모임',
+    sessions: [{ label: '6/24(수) 오후 7:00–9:00', value: '6월24일' }],
+    capacity: 1,
+    amount: 30000,
+    hasSession: false
   }
 };
 
@@ -1098,8 +1272,12 @@ async function loadCounts() {
 
     // 단일 회차 모임
     [
-      { key: 'drawing',   name: '드로잉 슥슥',                       date: '6월13일' },
-      { key: 'afternoon', name: '책 숲에서 즐기는 애프터눈 티',       date: '6월20일' }
+      { key: 'drawing',   name: '드로잉 슥슥',                 date: '6월13일' },
+      { key: 'movie',     name: '영화 한편, 이야기 한잔',       date: '6월19일' },
+      { key: 'afternoon', name: '책 숲에서 즐기는 애프터눈 티', date: '6월20일' },
+      { key: 'zoomchi',   name: '줌치풍경만들기',               date: '6월21일' },
+      { key: 'bookit',    name: '책잇기',                       date: '6월21일_책잇기' },
+      { key: 'letter',    name: '편지모임',                     date: '6월24일' }
     ].forEach(({ key, name, date }) => {
       // Apps Script는 "모임명_날짜" 또는 "모임명" 둘 다 카운트함
       const cur = counts[`${name}_${date}`] ?? counts[name] ?? 0;
@@ -1224,8 +1402,12 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-06-13', start: '13:30', end: '15:30', tag: '드로잉 슥슥' },
   { date: '2026-06-14', start: '14:00', end: '16:00', tag: '화요일오후두시 ①' },
   { date: '2026-06-18', start: '11:00', end: '13:00', tag: '동서남북 ②' },
+  { date: '2026-06-19', start: '18:00', end: '19:30', tag: '영화 한편' },
   { date: '2026-06-20', start: '14:00', end: '16:00', tag: '애프터눈 티' },
   { date: '2026-06-23', start: '14:00', end: '16:00', tag: '화요일오후두시 ②' },
+  { date: '2026-06-21', start: '15:00', end: '17:00', tag: '줌치풍경' },
+  { date: '2026-06-21', start: '15:00', end: '16:00', tag: '책잇기' },
+  { date: '2026-06-24', start: '19:00', end: '21:00', tag: '편지모임' },
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
