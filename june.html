@@ -193,6 +193,56 @@
       border-radius: 12px;
     }
 
+    /* 모임 포스터 2장+ 슬라이더 */
+    .poster-slider-wrap {
+      position: relative;
+      overflow: hidden;
+      background: #e8eef5;
+      cursor: zoom-in;
+    }
+    .poster-slider {
+      display: flex;
+      transition: transform .35s ease;
+    }
+    .poster-slide {
+      min-width: 100%;
+      flex-shrink: 0;
+    }
+    .poster-slide img {
+      width: 100%;
+      height: auto;
+      display: block;
+      pointer-events: none;
+    }
+    .poster-slider-nav {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 10px 10px;
+      background: linear-gradient(transparent, rgba(0,0,0,.5));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+    .poster-slider-nav .slider-dots,
+    .poster-slider-nav .slider-arrows { pointer-events: auto; }
+    .poster-slider-nav .sdot { background: rgba(255,255,255,.45); }
+    .poster-slider-nav .sdot.active { background: #fff; }
+    .poster-slider-nav .sarr {
+      background: rgba(255,255,255,.9);
+      border-color: transparent;
+      color: var(--navy);
+    }
+    .poster-slider-hint {
+      position: absolute; top: 10px; right: 10px;
+      font-size: 10px; font-weight: 600;
+      color: rgba(255,255,255,.9);
+      background: rgba(0,0,0,.35);
+      padding: 3px 8px;
+      border-radius: 10px;
+      pointer-events: none;
+    }
+
     /* 타이포 포스터 — 이미지 없을 때 */
     .moim-poster {
       min-height: 200px;
@@ -249,6 +299,8 @@
       color: var(--navy); margin-bottom: 6px;
     }
     .moim-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+    .moim-host-line { font-size: 12px; color: var(--navy); font-weight: 600; margin-bottom: 8px; }
+    .moim-regular { display: inline-block; font-size: 11px; font-weight: 700; color: #1d4ed8; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 4px 10px; margin-bottom: 12px; }
     .moim-meta { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
     .meta-row { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: var(--text); }
     .meta-row .mi { color: var(--muted); width: 14px; flex-shrink: 0; text-align: center; font-size: 13px; }
@@ -358,11 +410,28 @@
       padding: 20px; cursor: zoom-out;
     }
     .lightbox.on { display: flex; }
+    .lb-inner { position: relative; max-width: 100%; max-height: 90vh; }
     .lightbox img {
       max-width: 100%; max-height: 90vh;
       border-radius: 10px;
       object-fit: contain;
       box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      display: block;
+    }
+    .lb-arr {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.2); color: white;
+      border: 1px solid rgba(255,255,255,.35);
+      font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lb-arr:hover { background: rgba(255,255,255,.35); }
+    .lb-arr.prev { left: -52px; }
+    .lb-arr.next { right: -52px; }
+    @media (max-width: 640px) {
+      .lb-arr.prev { left: 4px; }
+      .lb-arr.next { right: 4px; }
     }
     .lb-close {
       position: absolute; top: 16px; right: 16px;
@@ -604,12 +673,16 @@
       </div>
       <div class="cal-cell" onclick="openRent('2026-06-24')">
         <div class="cal-day">24</div>
-        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('letter')">편지모임</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('letter')">한 사람을 위한 편지</div>
         <div class="cal-rent-btn">대관</div>
       </div>
       <div class="cal-cell" onclick="openRent('2026-06-25')"><div class="cal-day">25</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-26')"><div class="cal-day">26</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-06-27')"><div class="cal-day">27</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-06-27')">
+        <div class="cal-day">27</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('readingwave')">Reading Wave</div>
+        <div class="cal-rent-btn">대관</div>
+      </div>
 
       <!-- 5주 -->
       <div class="cal-cell sun" onclick="openRent('2026-06-28')"><div class="cal-day">28</div><div class="cal-rent-btn">대관</div></div>
@@ -877,19 +950,23 @@
       </div>
     </div>
 
-    <!-- 편지모임 -->
+    <!-- 한 사람을 위한 편지 · 모퉁이 우표점 -->
     <div class="moim-card" id="letter">
-      <div class="moim-poster p8">
-        <div class="poster-deco">✉️</div>
-        <div class="poster-badge">b.moim · 2026.06</div>
-        <div class="poster-title">편지모임</div>
-        <div class="poster-host">모퉁이우표점</div>
+      <div class="moim-poster-img" onclick="openLightbox('images/letter_6월.png','한 사람을 위한 편지 포스터')">
+        <img src="images/letter_6월.png" alt="한 사람을 위한 편지 포스터">
       </div>
       <div class="moim-body">
-        <div class="moim-name">편지모임</div>
-        <div class="moim-desc">모퉁이우표점과 함께하는 편지 모임.</div>
+        <div class="moim-name">한 사람을 위한 편지</div>
+        <p class="moim-host-line">모퉁이 우표점 · 호스트 온수</p>
+        <span class="moim-regular">매월 마지막 주 수요일 정기모임 · 정원 1명</span>
+        <div class="moim-desc">
+          아날로그 도구인 타자기로 편지를 쓰고, 보내는 마음의 마침표처럼 우표를 붙입니다.<br><br>
+          천천한 타자기의 소리와 속도에 맞추어 단어와 문장을 고릅니다. 한 사람을 오래 생각하는 시간을 나눕니다.<br><br>
+          누군가를 향한 마음을 적어보아도 좋고, 나를 향한 이야기를 적어보아도 좋겠습니다. 타자기 사용법도 알려드립니다.<br><br>
+          이 모임은 타자기라는 도구를 통해 곰곰이 글을 꺼내어보는 데에 의의가 있습니다. 타자기로 편지를 완성하셔도 좋고, 손글씨로 천천히 이어 적으셔도 좋습니다. 한 사람에게 닿을 편지를 함께 완성합니다.
+        </div>
         <div class="moim-meta">
-          <div class="meta-row"><span class="mi">📅</span>6월 24일 (수) 오후 7:00 – 9:00</div>
+          <div class="meta-row"><span class="mi">📅</span>6월 24일 (수) 오전 11:00 – 1:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>1명</div>
         </div>
@@ -904,7 +981,60 @@
             <div class="moim-price">30,000원</div>
             <div class="moim-cap">재료 준비 없음</div>
           </div>
-          <button class="btn-apply" id="apply-letter" onclick="openApply('편지모임','letter')">신청하기</button>
+          <button class="btn-apply" id="apply-letter" onclick="openApply('한 사람을 위한 편지','letter')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reading Wave · 책방,파도 x 또봐 만화방 -->
+    <div class="moim-card" id="readingwave">
+      <div class="poster-slider-wrap" id="poster-slider-readingwave"
+           onclick="openPosterLightbox('readingwave')"
+           data-posters='["images/readingwave_6월_1.png","images/readingwave_6월_2.png"]'
+           data-alt="Reading Wave 포스터">
+        <span class="poster-slider-hint">1 / 2</span>
+        <div class="poster-slider" data-slider="readingwave">
+          <div class="poster-slide">
+            <img src="images/readingwave_6월_1.png" alt="Reading Wave 포스터 1">
+          </div>
+          <div class="poster-slide">
+            <img src="images/readingwave_6월_2.png" alt="Reading Wave 포스터 2">
+          </div>
+        </div>
+        <div class="poster-slider-nav" onclick="event.stopPropagation()">
+          <div class="slider-dots" data-dots="readingwave"></div>
+          <div class="slider-arrows">
+            <button type="button" class="sarr" aria-label="이전" onclick="posterSlide('readingwave', -1)">‹</button>
+            <button type="button" class="sarr" aria-label="다음" onclick="posterSlide('readingwave', 1)">›</button>
+          </div>
+        </div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">책방,파도 x 또봐 만화방 : Reading Wave</div>
+        <p class="moim-host-line">책방,파도 · 또봐 만화방</p>
+        <div class="moim-desc">
+          뉴욕에 READING RHYTHMS이 있다면, 부천에는 READING WAVE가 있다.<br><br>
+          조용히 책에 집중하는 시간. 각자 문장의 파도를 타고, 마음을 가볍게 나누는 시간.<br><br>
+          <span style="font-size:12px;color:var(--navy)">TIME SCHEDULE</span><br>
+          14:00–14:10 체크인 &amp; 소개 · 14:10–14:50 개별 몰입 독서 · 14:50–15:10 자유 대화 · 15:10–15:40 리딩 로그 꾸미기 · 15:40–16:00 리딩 로그 공유 &amp; 체크아웃
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>6월 27일 (토) 오후 2:00 – 4:00</div>
+          <div class="meta-row"><span class="mi">📌</span>비북스 (B.BOOKS)</div>
+          <div class="meta-row"><span class="mi">👥</span>10명</div>
+        </div>
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-row">
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-readingwave"></div></div>
+            <span class="cap-bar-count" id="cnt-readingwave">-/10</span>
+          </div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">준비물: 책 1권</div>
+          </div>
+          <button class="btn-apply" id="apply-readingwave" onclick="openApply('책방,파도 x 또봐 만화방 : Reading Wave','readingwave')">신청하기</button>
         </div>
       </div>
     </div>
@@ -1064,8 +1194,12 @@
 
 <!-- ══ 라이트박스 ══ -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lb-close" onclick="closeLightbox()">✕</button>
-  <img id="lbImg" src="" alt=""/>
+  <button class="lb-close" onclick="event.stopPropagation();closeLightbox()">✕</button>
+  <div class="lb-inner" onclick="event.stopPropagation()">
+    <button type="button" class="lb-arr prev" id="lbPrev" style="display:none" onclick="lbMove(-1)">‹</button>
+    <img id="lbImg" src="" alt=""/>
+    <button type="button" class="lb-arr next" id="lbNext" style="display:none" onclick="lbMove(1)">›</button>
+  </div>
 </div>
 
 <!-- ══ 모달: 모임 신청 ══ -->
@@ -1206,10 +1340,17 @@ const MOIMS = {
     hasSession: false
   },
   letter: {
-    name: '편지모임',
-    sessions: [{ label: '6/24(수) 오후 7:00–9:00', value: '6월24일' }],
+    name: '한 사람을 위한 편지',
+    sessions: [{ label: '6/24(수) 오전 11:00–1:00', value: '6월24일' }],
     capacity: 1,
     amount: 30000,
+    hasSession: false
+  },
+  readingwave: {
+    name: '책방,파도 x 또봐 만화방 : Reading Wave',
+    sessions: [{ label: '6/27(토) 오후 2:00–4:00', value: '6월27일' }],
+    capacity: 10,
+    amount: 10000,
     hasSession: false
   }
 };
@@ -1274,7 +1415,8 @@ async function loadCounts() {
       { key: 'afternoon', name: '책 숲에서 즐기는 애프터눈 티', date: '6월20일' },
       { key: 'zoomchi',   name: '줌치풍경만들기',               date: '6월21일' },
       { key: 'bookit',    name: '책잇기',                       date: '6월21일_책잇기' },
-      { key: 'letter',    name: '편지모임',                     date: '6월24일' }
+      { key: 'letter',       name: '한 사람을 위한 편지',                        date: '6월24일' },
+      { key: 'readingwave',  name: '책방,파도 x 또봐 만화방 : Reading Wave',   date: '6월27일' }
     ].forEach(({ key, name, date }) => {
       // Apps Script는 "모임명_날짜" 또는 "모임명" 둘 다 카운트함
       const cur = counts[`${name}_${date}`] ?? counts[name] ?? 0;
@@ -1404,7 +1546,8 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-06-23', space: '세미나실',   start: '14:00', end: '16:00', tag: '화요일오후두시 ②' },
   { date: '2026-06-21', space: '세미나실',   start: '15:00', end: '17:00', tag: '줌치풍경' },
   { date: '2026-06-21', space: '매장 테이블', start: '15:00', end: '16:00', tag: '책잇기' },
-  { date: '2026-06-24', space: '세미나실',   start: '19:00', end: '21:00', tag: '편지모임' },
+  { date: '2026-06-24', space: '세미나실',   start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
+  { date: '2026-06-27', space: '세미나실',   start: '14:00', end: '16:00', tag: 'Reading Wave' },
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
@@ -1695,17 +1838,101 @@ async function POST(data) {
 }
 
 // ══ 라이트박스 ══════════════════════════
+let lbImages = [], lbIndex = 0;
+
 function openLightbox(src, alt) {
-  q('#lbImg').src = src;
-  q('#lbImg').alt = alt || '';
+  lbImages = [src];
+  lbIndex = 0;
+  updateLightbox(alt || '');
   q('#lightbox').classList.add('on');
   document.body.style.overflow = 'hidden';
 }
+
+function openPosterLightbox(sliderId) {
+  const wrap = document.getElementById(`poster-slider-${sliderId}`);
+  if (!wrap) return;
+  try {
+    lbImages = JSON.parse(wrap.dataset.posters || '[]');
+  } catch { lbImages = []; }
+  if (!lbImages.length) return;
+  const state = posterSliderState[sliderId] || { index: 0 };
+  lbIndex = state.index;
+  updateLightbox(wrap.dataset.alt || '');
+  q('#lightbox').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function updateLightbox(alt) {
+  q('#lbImg').src = lbImages[lbIndex];
+  q('#lbImg').alt = alt;
+  const multi = lbImages.length > 1;
+  q('#lbPrev').style.display = multi ? 'flex' : 'none';
+  q('#lbNext').style.display = multi ? 'flex' : 'none';
+}
+
+function lbMove(dir) {
+  if (lbImages.length < 2) return;
+  lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+  updateLightbox(q('#lbImg').alt);
+}
+
 function closeLightbox() {
   q('#lightbox').classList.remove('on');
   document.body.style.overflow = '';
+  lbImages = [];
 }
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+  if (!q('#lightbox').classList.contains('on')) return;
+  if (e.key === 'ArrowLeft') lbMove(-1);
+  if (e.key === 'ArrowRight') lbMove(1);
+});
+
+// ══ 모임 포스터 슬라이더 ═══════════════════
+const posterSliderState = {};
+
+function initMoimPosterSliders() {
+  document.querySelectorAll('[data-slider]').forEach(track => {
+    const id = track.dataset.slider;
+    const slides = track.querySelectorAll('.poster-slide');
+    if (!slides.length) return;
+    posterSliderState[id] = { index: 0, total: slides.length };
+    const dotsEl = document.querySelector(`[data-dots="${id}"]`);
+    if (dotsEl) {
+      dotsEl.innerHTML = Array.from(slides).map((_, i) =>
+        `<div class="sdot${i === 0 ? ' active' : ''}" onclick="posterGo('${id}', ${i})"></div>`
+      ).join('');
+    }
+    updatePosterSlider(id);
+  });
+}
+
+function posterSlide(id, dir) {
+  const s = posterSliderState[id];
+  if (!s) return;
+  s.index = (s.index + dir + s.total) % s.total;
+  updatePosterSlider(id);
+}
+
+function posterGo(id, i) {
+  const s = posterSliderState[id];
+  if (!s) return;
+  s.index = i;
+  updatePosterSlider(id);
+}
+
+function updatePosterSlider(id) {
+  const s = posterSliderState[id];
+  const track = document.querySelector(`[data-slider="${id}"]`);
+  if (!track || !s) return;
+  track.style.transform = `translateX(-${s.index * 100}%)`;
+  document.querySelectorAll(`[data-dots="${id}"] .sdot`).forEach((d, i) => {
+    d.classList.toggle('active', i === s.index);
+  });
+  const wrap = document.getElementById(`poster-slider-${id}`);
+  const hint = wrap && wrap.querySelector('.poster-slider-hint');
+  if (hint) hint.textContent = `${s.index + 1} / ${s.total}`;
+}
 
 // ══ 공간 슬라이더 ════════════════════════
 let allSlides = [], visibleSlides = [], curSlide = 0;
@@ -1754,6 +1981,7 @@ function goSlide(i) { curSlide = i; updateSlider(); }
 
 window.addEventListener('DOMContentLoaded', () => {
   initSlider();
+  initMoimPosterSliders();
   loadCounts();
 });
 
