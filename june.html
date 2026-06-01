@@ -196,21 +196,35 @@
     /* 모임 포스터 2장+ 슬라이더 */
     .poster-slider-wrap {
       position: relative;
-      overflow: hidden;
       background: #e8eef5;
       cursor: zoom-in;
     }
+    .poster-slider-viewport {
+      width: 100%;
+      aspect-ratio: 819 / 1024;
+      overflow: hidden;
+      position: relative;
+    }
     .poster-slider {
       display: flex;
+      height: 100%;
       transition: transform .35s ease;
     }
     .poster-slide {
       min-width: 100%;
+      height: 100%;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .poster-slide img {
-      width: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
       height: auto;
+      object-fit: contain;
+      object-position: center;
       display: block;
       pointer-events: none;
     }
@@ -993,12 +1007,14 @@
            data-posters='["images/readingwave_6월_1.png","images/readingwave_6월_2.png"]'
            data-alt="Reading Wave 포스터">
         <span class="poster-slider-hint">1 / 2</span>
-        <div class="poster-slider" data-slider="readingwave">
-          <div class="poster-slide">
-            <img src="images/readingwave_6월_1.png" alt="Reading Wave 포스터 1">
-          </div>
-          <div class="poster-slide">
-            <img src="images/readingwave_6월_2.png" alt="Reading Wave 포스터 2">
+        <div class="poster-slider-viewport">
+          <div class="poster-slider" data-slider="readingwave">
+            <div class="poster-slide">
+              <img src="images/readingwave_6월_1.png" alt="Reading Wave 포스터 1">
+            </div>
+            <div class="poster-slide">
+              <img src="images/readingwave_6월_2.png" alt="Reading Wave 포스터 2">
+            </div>
           </div>
         </div>
         <div class="poster-slider-nav" onclick="event.stopPropagation()">
@@ -1014,9 +1030,7 @@
         <p class="moim-host-line">책방,파도 · 또봐 만화방</p>
         <div class="moim-desc">
           뉴욕에 READING RHYTHMS이 있다면, 부천에는 READING WAVE가 있다.<br><br>
-          조용히 책에 집중하는 시간. 각자 문장의 파도를 타고, 마음을 가볍게 나누는 시간.<br><br>
-          <span style="font-size:12px;color:var(--navy)">TIME SCHEDULE</span><br>
-          14:00–14:10 체크인 &amp; 소개 · 14:10–14:50 개별 몰입 독서 · 14:50–15:10 자유 대화 · 15:10–15:40 리딩 로그 꾸미기 · 15:40–16:00 리딩 로그 공유 &amp; 체크아웃
+          조용히 책에 집중하는 시간. 각자 문장의 파도를 타고, 마음을 가볍게 나누는 시간.
         </div>
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>6월 27일 (토) 오후 2:00 – 4:00</div>
