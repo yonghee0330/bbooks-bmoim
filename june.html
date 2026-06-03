@@ -640,7 +640,7 @@
       <div class="cal-cell" onclick="openRent('2026-06-10')"><div class="cal-day">10</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-11')">
         <div class="cal-day">11</div>
-        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseobukbook')">동서남북book</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseobukbook')">슬기로운 클래식</div>
         <div class="cal-rent-btn">대관</div>
       </div>
       <div class="cal-cell" onclick="openRent('2026-06-12')"><div class="cal-day">12</div><div class="cal-rent-btn">대관</div></div>
@@ -661,7 +661,7 @@
       <div class="cal-cell" onclick="openRent('2026-06-17')"><div class="cal-day">17</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-18')">
         <div class="cal-day">18</div>
-        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseobukbook')">동서남북book②</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseobukbook')">슬기로운 클래식②</div>
         <div class="cal-rent-btn">대관</div>
       </div>
       <div class="cal-cell" onclick="openRent('2026-06-19')">
@@ -724,17 +724,21 @@
 
   <div class="moim-grid">
 
-    <!-- 동서남북book -->
+    <!-- 슬기로운 영화 속 클래식 음악감상모임 -->
     <div class="moim-card" id="dongseobukbook">
       <div class="moim-poster p1">
-        <div class="poster-deco">📖</div>
+        <div class="poster-deco">🎻</div>
         <div class="poster-badge">b.moim · 2026.06</div>
-        <div class="poster-title">동서남북<br>book</div>
-        <div class="poster-host">너라면</div>
+        <div class="poster-title long">슬기로운<br>영화 속 클래식</div>
+        <div class="poster-host">너라면 · 음악감상모임</div>
       </div>
       <div class="moim-body">
-        <div class="moim-name">동서남북book</div>
-        <div class="moim-desc">그림책과 클래식음악의 콜라보레이션. 낯선 시선이 낯익은 시선으로 물들어가는 기록모임입니다.</div>
+        <div class="moim-name">슬기로운 영화 속 클래식</div>
+        <p class="moim-host-line">너라면 · 음악감상모임</p>
+        <div class="moim-desc">
+          영화 장면과 함께 울려 퍼지는 클래식 한 곡에 귀 기울이는 모임입니다. 익숙한 OST 너머의 선율을 만나고, 영화와 음악이 맞닿은 이야기를 나눕니다.<br><br>
+          클래식을 잘 몰라도 괜찮아요. 함께 듣고, 느끼고, 기억에 남는 장면과 선율을 가볍게 나누는 시간입니다.
+        </div>
         <div class="session-tabs">
           <button class="stab active" onclick="selectSession(this,'dong1')">① 6/11(목)</button>
           <button class="stab" onclick="selectSession(this,'dong2')">② 6/18(목)</button>
@@ -767,7 +771,7 @@
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 없음</div>
           </div>
-          <button class="btn-apply" id="apply-dong" onclick="openApply('동서남북book','dong')">신청하기</button>
+          <button class="btn-apply" id="apply-dong" onclick="openApply('슬기로운 영화 속 클래식','dong')">신청하기</button>
         </div>
       </div>
     </div>
@@ -1342,7 +1346,7 @@ const API = 'https://script.google.com/macros/s/AKfycbwfZYQ9FtaMWm6ZqyPhd1tByTzr
 // session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
 const MOIMS = {
   dong: {
-    name: '동서남북book',
+    name: '슬기로운 영화 속 클래식',
     sessions: [
       { label: '① 6/11(목) 오전 11:00–13:00', value: '6월11일' },
       { label: '② 6/18(목) 오전 11:00–13:00', value: '6월18일' }
@@ -1461,14 +1465,17 @@ async function loadCounts() {
 
     if (q('#rDate').value) renderTimeSlots();
 
-    // 동서남북 — 회차별 바
+    // 슬기로운 영화 속 클래식 — 회차별 바 (구 모임명 키 호환)
     ['6월11일', '6월18일'].forEach(date => {
-      const cur = counts[`동서남북book_${date}`] || 0;
+      const moimName = MOIMS.dong.name;
+      const cur = counts[`${moimName}_${date}`] ?? counts[`동서남북book_${date}`] ?? 0;
       renderBar(`bar-dong-${date}`, `cnt-dong-${date}`, cur, MOIMS.dong.capacity);
     });
     // 두 회차 모두 마감이면 버튼 비활성
-    if ((counts['동서남북book_6월11일'] || 0) >= MOIMS.dong.capacity &&
-        (counts['동서남북book_6월18일'] || 0) >= MOIMS.dong.capacity) {
+    const dongCap = MOIMS.dong.capacity;
+    const dong11 = counts[`${MOIMS.dong.name}_6월11일`] ?? counts['동서남북book_6월11일'] ?? 0;
+    const dong18 = counts[`${MOIMS.dong.name}_6월18일`] ?? counts['동서남북book_6월18일'] ?? 0;
+    if (dong11 >= dongCap && dong18 >= dongCap) {
       soldOut('apply-dong');
     }
 
@@ -1602,10 +1609,10 @@ const TT_END_MIN = 22 * 60;
 
 // 비모임 고정 일정 (공간별 실제 시간 기준, 겹치면 차단)
 const SCHEDULED_MOIM_BLOCKS = [
-  { date: '2026-06-11', space: '세미나실',   start: '11:00', end: '13:00', tag: '동서남북 ①' },
+  { date: '2026-06-11', space: '세미나실',   start: '11:00', end: '13:00', tag: '슬기로운 클래식 ①' },
   { date: '2026-06-13', space: '세미나실',   start: '13:30', end: '15:30', tag: '드로잉 슥슥' },
   { date: '2026-06-14', space: '세미나실',   start: '14:00', end: '16:00', tag: '화요일오후두시 ①' },
-  { date: '2026-06-18', space: '세미나실',   start: '11:00', end: '13:00', tag: '동서남북 ②' },
+  { date: '2026-06-18', space: '세미나실',   start: '11:00', end: '13:00', tag: '슬기로운 클래식 ②' },
   { date: '2026-06-19', space: '세미나실',   start: '18:00', end: '19:30', tag: '영화 한편' },
   { date: '2026-06-20', space: '세미나실',   start: '14:00', end: '16:00', tag: '애프터눈 티' },
   { date: '2026-06-23', space: '세미나실',   start: '14:00', end: '16:00', tag: '화요일오후두시 ②' },
