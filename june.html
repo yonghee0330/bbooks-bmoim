@@ -276,6 +276,9 @@
     .moim-poster.p6 { background: linear-gradient(135deg, #111827 0%, #374151 100%); } /* 영화 한편 */
     .moim-poster.p7 { background: linear-gradient(135deg, #1f4d3a 0%, #56a36b 100%); } /* 책잇기 */
     .moim-poster.p8 { background: linear-gradient(135deg, #3f1d2b 0%, #b4535f 100%); } /* 편지모임 */
+    .moim-poster.p9 { background: linear-gradient(135deg, #1a1033 0%, #4a3f6b 55%, #8b6914 100%); } /* 황동만 */
+    .poster-title.long { font-size: clamp(14px, 3.2vw, 19px); }
+    .poster-host.long { font-size: 10px; line-height: 1.5; text-align: center; max-width: 92%; }
     .poster-deco {
       position: absolute;
       font-size: 80px;
@@ -699,7 +702,11 @@
       </div>
 
       <!-- 5주 -->
-      <div class="cal-cell sun" onclick="openRent('2026-06-28')"><div class="cal-day">28</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-06-28')">
+        <div class="cal-day">28</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('nextdoor')">황동만 옆집?</div>
+        <div class="cal-rent-btn">대관</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-06-29')"><div class="cal-day">29</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-06-30')"><div class="cal-day">30</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell empty"></div>
@@ -1053,6 +1060,42 @@
       </div>
     </div>
 
+    <!-- 우리집 옆집에 황동만이 산다? -->
+    <div class="moim-card" id="nextdoor">
+      <div class="moim-poster p9">
+        <div class="poster-deco">🎬</div>
+        <div class="poster-badge">b.moim · 2026.06</div>
+        <div class="poster-title long">우리집 옆집에<br>황동만이 산다?</div>
+        <div class="poster-host long">스튜디오 이상한 나라의 원더랜드</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">우리집 옆집에 황동만이 산다?</div>
+        <p class="moim-host-line">스튜디오 이상한 나라의 원더랜드</p>
+        <div class="moim-desc">
+          최근 드라마 &lt;모두가 자신의 무가치함과 씨우고 있다&gt;를 계기로, 영화를 제작 중인 감독(영화 드라이브)과 함께 시나리오·촬영·편집·개봉·홍보·배급 등 제작 과정과 상업·독립·단편·장편 영화 이야기를 편하게 나눕니다.<br><br>
+          영화에 대한 궁금함은 주제 불문 환영합니다. 질문 보따리를 들고 가볍게 오세요. 모임이 이어지면 짧은 영화(29초 영화 등)를 함께 만드는 날도 기대해 봅니다.
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>6월 28일 (일) 오후 3:00 – 5:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>10명</div>
+        </div>
+        <div class="cap-bar-wrap">
+          <div class="cap-bar-row">
+            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-nextdoor"></div></div>
+            <span class="cap-bar-count" id="cnt-nextdoor">-/10</span>
+          </div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-nextdoor" onclick="openApply('우리집 옆집에 황동만이 산다?','nextdoor')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ── 대관 안내 ── -->
@@ -1366,6 +1409,13 @@ const MOIMS = {
     capacity: 10,
     amount: 10000,
     hasSession: false
+  },
+  nextdoor: {
+    name: '우리집 옆집에 황동만이 산다?',
+    sessions: [{ label: '6/28(일) 오후 3:00–5:00', value: '6월28일' }],
+    capacity: 10,
+    amount: 10000,
+    hasSession: false
   }
 };
 
@@ -1430,7 +1480,8 @@ async function loadCounts() {
       { key: 'zoomchi',   name: '줌치풍경만들기',               date: '6월21일' },
       { key: 'bookit',    name: '책잇기',                       date: '6월21일_책잇기' },
       { key: 'letter',       name: '한 사람을 위한 편지',                        date: '6월24일' },
-      { key: 'readingwave',  name: '책방,파도 x 또봐 만화방 : Reading Wave',   date: '6월27일' }
+      { key: 'readingwave',  name: '책방,파도 x 또봐 만화방 : Reading Wave',   date: '6월27일' },
+      { key: 'nextdoor',     name: '우리집 옆집에 황동만이 산다?',             date: '6월28일' }
     ].forEach(({ key, name, date }) => {
       // Apps Script는 "모임명_날짜" 또는 "모임명" 둘 다 카운트함
       const cur = counts[`${name}_${date}`] ?? counts[name] ?? 0;
@@ -1562,6 +1613,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-06-21', space: '매장 테이블', start: '15:00', end: '16:00', tag: '책잇기' },
   { date: '2026-06-24', space: '세미나실',   start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-06-27', space: '세미나실',   start: '14:00', end: '16:00', tag: 'Reading Wave' },
+  { date: '2026-06-28', space: '세미나실',   start: '15:00', end: '17:00', tag: '황동만 옆집?' },
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
