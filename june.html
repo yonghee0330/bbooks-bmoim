@@ -214,30 +214,24 @@
     .voice-event {
       max-width: min(100%, 400px);
       margin: 0 auto;
-    }
-    .voice-event-square {
-      aspect-ratio: 1 / 1;
-      display: flex;
-      flex-direction: column;
       border-radius: 16px;
       overflow: hidden;
-      background: #f5f0e6;
+      background: #fffdf8;
       border: 2px solid #d97706;
       box-shadow: 0 14px 44px rgba(146, 64, 14, .2);
     }
-    .voice-event-visual {
-      flex: 0 0 44%;
+    .voice-event-poster {
+      aspect-ratio: 1 / 1;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 10px 14px 6px;
-      min-height: 0;
+      padding: 10px 14px;
       background: #f5f0e6;
     }
     .voice-event-art {
-      max-height: 100%;
-      max-width: 82%;
+      max-height: 88%;
+      max-width: 88%;
       width: auto;
       object-fit: contain;
       display: block;
@@ -270,14 +264,10 @@
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
     }
-    .voice-event-panel {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
+    .voice-event-body {
+      padding: 14px 14px 16px;
       background: #fffdf8;
       border-top: 2px solid #fcd34d;
-      padding: 11px 13px 13px;
     }
     .voice-event-title {
       font-family: 'Noto Serif KR', serif;
@@ -322,9 +312,13 @@
       letter-spacing: .03em;
       margin-bottom: 1px;
     }
-    .voice-event-cap { margin-bottom: 8px; margin-top: auto; }
+    .voice-event-cap { margin-bottom: 10px; }
     .voice-event-cap .cap-bar-row { margin-bottom: 0; }
     .voice-event-cap .cap-bar-count { font-size: 10px; }
+    .voice-event-cta {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
     .btn-voice-apply {
       background: var(--voice);
       color: white;
@@ -1014,30 +1008,28 @@
     </div>
 
     <article class="voice-event" id="gonaengi">
-      <div class="voice-event-square">
-        <div class="voice-event-visual">
-          <span class="voice-event-stamp">b.voice<br>첫번째 목소리</span>
-          <button type="button" class="voice-event-zoom" aria-label="일러스트 크게 보기" onclick="openLightbox('images/bvoice_gonaengi.png','어쩌다보니, 독립출판 — b.voice')">🔍</button>
-          <img class="voice-event-art" src="images/bvoice_gonaengi.png" alt="영화보는 고넹이">
+      <div class="voice-event-poster">
+        <span class="voice-event-stamp">b.voice<br>첫번째 목소리</span>
+        <button type="button" class="voice-event-zoom" aria-label="일러스트 크게 보기" onclick="openLightbox('images/bvoice_gonaengi.png','어쩌다보니, 독립출판 — b.voice')">🔍</button>
+        <img class="voice-event-art" src="images/bvoice_gonaengi.png" alt="영화보는 고넹이">
+      </div>
+      <div class="voice-event-body">
+        <h3 class="voice-event-title">어쩌다보니, 독립출판</h3>
+        <p class="voice-event-host">느린호수 &amp; 앗트 · 듀엣 북토크</p>
+        <p class="voice-event-desc">생판 모르던 두 사람, 느린호수와 앗트. 어쩌다 독립출판을 하게 되었고, 하면서 어떤 것들을 경험했는지 들려주는 b.voice입니다. 출판을 시작하게 된 계기, 과정의 기쁨과 고민을 편하게 나눕니다.</p>
+        <div class="voice-event-facts">
+          <div class="voice-fact"><strong>일시</strong>6/20(토) 16:30–18:30</div>
+          <div class="voice-fact"><strong>장소</strong>비북스 세미나실</div>
+          <div class="voice-fact"><strong>정원</strong>15명</div>
+          <div class="voice-fact"><strong>회비</strong>10,000원 · 다과</div>
         </div>
-        <div class="voice-event-panel">
-          <h3 class="voice-event-title">어쩌다보니, 독립출판</h3>
-          <p class="voice-event-host">느린호수 &amp; 앗트 · 듀엣 북토크</p>
-          <p class="voice-event-desc">생판 모르던 두 사람, 느린호수와 앗트. 어쩌다 독립출판을 하게 되었고, 하면서 어떤 것들을 경험했는지 들려주는 b.voice입니다. 출판을 시작하게 된 계기, 과정의 기쁨과 고민을 편하게 나눕니다.</p>
-          <div class="voice-event-facts">
-            <div class="voice-fact"><strong>일시</strong>6/20(토) 16:30–18:30</div>
-            <div class="voice-fact"><strong>장소</strong>비북스 세미나실</div>
-            <div class="voice-fact"><strong>정원</strong>15명</div>
-            <div class="voice-fact"><strong>회비</strong>10,000원 · 다과</div>
+        <div class="voice-event-cap">
+          <div class="cap-bar-row">
+            <div class="cap-bar-track"><div class="cap-bar-fill voice-bar" id="bar-gonaengi"></div></div>
+            <span class="cap-bar-count" id="cnt-gonaengi">-/15</span>
           </div>
-          <div class="voice-event-cap">
-            <div class="cap-bar-row">
-              <div class="cap-bar-track"><div class="cap-bar-fill voice-bar" id="bar-gonaengi"></div></div>
-              <span class="cap-bar-count" id="cnt-gonaengi">-/15</span>
-            </div>
-          </div>
-          <button class="btn-voice-apply" id="apply-gonaengi" onclick="openVoiceApply('gonaengi')">b.voice 신청하기</button>
         </div>
+        <button class="btn-voice-apply voice-event-cta" id="apply-gonaengi" onclick="openVoiceApply('gonaengi')">b.voice 신청하기</button>
       </div>
     </article>
   </section>
@@ -2046,9 +2038,14 @@ async function submitApply() {
 }
 
 // ══ b.voice 신청 모달 ════════════════════
+let voiceFormTemplate = null;
+
 function openVoiceApply(key) {
   curVoiceKey = key;
   const v = VOICES[key];
+  const formEl = q('#voiceApplyForm');
+  if (!voiceFormTemplate) voiceFormTemplate = formEl.innerHTML;
+  formEl.innerHTML = voiceFormTemplate;
   q('#voiceModalName').textContent = v.name;
   q('#voiceModalDate').textContent = v.sessions.map(s => s.label).join(' / ');
   q('#voiceModalAmount').textContent = v.amount.toLocaleString() + '원';
