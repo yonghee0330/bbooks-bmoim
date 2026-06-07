@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>비북스 b.moim | 6월 모임 신청</title>
+  <title>비북스 b.moim & b.voice | 6월 신청</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet"/>
   <style>
@@ -18,6 +18,9 @@
       --muted: #6b7c72;
       --border: #dce5de;
       --radius: 12px;
+      --voice: #92400e;
+      --voice-accent: #d97706;
+      --voice-bg: #fef9f0;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { overflow-x: hidden; }
@@ -110,6 +113,7 @@
     .cal-legend span { display: flex; align-items: center; gap: 4px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
     .dot-moim { background: #4a8cff; }
+    .dot-voice { background: #f59e0b; }
     .dot-rent { background: #94a3b8; }
 
     .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
@@ -157,6 +161,7 @@
       cursor: pointer;
     }
     .ev-moim { background: #dbeafe; color: #1d4ed8; }
+    .ev-voice { background: #fef3c7; color: #92400e; }
     .ev-rent { background: #f1f5f9; color: var(--muted); font-size: 9px; }
     .cal-rent-done { background: #fef3c7; color: #92400e; font-size: 9px; font-weight: 700; }
     .cal-rent-btn {
@@ -165,6 +170,191 @@
       background: #f1f5f9; border-radius: 3px;
       padding: 1px 4px; cursor: pointer;
     }
+
+    .sec-label.voice-label { color: var(--voice-accent); }
+
+    /* ── b.voice (독립 행사 포맷) ─────────── */
+    .voice-zone {
+      margin-bottom: 48px;
+      padding: 28px 18px 32px;
+      border-radius: 20px;
+      background: linear-gradient(165deg, #fffbeb 0%, #fef3c7 45%, #fff7ed 100%);
+      border: 1px solid #fde68a;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8);
+    }
+    .voice-zone-head { text-align: center; margin-bottom: 22px; }
+    .voice-zone-label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--voice);
+      background: rgba(255, 255, 255, .75);
+      border: 1px solid #fcd34d;
+      border-radius: 20px;
+      padding: 5px 14px;
+      margin-bottom: 10px;
+    }
+    .voice-zone-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(18px, 4.5vw, 22px);
+      font-weight: 700;
+      color: #78350f;
+      margin-bottom: 8px;
+    }
+    .voice-zone-lead {
+      font-size: 12px;
+      color: #92400e;
+      line-height: 1.65;
+      max-width: 420px;
+      margin: 0 auto;
+      opacity: .88;
+    }
+    .voice-event {
+      max-width: min(100%, 400px);
+      margin: 0 auto;
+    }
+    .voice-event-square {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #f5f0e6;
+      border: 2px solid #d97706;
+      box-shadow: 0 14px 44px rgba(146, 64, 14, .2);
+    }
+    .voice-event-visual {
+      flex: 0 0 44%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px 6px;
+      min-height: 0;
+      background: #f5f0e6;
+    }
+    .voice-event-art {
+      max-height: 100%;
+      max-width: 82%;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+    .voice-event-stamp {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      color: var(--voice);
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid #fde68a;
+      border-radius: 6px;
+      padding: 4px 8px;
+      line-height: 1.3;
+    }
+    .voice-event-zoom {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .9);
+      color: var(--voice);
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+    }
+    .voice-event-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      background: #fffdf8;
+      border-top: 2px solid #fcd34d;
+      padding: 11px 13px 13px;
+    }
+    .voice-event-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(16px, 4.2vw, 18px);
+      font-weight: 700;
+      color: #1c1917;
+      line-height: 1.35;
+      margin-bottom: 3px;
+    }
+    .voice-event-host {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--voice);
+      margin-bottom: 7px;
+    }
+    .voice-event-desc {
+      font-size: 10px;
+      color: #57534e;
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .voice-event-facts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 6px;
+      margin-bottom: 8px;
+    }
+    .voice-fact {
+      font-size: 9px;
+      line-height: 1.45;
+      color: #44403c;
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-radius: 6px;
+      padding: 5px 6px;
+    }
+    .voice-fact strong {
+      display: block;
+      font-size: 8px;
+      font-weight: 800;
+      color: #a16207;
+      letter-spacing: .03em;
+      margin-bottom: 1px;
+    }
+    .voice-event-cap { margin-bottom: 8px; margin-top: auto; }
+    .voice-event-cap .cap-bar-row { margin-bottom: 0; }
+    .voice-event-cap .cap-bar-count { font-size: 10px; }
+    .btn-voice-apply {
+      background: var(--voice);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity .15s;
+      width: 100%;
+    }
+    .btn-voice-apply:hover { opacity: .88; }
+    .btn-voice-apply:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-voice-apply.sold-out { background: #94a3b8; cursor: not-allowed; }
+    .modal-voice .modal-title { color: var(--voice); }
+    .modal-voice .voice-modal-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: var(--voice);
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 20px;
+      padding: 3px 10px;
+      margin-bottom: 8px;
+    }
+    .modal-voice .btn-submit { background: var(--voice); }
 
     /* ── 모임 카드 ────────────────────────── */
     .moim-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
@@ -493,6 +683,7 @@
     .cap-bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
     .cap-bar-fill { height: 100%; border-radius: 99px; background: #3b82f6; transition: width .4s ease; width: 0%; }
     .cap-bar-fill.full { background: #ef4444; }
+    .cap-bar-fill.voice-bar { background: #f59e0b; }
     .cap-bar-count { font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; min-width: 32px; text-align: right; }
     .cap-bar-count.full { color: #ef4444; }
     .btn-apply.sold-out { background: #94a3b8; cursor: not-allowed; }
@@ -655,6 +846,11 @@
         padding: 11px 16px;
       }
 
+      .voice-zone { padding: 22px 14px 26px; border-radius: 16px; }
+      .voice-event { max-width: min(100%, 340px); }
+      .voice-event-desc { font-size: 9px; }
+      .voice-fact { font-size: 8px; padding: 4px 5px; }
+
       .rent-box { padding: 18px 14px; }
       .modal { padding: 20px 16px; border-radius: 14px; }
       .fg-row { grid-template-columns: 1fr; }
@@ -682,8 +878,8 @@
 
 <div class="hero">
   <div class="hero-badge">2026 · 06</div>
-  <h1>6월 모임 & 대관 신청</h1>
-  <p>느슨하고 단단하게 함께 자라가는 모임</p>
+  <h1>6월 모임 & b.voice</h1>
+  <p>느슨하고 단단하게 함께 자라가는 모임 · 점주의 목소리</p>
 </div>
 
 <div class="wrap">
@@ -698,6 +894,7 @@
       <strong>2026년 6월</strong>
       <div class="cal-legend">
         <span><span class="dot dot-moim"></span> 비모임</span>
+        <span><span class="dot dot-voice"></span> b.voice</span>
         <span><span class="dot dot-rent"></span> 대관 가능 (모임 외 시간)</span>
       </div>
     </div>
@@ -758,6 +955,7 @@
       <div class="cal-cell sat" onclick="openRent('2026-06-20')">
         <div class="cal-day">20</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('afternoon')">애프터눈 티</div>
+        <div class="cal-event ev-voice" onclick="event.stopPropagation();scrollToVoice('gonaengi')">b.voice</div>
         <div class="cal-rent-btn">대관</div>
       </div>
 
@@ -806,6 +1004,43 @@
       <div class="cal-cell empty"></div>
     </div>
   </div>
+
+  <!-- ── b.voice ── -->
+  <section class="voice-zone" aria-labelledby="voice-heading">
+    <div class="voice-zone-head">
+      <div class="voice-zone-label">b.voice</div>
+      <h2 class="voice-zone-title" id="voice-heading">비북스 점주의 목소리</h2>
+      <p class="voice-zone-lead">점주가 미니 강연이나 행사로, 하고 싶은 이야기를 꺼내는 별도의 자리입니다.</p>
+    </div>
+
+    <article class="voice-event" id="gonaengi">
+      <div class="voice-event-square">
+        <div class="voice-event-visual">
+          <span class="voice-event-stamp">b.voice<br>첫번째 목소리</span>
+          <button type="button" class="voice-event-zoom" aria-label="일러스트 크게 보기" onclick="openLightbox('images/bvoice_gonaengi.png','어쩌다보니, 독립출판 — b.voice')">🔍</button>
+          <img class="voice-event-art" src="images/bvoice_gonaengi.png" alt="영화보는 고넹이">
+        </div>
+        <div class="voice-event-panel">
+          <h3 class="voice-event-title">어쩌다보니, 독립출판</h3>
+          <p class="voice-event-host">느린호수 &amp; 앗트 · 듀엣 북토크</p>
+          <p class="voice-event-desc">생판 모르던 두 사람, 느린호수와 앗트. 어쩌다 독립출판을 하게 되었고, 하면서 어떤 것들을 경험했는지 들려주는 b.voice입니다. 출판을 시작하게 된 계기, 과정의 기쁨과 고민을 편하게 나눕니다.</p>
+          <div class="voice-event-facts">
+            <div class="voice-fact"><strong>일시</strong>6/20(토) 16:30–18:30</div>
+            <div class="voice-fact"><strong>장소</strong>비북스 세미나실</div>
+            <div class="voice-fact"><strong>정원</strong>15명</div>
+            <div class="voice-fact"><strong>회비</strong>10,000원 · 다과</div>
+          </div>
+          <div class="voice-event-cap">
+            <div class="cap-bar-row">
+              <div class="cap-bar-track"><div class="cap-bar-fill voice-bar" id="bar-gonaengi"></div></div>
+              <span class="cap-bar-count" id="cnt-gonaengi">-/15</span>
+            </div>
+          </div>
+          <button class="btn-voice-apply" id="apply-gonaengi" onclick="openVoiceApply('gonaengi')">b.voice 신청하기</button>
+        </div>
+      </div>
+    </article>
+  </section>
 
   <!-- ── 모임 카드 ── -->
   <div style="margin-bottom:16px">
@@ -1448,6 +1683,34 @@
   </div>
 </div>
 
+<!-- ══ 모달: b.voice 신청 ══ -->
+<div class="ov" id="voiceApplyOv">
+  <div class="modal modal-voice">
+    <div class="voice-modal-badge">b.voice</div>
+    <div class="modal-title" id="voiceModalName"></div>
+    <div class="modal-sub" id="voiceModalDate"></div>
+    <div id="voiceApplyAlert"></div>
+    <div id="voiceApplyForm">
+      <div class="fg-row">
+        <div class="fg"><label>이름 *</label><input type="text" id="vName" placeholder="이름"/></div>
+        <div class="fg"><label>연락처 *</label><input type="tel" id="vPhone" placeholder="010-0000-0000"/></div>
+      </div>
+      <div class="pay-box" style="background:#fffbeb;border-color:#fde68a">
+        <div style="font-size:12px;color:var(--voice);margin-bottom:4px">입금 안내</div>
+        <div class="pay-amount" id="voiceModalAmount" style="color:var(--voice)"></div>
+        <div style="font-size:12px;margin-top:6px">
+          <strong>모임통장: 카카오뱅크 7942-33-45474</strong> (예금주 경규환)<br>
+          입금자명은 신청 시 이름과 동일하게 부탁드립니다.
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-cancel" onclick="closeOv('voiceApplyOv')">취소</button>
+        <button class="btn btn-submit" id="voiceSubmitBtn" onclick="submitVoiceApply()">b.voice 신청하기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ══ 모달: 대관 신청 ══ -->
 <div class="ov" id="rentOv">
   <div class="modal">
@@ -1588,7 +1851,19 @@ const MOIMS = {
   }
 };
 
+// ══ b.voice 데이터 ═══════════════════════
+const VOICES = {
+  gonaengi: {
+    name: '어쩌다보니, 독립출판',
+    sessions: [{ label: '6/20(토) 오후 4:30–6:30', value: '6월20일_bvoice' }],
+    capacity: 15,
+    amount: 10000,
+    hasSession: false
+  }
+};
+
 let curMoimKey = '';
+let curVoiceKey = '';
 
 // ══ 인원 바 로딩 ═══════════════════════
 async function loadCounts() {
@@ -1673,6 +1948,14 @@ async function loadCounts() {
         (counts['화요일오후두시_6월23일'] || 0) >= MOIMS.tuesday.capacity['6월23일']) {
       soldOut('apply-tuesday');
     }
+
+    // b.voice
+    Object.entries(VOICES).forEach(([key, v]) => {
+      const date = v.sessions[0].value;
+      const cur = counts[`${v.name}_${date}`] ?? counts[v.name] ?? 0;
+      renderBar(`bar-${key}`, `cnt-${key}`, cur, v.capacity);
+      if (cur >= v.capacity) soldOut(`apply-${key}`);
+    });
 
   } catch(e) {
     console.warn('인원 현황 로딩 실패:', e);
@@ -1762,6 +2045,61 @@ async function submitApply() {
   }
 }
 
+// ══ b.voice 신청 모달 ════════════════════
+function openVoiceApply(key) {
+  curVoiceKey = key;
+  const v = VOICES[key];
+  q('#voiceModalName').textContent = v.name;
+  q('#voiceModalDate').textContent = v.sessions.map(s => s.label).join(' / ');
+  q('#voiceModalAmount').textContent = v.amount.toLocaleString() + '원';
+  q('#voiceApplyAlert').innerHTML = '';
+  q('#vName').value = '';
+  q('#vPhone').value = '';
+  openOv('voiceApplyOv');
+}
+
+// b.voice도 비모임과 동일 API·구글 시트(action: apply)로 저장
+async function submitVoiceApply() {
+  const name = q('#vName').value.trim();
+  const phone = q('#vPhone').value.trim();
+  const v = VOICES[curVoiceKey];
+  const session = v.sessions[0].value;
+
+  if (!name || !phone) { flash('voiceApplyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
+
+  setLoad('voiceSubmitBtn', true, '신청 중...');
+  try {
+    await POST({
+      action: 'apply',
+      month: '6월',
+      moimName: v.name,
+      session,
+      name,
+      phone,
+      amount: v.amount,
+      date: new Date().toLocaleString('ko-KR')
+    });
+    q('#voiceApplyForm').innerHTML = `
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:40px;margin-bottom:12px">✅</div>
+        <div style="font-size:16px;font-weight:700;color:var(--voice);margin-bottom:8px">b.voice 신청 완료!</div>
+        <div class="pay-box" style="text-align:left;background:#fffbeb;border-color:#fde68a">
+          <div style="font-size:12px;color:var(--voice);margin-bottom:4px">입금해주세요</div>
+          <div class="pay-amount" style="color:var(--voice)">${v.amount.toLocaleString()}원</div>
+          <div style="font-size:12px;margin-top:6px">
+            <strong>모임통장: 카카오뱅크 7942-33-45474</strong><br>(예금주 경규환)<br>
+            입금자명: <strong>${name}</strong>
+          </div>
+        </div>
+        <button class="btn-voice-apply" style="width:100%;margin-top:8px" onclick="closeOv('voiceApplyOv')">닫기</button>
+      </div>`;
+    setTimeout(loadCounts, 1500);
+  } catch {
+    flash('voiceApplyAlert', '신청 중 오류가 발생했습니다. 인스타그램 DM으로 문의해주세요.', 'e');
+    setLoad('voiceSubmitBtn', false, 'b.voice 신청하기');
+  }
+}
+
 // ══ 대관 신청 ════════════════════════════
 
 /**
@@ -1782,6 +2120,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-06-18', space: '세미나실',   start: '11:00', end: '13:00', tag: '슬기로운 클래식 ②' },
   { date: '2026-06-19', space: '세미나실',   start: '18:00', end: '19:30', tag: '영화 한편' },
   { date: '2026-06-20', space: '세미나실',   start: '14:00', end: '16:00', tag: '애프터눈 티' },
+  { date: '2026-06-20', space: '세미나실',   start: '16:30', end: '18:30', tag: 'b.voice 북토크' },
   { date: '2026-06-23', space: '세미나실',   start: '14:00', end: '16:00', tag: '화요일오후두시 ②' },
   { date: '2026-06-21', space: '세미나실',   start: '15:00', end: '17:00', tag: '줌치풍경' },
   { date: '2026-06-21', space: '매장 테이블', start: '15:00', end: '16:00', tag: '책잇기' },
@@ -2065,6 +2404,11 @@ function selectSession(btn, id) {
 
 // ══ 캘린더 스크롤 ════════════════════════
 function scrollToMoim(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function scrollToVoice(id) {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
