@@ -20,11 +20,14 @@
       --radius: 12px;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: hidden; }
     body {
       font-family: 'Noto Sans KR', sans-serif;
       background: var(--bg);
       color: var(--text);
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      max-width: 100%;
     }
 
     /* ── 헤더 ─────────────────────────────── */
@@ -34,6 +37,8 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
     }
     .logo {
       font-family: 'Noto Serif KR', serif;
@@ -107,7 +112,7 @@
     .dot-moim { background: #4a8cff; }
     .dot-rent { background: #94a3b8; }
 
-    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); }
+    .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
     .cal-dow {
       padding: 8px 4px;
       text-align: center;
@@ -121,6 +126,7 @@
     .cal-dow.sat { color: #3b82f6; }
     .cal-cell {
       min-height: 68px;
+      min-width: 0;
       padding: 6px 6px 4px;
       border-right: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -129,6 +135,7 @@
       position: relative;
       cursor: pointer;
       transition: background .15s;
+      overflow: hidden;
     }
     .cal-cell:hover { background: #f0f6ff; }
     .cal-cell:nth-child(7n) { border-right: none; }
@@ -587,6 +594,83 @@
       font-size: 12px; line-height: 1.8;
     }
     footer a { color: rgba(255,255,255,.7); text-decoration: none; }
+
+    /* ── 모바일 반응형 ─────────────────────── */
+    @media (max-width: 640px) {
+      header { padding: 12px 14px; }
+      header .logo { font-size: 16px; }
+
+      .hero { padding: 36px 16px 32px; }
+      .hero h1 { font-size: clamp(22px, 6vw, 28px); }
+
+      .wrap { padding: 24px 12px 60px; }
+      .sec-title { font-size: 18px; }
+
+      .cal-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 14px;
+      }
+      .cal-head strong { font-size: 15px; }
+      .cal-legend {
+        flex-wrap: wrap;
+        gap: 6px 10px;
+        font-size: 10px;
+        line-height: 1.45;
+      }
+
+      .cal-dow { padding: 6px 2px; font-size: 10px; }
+      .cal-cell {
+        min-height: 54px;
+        padding: 3px 2px 18px;
+      }
+      .cal-day { font-size: 10px; margin-bottom: 2px; }
+      .cal-event {
+        font-size: 8px;
+        padding: 1px 2px;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        word-break: keep-all;
+        line-height: 1.25;
+      }
+      .cal-rent-btn {
+        font-size: 7px;
+        bottom: 2px;
+        right: 2px;
+        padding: 0 2px;
+      }
+
+      .moim-body { padding: 14px; }
+      .moim-name { font-size: 16px; }
+      .moim-desc { font-size: 12px; }
+      .meta-row { font-size: 11px; }
+      .moim-foot {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .moim-foot .btn-apply {
+        width: 100%;
+        padding: 11px 16px;
+      }
+
+      .rent-box { padding: 18px 14px; }
+      .modal { padding: 20px 16px; border-radius: 14px; }
+      .fg-row { grid-template-columns: 1fr; }
+
+      .timetable { grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); }
+      .tcell { padding: 7px 8px; }
+      .tcell .tag { white-space: normal; font-size: 9px; }
+
+      .space-img-wrap { height: 180px; }
+      .space-info { padding: 14px; }
+    }
+
+    @media (max-width: 380px) {
+      .cal-event { font-size: 7px; }
+      .cal-cell { padding-bottom: 16px; }
+    }
   </style>
 </head>
 <body>
