@@ -164,6 +164,16 @@
     .ev-voice { background: #fef3c7; color: #92400e; }
     .ev-rent { background: #f1f5f9; color: var(--muted); font-size: 9px; }
     .cal-rent-done { background: #fef3c7; color: #92400e; font-size: 9px; font-weight: 700; }
+    .cal-rent-slot {
+      background: #fffbeb;
+      color: #92400e;
+      font-size: 8px;
+      font-weight: 700;
+      white-space: normal;
+      word-break: keep-all;
+      line-height: 1.25;
+    }
+    .cal-rent-slot:hover { background: #fde68a; }
     .cal-rent-btn {
       position: absolute; bottom: 3px; right: 3px;
       font-size: 9px; color: var(--muted);
@@ -312,9 +322,6 @@
       letter-spacing: .03em;
       margin-bottom: 1px;
     }
-    .voice-event-cap { margin-bottom: 10px; }
-    .voice-event-cap .cap-bar-row { margin-bottom: 0; }
-    .voice-event-cap .cap-bar-count { font-size: 10px; }
     .voice-event-cta {
       flex-shrink: 0;
       margin-top: 2px;
@@ -556,6 +563,47 @@
     }
     .btn-rent:hover { background: var(--navy); color: white; border-color: var(--navy); }
 
+    /* 대관 신청 — 예약 현황 안내 */
+    .rent-blocked-wrap {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+    .rent-blocked-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 8px;
+    }
+    .rent-blocked-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 8px;
+    }
+    .rent-blocked-item {
+      font-size: 11px;
+      line-height: 1.45;
+      padding: 6px 8px;
+      border-radius: 6px;
+      background: #fff;
+      border: 1px solid #fef3c7;
+      color: #78350f;
+    }
+    .rent-blocked-item.rent-blocked-moim {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1d4ed8;
+    }
+    .rent-blocked-hint {
+      font-size: 10px;
+      color: #a16207;
+      line-height: 1.5;
+    }
+
     /* ── 모달 ─────────────────────────────── */
     .ov {
       display: none; position: fixed; inset: 0;
@@ -670,16 +718,6 @@
     }
     .poster-img-slot img[src=""], .poster-img-slot img:not([src]) { display: none; }
 
-    /* ── 신청 인원 바 ─────────────────────── */
-    .cap-bar-wrap { margin-bottom: 14px; }
-    .cap-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
-    .cap-bar-label { font-size: 11px; color: var(--muted); white-space: nowrap; min-width: 60px; }
-    .cap-bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
-    .cap-bar-fill { height: 100%; border-radius: 99px; background: #3b82f6; transition: width .4s ease; width: 0%; }
-    .cap-bar-fill.full { background: #ef4444; }
-    .cap-bar-fill.voice-bar { background: #f59e0b; }
-    .cap-bar-count { font-size: 11px; font-weight: 700; color: var(--muted); white-space: nowrap; min-width: 32px; text-align: right; }
-    .cap-bar-count.full { color: #ef4444; }
     .btn-apply.sold-out { background: #94a3b8; cursor: not-allowed; }
 
     /* ── 시간 슬롯 ──────────────────────── */
@@ -867,7 +905,6 @@
 
 <header>
   <a class="logo" href="https://moim.bbooks.co.kr">b<span>.</span>moim</a>
-  <a href="https://moim.bbooks.co.kr" style="background:rgba(255,255,255,.12);color:white;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;">← 5월 모임 신청</a>
 </header>
 
 <div class="hero">
@@ -1023,12 +1060,6 @@
           <div class="voice-fact"><strong>정원</strong>15명</div>
           <div class="voice-fact"><strong>회비</strong>10,000원 · 다과</div>
         </div>
-        <div class="voice-event-cap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill voice-bar" id="bar-gonaengi"></div></div>
-            <span class="cap-bar-count" id="cnt-gonaengi">-/15</span>
-          </div>
-        </div>
         <button class="btn-voice-apply voice-event-cta" id="apply-gonaengi" onclick="openVoiceApply('gonaengi')">b.voice 신청하기</button>
       </div>
     </article>
@@ -1068,19 +1099,6 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>회차당 3명</div>
         </div>
-        <!-- 인원 바 -->
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <span class="cap-bar-label">① 6/11(목)</span>
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-dong-6월11일"></div></div>
-            <span class="cap-bar-count" id="cnt-dong-6월11일">-/3</span>
-          </div>
-          <div class="cap-bar-row">
-            <span class="cap-bar-label">② 6/18(목)</span>
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-dong-6월18일"></div></div>
-            <span class="cap-bar-count" id="cnt-dong-6월18일">-/3</span>
-          </div>
-        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
@@ -1104,12 +1122,7 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>7명</div>
         </div>
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-drawing"></div></div>
-            <span class="cap-bar-count" id="cnt-drawing">-/7</span>
-          </div>
-        </div>
+        
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
@@ -1144,19 +1157,6 @@
           <div class="meta-row"><span class="mi">👥</span>5명</div>
           <div class="meta-row"><span class="mi">📚</span>모임 도서 &lt;구덩이&gt; 구매 조건</div>
         </div>
-        <!-- 인원 바 -->
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <span class="cap-bar-label">① 6/14(일)</span>
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-tue-6월14일"></div></div>
-            <span class="cap-bar-count" id="cnt-tue-6월14일">-/6</span>
-          </div>
-          <div class="cap-bar-row">
-            <span class="cap-bar-label">② 6/23(화)</span>
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-tue-6월23일"></div></div>
-            <span class="cap-bar-count" id="cnt-tue-6월23일">-/5</span>
-          </div>
-        </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
@@ -1180,12 +1180,7 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>6명</div>
         </div>
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-afternoon"></div></div>
-            <span class="cap-bar-count" id="cnt-afternoon">-/6</span>
-          </div>
-        </div>
+        
         <div class="moim-foot">
           <div>
             <div class="moim-price">20,000원</div>
@@ -1209,12 +1204,7 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>6명</div>
         </div>
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-zoomchi"></div></div>
-            <span class="cap-bar-count" id="cnt-zoomchi">-/6</span>
-          </div>
-        </div>
+        
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
@@ -1238,12 +1228,7 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>5명</div>
         </div>
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-movie"></div></div>
-            <span class="cap-bar-count" id="cnt-movie">-/5</span>
-          </div>
-        </div>
+        
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
@@ -1268,12 +1253,7 @@
           <div class="meta-row"><span class="mi">👥</span>5명</div>
           <div class="meta-row"><span class="mi">📚</span>도서 지참: 2026년 젊은작가상 수상집</div>
         </div>
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-bookit"></div></div>
-            <span class="cap-bar-count" id="cnt-bookit">-/5</span>
-          </div>
-        </div>
+        
         <div class="moim-foot">
           <div>
             <div class="moim-price">5,000원</div>
@@ -1301,12 +1281,7 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>4명</div>
         </div>
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-creativewriting"></div></div>
-            <span class="cap-bar-count" id="cnt-creativewriting">-/4</span>
-          </div>
-        </div>
+        
         <div class="moim-foot">
           <div>
             <div class="moim-price">15,000원</div>
@@ -1337,12 +1312,7 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>1명</div>
         </div>
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-letter"></div></div>
-            <span class="cap-bar-count" id="cnt-letter">-/1</span>
-          </div>
-        </div>
+        
         <div class="moim-foot">
           <div>
             <div class="moim-price">30,000원</div>
@@ -1370,12 +1340,7 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>5명</div>
         </div>
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-engbookclub"></div></div>
-            <span class="cap-bar-count" id="cnt-engbookclub">-/5</span>
-          </div>
-        </div>
+        
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
@@ -1423,12 +1388,7 @@
           <div class="meta-row"><span class="mi">📌</span>비북스 (B.BOOKS)</div>
           <div class="meta-row"><span class="mi">👥</span>10명</div>
         </div>
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-readingwave"></div></div>
-            <span class="cap-bar-count" id="cnt-readingwave">-/10</span>
-          </div>
-        </div>
+        
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
@@ -1456,12 +1416,7 @@
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>7명</div>
         </div>
-        <div class="cap-bar-wrap">
-          <div class="cap-bar-row">
-            <div class="cap-bar-track"><div class="cap-bar-fill" id="bar-nextdoor"></div></div>
-            <span class="cap-bar-count" id="cnt-nextdoor">-/7</span>
-          </div>
-        </div>
+        
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
@@ -1479,6 +1434,7 @@
     <h3>🏠 공간 대관 문의</h3>
     <p>비북스 세미나실과 매장 테이블을 대관하실 수 있어요.<br>
     비모임이 있는 날에도 모임 시간 외에는 신청 가능합니다.<br>
+    캘린더의 대관 표시를 클릭하면 예약된 시간을 확인할 수 있어요.<br>
     일정 확인 후 담당자가 연락드립니다.</p>
     <button class="btn-rent" onclick="openRent('')">대관 신청하기</button>
   </div>
@@ -1714,6 +1670,11 @@
       <label>희망 날짜 *</label>
       <input type="date" id="rDate" onchange="renderTimeSlots()"/>
     </div>
+    <div id="rentBlockedWrap" class="rent-blocked-wrap" hidden>
+      <div class="rent-blocked-title">📋 이 날 예약 현황</div>
+      <ul id="rentBlockedList" class="rent-blocked-list"></ul>
+      <p class="rent-blocked-hint">노란색 시간은 이미 대관 신청된 구간이에요. 아래에서 비어 있는 시간을 선택해주세요.</p>
+    </div>
     <div class="fg">
       <label>대관 시간 * <span id="rTimeNote" style="font-weight:400;color:var(--muted)"></span></label>
       <div id="timeSlots" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
@@ -1851,120 +1812,20 @@ const VOICES = {
 let curMoimKey = '';
 let curVoiceKey = '';
 
-// ══ 인원 바 로딩 ═══════════════════════
+// ══ 대관·캘린더 데이터 로딩 ═══════════════
 async function loadCounts() {
   try {
     const res = await fetch(`${API}?action=count&month=6월`, { redirect: 'follow' });
     const counts = await res.json();
     if (counts.error) { console.warn('count error:', counts.error); return; }
 
-    // ── 대관 날짜 캘린더 반영 + 시간 슬롯 데이터 채우기(공간별) ──
-    const rentEntries = counts._rentDates || [];
-    rentSlotsByDate = {};
-    rentEntries.forEach(entry => {
-      // entry: { date: "2026-06-21", time: "14:00–16:00" } 또는 구형 문자열 "2026-06-21"
-      const rawDate = typeof entry === 'string' ? entry : (entry.date || entry.날짜);
-      const dateStr = normalizeRentDate(rawDate);
-      if (!dateStr) return;
-      const timeStr = typeof entry === 'string' ? null : (entry.time || entry.시간 || entry.timeSlot);
-      const rawSpace = typeof entry === 'string' ? '' : (entry.space || entry.venue || entry.place || entry.장소);
-      const space = normalizeSpace(rawSpace) || '_any';
-
-      // 캘린더 뱃지
-      const cell = document.querySelector(`.cal-cell[onclick*="openRent('${dateStr}')"]`);
-      if (cell && !cell.querySelector('.cal-rent-done')) {
-        const badge = document.createElement('div');
-        badge.className = 'cal-event cal-rent-done';
-        badge.textContent = '대관있음';
-        const dayEl = cell.querySelector('.cal-day');
-        if (dayEl && dayEl.nextSibling) cell.insertBefore(badge, dayEl.nextSibling);
-        else cell.appendChild(badge);
-      }
-
-      // 시간 슬롯 데이터 누적 (해당 구간만 차단, 공간별)
-      if (timeStr) {
-        if (!rentSlotsByDate[dateStr]) rentSlotsByDate[dateStr] = {};
-        if (!rentSlotsByDate[dateStr][space]) rentSlotsByDate[dateStr][space] = [];
-        if (!rentSlotsByDate[dateStr][space].includes(timeStr)) rentSlotsByDate[dateStr][space].push(timeStr);
-      }
-    });
+    buildRentBookings(counts._rentDates || []);
+    renderCalendarRentBadges();
 
     if (q('#rDate').value) renderTimeSlots();
-
-    // 슬기로운 영화 속 클래식 — 회차별 바 (구 모임명 키 호환)
-    ['6월11일', '6월18일'].forEach(date => {
-      const moimName = MOIMS.dong.name;
-      const cur = counts[`${moimName}_${date}`] ?? counts[`동서남북book_${date}`] ?? 0;
-      renderBar(`bar-dong-${date}`, `cnt-dong-${date}`, cur, MOIMS.dong.capacity);
-    });
-    // 두 회차 모두 마감이면 버튼 비활성
-    const dongCap = MOIMS.dong.capacity;
-    const dong11 = counts[`${MOIMS.dong.name}_6월11일`] ?? counts['동서남북book_6월11일'] ?? 0;
-    const dong18 = counts[`${MOIMS.dong.name}_6월18일`] ?? counts['동서남북book_6월18일'] ?? 0;
-    if (dong11 >= dongCap && dong18 >= dongCap) {
-      soldOut('apply-dong');
-    }
-
-    // 단일 회차 모임
-    [
-      { key: 'drawing',   name: '드로잉 슥슥',                 date: '6월13일' },
-      { key: 'movie',     name: '영화 한편, 이야기 한잔',       date: '6월19일' },
-      { key: 'afternoon', name: '책 숲에서 즐기는 애프터눈 티', date: '6월20일' },
-      { key: 'zoomchi',   name: '줌치풍경만들기',               date: '6월21일' },
-      { key: 'bookit',    name: '책잇기',                       date: '6월21일_책잇기' },
-      { key: 'letter',           name: '한 사람을 위한 편지',                        date: '6월24일' },
-      { key: 'creativewriting',  name: 'Creative Writing Club',                     date: '6월22일' },
-      { key: 'engbookclub',      name: '영어 북클럽',                               date: '6월27일_영어북클럽' },
-      { key: 'readingwave',      name: '책방,파도 x 또봐 만화방 : Reading Wave',   date: '6월27일' },
-      { key: 'nextdoor',     name: '우리집 옆집에 황동만이 산다?',             date: '6월28일' }
-    ].forEach(({ key, name, date }) => {
-      // Apps Script는 "모임명_날짜" 또는 "모임명" 둘 다 카운트함
-      const cur = counts[`${name}_${date}`] ?? counts[name] ?? 0;
-      renderBar(`bar-${key}`, `cnt-${key}`, cur, MOIMS[key].capacity);
-      if (cur >= MOIMS[key].capacity) soldOut(`apply-${key}`);
-    });
-
-    // 화요일오후두시 — 회차별
-    ['6월14일', '6월23일'].forEach(date => {
-      const cur = counts[`화요일오후두시_${date}`] || 0;
-      const cap = MOIMS.tuesday.capacity[date];
-      renderBar(`bar-tue-${date}`, `cnt-tue-${date}`, cur, cap);
-    });
-    if ((counts['화요일오후두시_6월14일'] || 0) >= MOIMS.tuesday.capacity['6월14일'] &&
-        (counts['화요일오후두시_6월23일'] || 0) >= MOIMS.tuesday.capacity['6월23일']) {
-      soldOut('apply-tuesday');
-    }
-
-    // b.voice
-    Object.entries(VOICES).forEach(([key, v]) => {
-      const date = v.sessions[0].value;
-      const cur = counts[`${v.name}_${date}`] ?? counts[v.name] ?? 0;
-      renderBar(`bar-${key}`, `cnt-${key}`, cur, v.capacity);
-      if (cur >= v.capacity) soldOut(`apply-${key}`);
-    });
-
   } catch(e) {
-    console.warn('인원 현황 로딩 실패:', e);
+    console.warn('대관 현황 로딩 실패:', e);
   }
-}
-
-function renderBar(barId, cntId, cur, cap) {
-  const bar = document.getElementById(barId);
-  const cnt = document.getElementById(cntId);
-  if (!bar || !cnt) return;
-  const pct = Math.min(100, Math.round(cur / cap * 100));
-  bar.style.width = pct + '%';
-  bar.classList.toggle('full', cur >= cap);
-  cnt.textContent = `${cur}/${cap}`;
-  cnt.classList.toggle('full', cur >= cap);
-}
-
-function soldOut(btnId) {
-  const btn = document.getElementById(btnId);
-  if (!btn) return;
-  btn.disabled = true;
-  btn.textContent = '마감';
-  btn.classList.add('sold-out');
 }
 
 // ══ 모임 신청 모달 ══════════════════════
@@ -2125,6 +1986,140 @@ const SCHEDULED_MOIM_BLOCKS = [
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
 // 형식: { 'YYYY-MM-DD': { '세미나실': ['14:00–16:00', ...], '매장 테이블': [...] } }
 let rentSlotsByDate = {};
+let rentBookingsByDate = {};
+
+function shortSpaceLabel(space) {
+  if (space === '세미나실') return '세미나';
+  if (space === '매장 테이블') return '테이블';
+  return space || '대관';
+}
+
+function compactTimeRange(timeStr) {
+  const r = parseTimeRangeToMinutes(timeStr);
+  if (!r) return normalizeDash(timeStr);
+  const fmt = (min) => {
+    const h = Math.floor(min / 60);
+    const m = min % 60;
+    return m === 0 ? String(h) : `${h}:${pad2(m)}`;
+  };
+  return `${fmt(r.startMin)}–${fmt(r.endMin)}`;
+}
+
+function formatRentBookingLabels(space, timeStr) {
+  const time = timeStr ? normalizeDash(timeStr) : '';
+  const sp = shortSpaceLabel(space);
+  if (time) {
+    return {
+      shortLabel: `${sp} ${compactTimeRange(time)}`,
+      fullLabel: `${space || '대관'} ${time}`
+    };
+  }
+  return { shortLabel: '대관있음', fullLabel: `${space || '대관'} (시간 미정)` };
+}
+
+function formatRentSlotTag(space, timeStr) {
+  const time = compactTimeRange(timeStr);
+  const sp = shortSpaceLabel(space);
+  return time ? `대관 ${time} · ${sp}` : '대관';
+}
+
+function buildRentBookings(rentEntries) {
+  rentSlotsByDate = {};
+  rentBookingsByDate = {};
+  rentEntries.forEach(entry => {
+    const rawDate = typeof entry === 'string' ? entry : (entry.date || entry.날짜);
+    const dateStr = normalizeRentDate(rawDate);
+    if (!dateStr) return;
+    const timeStr = typeof entry === 'string' ? null : (entry.time || entry.시간 || entry.timeSlot);
+    const rawSpace = typeof entry === 'string' ? '' : (entry.space || entry.venue || entry.place || entry.장소);
+    const space = normalizeSpace(rawSpace) || '_any';
+    const displaySpace = space === '_any' ? '' : space;
+    const labels = formatRentBookingLabels(displaySpace, timeStr);
+    const key = `${displaySpace}|${labels.fullLabel}`;
+
+    if (!rentBookingsByDate[dateStr]) rentBookingsByDate[dateStr] = [];
+    if (!rentBookingsByDate[dateStr].some(b => `${b.space}|${b.fullLabel}` === key)) {
+      rentBookingsByDate[dateStr].push({
+        space: displaySpace,
+        time: timeStr ? normalizeDash(timeStr) : '',
+        shortLabel: labels.shortLabel,
+        fullLabel: labels.fullLabel
+      });
+    }
+
+    if (timeStr) {
+      if (!rentSlotsByDate[dateStr]) rentSlotsByDate[dateStr] = {};
+      if (!rentSlotsByDate[dateStr][space]) rentSlotsByDate[dateStr][space] = [];
+      const normTime = normalizeDash(timeStr);
+      if (!rentSlotsByDate[dateStr][space].includes(normTime)) {
+        rentSlotsByDate[dateStr][space].push(normTime);
+      }
+    }
+  });
+}
+
+function renderCalendarRentBadges() {
+  document.querySelectorAll('.cal-rent-slot').forEach(el => el.remove());
+  Object.entries(rentBookingsByDate).forEach(([dateStr, bookings]) => {
+    const cell = document.querySelector(`.cal-cell[onclick*="openRent('${dateStr}')"]`);
+    if (!cell) return;
+    const anchor = cell.querySelector('.cal-rent-btn') || null;
+    bookings.forEach(booking => {
+      const badge = document.createElement('div');
+      badge.className = 'cal-event cal-rent-slot';
+      badge.textContent = booking.shortLabel;
+      badge.title = `${booking.fullLabel} · 클릭하면 대관 신청`;
+      badge.onclick = (e) => {
+        e.stopPropagation();
+        openRent(dateStr);
+      };
+      if (anchor) cell.insertBefore(badge, anchor);
+      else cell.appendChild(badge);
+    });
+  });
+}
+
+function getScheduleSummary(date, spaceFilter) {
+  const items = [];
+  SCHEDULED_MOIM_BLOCKS
+    .filter(b => b.date === date && (!spaceFilter || b.space === spaceFilter))
+    .forEach(b => {
+      items.push({
+        kind: 'moim',
+        text: `비모임 · ${b.space} ${b.start}–${b.end} (${b.tag})`
+      });
+    });
+  (rentBookingsByDate[date] || [])
+    .filter(b => !spaceFilter || !b.space || b.space === spaceFilter)
+    .forEach(b => {
+      items.push({
+        kind: 'rent',
+        text: `대관 · ${b.fullLabel}`
+      });
+    });
+  return items;
+}
+
+function updateRentBlockedSummary() {
+  const wrap = q('#rentBlockedWrap');
+  const list = q('#rentBlockedList');
+  const date = q('#rDate')?.value;
+  const space = q('#rSpace')?.value || '';
+  if (!wrap || !list) return;
+  if (!date) {
+    wrap.hidden = true;
+    return;
+  }
+  const items = getScheduleSummary(date, space || null);
+  if (!items.length) {
+    wrap.hidden = true;
+    return;
+  }
+  wrap.hidden = false;
+  list.innerHTML = items.map(it =>
+    `<li class="rent-blocked-item rent-blocked-${it.kind}">${it.text}</li>`
+  ).join('');
+}
 
 function pad2(n) { return String(n).padStart(2, '0'); }
 
@@ -2197,7 +2192,7 @@ function getBlockedRangesForDate(date, space) {
     .map(timeStr => {
       const r = parseTimeRangeToMinutes(timeStr);
       if (!r) return null;
-      return { ...r, tag: '대관있음', kind: 'rent' };
+      return { ...r, tag: formatRentSlotTag(space, timeStr), kind: 'rent' };
     })
     .filter(Boolean);
 
@@ -2294,11 +2289,13 @@ function renderTimeSlots() {
   if (!date) {
     clearSelection();
     wrap.innerHTML = '<div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>';
+    updateRentBlockedSummary();
     return;
   }
   if (!space) {
     clearSelection();
     wrap.innerHTML = '<div style="font-size:12px;color:var(--muted)">공간을 먼저 선택해주세요</div>';
+    updateRentBlockedSummary();
     return;
   }
 
@@ -2336,6 +2333,8 @@ function renderTimeSlots() {
     const title = kind?.tag ? `title="${kind.tag}"` : '';
     return `<button type="button" class="${cls}" ${handler} ${title}>${time}${tag}</button>`;
   }).join('');
+
+  updateRentBlockedSummary();
 }
 
 function openRent(date) {
@@ -2350,6 +2349,7 @@ function openRent(date) {
   } else {
     q('#rDate').value = '';
     q('#timeSlots').innerHTML = '<div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>';
+    updateRentBlockedSummary();
   }
   openOv('rentOv');
 }
