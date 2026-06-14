@@ -481,6 +481,63 @@
       font-size: 11px; padding: 4px 10px;
       border-radius: 12px;
     }
+    .moim-poster-num {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      left: auto;
+      z-index: 3;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 28px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(10, 31, 68, .28);
+      pointer-events: none;
+    }
+    .moim-poster-num.is-left {
+      right: auto;
+      left: 10px;
+    }
+    .moim-open-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+      border: 1px solid #dbeafe;
+      border-radius: 14px;
+    }
+    .moim-open-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .moim-open-num {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .moim-open-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e40af;
+    }
+    .moim-open-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
 
     /* 모임 포스터 2장+ 슬라이더 */
     .poster-slider-wrap {
@@ -1188,6 +1245,14 @@
     <div class="sec-title">6월 개설 모임</div>
   </div>
 
+  <div class="moim-open-bar">
+    <div class="moim-open-stat">
+      <span class="moim-open-num" id="moimTotalCount">0</span>
+      <span class="moim-open-label">개 모임 개설</span>
+    </div>
+    <p class="moim-open-desc">6월 비북스 b.moim · 아래 번호 순서대로 모임을 확인할 수 있습니다.</p>
+  </div>
+
   <div class="moim-grid">
 
     <!-- 슬기로운 영화 속 클래식 음악감상모임 -->
@@ -1819,6 +1884,7 @@
 <script>
 // ══ 설정 ═══════════════════════════════
 const API = 'https://script.google.com/macros/s/AKfycbwfZYQ9FtaMWm6ZqyPhd1tByTzrQV352jtQZYT0-lplGlR0WOKCW_V928gLmRptuPik4g/exec';
+const RENT_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent('대관신청');
 
 // ══ 모임 데이터 ════════════════════════
 // session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
@@ -2039,6 +2105,44 @@ function updateMoimCuration(counts) {
 }
 
 // ══ 대관·캘린더 데이터 로딩 ═══════════════
+function parseGvizResponse(text) {
+  const match = String(text).match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);/);
+  if (!match) return null;
+  try { return JSON.parse(match[1]); } catch { return null; }
+}
+
+function rentEntriesFromGviz(data) {
+  const rows = data?.table?.rows || [];
+  const entries = [];
+  rows.forEach(row => {
+    const cells = row.c || [];
+    const month = cells[1]?.v;
+    if (month !== '6월') return;
+    const note = String(cells[9]?.v || '');
+    if (note.includes('취소')) return;
+    const space = cells[2]?.v || '';
+    const dateRaw = cells[3]?.f || cells[3]?.v || '';
+    const time = cells[4]?.v || '';
+    const dateStr = normalizeRentDate(dateRaw);
+    if (!dateStr || !time) return;
+    entries.push({ date: dateStr, space, time });
+  });
+  return entries;
+}
+
+async function loadRentBookings() {
+  try {
+    const res = await fetch(RENT_SHEET_GVIZ, { redirect: 'follow' });
+    const data = parseGvizResponse(await res.text());
+    if (!data) return;
+    buildRentBookings(rentEntriesFromGviz(data));
+    renderCalendarRentBadges();
+    if (q('#rDate')?.value) renderTimeSlots();
+  } catch (e) {
+    console.warn('대관 시트 로딩 실패:', e);
+  }
+}
+
 async function loadCounts() {
   let counts = {};
   try {
@@ -2047,14 +2151,11 @@ async function loadCounts() {
     if (counts.error) {
       console.warn('count error:', counts.error);
       counts = {};
-    } else {
-      buildRentBookings(counts._rentDates || []);
-      renderCalendarRentBadges();
-      if (q('#rDate').value) renderTimeSlots();
     }
   } catch(e) {
-    console.warn('대관 현황 로딩 실패:', e);
+    console.warn('count 로딩 실패:', e);
   }
+  await loadRentBookings();
   updateMoimCuration(counts);
 }
 
@@ -2786,9 +2887,26 @@ function buildDots() {
 
 function goSlide(i) { curSlide = i; updateSlider(); }
 
+function initMoimOverview() {
+  const cards = document.querySelectorAll('.moim-grid > .moim-card');
+  const totalEl = q('#moimTotalCount');
+  if (totalEl) totalEl.textContent = cards.length;
+
+  cards.forEach((card, index) => {
+    const poster = card.querySelector('.moim-poster-img, .poster-slider-wrap');
+    if (!poster || poster.querySelector('.moim-poster-num')) return;
+    const num = document.createElement('span');
+    num.className = 'moim-poster-num' + (card.id === 'afternoon' ? ' is-left' : '');
+    num.textContent = index + 1;
+    num.setAttribute('aria-label', `${index + 1}번 모임`);
+    poster.appendChild(num);
+  });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   initSlider();
   initMoimPosterSliders();
+  initMoimOverview();
   updateMoimCuration({});
   loadCounts();
   q('#curationShuffleBtn')?.addEventListener('click', () => renderMoimCuration(curationPickIndex));
