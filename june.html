@@ -183,52 +183,106 @@
 
     .sec-label.voice-label { color: var(--voice-accent); }
 
-    /* ── b.voice (독립 행사 포맷) ─────────── */
-    .voice-zone {
+    /* ── 특별 큐레이션 (b.voice + b.moim) ── */
+    .featured-zone {
       margin-bottom: 48px;
-      padding: 28px 18px 32px;
-      border-radius: 20px;
-      background: linear-gradient(165deg, #fffbeb 0%, #fef3c7 45%, #fff7ed 100%);
-      border: 1px solid #fde68a;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8);
     }
-    .voice-zone-head { text-align: center; margin-bottom: 22px; }
-    .voice-zone-label {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--voice);
-      background: rgba(255, 255, 255, .75);
-      border: 1px solid #fcd34d;
-      border-radius: 20px;
-      padding: 5px 14px;
-      margin-bottom: 10px;
-    }
-    .voice-zone-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(18px, 4.5vw, 22px);
-      font-weight: 700;
-      color: #78350f;
-      margin-bottom: 8px;
-    }
-    .voice-zone-lead {
-      font-size: 12px;
-      color: #92400e;
-      line-height: 1.65;
-      max-width: 420px;
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+      max-width: 920px;
       margin: 0 auto;
+      align-items: stretch;
+    }
+    .featured-grid.has-curation {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .featured-grid:not(.has-curation) .voice-event {
+      max-width: min(100%, 400px);
+      margin: 0 auto;
+    }
+    .featured-card-head {
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid transparent;
+    }
+    .featured-card-label {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      border-radius: 20px;
+      padding: 4px 10px;
+      margin-bottom: 6px;
+    }
+    .featured-card-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(14px, 3.5vw, 16px);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .featured-card-lead {
+      font-size: 10px;
+      line-height: 1.55;
+      margin-top: 4px;
       opacity: .88;
     }
     .voice-event {
-      max-width: min(100%, 400px);
-      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
       border-radius: 16px;
       overflow: hidden;
       background: #fffdf8;
       border: 2px solid #d97706;
-      box-shadow: 0 14px 44px rgba(146, 64, 14, .2);
+      box-shadow: 0 10px 32px rgba(146, 64, 14, .14);
+    }
+    .voice-event .featured-card-head {
+      background: linear-gradient(180deg, #fffbeb 0%, #fffdf8 100%);
+      border-bottom-color: #fde68a;
+    }
+    .voice-event .featured-card-label {
+      color: var(--voice);
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid #fcd34d;
+    }
+    .voice-event .featured-card-title { color: #78350f; }
+    .voice-event .featured-card-lead { color: #92400e; }
+    .moim-curation {
+      display: none;
+      flex-direction: column;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+      border: 2px solid #93c5fd;
+      box-shadow: 0 10px 32px rgba(37, 99, 235, .1);
+    }
+    .featured-grid.has-curation .moim-curation {
+      display: flex;
+    }
+    .moim-curation .featured-card-head {
+      background: linear-gradient(180deg, #eff6ff 0%, #fff 100%);
+      border-bottom-color: #dbeafe;
+    }
+    .moim-curation .featured-card-label {
+      color: #2563eb;
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid #bfdbfe;
+    }
+    .moim-curation .featured-card-title { color: #1e3a8a; }
+    .featured-poster {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      background: #f8fafc;
+      flex-shrink: 0;
+    }
+    .featured-poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
     .voice-event-poster {
       position: relative;
@@ -236,24 +290,69 @@
     }
     .voice-event-art {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      vertical-align: top;
     }
-    .voice-event-stamp {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 9px;
+    .moim-curation-body {
+      padding: 12px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 6px;
+    }
+    .moim-curation-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+    .moim-curation-date {
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.45;
+    }
+    .moim-curation-badge {
+      align-self: flex-start;
+      font-size: 10px;
       font-weight: 800;
-      letter-spacing: .04em;
-      color: var(--voice);
-      background: rgba(255, 255, 255, .92);
+      color: #b45309;
+      background: #fffbeb;
       border: 1px solid #fde68a;
-      border-radius: 6px;
-      padding: 4px 8px;
-      line-height: 1.3;
+      border-radius: 999px;
+      padding: 3px 8px;
     }
+    .moim-curation-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 6px;
+    }
+    .btn-curation-main {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      background: #2563eb;
+      cursor: pointer;
+    }
+    .btn-curation-main:hover { background: #1d4ed8; }
+    .btn-curation-sub {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #475569;
+      background: #fff;
+      cursor: pointer;
+    }
+    .btn-curation-sub:hover { background: #f8fafc; }
     .voice-event-zoom {
       position: absolute;
       top: 10px;
@@ -269,35 +368,39 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
     }
     .voice-event-body {
-      padding: 14px 14px 16px;
+      padding: 12px 14px 14px;
       background: #fffdf8;
       border-top: 2px solid #fcd34d;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 6px;
     }
     .voice-event-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: clamp(16px, 4.2vw, 18px);
+      font-size: clamp(14px, 3.5vw, 16px);
       font-weight: 700;
       color: #1c1917;
       line-height: 1.35;
-      margin-bottom: 3px;
     }
     .voice-event-host {
       font-size: 10px;
       font-weight: 700;
       color: var(--voice);
-      margin-bottom: 7px;
     }
     .voice-event-desc {
       font-size: 10px;
       color: #57534e;
-      line-height: 1.6;
-      margin-bottom: 8px;
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
     .voice-event-facts {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 4px 6px;
-      margin-bottom: 8px;
     }
     .voice-fact {
       font-size: 9px;
@@ -318,7 +421,7 @@
     }
     .voice-event-cta {
       flex-shrink: 0;
-      margin-top: 2px;
+      margin-top: auto;
     }
     .btn-voice-apply {
       background: var(--voice);
@@ -872,10 +975,12 @@
         padding: 11px 16px;
       }
 
-      .voice-zone { padding: 22px 14px 26px; border-radius: 16px; }
-      .voice-event { max-width: min(100%, 340px); }
-      .voice-event-desc { font-size: 9px; }
+      .featured-grid.has-curation { grid-template-columns: 1fr; }
+      .featured-grid:not(.has-curation) .voice-event,
+      .featured-grid.has-curation .voice-event { max-width: min(100%, 360px); margin: 0 auto; }
+      .voice-event-desc { font-size: 9px; -webkit-line-clamp: 4; }
       .voice-fact { font-size: 8px; padding: 4px 5px; }
+      .featured-poster { aspect-ratio: 3 / 4; }
 
       .rent-box { padding: 18px 14px; }
       .modal { padding: 20px 16px; border-radius: 14px; }
@@ -1030,33 +1135,58 @@
     </div>
   </div>
 
-  <!-- ── b.voice ── -->
-  <section class="voice-zone" aria-labelledby="voice-heading">
-    <div class="voice-zone-head">
-      <div class="voice-zone-label">b.voice</div>
-      <h2 class="voice-zone-title" id="voice-heading">비북스 점주의 목소리</h2>
-      <p class="voice-zone-lead">점주가 미니 강연이나 행사로, 하고 싶은 이야기를 꺼내는 별도의 자리입니다.</p>
+  <!-- ── 특별 큐레이션 (b.voice + b.moim) ── -->
+  <div class="featured-zone">
+    <div style="margin-bottom:16px">
+      <div class="sec-label">Spotlight</div>
+      <div class="sec-title">이달의 특별 큐레이션</div>
     </div>
 
-    <article class="voice-event" id="gonaengi">
-      <div class="voice-event-poster">
-        <button type="button" class="voice-event-zoom" aria-label="포스터 크게 보기" onclick="openLightbox('images/bvoice_ep01.jpeg','어쩌다보니, 독립출판 — b.voice')">🔍</button>
-        <img class="voice-event-art" src="images/bvoice_ep01.jpeg" alt="어쩌다보니, 독립출판 — b.voice EPISODE.01">
-      </div>
-      <div class="voice-event-body">
-        <h3 class="voice-event-title">어쩌다보니, 독립출판</h3>
-        <p class="voice-event-host">느린호수 &amp; 앗트 · 듀엣 북토크</p>
-        <p class="voice-event-desc">생판 모르던 두 사람, 느린호수와 앗트. 어쩌다 독립출판을 하게 되었고, 하면서 어떤 것들을 경험했는지 들려주는 b.voice입니다. 출판을 시작하게 된 계기, 과정의 기쁨과 고민을 편하게 나눕니다.</p>
-        <div class="voice-event-facts">
-          <div class="voice-fact"><strong>일시</strong>6/20(토) 16:30–18:30</div>
-          <div class="voice-fact"><strong>장소</strong>비북스 세미나실</div>
-          <div class="voice-fact"><strong>정원</strong>15명</div>
-          <div class="voice-fact"><strong>회비</strong>10,000원 · 다과</div>
+    <div class="featured-grid" id="voiceZoneRow">
+      <article class="voice-event" id="gonaengi">
+        <div class="featured-card-head">
+          <div class="featured-card-label">b.voice</div>
+          <h3 class="featured-card-title">비북스 점주의 목소리</h3>
+          <p class="featured-card-lead">점주가 미니 강연이나 행사로, 하고 싶은 이야기를 꺼내는 별도의 자리입니다.</p>
         </div>
-        <button class="btn-voice-apply voice-event-cta" id="apply-gonaengi" onclick="openVoiceApply('gonaengi')">b.voice 신청하기</button>
-      </div>
-    </article>
-  </section>
+        <div class="featured-poster voice-event-poster">
+          <button type="button" class="voice-event-zoom" aria-label="포스터 크게 보기" onclick="openLightbox('images/bvoice_ep01.jpeg','어쩌다보니, 독립출판 — b.voice')">🔍</button>
+          <img class="voice-event-art" src="images/bvoice_ep01.jpeg" alt="어쩌다보니, 독립출판 — b.voice EPISODE.01">
+        </div>
+        <div class="voice-event-body">
+          <h4 class="voice-event-title">어쩌다보니, 독립출판</h4>
+          <p class="voice-event-host">느린호수 &amp; 앗트 · 듀엣 북토크</p>
+          <p class="voice-event-desc">생판 모르던 두 사람, 느린호수와 앗트. 어쩌다 독립출판을 하게 되었고, 하면서 어떤 것들을 경험했는지 들려주는 b.voice입니다.</p>
+          <div class="voice-event-facts">
+            <div class="voice-fact"><strong>일시</strong>6/20(토) 16:30–18:30</div>
+            <div class="voice-fact"><strong>장소</strong>비북스 세미나실</div>
+            <div class="voice-fact"><strong>정원</strong>15명</div>
+            <div class="voice-fact"><strong>회비</strong>10,000원 · 다과</div>
+          </div>
+          <button class="btn-voice-apply voice-event-cta" id="apply-gonaengi" onclick="openVoiceApply('gonaengi')">b.voice 신청하기</button>
+        </div>
+      </article>
+
+      <aside class="moim-curation" id="moimCuration" aria-live="polite">
+        <div class="featured-card-head">
+          <div class="featured-card-label">b.moim 큐레이션</div>
+          <h3 class="featured-card-title">이 모임은 어때요?</h3>
+        </div>
+        <div class="featured-poster moim-curation-poster">
+          <img id="curationPoster" src="" alt="">
+        </div>
+        <div class="moim-curation-body">
+          <div class="moim-curation-name" id="curationName"></div>
+          <div class="moim-curation-date" id="curationDate"></div>
+          <span class="moim-curation-badge">자리가 얼마 남지 않았어요</span>
+          <div class="moim-curation-actions">
+            <button type="button" class="btn-curation-main" id="curationGoBtn">모임 보러 가기</button>
+            <button type="button" class="btn-curation-sub" id="curationShuffleBtn">다른 모임 추천</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
 
   <!-- ── 모임 카드 ── -->
   <div style="margin-bottom:16px">
@@ -1804,6 +1934,100 @@ const VOICES = {
 
 let curMoimKey = '';
 let curVoiceKey = '';
+let curationPool = [];
+let curationPickIndex = -1;
+
+const MOIM_CURATION_META = {
+  dong: { cardId: 'dongseobukbook', poster: 'images/classic_6월.png' },
+  drawing: { cardId: 'drawing', poster: 'images/sooksook_june.jpeg' },
+  tuesday: { cardId: 'tuesday', poster: 'images/tuesday_6월.png' },
+  afternoon: { cardId: 'afternoon', poster: 'images/daon_june.png' },
+  zoomchi: { cardId: 'zoomchi', poster: 'images/zoomchi_6월.png' },
+  movie: { cardId: 'movie', poster: 'images/movie_6월.png' },
+  bookit: { cardId: 'bookit', poster: 'images/bookit_6월.png' },
+  creativewriting: { cardId: 'creativewriting', poster: 'images/creativewriting_6월.png' },
+  letter: { cardId: 'letter', poster: 'images/letter_6월.png' },
+  engbookclub: { cardId: 'engbookclub', poster: 'images/engbookclub_6월.png' },
+  readingwave: { cardId: 'readingwave', poster: 'images/readingwave_6월_1.png' },
+  nextdoor: { cardId: 'nextdoor', poster: 'images/nextdoor_6월.png' }
+};
+
+function getMoimSessionCount(counts, name, sessionValue) {
+  if (name === '슬기로운 영화 속 클래식') {
+    return counts[`${name}_${sessionValue}`] ?? counts[`동서남북book_${sessionValue}`] ?? counts[name] ?? 0;
+  }
+  return counts[`${name}_${sessionValue}`] ?? counts[name] ?? 0;
+}
+
+function buildAlmostFullMoimSlots(counts) {
+  const slots = [];
+  Object.entries(MOIMS).forEach(([key, m]) => {
+    const meta = MOIM_CURATION_META[key];
+    if (!meta) return;
+    m.sessions.forEach(session => {
+      const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
+      const cur = getMoimSessionCount(counts, m.name, session.value);
+      const remaining = cap - cur;
+      if (remaining <= 0) return;
+      const fillRatio = cur / cap;
+      const almostFull = remaining <= 2 || fillRatio >= 0.6;
+      if (!almostFull) return;
+      slots.push({
+        key,
+        cardId: meta.cardId,
+        poster: meta.poster,
+        name: m.name,
+        sessionLabel: session.label,
+        amount: m.amount,
+        remaining,
+        fillRatio
+      });
+    });
+  });
+  return slots.sort((a, b) => a.remaining - b.remaining || b.fillRatio - a.fillRatio);
+}
+
+function pickCurationSlot(excludeIndex = -1) {
+  if (!curationPool.length) return null;
+  if (curationPool.length === 1) {
+    curationPickIndex = 0;
+    return curationPool[0];
+  }
+  let idx;
+  do {
+    idx = Math.floor(Math.random() * curationPool.length);
+  } while (idx === excludeIndex && curationPool.length > 1);
+  curationPickIndex = idx;
+  return curationPool[idx];
+}
+
+function renderMoimCuration(excludeIndex = -1) {
+  const row = q('#voiceZoneRow');
+  if (!row) return;
+
+  if (!curationPool.length) {
+    row.classList.remove('has-curation');
+    return;
+  }
+
+  const slot = pickCurationSlot(excludeIndex);
+  if (!slot) {
+    row.classList.remove('has-curation');
+    return;
+  }
+
+  row.classList.add('has-curation');
+  q('#curationPoster').src = slot.poster;
+  q('#curationPoster').alt = `${slot.name} 포스터`;
+  q('#curationName').textContent = slot.name;
+  q('#curationDate').textContent = `${slot.sessionLabel} · ${slot.amount.toLocaleString()}원`;
+  q('#curationGoBtn').onclick = () => scrollToMoim(slot.cardId);
+}
+
+function updateMoimCuration(counts) {
+  curationPool = buildAlmostFullMoimSlots(counts);
+  renderMoimCuration();
+}
 
 // ══ 대관·캘린더 데이터 로딩 ═══════════════
 async function loadCounts() {
@@ -1814,6 +2038,7 @@ async function loadCounts() {
 
     buildRentBookings(counts._rentDates || []);
     renderCalendarRentBadges();
+    updateMoimCuration(counts);
 
     if (q('#rDate').value) renderTimeSlots();
   } catch(e) {
@@ -2553,6 +2778,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initSlider();
   initMoimPosterSliders();
   loadCounts();
+  q('#curationShuffleBtn')?.addEventListener('click', () => renderMoimCuration(curationPickIndex));
 });
 
 // ══ 유틸 ════════════════════════════════
