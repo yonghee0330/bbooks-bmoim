@@ -189,18 +189,15 @@
     }
     .featured-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
       max-width: 920px;
       margin: 0 auto;
       align-items: stretch;
     }
-    .featured-grid.has-curation {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .featured-grid:not(.has-curation) .voice-event {
-      max-width: min(100%, 400px);
-      margin: 0 auto;
+    .featured-grid .voice-event {
+      max-width: none;
+      margin: 0;
     }
     .featured-card-head {
       padding: 12px 14px 10px;
@@ -250,7 +247,7 @@
     .voice-event .featured-card-title { color: #78350f; }
     .voice-event .featured-card-lead { color: #92400e; }
     .moim-curation {
-      display: none;
+      display: flex;
       flex-direction: column;
       height: 100%;
       border-radius: 16px;
@@ -258,9 +255,6 @@
       background: #fff;
       border: 2px solid #93c5fd;
       box-shadow: 0 10px 32px rgba(37, 99, 235, .1);
-    }
-    .featured-grid.has-curation .moim-curation {
-      display: flex;
     }
     .moim-curation .featured-card-head {
       background: linear-gradient(180deg, #eff6ff 0%, #fff 100%);
@@ -975,9 +969,9 @@
         padding: 11px 16px;
       }
 
-      .featured-grid.has-curation { grid-template-columns: 1fr; }
-      .featured-grid:not(.has-curation) .voice-event,
-      .featured-grid.has-curation .voice-event { max-width: min(100%, 360px); margin: 0 auto; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .featured-grid .voice-event { max-width: min(100%, 360px); margin: 0 auto; }
+      .moim-curation { max-width: min(100%, 360px); margin: 0 auto; }
       .voice-event-desc { font-size: 9px; -webkit-line-clamp: 4; }
       .voice-fact { font-size: 8px; padding: 4px 5px; }
       .featured-poster { aspect-ratio: 3 / 4; }
@@ -2001,22 +1995,37 @@ function pickCurationSlot(excludeIndex = -1) {
   return curationPool[idx];
 }
 
+function buildCurationSlots(counts) {
+  const almostFull = buildAlmostFullMoimSlots(counts);
+  if (almostFull.length) return almostFull;
+
+  const open = [];
+  Object.entries(MOIMS).forEach(([key, m]) => {
+    const meta = MOIM_CURATION_META[key];
+    if (!meta) return;
+    m.sessions.forEach(session => {
+      const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
+      const cur = getMoimSessionCount(counts, m.name, session.value);
+      if (cap - cur <= 0) return;
+      open.push({
+        key,
+        cardId: meta.cardId,
+        poster: meta.poster,
+        name: m.name,
+        sessionLabel: session.label,
+        amount: m.amount,
+        remaining: cap - cur,
+        fillRatio: cur / cap
+      });
+    });
+  });
+  return open.sort((a, b) => a.remaining - b.remaining);
+}
+
 function renderMoimCuration(excludeIndex = -1) {
-  const row = q('#voiceZoneRow');
-  if (!row) return;
-
-  if (!curationPool.length) {
-    row.classList.remove('has-curation');
-    return;
-  }
-
   const slot = pickCurationSlot(excludeIndex);
-  if (!slot) {
-    row.classList.remove('has-curation');
-    return;
-  }
+  if (!slot) return;
 
-  row.classList.add('has-curation');
   q('#curationPoster').src = slot.poster;
   q('#curationPoster').alt = `${slot.name} 포스터`;
   q('#curationName').textContent = slot.name;
@@ -2025,25 +2034,28 @@ function renderMoimCuration(excludeIndex = -1) {
 }
 
 function updateMoimCuration(counts) {
-  curationPool = buildAlmostFullMoimSlots(counts);
+  curationPool = buildCurationSlots(counts || {});
   renderMoimCuration();
 }
 
 // ══ 대관·캘린더 데이터 로딩 ═══════════════
 async function loadCounts() {
+  let counts = {};
   try {
     const res = await fetch(`${API}?action=count&month=6월`, { redirect: 'follow' });
-    const counts = await res.json();
-    if (counts.error) { console.warn('count error:', counts.error); return; }
-
-    buildRentBookings(counts._rentDates || []);
-    renderCalendarRentBadges();
-    updateMoimCuration(counts);
-
-    if (q('#rDate').value) renderTimeSlots();
+    counts = await res.json();
+    if (counts.error) {
+      console.warn('count error:', counts.error);
+      counts = {};
+    } else {
+      buildRentBookings(counts._rentDates || []);
+      renderCalendarRentBadges();
+      if (q('#rDate').value) renderTimeSlots();
+    }
   } catch(e) {
     console.warn('대관 현황 로딩 실패:', e);
   }
+  updateMoimCuration(counts);
 }
 
 // ══ 모임 신청 모달 ══════════════════════
@@ -2777,6 +2789,7 @@ function goSlide(i) { curSlide = i; updateSlider(); }
 window.addEventListener('DOMContentLoaded', () => {
   initSlider();
   initMoimPosterSliders();
+  updateMoimCuration({});
   loadCounts();
   q('#curationShuffleBtn')?.addEventListener('click', () => renderMoimCuration(curationPickIndex));
 });
