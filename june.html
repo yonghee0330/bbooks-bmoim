@@ -231,20 +231,14 @@
       box-shadow: 0 14px 44px rgba(146, 64, 14, .2);
     }
     .voice-event-poster {
-      aspect-ratio: 1 / 1;
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 14px;
       background: #f5f0e6;
     }
     .voice-event-art {
-      max-height: 88%;
-      max-width: 88%;
-      width: auto;
-      object-fit: contain;
+      width: 100%;
+      height: auto;
       display: block;
+      vertical-align: top;
     }
     .voice-event-stamp {
       position: absolute;
@@ -1046,9 +1040,8 @@
 
     <article class="voice-event" id="gonaengi">
       <div class="voice-event-poster">
-        <span class="voice-event-stamp">b.voice<br>첫번째 목소리</span>
-        <button type="button" class="voice-event-zoom" aria-label="일러스트 크게 보기" onclick="openLightbox('images/bvoice_gonaengi.png','어쩌다보니, 독립출판 — b.voice')">🔍</button>
-        <img class="voice-event-art" src="images/bvoice_gonaengi.png" alt="영화보는 고넹이">
+        <button type="button" class="voice-event-zoom" aria-label="포스터 크게 보기" onclick="openLightbox('images/bvoice_gonaengi.png','어쩌다보니, 독립출판 — b.voice')">🔍</button>
+        <img class="voice-event-art" src="images/bvoice_gonaengi.png" alt="어쩌다보니, 독립출판 — b.voice EPISODE.01">
       </div>
       <div class="voice-event-body">
         <h3 class="voice-event-title">어쩌다보니, 독립출판</h3>
