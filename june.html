@@ -106,10 +106,54 @@
     .cal-head {
       background: var(--navy); color: white;
       padding: 14px 20px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; flex-direction: column; gap: 12px;
     }
-    .cal-head strong { font-family: 'Noto Serif KR', serif; font-size: 17px; }
-    .cal-legend { display: flex; gap: 12px; font-size: 11px; color: rgba(255,255,255,.7); }
+    .cal-head-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .cal-head-center { flex: 1; text-align: center; min-width: 0; }
+    .cal-head strong { font-family: 'Noto Serif KR', serif; font-size: 17px; display: block; }
+    .cal-head-sub {
+      display: block; margin-top: 3px;
+      font-size: 11px; font-weight: 500; color: rgba(255,255,255,.62);
+    }
+    .cal-nav-btn {
+      flex-shrink: 0;
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      color: white;
+      font-size: 22px; line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, opacity .15s;
+    }
+    .cal-nav-btn:hover:not(:disabled) { background: rgba(255,255,255,.22); }
+    .cal-nav-btn:disabled { opacity: .35; cursor: default; }
+    .cal-carousel-viewport { overflow: hidden; touch-action: pan-y pinch-zoom; }
+    .cal-carousel-track {
+      display: flex;
+      transition: transform .32s ease;
+      will-change: transform;
+    }
+    .cal-month-panel { flex: 0 0 100%; min-width: 0; }
+    .cal-dots {
+      display: flex; justify-content: center; gap: 8px;
+      padding: 12px 16px 14px;
+      border-top: 1px solid var(--border);
+      background: #f8fafc;
+    }
+    .cal-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: none; padding: 0;
+      background: #cbd5e1;
+      cursor: pointer;
+      transition: background .15s, transform .15s;
+    }
+    .cal-dot.active { background: var(--navy); transform: scale(1.15); }
+    .sec-title-sub { font-size: 14px; font-weight: 500; color: var(--muted); }
+    .cal-legend { display: flex; gap: 12px; font-size: 11px; color: rgba(255,255,255,.7); flex-wrap: wrap; }
     .cal-legend span { display: flex; align-items: center; gap: 4px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
     .dot-moim { background: #4a8cff; }
@@ -978,12 +1022,13 @@
       .sec-title { font-size: 18px; }
 
       .cal-head {
-        flex-direction: column;
-        align-items: flex-start;
         gap: 10px;
         padding: 12px 14px;
       }
+      .cal-head-top { width: 100%; }
       .cal-head strong { font-size: 15px; }
+      .cal-head-sub { font-size: 10px; }
+      .cal-nav-btn { width: 30px; height: 30px; font-size: 20px; }
       .cal-legend {
         flex-wrap: wrap;
         gap: 6px 10px;
@@ -1068,18 +1113,28 @@
   <!-- ── 캘린더 ── -->
   <div style="margin-bottom:8px">
     <div class="sec-label">Calendar</div>
-    <div class="sec-title">6월 일정</div>
+    <div class="sec-title">6월 일정 <span class="sec-title-sub">· 대관 8월까지</span></div>
   </div>
-  <div class="cal-wrap">
+  <div class="cal-wrap" id="calWrap">
     <div class="cal-head">
-      <strong>2026년 6월</strong>
-      <div class="cal-legend">
-        <span><span class="dot dot-moim"></span> 비모임</span>
-        <span><span class="dot dot-voice"></span> b.voice</span>
-        <span><span class="dot dot-rent"></span> 대관 가능 (모임 외 시간)</span>
+      <div class="cal-head-top">
+        <button type="button" class="cal-nav-btn" id="calPrevBtn" aria-label="이전 달">‹</button>
+        <div class="cal-head-center">
+          <strong id="calMonthLabel">2026년 6월</strong>
+          <span class="cal-head-sub" id="calMonthSub">비모임 · b.voice · 대관</span>
+        </div>
+        <button type="button" class="cal-nav-btn" id="calNextBtn" aria-label="다음 달">›</button>
+      </div>
+      <div class="cal-legend" id="calLegend">
+        <span id="calLegendMoim"><span class="dot dot-moim"></span> 비모임</span>
+        <span id="calLegendVoice"><span class="dot dot-voice"></span> b.voice</span>
+        <span><span class="dot dot-rent"></span> 대관 가능</span>
       </div>
     </div>
-    <div class="cal-grid">
+    <div class="cal-carousel-viewport" id="calCarouselViewport">
+      <div class="cal-carousel-track" id="calCarouselTrack">
+        <div class="cal-month-panel" data-cal-month="0">
+    <div class="cal-grid" id="calGridJune">
       <div class="cal-dow sun">일</div>
       <div class="cal-dow">월</div>
       <div class="cal-dow">화</div>
@@ -1184,6 +1239,12 @@
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
     </div>
+        </div>
+        <div class="cal-month-panel" data-cal-month="1" id="calPanelJuly"></div>
+        <div class="cal-month-panel" data-cal-month="2" id="calPanelAugust"></div>
+      </div>
+    </div>
+    <div class="cal-dots" id="calDots" aria-label="캘린더 월 선택"></div>
   </div>
 
   <!-- ── 특별 큐레이션 (b.voice + b.moim) ── -->
@@ -1615,8 +1676,8 @@
   <div class="rent-box">
     <h3>🏠 공간 대관 문의</h3>
     <p>비북스 세미나실과 매장 테이블을 대관하실 수 있어요.<br>
-    비모임이 있는 날에도 모임 시간 외에는 신청 가능합니다.<br>
-    캘린더의 대관 표시를 클릭하면 예약된 시간을 확인할 수 있어요.<br>
+    비모임은 6월까지이며, <strong>대관은 6–8월</strong>까지 캘린더에서 미리 신청할 수 있어요.<br>
+    캘린더를 넘기면 7·8월 대관 일정도 확인·신청할 수 있습니다.<br>
     일정 확인 후 담당자가 연락드립니다.</p>
     <button class="btn-rent" onclick="openRent('')">대관 신청하기</button>
   </div>
@@ -1850,7 +1911,7 @@
     </div>
     <div class="fg">
       <label>희망 날짜 *</label>
-      <input type="date" id="rDate" onchange="renderTimeSlots()"/>
+      <input type="date" id="rDate" min="2026-06-01" max="2026-08-31" onchange="renderTimeSlots()"/>
     </div>
     <div id="rentBlockedWrap" class="rent-blocked-wrap" hidden>
       <div class="rent-blocked-title">📋 이 날 예약 현황</div>
@@ -1885,6 +1946,13 @@
 // ══ 설정 ═══════════════════════════════
 const API = 'https://script.google.com/macros/s/AKfycbwfZYQ9FtaMWm6ZqyPhd1tByTzrQV352jtQZYT0-lplGlR0WOKCW_V928gLmRptuPik4g/exec';
 const RENT_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent('대관신청');
+const RENT_CAL_MONTHS = ['6월', '7월', '8월'];
+const CAL_PANELS = [
+  { year: 2026, month: 6, label: '2026년 6월', sub: '비모임 · b.voice · 대관', hasMoim: true },
+  { year: 2026, month: 7, label: '2026년 7월', sub: '대관 신청 가능', hasMoim: false },
+  { year: 2026, month: 8, label: '2026년 8월', sub: '대관 신청 가능', hasMoim: false },
+];
+let calPanelIndex = 0;
 
 // ══ 모임 데이터 ════════════════════════
 // session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
@@ -2117,7 +2185,7 @@ function rentEntriesFromGviz(data) {
   rows.forEach(row => {
     const cells = row.c || [];
     const month = cells[1]?.v;
-    if (month !== '6월') return;
+    if (!RENT_CAL_MONTHS.includes(month)) return;
     const note = String(cells[9]?.v || '');
     if (note.includes('취소')) return;
     const space = cells[2]?.v || '';
@@ -2128,6 +2196,126 @@ function rentEntriesFromGviz(data) {
     entries.push({ date: dateStr, space, time });
   });
   return entries;
+}
+
+function rentMonthFromDate(dateStr) {
+  const m = String(dateStr || '').match(/^\d{4}-(\d{2})-/);
+  if (!m) return '6월';
+  return `${parseInt(m[1], 10)}월`;
+}
+
+function tagRentDateCells() {
+  document.querySelectorAll('.cal-cell[onclick*="openRent"]').forEach(cell => {
+    const match = cell.getAttribute('onclick')?.match(/openRent\('([^']*)'\)/);
+    if (match?.[1]) cell.dataset.rentDate = match[1];
+  });
+}
+
+function buildRentMonthGrid(year, month) {
+  const firstDow = new Date(year, month - 1, 1).getDay();
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const trailing = (7 - ((firstDow + daysInMonth) % 7)) % 7;
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  let html = `
+    <div class="cal-dow sun">일</div>
+    <div class="cal-dow">월</div>
+    <div class="cal-dow">화</div>
+    <div class="cal-dow">수</div>
+    <div class="cal-dow">목</div>
+    <div class="cal-dow">금</div>
+    <div class="cal-dow sat">토</div>`;
+
+  for (let i = 0; i < firstDow; i++) {
+    html += '<div class="cal-cell empty"></div>';
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${year}-${pad2(month)}-${pad2(day)}`;
+    const dow = (firstDow + day - 1) % 7;
+    const cls = [
+      'cal-cell',
+      dow === 0 ? 'sun' : '',
+      dow === 6 ? 'sat' : '',
+      dateStr === todayStr ? 'today' : ''
+    ].filter(Boolean).join(' ');
+    html += `<div class="${cls}" data-rent-date="${dateStr}" onclick="openRent('${dateStr}')">
+      <div class="cal-day">${day}</div>
+      <div class="cal-rent-btn">대관</div>
+    </div>`;
+  }
+
+  for (let i = 0; i < trailing; i++) {
+    html += '<div class="cal-cell empty"></div>';
+  }
+
+  return `<div class="cal-grid">${html}</div>`;
+}
+
+function updateCalCarouselUI() {
+  const panel = CAL_PANELS[calPanelIndex];
+  const track = q('#calCarouselTrack');
+  if (track) track.style.transform = `translateX(-${calPanelIndex * 100}%)`;
+
+  const label = q('#calMonthLabel');
+  const sub = q('#calMonthSub');
+  if (label) label.textContent = panel.label;
+  if (sub) sub.textContent = panel.sub;
+
+  const prev = q('#calPrevBtn');
+  const next = q('#calNextBtn');
+  if (prev) prev.disabled = calPanelIndex <= 0;
+  if (next) next.disabled = calPanelIndex >= CAL_PANELS.length - 1;
+
+  const moimLegend = q('#calLegendMoim');
+  const voiceLegend = q('#calLegendVoice');
+  if (moimLegend) moimLegend.style.display = panel.hasMoim ? '' : 'none';
+  if (voiceLegend) voiceLegend.style.display = panel.hasMoim ? '' : 'none';
+
+  q('#calDots')?.querySelectorAll('.cal-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === calPanelIndex);
+    dot.setAttribute('aria-current', i === calPanelIndex ? 'true' : 'false');
+  });
+}
+
+function goCalMonth(index) {
+  if (index < 0 || index >= CAL_PANELS.length || index === calPanelIndex) return;
+  calPanelIndex = index;
+  updateCalCarouselUI();
+}
+
+function initCalCarousel() {
+  const july = q('#calPanelJuly');
+  const august = q('#calPanelAugust');
+  if (july) july.innerHTML = buildRentMonthGrid(2026, 7);
+  if (august) august.innerHTML = buildRentMonthGrid(2026, 8);
+
+  tagRentDateCells();
+
+  const dots = q('#calDots');
+  if (dots) {
+    dots.innerHTML = CAL_PANELS.map((p, i) =>
+      `<button type="button" class="cal-dot${i === 0 ? ' active' : ''}" aria-label="${p.label}" aria-current="${i === 0 ? 'true' : 'false'}" onclick="goCalMonth(${i})"></button>`
+    ).join('');
+  }
+
+  q('#calPrevBtn')?.addEventListener('click', () => goCalMonth(calPanelIndex - 1));
+  q('#calNextBtn')?.addEventListener('click', () => goCalMonth(calPanelIndex + 1));
+
+  const viewport = q('#calCarouselViewport');
+  if (viewport) {
+    let touchStartX = 0;
+    viewport.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    viewport.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(dx) < 48) return;
+      goCalMonth(dx > 0 ? calPanelIndex - 1 : calPanelIndex + 1);
+    }, { passive: true });
+  }
+
+  updateCalCarouselUI();
 }
 
 async function loadRentBookings() {
@@ -2392,7 +2580,7 @@ function buildRentBookings(rentEntries) {
 function renderCalendarRentBadges() {
   document.querySelectorAll('.cal-rent-slot').forEach(el => el.remove());
   Object.entries(rentBookingsByDate).forEach(([dateStr, bookings]) => {
-    const cell = document.querySelector(`.cal-cell[onclick*="openRent('${dateStr}')"]`);
+    const cell = document.querySelector(`.cal-cell[data-rent-date="${dateStr}"]`);
     if (!cell) return;
     const anchor = cell.querySelector('.cal-rent-btn') || null;
     bookings.forEach(booking => {
@@ -2480,8 +2668,8 @@ function normalizeRentDate(dateStr) {
   if (iso) {
     return `${iso[1]}-${iso[2].padStart(2,'0')}-${iso[3].padStart(2,'0')}`;
   }
-  const kr = s.match(/6\s*월\s*(\d{1,2})\s*일/);
-  if (kr) return `2026-06-${String(parseInt(kr[1], 10)).padStart(2, '0')}`;
+  const kr = s.match(/(6|7|8)\s*월\s*(\d{1,2})\s*일/);
+  if (kr) return `2026-${kr[1].padStart(2, '0')}-${String(parseInt(kr[2], 10)).padStart(2, '0')}`;
   return null;
 }
 
@@ -2676,6 +2864,8 @@ function openRent(date) {
   clearSelection();
   if (date) {
     q('#rDate').value = date;
+    const panelIdx = CAL_PANELS.findIndex(p => p.year === parseInt(date.slice(0, 4), 10) && p.month === parseInt(date.slice(5, 7), 10));
+    if (panelIdx >= 0) goCalMonth(panelIdx);
     renderTimeSlots();
   } else {
     q('#rDate').value = '';
@@ -2699,7 +2889,7 @@ async function submitRent() {
   setLoad('rentBtn',true,'신청 중...');
   try {
     await POST({
-      action:'rent', month:'6월', space, date, time,
+      action:'rent', month: rentMonthFromDate(date), space, date, time,
       name, phone, purpose:q('#rPurpose').value, count:q('#rCount').value,
       reqDate:new Date().toLocaleString('ko-KR')
     });
@@ -2907,6 +3097,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initSlider();
   initMoimPosterSliders();
   initMoimOverview();
+  initCalCarousel();
   updateMoimCuration({});
   loadCounts();
   q('#curationShuffleBtn')?.addEventListener('click', () => renderMoimCuration(curationPickIndex));
