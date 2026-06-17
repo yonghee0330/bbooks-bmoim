@@ -7,23 +7,48 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --navy: #0A1F44;
-      --navy-light: #1a3565;
-      --blue: #4a8cff;
-      --blue-pale: #eaf1ff;
-      --cream: #faf8f4;
-      --border: #e4e1d8;
-      --text: #1a1a2e;
-      --text-muted: #6b6b7e;
+      --ocean-deep: #0a5f7a;
+      --ocean: #1a9ec4;
+      --ocean-light: #5ecde8;
+      --ocean-pale: #e3f6fc;
+      --coral: #ff7b54;
+      --coral-light: #ffb89a;
+      --sand: #fff9f2;
+      --sand-dark: #f0e6d8;
+      --border: #c8e8f0;
+      --text: #1a3a4a;
+      --text-muted: #5a7a8a;
       --radius: 12px;
       --radius-sm: 8px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Noto Sans KR', sans-serif; background: var(--cream); color: var(--text); }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(94,205,232,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 90% 80%, rgba(255,123,84,0.06) 0%, transparent 50%);
+    }
 
     header {
-      background: var(--navy);
+      background: linear-gradient(135deg, var(--ocean-deep) 0%, #0d7a9e 100%);
       padding: 20px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 18px,
+        rgba(255,255,255,0.12) 18px,
+        rgba(255,255,255,0.12) 36px
+      );
     }
     .logo {
       font-family: 'Noto Serif KR', serif;
@@ -31,47 +56,92 @@
       font-size: 18px;
       font-weight: 600;
       text-decoration: none;
+      position: relative;
+      z-index: 1;
     }
     .logo span {
       display: block;
       font-family: 'Noto Sans KR', sans-serif;
       font-size: 11px;
       font-weight: 300;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.7);
       margin-top: 2px;
       letter-spacing: 0.05em;
     }
 
     .hero {
-      background: var(--navy);
-      padding: 48px 24px 64px;
+      background: linear-gradient(160deg, #0d7a9e 0%, var(--ocean) 45%, var(--ocean-light) 100%);
+      padding: 40px 24px 72px;
       text-align: center;
       position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 60%, rgba(255,255,255,0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(255,200,150,0.12) 0%, transparent 35%);
+      pointer-events: none;
     }
     .hero::after {
       content: '';
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      height: 28px;
-      background: var(--cream);
-      border-radius: 28px 28px 0 0;
+      height: 32px;
+      background: var(--sand);
+      border-radius: 32px 32px 0 0;
+    }
+    .hero-illust {
+      width: min(220px, 55vw);
+      margin: 0 auto 20px;
+      position: relative;
+      z-index: 1;
+      animation: bob 3.5s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-6px) rotate(1deg); }
     }
     .hero-badge {
       display: inline-block;
       font-size: 11px;
       font-weight: 500;
-      color: var(--blue);
-      border: 1px solid rgba(74,140,255,0.35);
+      color: #fff;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
       padding: 4px 14px;
       border-radius: 20px;
       letter-spacing: 0.1em;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(4px);
     }
     .hero h1 {
       font-family: 'Noto Serif KR', serif;
       font-size: clamp(22px, 5vw, 30px);
       color: #fff;
       line-height: 1.5;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-sub {
+      margin-top: 10px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      position: relative;
+      z-index: 1;
+      line-height: 1.6;
+    }
+    .wave-deco {
+      position: absolute;
+      bottom: 28px;
+      left: 0; right: 0;
+      height: 40px;
+      z-index: 0;
+      opacity: 0.35;
     }
 
     .container {
@@ -86,16 +156,27 @@
       border-radius: var(--radius);
       padding: 24px;
       margin-bottom: 14px;
+      box-shadow: 0 2px 12px rgba(26,158,196,0.06);
+      position: relative;
     }
     .card-title {
       font-size: 11px;
       font-weight: 700;
-      color: var(--navy);
+      color: var(--ocean-deep);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: 18px;
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
+    }
+    .card-witty {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 48px;
+      height: 48px;
+      opacity: 0.55;
+      pointer-events: none;
     }
     .field { margin-bottom: 16px; }
     .field:last-child { margin-bottom: 0; }
@@ -122,8 +203,8 @@
     }
     input:focus, textarea:focus, select:focus {
       outline: none;
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(74,140,255,0.1);
+      border-color: var(--ocean);
+      box-shadow: 0 0 0 3px rgba(26,158,196,0.15);
     }
     textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 
@@ -131,13 +212,13 @@
 
     .radio-group { display: flex; gap: 12px; flex-wrap: wrap; }
     .radio-option { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; }
-    .radio-option input { width: 16px; height: 16px; accent-color: var(--navy); cursor: pointer; }
+    .radio-option input { width: 16px; height: 16px; accent-color: var(--ocean-deep); cursor: pointer; }
 
     .session-grid { display: flex; flex-direction: column; gap: 8px; }
     .session-row { display: flex; gap: 8px; align-items: center; }
     .session-num {
-      font-size: 12px; font-weight: 500; color: var(--text-muted);
-      background: var(--cream); border: 1px solid var(--border);
+      font-size: 12px; font-weight: 500; color: var(--ocean-deep);
+      background: var(--ocean-pale); border: 1px solid var(--border);
       border-radius: var(--radius-sm); padding: 10px 12px;
       white-space: nowrap; flex-shrink: 0;
     }
@@ -152,25 +233,30 @@
 
     .submit-btn {
       width: 100%; padding: 16px;
-      background: var(--navy); color: #fff;
+      background: linear-gradient(135deg, var(--coral) 0%, #ff9a6c 100%);
+      color: #fff;
       border: none; border-radius: var(--radius);
       font-family: 'Noto Sans KR', sans-serif;
       font-size: 15px; font-weight: 700;
       cursor: pointer; letter-spacing: 0.03em;
-      transition: background 0.15s;
+      transition: transform 0.15s, box-shadow 0.15s;
       margin-top: 8px;
+      box-shadow: 0 4px 16px rgba(255,123,84,0.3);
     }
-    .submit-btn:hover { background: var(--navy-light); }
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255,123,84,0.4);
+    }
     .submit-btn:disabled { background: #bbb; cursor: not-allowed; }
 
     #success-msg {
       display: none;
-      background: #eaf3de; border: 1px solid #c0dd97;
+      background: var(--ocean-pale); border: 1px solid var(--border);
       border-radius: var(--radius); padding: 32px 24px;
       text-align: center;
     }
-    #success-msg h2 { font-size: 20px; color: #3b6d11; margin-bottom: 8px; }
-    #success-msg p { font-size: 14px; color: #639922; line-height: 1.7; }
+    #success-msg h2 { font-size: 20px; color: var(--ocean-deep); margin-bottom: 8px; }
+    #success-msg p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
 
     #error-msg {
       display: none;
@@ -182,10 +268,12 @@
     footer {
       text-align: center; font-size: 12px; color: var(--text-muted);
       padding: 24px; border-top: 1px solid var(--border);
+      background: var(--sand-dark);
     }
 
     @media (max-width: 480px) {
       .card { padding: 18px 16px; }
+      .card-witty { width: 36px; height: 36px; top: 12px; right: 12px; }
     }
   </style>
 </head>
@@ -199,8 +287,45 @@
 </header>
 
 <div class="hero">
-  <div class="hero-badge">모임 개설 신청</div>
+  <svg class="wave-deco" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,20 Q50,5 100,20 T200,20 T300,20 T400,20 L400,40 L0,40 Z" fill="rgba(255,255,255,0.3)"/>
+    <path d="M0,28 Q60,14 120,28 T240,28 T360,28 L400,28 L400,40 L0,40 Z" fill="rgba(255,255,255,0.15)"/>
+  </svg>
+
+  <!-- 서핑 + 책 일러스트 -->
+  <svg class="hero-illust" viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- 태양 -->
+    <circle cx="185" cy="28" r="18" fill="#FFE08A" opacity="0.9"/>
+    <circle cx="185" cy="28" r="22" fill="none" stroke="#FFE08A" stroke-width="1.5" opacity="0.4"/>
+    <!-- 파도 -->
+    <path d="M0,110 C30,95 50,120 80,105 C110,90 130,115 160,100 C180,92 200,108 220,98 L220,140 L0,140 Z" fill="rgba(255,255,255,0.25)"/>
+    <path d="M0,118 C40,108 70,125 110,112 C150,99 180,120 220,110 L220,140 L0,140 Z" fill="rgba(255,255,255,0.4)"/>
+    <!-- 서핑보드 -->
+    <path d="M55,88 Q90,78 125,88 Q130,90 125,94 Q90,104 55,94 Q50,92 55,88 Z" fill="#FF7B54" stroke="#fff" stroke-width="1.5"/>
+    <!-- 서퍼 몸 -->
+    <ellipse cx="88" cy="76" rx="8" ry="10" fill="#FFD4B8"/>
+    <!-- 머리 -->
+    <circle cx="88" cy="62" r="7" fill="#FFD4B8"/>
+    <!-- 팔 (밸런스) -->
+    <path d="M78,72 Q65,65 60,58" stroke="#FFD4B8" stroke-width="3" stroke-linecap="round"/>
+    <path d="M98,72 Q115,62 120,52" stroke="#FFD4B8" stroke-width="3" stroke-linecap="round"/>
+    <!-- 다리 -->
+    <path d="M82,84 Q75,95 70,100" stroke="#4A90A4" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M94,84 Q100,95 105,100" stroke="#4A90A4" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- 책 (위트 포인트!) -->
+    <rect x="112" y="46" width="14" height="18" rx="2" fill="#fff" stroke="#0a5f7a" stroke-width="1.2" transform="rotate(-15 119 55)"/>
+    <line x1="115" y1="51" x2="123" y2="49" stroke="#0a5f7a" stroke-width="0.8" transform="rotate(-15 119 55)"/>
+    <line x1="115" y1="55" x2="123" y2="53" stroke="#0a5f7a" stroke-width="0.8" transform="rotate(-15 119 55)"/>
+    <line x1="115" y1="59" x2="123" y2="57" stroke="#0a5f7a" stroke-width="0.8" transform="rotate(-15 119 55)"/>
+    <!-- 물보라 -->
+    <circle cx="130" cy="100" r="3" fill="rgba(255,255,255,0.6)"/>
+    <circle cx="140" cy="108" r="2" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="45" cy="105" r="2.5" fill="rgba(255,255,255,0.5)"/>
+  </svg>
+
+  <div class="hero-badge">🏄 7월 모임 개설 신청</div>
   <h1>비북스에서 당신의 모임을<br/>펼쳐보세요</h1>
+  <p class="hero-sub">이번 여름, 파도 타듯 가볍게 시작해 보세요</p>
 </div>
 
 <div class="container">
@@ -208,13 +333,20 @@
 
     <!-- 기본 정보 -->
     <div class="card">
+      <svg class="card-witty" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="38" cy="12" r="7" fill="#FFE08A" opacity="0.7"/>
+        <path d="M24,44 L24,22" stroke="#8B6914" stroke-width="2" stroke-linecap="round"/>
+        <path d="M24,26 Q14,20 10,14" stroke="#2BBFB0" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M24,22 Q34,16 38,10" stroke="#2BBFB0" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M24,30 Q16,28 12,32" stroke="#2BBFB0" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
       <div class="card-title">기본 정보</div>
 
       <div class="field">
         <label class="req">신청 월</label>
         <div class="radio-group">
           <label class="radio-option">
-            <input type="radio" name="month" value="6월" checked /> <span>6월</span>
+            <input type="radio" name="month" value="7월" checked /> <span>☀️ 7월</span>
           </label>
         </div>
       </div>
@@ -257,7 +389,7 @@
         <div class="session-grid">
           <div class="session-row">
             <div class="session-num">1회차</div>
-            <input type="text" id="session1" placeholder="예) 6/12 (목) 14:00–16:00" />
+            <input type="text" id="session1" placeholder="예) 7/12 (토) 14:00–16:00" />
           </div>
           <div class="session-row">
             <div class="session-num">2회차</div>
@@ -320,14 +452,14 @@
       </div>
     </div>
 
-    <button type="submit" class="submit-btn" id="submitBtn">신청서 제출하기 →</button>
+    <button type="submit" class="submit-btn" id="submitBtn">파도 타고 신청하기 🏄 →</button>
     <div id="error-msg">제출 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>
 
   </form>
 
   <div id="success-msg">
-    <h2>✅ 신청이 접수되었습니다!</h2>
-    <p>비북스 담당자가 확인 후 연락드릴게요.<br/>문의: 비북스 인스타그램 DM</p>
+    <h2>🏄 신청이 접수되었습니다!</h2>
+    <p>비북스 담당자가 확인 후 연락드릴게요.<br/>이제 파도 기다리며 설렘만 하시면 됩니다 🌊<br/>문의: 비북스 인스타그램 DM</p>
   </div>
 </div>
 
@@ -395,7 +527,7 @@
     }).catch(function() {
       document.getElementById('error-msg').style.display = 'block';
       btn.disabled = false;
-      btn.textContent = '신청서 제출하기 →';
+      btn.textContent = '파도 타고 신청하기 🏄 →';
     });
   });
 </script>
