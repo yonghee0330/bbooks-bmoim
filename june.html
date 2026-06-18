@@ -922,22 +922,150 @@
       color: #991b1b;
       vertical-align: middle;
     }
+    .moim-ended-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      background: #e2e8f0;
+      color: #475569;
+      vertical-align: middle;
+    }
     .stab.stab-full {
       opacity: .55;
       text-decoration: line-through;
     }
-    .moim-card.moim-sold-out .moim-poster-img::after {
-      content: '모집 완료';
+    .stab.stab-ended {
+      opacity: .6;
+      color: #64748b;
+    }
+    .moim-card.moim-sold-out .moim-poster-img::before,
+    .moim-card.moim-sold-out .poster-slider-wrap::before {
+      content: '';
       position: absolute;
-      top: 12px;
-      right: 12px;
+      inset: 0;
       z-index: 4;
-      background: rgba(15, 23, 42, .82);
+      background: rgba(8, 18, 38, 0.58);
+      pointer-events: none;
+    }
+    .moim-card.moim-sold-out .moim-poster-img::after,
+    .moim-card.moim-sold-out .poster-slider-wrap::after {
+      content: 'SOLD OUT';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-10deg);
+      z-index: 5;
+      min-width: 68%;
+      max-width: 88%;
+      text-align: center;
+      background: rgba(185, 28, 28, 0.94);
       color: #fff;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 5px 10px;
-      border-radius: 999px;
+      font-size: clamp(22px, 7vw, 38px);
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      line-height: 1.1;
+      padding: 14px 12px;
+      border: 3px solid #fff;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .38);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+    .moim-card.moim-sold-out .moim-poster-img:hover::after,
+    .moim-card.moim-sold-out .poster-slider-wrap:hover::after {
+      content: 'SOLD OUT';
+      left: 50%;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%) rotate(-10deg);
+      background: rgba(185, 28, 28, 0.94);
+      color: #fff;
+      font-size: clamp(22px, 7vw, 38px);
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      padding: 14px 12px;
+      border-radius: 8px;
+    }
+    .voice-event.moim-sold-out .voice-event-poster::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      background: rgba(8, 18, 38, 0.58);
+      pointer-events: none;
+    }
+    .voice-event.moim-sold-out .voice-event-poster::after {
+      content: 'SOLD OUT';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-10deg);
+      z-index: 4;
+      min-width: 68%;
+      text-align: center;
+      background: rgba(185, 28, 28, 0.94);
+      color: #fff;
+      font-size: clamp(20px, 6vw, 32px);
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      line-height: 1.1;
+      padding: 12px 10px;
+      border: 3px solid #fff;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .38);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+    .moim-card.moim-ended .moim-poster-img::before,
+    .moim-card.moim-ended .poster-slider-wrap::before,
+    .voice-event.moim-ended .voice-event-poster::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: rgba(15, 23, 42, 0.62);
+      pointer-events: none;
+    }
+    .moim-card.moim-ended .moim-poster-img::after,
+    .moim-card.moim-ended .poster-slider-wrap::after,
+    .voice-event.moim-ended .voice-event-poster::after {
+      content: '모임 종료';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      z-index: 5;
+      min-width: 68%;
+      max-width: 88%;
+      text-align: center;
+      background: rgba(30, 41, 59, 0.94);
+      color: #fff;
+      font-size: clamp(20px, 6.5vw, 34px);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      padding: 14px 12px;
+      border: 3px solid rgba(255, 255, 255, .92);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .38);
+      border-radius: 8px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .moim-card.moim-ended .moim-poster-img:hover::after,
+    .moim-card.moim-ended .poster-slider-wrap:hover::after {
+      content: '모임 종료';
+      left: 50%;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      background: rgba(30, 41, 59, 0.94);
+      color: #fff;
+      font-size: clamp(20px, 6.5vw, 34px);
+      padding: 14px 12px;
+      border-radius: 8px;
     }
 
     /* ── 시간 슬롯 ──────────────────────── */
@@ -1984,6 +2112,7 @@ const CAL_PANELS = [
 let calPanelIndex = 0;
 
 // ══ 모임 데이터 ════════════════════════
+const MOIM_YEAR = 2026;
 // session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
 const MOIMS = {
   dong: {
@@ -2135,10 +2264,76 @@ function isSessionFull(m, sessionValue, counts) {
   return getMoimSessionCount(counts, m.name, sessionValue) >= cap;
 }
 
+function getNowKstMs() {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' })).getTime();
+}
+
+function parseSessionEndMs(session) {
+  if (session._endMs != null) return session._endMs;
+  const label = session.label || '';
+  const dateMatch = label.match(/(\d{1,2})\/(\d{1,2})/);
+  if (!dateMatch) {
+    session._endMs = null;
+    return null;
+  }
+  const month = parseInt(dateMatch[1], 10);
+  const day = parseInt(dateMatch[2], 10);
+  const rangeMatch = label.match(/(\d{1,2}(?::\d{2})?)\s*[~–\-]\s*(\d{1,2}(?::\d{2})?)/);
+  if (!rangeMatch) {
+    session._endMs = new Date(MOIM_YEAR, month - 1, day, 23, 59, 59).getTime();
+    return session._endMs;
+  }
+  const isPM = label.includes('오후');
+  const isAM = label.includes('오전');
+  const startPart = rangeMatch[1];
+  const endPart = rangeMatch[2];
+  const startHour = startPart.includes(':')
+    ? parseInt(startPart.split(':')[0], 10)
+    : parseInt(startPart, 10);
+  let endHour = endPart.includes(':')
+    ? parseInt(endPart.split(':')[0], 10)
+    : parseInt(endPart, 10);
+  const endMin = endPart.includes(':') ? parseInt(endPart.split(':')[1], 10) : 0;
+  if (isPM && endHour < 12) endHour += 12;
+  if (isAM && endHour < startHour) endHour += 12;
+  session._endMs = new Date(MOIM_YEAR, month - 1, day, endHour, endMin, 0).getTime();
+  return session._endMs;
+}
+
+function isSessionEnded(session) {
+  const endMs = parseSessionEndMs(session);
+  if (endMs == null) return false;
+  return getNowKstMs() > endMs;
+}
+
+function isSessionClosed(m, session, counts) {
+  return isSessionEnded(session) || isSessionFull(m, session.value, counts);
+}
+
 function isMoimFullySoldOut(key, counts) {
   const m = MOIMS[key];
   if (!m) return false;
   return m.sessions.every(s => isSessionFull(m, s.value, counts || latestMoimCounts));
+}
+
+function isMoimFullyEnded(key) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  return m.sessions.every(s => isSessionEnded(s));
+}
+
+function isMoimFullyClosed(key, counts) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  counts = counts || latestMoimCounts;
+  return m.sessions.every(s => isSessionClosed(m, s, counts));
+}
+
+function isMoimApplyOpen(key, counts) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  counts = counts || latestMoimCounts;
+  return m.sessions.some(s => !isSessionClosed(m, s, counts));
 }
 
 function isVoiceFullySoldOut(key, counts) {
@@ -2146,6 +2341,15 @@ function isVoiceFullySoldOut(key, counts) {
   if (!v) return false;
   const session = v.sessions[0].value;
   return getMoimSessionCount(counts || latestMoimCounts, v.name, session) >= v.capacity;
+}
+
+function isVoiceEnded(key) {
+  const v = VOICES[key];
+  return v ? isSessionEnded(v.sessions[0]) : false;
+}
+
+function isVoiceClosed(key, counts) {
+  return isVoiceEnded(key) || isVoiceFullySoldOut(key, counts);
 }
 
 function resolveSessionKey(moimName, session) {
@@ -2229,6 +2433,29 @@ function resetApplyBtn(btnId, label = '신청하기') {
   btn.textContent = label;
 }
 
+function setSessionMetaBadge(meta, type) {
+  if (!meta) return;
+  meta.querySelectorAll('.moim-full-badge, .moim-ended-badge').forEach(el => el.remove());
+  if (!type) return;
+  const badge = document.createElement('span');
+  badge.className = type === 'ended' ? 'moim-ended-badge' : 'moim-full-badge';
+  badge.textContent = type === 'ended' ? '모임 종료' : '모집 완료';
+  const capRow = [...meta.querySelectorAll('.meta-row')].find(r => r.textContent.includes('👥'));
+  (capRow || meta).appendChild(badge);
+}
+
+function updateSessionTab(tab, ended, full) {
+  if (!tab) return;
+  if (!tab.dataset.baseLabel) {
+    tab.dataset.baseLabel = tab.textContent.replace(' ✓', '').replace(' ·종료', '');
+  }
+  tab.classList.toggle('stab-ended', ended);
+  tab.classList.toggle('stab-full', full && !ended);
+  if (ended) tab.textContent = `${tab.dataset.baseLabel} ·종료`;
+  else if (full) tab.textContent = `${tab.dataset.baseLabel} ✓`;
+  else tab.textContent = tab.dataset.baseLabel;
+}
+
 function updateMoimCapacity(counts) {
   counts = counts || latestMoimCounts || {};
 
@@ -2236,47 +2463,42 @@ function updateMoimCapacity(counts) {
     const btn = q(`#apply-${key}`);
     if (!btn) return;
     const card = btn.closest('.moim-card');
-    const fullySold = isMoimFullySoldOut(key, counts);
+    const allEnded = isMoimFullyEnded(key);
+    const allSold = isMoimFullySoldOut(key, counts);
+    const applyOpen = isMoimApplyOpen(key, counts);
 
-    if (fullySold) {
-      soldOut(`apply-${key}`);
+    card?.classList.remove('moim-sold-out', 'moim-ended');
+    if (allEnded) {
+      soldOut(`apply-${key}`, '모임 종료');
+      card?.classList.add('moim-ended');
+    } else if (allSold) {
+      soldOut(`apply-${key}`, '모집 완료');
       card?.classList.add('moim-sold-out');
+    } else if (!applyOpen) {
+      soldOut(`apply-${key}`, '신청 마감');
     } else {
       resetApplyBtn(`apply-${key}`);
-      card?.classList.remove('moim-sold-out');
     }
 
     const metas = card ? card.querySelectorAll('.moim-meta') : [];
     const tabs = card ? card.querySelectorAll('.stab') : [];
     m.sessions.forEach((session, idx) => {
+      const ended = isSessionEnded(session);
       const full = isSessionFull(m, session.value, counts);
-      const meta = metas[idx];
-      if (meta) {
-        let badge = meta.querySelector('.moim-full-badge');
-        if (full) {
-          if (!badge) {
-            badge = document.createElement('span');
-            badge.className = 'moim-full-badge';
-            badge.textContent = '모집 완료';
-            const capRow = [...meta.querySelectorAll('.meta-row')].find(r => r.textContent.includes('👥'));
-            (capRow || meta).appendChild(badge);
-          }
-        } else if (badge) {
-          badge.remove();
-        }
-      }
-      const tab = tabs[idx];
-      if (tab) {
-        tab.classList.toggle('stab-full', full);
-        if (!tab.dataset.baseLabel) tab.dataset.baseLabel = tab.textContent.replace(' ✓', '');
-        tab.textContent = full ? `${tab.dataset.baseLabel} ✓` : tab.dataset.baseLabel;
-      }
+      setSessionMetaBadge(metas[idx], ended ? 'ended' : (full ? 'full' : null));
+      updateSessionTab(tabs[idx], ended, full);
     });
   });
 
   Object.entries(VOICES).forEach(([key, v]) => {
-    if (isVoiceFullySoldOut(key, counts)) {
+    const voiceCard = q(`#${key}`);
+    voiceCard?.classList.remove('moim-sold-out', 'moim-ended');
+    if (isVoiceEnded(key)) {
+      soldOut(`apply-${key}`, '모임 종료');
+      voiceCard?.classList.add('moim-ended');
+    } else if (isVoiceFullySoldOut(key, counts)) {
       soldOut(`apply-${key}`, '모집 완료');
+      voiceCard?.classList.add('moim-sold-out');
     } else {
       resetApplyBtn(`apply-${key}`, 'b.voice 신청하기');
     }
@@ -2289,6 +2511,7 @@ function buildAlmostFullMoimSlots(counts) {
     const meta = MOIM_CURATION_META[key];
     if (!meta) return;
     m.sessions.forEach(session => {
+      if (isSessionEnded(session)) return;
       const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
       const cur = getMoimSessionCount(counts, m.name, session.value);
       const remaining = cap - cur;
@@ -2334,6 +2557,7 @@ function buildCurationSlots(counts) {
     const meta = MOIM_CURATION_META[key];
     if (!meta) return;
     m.sessions.forEach(session => {
+      if (isSessionEnded(session)) return;
       const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
       const cur = getMoimSessionCount(counts, m.name, session.value);
       if (cap - cur <= 0) return;
@@ -2534,7 +2758,7 @@ async function loadCounts() {
 
 // ══ 모임 신청 모달 ══════════════════════
 function openApply(name, key) {
-  if (isMoimFullySoldOut(key, latestMoimCounts)) return;
+  if (!isMoimApplyOpen(key, latestMoimCounts)) return;
   curMoimKey = key;
   const m = MOIMS[key];
   q('#modalMoimName').textContent = m.name;
@@ -2549,12 +2773,15 @@ function openApply(name, key) {
     const sel = q('#aSession');
     sel.innerHTML = '<option value="">회차를 선택해주세요</option>';
     m.sessions.forEach(s => {
+      const ended = isSessionEnded(s);
       const full = isSessionFull(m, s.value, latestMoimCounts);
-      sel.innerHTML += `<option value="${s.value}"${full ? ' disabled' : ''}>${s.label}${full ? ' (모집 완료)' : ''}</option>`;
+      const closed = ended || full;
+      const suffix = ended ? ' (모임 종료)' : (full ? ' (모집 완료)' : '');
+      sel.innerHTML += `<option value="${s.value}"${closed ? ' disabled' : ''}>${s.label}${suffix}</option>`;
     });
   } else {
     sw.style.display = 'none';
-    if (isSessionFull(m, m.sessions[0].value, latestMoimCounts)) return;
+    if (isSessionClosed(m, m.sessions[0], latestMoimCounts)) return;
   }
   openOv('applyOv');
 }
@@ -2567,6 +2794,11 @@ async function submitApply() {
 
   if (!name || !phone) { flash('applyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
   if (m.hasSession && !session) { flash('applyAlert', '회차를 선택해주세요.', 'e'); return; }
+  const pickedSession = m.sessions.find(s => s.value === session) || m.sessions[0];
+  if (isSessionEnded(pickedSession)) {
+    flash('applyAlert', '모임이 종료되어 신청할 수 없습니다.', 'e');
+    return;
+  }
   if (isSessionFull(m, session, latestMoimCounts)) {
     flash('applyAlert', '선택한 회차는 모집이 완료되었습니다.', 'e');
     return;
@@ -2609,7 +2841,7 @@ async function submitApply() {
 let voiceFormTemplate = null;
 
 function openVoiceApply(key) {
-  if (isVoiceFullySoldOut(key, latestMoimCounts)) return;
+  if (isVoiceClosed(key, latestMoimCounts)) return;
   curVoiceKey = key;
   const v = VOICES[key];
   const formEl = q('#voiceApplyForm');
@@ -2632,6 +2864,10 @@ async function submitVoiceApply() {
   const session = v.sessions[0].value;
 
   if (!name || !phone) { flash('voiceApplyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
+  if (isVoiceEnded(curVoiceKey)) {
+    flash('voiceApplyAlert', '모임이 종료되어 신청할 수 없습니다.', 'e');
+    return;
+  }
   if (isVoiceFullySoldOut(curVoiceKey, latestMoimCounts)) {
     flash('voiceApplyAlert', '모집이 완료되었습니다.', 'e');
     return;
