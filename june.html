@@ -911,6 +911,34 @@
     .poster-img-slot img[src=""], .poster-img-slot img:not([src]) { display: none; }
 
     .btn-apply.sold-out { background: #94a3b8; cursor: not-allowed; }
+    .moim-full-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      background: #fee2e2;
+      color: #991b1b;
+      vertical-align: middle;
+    }
+    .stab.stab-full {
+      opacity: .55;
+      text-decoration: line-through;
+    }
+    .moim-card.moim-sold-out .moim-poster-img::after {
+      content: '모집 완료';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 4;
+      background: rgba(15, 23, 42, .82);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 999px;
+    }
 
     /* ── 시간 슬롯 ──────────────────────── */
     .tslot {
@@ -1946,6 +1974,7 @@
 // ══ 설정 ═══════════════════════════════
 const API = 'https://script.google.com/macros/s/AKfycbwfZYQ9FtaMWm6ZqyPhd1tByTzrQV352jtQZYT0-lplGlR0WOKCW_V928gLmRptuPik4g/exec';
 const RENT_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent('대관신청');
+const MOIM_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent('모임신청');
 const RENT_CAL_MONTHS = ['6월', '7월', '8월'];
 const CAL_PANELS = [
   { year: 2026, month: 6, label: '2026년 6월', sub: '비모임 · b.voice · 대관', hasMoim: true },
@@ -2064,6 +2093,7 @@ let curMoimKey = '';
 let curVoiceKey = '';
 let curationPool = [];
 let curationPickIndex = -1;
+let latestMoimCounts = {};
 
 const MOIM_CURATION_META = {
   dong: { cardId: 'dongseobukbook', poster: 'images/classic_6월.png' },
@@ -2080,11 +2110,177 @@ const MOIM_CURATION_META = {
   nextdoor: { cardId: 'nextdoor', poster: 'images/nextdoor_6월.png' }
 };
 
+const MOIM_DEFAULT_SESSION = {};
+Object.values(MOIMS).forEach(m => {
+  if (m.sessions.length === 1) MOIM_DEFAULT_SESSION[m.name] = m.sessions[0].value;
+});
+Object.values(VOICES).forEach(v => {
+  MOIM_DEFAULT_SESSION[v.name] = v.sessions[0].value;
+});
+
 function getMoimSessionCount(counts, name, sessionValue) {
   if (name === '슬기로운 영화 속 클래식') {
     return counts[`${name}_${sessionValue}`] ?? counts[`동서남북book_${sessionValue}`] ?? counts[name] ?? 0;
   }
   return counts[`${name}_${sessionValue}`] ?? counts[name] ?? 0;
+}
+
+function getSessionCapacity(m, sessionValue) {
+  return typeof m.capacity === 'object' ? m.capacity[sessionValue] : m.capacity;
+}
+
+function isSessionFull(m, sessionValue, counts) {
+  const cap = getSessionCapacity(m, sessionValue);
+  if (!cap) return false;
+  return getMoimSessionCount(counts, m.name, sessionValue) >= cap;
+}
+
+function isMoimFullySoldOut(key, counts) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  return m.sessions.every(s => isSessionFull(m, s.value, counts || latestMoimCounts));
+}
+
+function isVoiceFullySoldOut(key, counts) {
+  const v = VOICES[key];
+  if (!v) return false;
+  const session = v.sessions[0].value;
+  return getMoimSessionCount(counts || latestMoimCounts, v.name, session) >= v.capacity;
+}
+
+function resolveSessionKey(moimName, session) {
+  if (!session) return MOIM_DEFAULT_SESSION[moimName] || '';
+  const m = Object.values(MOIMS).find(x => x.name === moimName)
+    || Object.values(VOICES).find(x => x.name === moimName);
+  if (!m) return session;
+  if (m.sessions.some(s => s.value === session)) return session;
+  const prefixed = m.sessions.find(s => s.value.startsWith(session));
+  return prefixed ? prefixed.value : session;
+}
+
+function normalizeApplySession(rawF, rawV, moimName) {
+  if (rawF) return String(rawF).trim();
+  const s = String(rawV ?? '').trim();
+  if (!s) return MOIM_DEFAULT_SESSION[moimName] || '';
+  const dm = s.match(/Date\((\d+),(\d+),(\d+)\)/);
+  if (dm) {
+    const month = parseInt(dm[2], 10) + 1;
+    const day = parseInt(dm[3], 10);
+    return `${month}월${day}일`;
+  }
+  return s;
+}
+
+function addMoimCount(counts, moimName, sessionValue) {
+  if (!moimName) return;
+  if (sessionValue) {
+    counts[`${moimName}_${sessionValue}`] = (counts[`${moimName}_${sessionValue}`] || 0) + 1;
+    if (moimName === '슬기로운 영화 속 클래식') {
+      counts[`동서남북book_${sessionValue}`] = counts[`${moimName}_${sessionValue}`];
+    }
+  }
+  counts[moimName] = (counts[moimName] || 0) + 1;
+}
+
+function countsFromMoimGviz(data) {
+  const counts = {};
+  (data?.table?.rows || []).forEach(row => {
+    const cells = row.c || [];
+    if (cells[1]?.v !== '6월') return;
+    const note = String(cells[7]?.v || '');
+    if (note.includes('취소')) return;
+    const moimName = String(cells[2]?.v || '').trim();
+    const name = String(cells[4]?.v || '').trim();
+    if (!moimName || !name) return;
+    const session = resolveSessionKey(
+      moimName,
+      normalizeApplySession(cells[3]?.f, cells[3]?.v, moimName)
+    );
+    addMoimCount(counts, moimName, session);
+  });
+  return counts;
+}
+
+async function loadMoimCounts() {
+  try {
+    const res = await fetch(MOIM_SHEET_GVIZ, { redirect: 'follow' });
+    const data = parseGvizResponse(await res.text());
+    if (data) latestMoimCounts = countsFromMoimGviz(data);
+  } catch (e) {
+    console.warn('모임 신청 현황 로딩 실패:', e);
+  }
+  updateMoimCapacity(latestMoimCounts);
+  updateMoimCuration(latestMoimCounts);
+}
+
+function soldOut(btnId, label = '모집 완료') {
+  const btn = q(`#${btnId}`);
+  if (!btn) return;
+  btn.disabled = true;
+  btn.classList.add('sold-out');
+  btn.textContent = label;
+}
+
+function resetApplyBtn(btnId, label = '신청하기') {
+  const btn = q(`#${btnId}`);
+  if (!btn) return;
+  btn.disabled = false;
+  btn.classList.remove('sold-out');
+  btn.textContent = label;
+}
+
+function updateMoimCapacity(counts) {
+  counts = counts || latestMoimCounts || {};
+
+  Object.entries(MOIMS).forEach(([key, m]) => {
+    const btn = q(`#apply-${key}`);
+    if (!btn) return;
+    const card = btn.closest('.moim-card');
+    const fullySold = isMoimFullySoldOut(key, counts);
+
+    if (fullySold) {
+      soldOut(`apply-${key}`);
+      card?.classList.add('moim-sold-out');
+    } else {
+      resetApplyBtn(`apply-${key}`);
+      card?.classList.remove('moim-sold-out');
+    }
+
+    const metas = card ? card.querySelectorAll('.moim-meta') : [];
+    const tabs = card ? card.querySelectorAll('.stab') : [];
+    m.sessions.forEach((session, idx) => {
+      const full = isSessionFull(m, session.value, counts);
+      const meta = metas[idx];
+      if (meta) {
+        let badge = meta.querySelector('.moim-full-badge');
+        if (full) {
+          if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'moim-full-badge';
+            badge.textContent = '모집 완료';
+            const capRow = [...meta.querySelectorAll('.meta-row')].find(r => r.textContent.includes('👥'));
+            (capRow || meta).appendChild(badge);
+          }
+        } else if (badge) {
+          badge.remove();
+        }
+      }
+      const tab = tabs[idx];
+      if (tab) {
+        tab.classList.toggle('stab-full', full);
+        if (!tab.dataset.baseLabel) tab.dataset.baseLabel = tab.textContent.replace(' ✓', '');
+        tab.textContent = full ? `${tab.dataset.baseLabel} ✓` : tab.dataset.baseLabel;
+      }
+    });
+  });
+
+  Object.entries(VOICES).forEach(([key, v]) => {
+    if (isVoiceFullySoldOut(key, counts)) {
+      soldOut(`apply-${key}`, '모집 완료');
+    } else {
+      resetApplyBtn(`apply-${key}`, 'b.voice 신청하기');
+    }
+  });
 }
 
 function buildAlmostFullMoimSlots(counts) {
@@ -2332,23 +2528,13 @@ async function loadRentBookings() {
 }
 
 async function loadCounts() {
-  let counts = {};
-  try {
-    const res = await fetch(`${API}?action=count&month=6월`, { redirect: 'follow' });
-    counts = await res.json();
-    if (counts.error) {
-      console.warn('count error:', counts.error);
-      counts = {};
-    }
-  } catch(e) {
-    console.warn('count 로딩 실패:', e);
-  }
+  await loadMoimCounts();
   await loadRentBookings();
-  updateMoimCuration(counts);
 }
 
 // ══ 모임 신청 모달 ══════════════════════
 function openApply(name, key) {
+  if (isMoimFullySoldOut(key, latestMoimCounts)) return;
   curMoimKey = key;
   const m = MOIMS[key];
   q('#modalMoimName').textContent = m.name;
@@ -2362,9 +2548,13 @@ function openApply(name, key) {
     sw.style.display = 'block';
     const sel = q('#aSession');
     sel.innerHTML = '<option value="">회차를 선택해주세요</option>';
-    m.sessions.forEach(s => { sel.innerHTML += `<option value="${s.value}">${s.label}</option>`; });
+    m.sessions.forEach(s => {
+      const full = isSessionFull(m, s.value, latestMoimCounts);
+      sel.innerHTML += `<option value="${s.value}"${full ? ' disabled' : ''}>${s.label}${full ? ' (모집 완료)' : ''}</option>`;
+    });
   } else {
     sw.style.display = 'none';
+    if (isSessionFull(m, m.sessions[0].value, latestMoimCounts)) return;
   }
   openOv('applyOv');
 }
@@ -2377,6 +2567,10 @@ async function submitApply() {
 
   if (!name || !phone) { flash('applyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
   if (m.hasSession && !session) { flash('applyAlert', '회차를 선택해주세요.', 'e'); return; }
+  if (isSessionFull(m, session, latestMoimCounts)) {
+    flash('applyAlert', '선택한 회차는 모집이 완료되었습니다.', 'e');
+    return;
+  }
 
   setLoad('submitBtn', true, '신청 중...');
   try {
@@ -2415,6 +2609,7 @@ async function submitApply() {
 let voiceFormTemplate = null;
 
 function openVoiceApply(key) {
+  if (isVoiceFullySoldOut(key, latestMoimCounts)) return;
   curVoiceKey = key;
   const v = VOICES[key];
   const formEl = q('#voiceApplyForm');
@@ -2437,6 +2632,10 @@ async function submitVoiceApply() {
   const session = v.sessions[0].value;
 
   if (!name || !phone) { flash('voiceApplyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
+  if (isVoiceFullySoldOut(curVoiceKey, latestMoimCounts)) {
+    flash('voiceApplyAlert', '모집이 완료되었습니다.', 'e');
+    return;
+  }
 
   setLoad('voiceSubmitBtn', true, '신청 중...');
   try {
