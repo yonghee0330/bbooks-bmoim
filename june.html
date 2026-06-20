@@ -933,6 +933,17 @@
       color: #475569;
       vertical-align: middle;
     }
+    .moim-closed-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      background: #fef3c7;
+      color: #92400e;
+      vertical-align: middle;
+    }
     .stab.stab-full {
       opacity: .55;
       text-decoration: line-through;
@@ -1065,6 +1076,53 @@
       color: #fff;
       font-size: clamp(20px, 6.5vw, 34px);
       padding: 14px 12px;
+      border-radius: 8px;
+    }
+    .moim-card.moim-closed .moim-poster-img::before,
+    .moim-card.moim-closed .poster-slider-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: rgba(8, 18, 38, 0.55);
+      pointer-events: none;
+    }
+    .moim-card.moim-closed .moim-poster-img::after,
+    .moim-card.moim-closed .poster-slider-wrap::after {
+      content: '모임 신청 마감';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      z-index: 5;
+      min-width: 72%;
+      max-width: 92%;
+      text-align: center;
+      background: rgba(146, 64, 14, 0.94);
+      color: #fff;
+      font-size: clamp(17px, 5.5vw, 28px);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      line-height: 1.25;
+      padding: 14px 10px;
+      border: 3px solid #fff;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .35);
+      border-radius: 8px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .moim-card.moim-closed .moim-poster-img:hover::after,
+    .moim-card.moim-closed .poster-slider-wrap:hover::after {
+      content: '모임 신청 마감';
+      left: 50%;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      background: rgba(146, 64, 14, 0.94);
+      color: #fff;
+      font-size: clamp(17px, 5.5vw, 28px);
+      padding: 14px 10px;
       border-radius: 8px;
     }
 
@@ -2147,7 +2205,8 @@ const MOIMS = {
     sessions: [{ label: '6/20(토) 오후 2:00–4:00', value: '6월20일' }],
     capacity: 6,
     amount: 20000,
-    hasSession: false
+    hasSession: false,
+    applyClosed: true
   },
   zoomchi: {
     name: '줌치풍경만들기',
@@ -2307,6 +2366,7 @@ function isSessionEnded(session) {
 }
 
 function isSessionClosed(m, session, counts) {
+  if (m.applyClosed) return true;
   return isSessionEnded(session) || isSessionFull(m, session.value, counts);
 }
 
@@ -2435,11 +2495,13 @@ function resetApplyBtn(btnId, label = '신청하기') {
 
 function setSessionMetaBadge(meta, type) {
   if (!meta) return;
-  meta.querySelectorAll('.moim-full-badge, .moim-ended-badge').forEach(el => el.remove());
+  meta.querySelectorAll('.moim-full-badge, .moim-ended-badge, .moim-closed-badge').forEach(el => el.remove());
   if (!type) return;
+  const labels = { full: '모집 완료', ended: '모임 종료', closed: '모임 신청 마감' };
+  const classes = { full: 'moim-full-badge', ended: 'moim-ended-badge', closed: 'moim-closed-badge' };
   const badge = document.createElement('span');
-  badge.className = type === 'ended' ? 'moim-ended-badge' : 'moim-full-badge';
-  badge.textContent = type === 'ended' ? '모임 종료' : '모집 완료';
+  badge.className = classes[type];
+  badge.textContent = labels[type];
   const capRow = [...meta.querySelectorAll('.meta-row')].find(r => r.textContent.includes('👥'));
   (capRow || meta).appendChild(badge);
 }
@@ -2467,10 +2529,13 @@ function updateMoimCapacity(counts) {
     const allSold = isMoimFullySoldOut(key, counts);
     const applyOpen = isMoimApplyOpen(key, counts);
 
-    card?.classList.remove('moim-sold-out', 'moim-ended');
+    card?.classList.remove('moim-sold-out', 'moim-ended', 'moim-closed');
     if (allEnded) {
       soldOut(`apply-${key}`, '모임 종료');
       card?.classList.add('moim-ended');
+    } else if (m.applyClosed) {
+      soldOut(`apply-${key}`, '모임 신청 마감');
+      card?.classList.add('moim-closed');
     } else if (allSold) {
       soldOut(`apply-${key}`, '모집 완료');
       card?.classList.add('moim-sold-out');
@@ -2485,7 +2550,8 @@ function updateMoimCapacity(counts) {
     m.sessions.forEach((session, idx) => {
       const ended = isSessionEnded(session);
       const full = isSessionFull(m, session.value, counts);
-      setSessionMetaBadge(metas[idx], ended ? 'ended' : (full ? 'full' : null));
+      const badgeType = m.applyClosed ? 'closed' : (ended ? 'ended' : (full ? 'full' : null));
+      setSessionMetaBadge(metas[idx], badgeType);
       updateSessionTab(tabs[idx], ended, full);
     });
   });
@@ -2511,7 +2577,7 @@ function buildAlmostFullMoimSlots(counts) {
     const meta = MOIM_CURATION_META[key];
     if (!meta) return;
     m.sessions.forEach(session => {
-      if (isSessionEnded(session)) return;
+      if (isSessionEnded(session) || m.applyClosed) return;
       const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
       const cur = getMoimSessionCount(counts, m.name, session.value);
       const remaining = cap - cur;
@@ -2557,7 +2623,7 @@ function buildCurationSlots(counts) {
     const meta = MOIM_CURATION_META[key];
     if (!meta) return;
     m.sessions.forEach(session => {
-      if (isSessionEnded(session)) return;
+      if (isSessionEnded(session) || m.applyClosed) return;
       const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
       const cur = getMoimSessionCount(counts, m.name, session.value);
       if (cap - cur <= 0) return;
@@ -2775,8 +2841,8 @@ function openApply(name, key) {
     m.sessions.forEach(s => {
       const ended = isSessionEnded(s);
       const full = isSessionFull(m, s.value, latestMoimCounts);
-      const closed = ended || full;
-      const suffix = ended ? ' (모임 종료)' : (full ? ' (모집 완료)' : '');
+      const closed = m.applyClosed || ended || full;
+      const suffix = m.applyClosed ? ' (모임 신청 마감)' : (ended ? ' (모임 종료)' : (full ? ' (모집 완료)' : ''));
       sel.innerHTML += `<option value="${s.value}"${closed ? ' disabled' : ''}>${s.label}${suffix}</option>`;
     });
   } else {
@@ -2795,6 +2861,10 @@ async function submitApply() {
   if (!name || !phone) { flash('applyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
   if (m.hasSession && !session) { flash('applyAlert', '회차를 선택해주세요.', 'e'); return; }
   const pickedSession = m.sessions.find(s => s.value === session) || m.sessions[0];
+  if (m.applyClosed) {
+    flash('applyAlert', '모임 신청이 마감되었습니다.', 'e');
+    return;
+  }
   if (isSessionEnded(pickedSession)) {
     flash('applyAlert', '모임이 종료되어 신청할 수 없습니다.', 'e');
     return;
