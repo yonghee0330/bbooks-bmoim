@@ -351,7 +351,7 @@
       box-sizing: border-box;
     }
     .event-slide .event-card {
-      max-width: min(100%, 380px);
+      max-width: min(100%, 220px);
       margin: 0 auto;
       height: 100%;
     }
@@ -377,7 +377,7 @@
     .event-card.type-bvoice { border-color: #fcd34d; background: #fffdf8; }
     .event-card.type-bammilon { border-color: #7c3aed; }
     .event-card-head {
-      padding: 12px 14px 10px;
+      padding: 8px 10px 7px;
       border-bottom: 1px solid var(--border);
     }
     .event-card.type-bvoice .event-card-head { background: linear-gradient(180deg, #fffbeb, #fffdf8); border-bottom-color: #fde68a; }
@@ -396,7 +396,7 @@
     .event-card.type-bammilon .event-type-label { color: #fecaca; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
     .event-card-title {
       font-family: 'Noto Serif KR', serif;
-      font-size: clamp(15px, 3.5vw, 17px);
+      font-size: clamp(13px, 3.2vw, 15px);
       font-weight: 700;
       line-height: 1.35;
     }
@@ -406,17 +406,17 @@
     .event-card.type-bammilon .event-card-subtitle { color: #c4b5fd; }
     .event-poster-wrap {
       position: relative;
-      aspect-ratio: 3 / 4;
+      aspect-ratio: 1 / 1;
       background: #0f172a;
       cursor: zoom-in;
     }
     .event-poster-wrap img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       display: block;
     }
-    .event-poster-wrap.type-bvoice { aspect-ratio: 1 / 1; background: #f5f0e6; }
+    .event-poster-wrap.type-bvoice { background: #f5f0e6; }
     .event-poster-wrap.type-bvoice img { object-fit: cover; }
     .event-poster-placeholder {
       aspect-ratio: 1 / 1;
@@ -424,13 +424,13 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 6px;
       background: linear-gradient(145deg, #fffbeb, #fef3c7);
-      padding: 24px;
+      padding: 14px;
       text-align: center;
     }
-    .event-poster-placeholder .ph-icon { font-size: 40px; opacity: .7; }
-    .event-poster-placeholder .ph-text { font-size: 12px; color: #92400e; font-weight: 600; line-height: 1.5; }
+    .event-poster-placeholder .ph-icon { font-size: 28px; opacity: .7; }
+    .event-poster-placeholder .ph-text { font-size: 10px; color: #92400e; font-weight: 600; line-height: 1.45; }
     .event-poster-zoom {
       position: absolute;
       top: 10px;
@@ -444,8 +444,16 @@
       cursor: pointer;
       box-shadow: 0 2px 8px rgba(0,0,0,.15);
     }
-    .event-card-body { padding: 14px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
-    .event-desc { font-size: 12px; color: var(--muted); line-height: 1.65; }
+    .event-card-body { padding: 10px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .event-desc {
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
     .event-facts {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1876,17 +1884,17 @@
           <h3 class="event-card-title">밤이 밀려온다</h3>
           <p class="event-card-subtitle">A Midsummer Night's Bookstore</p>
         </div>
-        <div class="event-poster-wrap type-bammilon" onclick="openLightbox('images/bam_mil_on_7월.png','밤이 밀려온다 — 밤밀온')">
-          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bam_mil_on_7월.png','밤이 밀려온다 — 밤밀온')">🔍</button>
-          <img src="images/bam_mil_on_7월.png" alt="밤이 밀려온다 — A Midsummer Night's Bookstore 포스터">
+        <div class="event-poster-wrap type-bammilon" onclick="openLightbox('images/bam_mil_on_july.jpg','밤이 밀려온다 — 밤밀온')">
+          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bam_mil_on_july.jpg','밤이 밀려온다 — 밤밀온')">🔍</button>
+          <img src="images/bam_mil_on_july.jpg" alt="밤이 밀려온다 — A Midsummer Night's Bookstore 포스터">
         </div>
         <div class="event-card-body">
           <p class="event-desc">잠들지 않는 서점, 책과 함께하는 밀도 높은 밤. 한여름 밤, 비북스에서 밤새 책과 함께하는 특별한 시간을 보내요.</p>
           <div class="event-facts">
             <div class="event-fact"><strong>일시</strong>7/24(금) 23:00 – 7/25(토) 06:00</div>
             <div class="event-fact"><strong>장소</strong>비북스 매장</div>
-            <div class="event-fact"><strong>참가비</strong>추후 안내</div>
-            <div class="event-fact"><strong>정원</strong>추후 안내</div>
+            <div class="event-fact"><strong>참가비</strong>20,000원</div>
+            <div class="event-fact"><strong>정원</strong>10명</div>
           </div>
           <button class="btn-event-apply type-bammilon" id="apply-bammilon" onclick="openEventApply('bammilon')">밤밀온 참가 신청</button>
         </div>
@@ -2304,10 +2312,10 @@ const EVENTS = {
     typeLabel: '밤밀온',
     name: '밤이 밀려온다',
     subtitle: 'A Midsummer Night\'s Bookstore',
-    poster: 'images/bam_mil_on_7월.png',
+    poster: 'images/bam_mil_on_july.jpg',
     sessions: [{ label: '7/24(금) 23:00 – 7/25(토) 06:00', value: '7월24일_밤밀온', _endMs: new Date(2026, 6, 25, 6, 0, 0).getTime() }],
-    capacity: null,
-    amount: null,
+    capacity: 10,
+    amount: 20000,
     space: '비북스 매장'
   }
 };
@@ -3018,6 +3026,7 @@ function openEventApply(key) {
   if (ev.amount) {
     amountEl.textContent = ev.amount.toLocaleString() + '원';
     payBox.style.display = '';
+    q('#eventPayNote').innerHTML = '<strong>모임통장: 카카오뱅크 7942-33-45474</strong> (예금주 경규환)<br>입금자명은 신청 시 이름과 동일하게 부탁드립니다.';
   } else {
     amountEl.textContent = '추후 안내';
     payBox.style.display = '';
@@ -3531,7 +3540,16 @@ async function POST(data) {
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
     body: JSON.stringify(data)
   });
-  return r.json();
+  const text = await r.text();
+  let out;
+  try {
+    out = JSON.parse(text);
+  } catch {
+    throw new Error('서버 응답을 읽을 수 없습니다. Apps Script 배포를 확인해주세요.');
+  }
+  if (out.error) throw new Error(out.error);
+  if (!r.ok && !out.ok) throw new Error('요청 실패');
+  return out;
 }
 
 // ══ 라이트박스 ══════════════════════════
