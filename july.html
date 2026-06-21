@@ -252,6 +252,7 @@
     .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
     .dot-moim { background: var(--ocean); }
     .dot-voice { background: #f59e0b; }
+    .dot-away { background: #94a3b8; }
     .dot-rent { background: #94a3b8; }
 
     .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
@@ -303,6 +304,14 @@
     .dot-event { background: #dc2626; }
     .ev-event { background: #ffe4e6; color: #9f1239; }
     .ev-bvoice { background: #fef3c7; color: #92400e; }
+    .ev-away {
+      background: #e2e8f0;
+      color: #64748b;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
 
     /* ── 행사 섹션 ─────────────────────────── */
     .event-zone {
@@ -314,55 +323,83 @@
       box-shadow: 0 2px 12px rgba(26,158,196,0.06);
     }
     .event-zone .sec-label { color: #dc2626; }
-    .event-open-bar {
+    .event-open-bar { display: none; }
+    .event-slider-top {
       display: flex;
       align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
-      padding: 14px 16px;
-      background: rgba(255,255,255,0.75);
-      border: 1px solid var(--border);
-      border-radius: 14px;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 0 2px;
+      font-size: 12px;
+      line-height: 1.45;
+      color: var(--muted);
     }
-    .event-open-num {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 28px;
+    .event-slider-summary {
+      flex: 1;
+      min-width: 0;
+      margin: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .event-slider-summary strong {
+      color: var(--ocean-deep);
+      font-weight: 700;
+    }
+    .event-slider-top .event-slide-counter {
+      flex-shrink: 0;
+      font-size: 11px;
       font-weight: 700;
       color: var(--ocean-deep);
-      line-height: 1;
+      letter-spacing: .04em;
     }
-    .event-open-label { font-size: 13px; font-weight: 700; color: var(--ocean-deep); }
-    .event-open-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
     .event-slider-wrap {
       position: relative;
       overflow: hidden;
       border-radius: 16px;
       touch-action: pan-y pinch-zoom;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      max-height: min(92vw, 520px);
+      background: #fff;
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 16px rgba(26,158,196,0.08);
     }
     .event-slider {
       display: flex;
+      height: 100%;
       transition: transform .35s ease;
       will-change: transform;
     }
     .event-slide {
       min-width: 100%;
+      width: 100%;
+      height: 100%;
       flex-shrink: 0;
       box-sizing: border-box;
     }
     .event-slide .event-card {
-      max-width: min(100%, 220px);
-      margin: 0 auto;
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      margin: 0;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .event-slide .event-card:hover { transform: none; box-shadow: none; }
+    .event-poster-stack {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
       height: 100%;
     }
     .event-slider-nav { margin-top: 14px; }
     .event-slider-nav .sdot.active { background: var(--ocean); }
-    .event-slide-counter {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      letter-spacing: .04em;
-    }
     .event-card {
       display: flex;
       flex-direction: column;
@@ -376,42 +413,21 @@
     .event-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,158,196,0.12); }
     .event-card.type-bvoice { border-color: #fcd34d; background: #fffdf8; }
     .event-card.type-bammilon { border-color: #7c3aed; }
-    .event-card-head {
-      padding: 8px 10px 7px;
-      border-bottom: 1px solid var(--border);
-    }
-    .event-card.type-bvoice .event-card-head { background: linear-gradient(180deg, #fffbeb, #fffdf8); border-bottom-color: #fde68a; }
-    .event-card.type-bammilon .event-card-head { background: linear-gradient(180deg, #1e1b4b, #312e81); border-bottom: none; }
-    .event-type-label {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      border-radius: 20px;
-      padding: 4px 10px;
-      margin-bottom: 6px;
-    }
-    .event-card.type-bvoice .event-type-label { color: var(--voice); background: #fff; border: 1px solid #fcd34d; }
-    .event-card.type-bammilon .event-type-label { color: #fecaca; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); }
-    .event-card-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: clamp(13px, 3.2vw, 15px);
-      font-weight: 700;
-      line-height: 1.35;
-    }
-    .event-card.type-bvoice .event-card-title { color: #78350f; }
-    .event-card.type-bammilon .event-card-title { color: #fff; }
-    .event-card-subtitle { font-size: 11px; margin-top: 4px; opacity: .85; }
-    .event-card.type-bvoice .event-card-subtitle { color: #92400e; font-size: 10px; margin-top: 3px; }
-    .event-card.type-bammilon .event-card-subtitle { color: #c4b5fd; }
+    .event-card.type-external { border-color: #94a3b8; background: #f8fafc; }
+    .event-card-head { display: none; }
+    .event-card-body { display: none; }
     .event-poster-wrap {
       position: relative;
-      aspect-ratio: 1 / 1;
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
       background: #0f172a;
       cursor: zoom-in;
+      overflow: hidden;
     }
     .event-poster-wrap img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -419,6 +435,40 @@
       display: block;
     }
     .event-poster-wrap.type-bvoice { background: #1a1a2e; }
+    .event-poster-wrap.type-bammilon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 20px;
+      background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
+      box-sizing: border-box;
+    }
+    .event-poster-wrap.type-bammilon img {
+      position: static;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+    .event-poster-wrap.type-external {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 16px;
+      background: #fff;
+      box-sizing: border-box;
+    }
+    .event-poster-wrap.type-external img {
+      position: static;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
     .event-poster-placeholder {
       aspect-ratio: 1 / 1;
       display: flex;
@@ -486,15 +536,16 @@
     }
     .btn-event-apply {
       width: 100%;
-      margin-top: auto;
-      padding: 10px 14px;
+      flex-shrink: 0;
+      margin: 0;
+      padding: 12px 14px;
       border: none;
-      border-radius: 10px;
-      font-size: 13px;
+      border-radius: 0;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
-      transition: transform .15s, box-shadow .15s;
+      transition: transform .15s, box-shadow .15s, opacity .15s;
     }
     .btn-event-apply.type-bvoice {
       background: var(--voice);
@@ -504,6 +555,10 @@
       background: linear-gradient(135deg, #7c3aed, #dc2626);
       color: #fff;
       box-shadow: 0 4px 14px rgba(124,58,237,0.35);
+    }
+    .btn-event-apply.type-external {
+      background: #334155;
+      color: #fff;
     }
     .btn-event-apply:hover { transform: translateY(-1px); }
     .btn-event-apply:disabled { opacity: .45; cursor: not-allowed; transform: none; }
@@ -539,6 +594,26 @@
     }
     .modal-event.type-bvoice .event-modal-badge { background: #fef3c7; color: var(--voice); border: 1px solid #fcd34d; }
     .modal-event.type-bammilon .event-modal-badge { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
+    .modal-event.type-external .event-modal-badge { background: #e2e8f0; color: #475569; border: 1px solid #cbd5e1; }
+    .event-external-info {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--text);
+    }
+    .event-external-info ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+    .event-external-info li { margin-bottom: 4px; }
+    .event-external-note {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #f1f5f9;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
 
     .ev-rent { background: #f1f5f9; color: var(--muted); font-size: 9px; }
     .cal-rent-done { background: #fef3c7; color: #92400e; font-size: 9px; font-weight: 700; }
@@ -998,6 +1073,14 @@
     .moim-poster.p3 { background: linear-gradient(135deg, #3b1f5e 0%, #6b42a0 100%); }
     .moim-poster.p4,
     .moim-poster.ocean-tea-poster { background: linear-gradient(160deg, #0d7a9e 0%, var(--ocean) 50%, var(--ocean-light) 100%); }
+    .moim-poster.ocean-pado-poster { background: linear-gradient(155deg, #1e40af 0%, var(--ocean) 45%, #7dd3fc 100%); }
+    .ocean-pado-poster .poster-pado-illust {
+      width: 58%;
+      max-width: 140px;
+      margin: 0 auto 8px;
+      display: block;
+      opacity: 0.95;
+    }
     .ocean-tea-poster .poster-tea-illust {
       width: min(100px, 28vw);
       margin-bottom: 8px;
@@ -1754,6 +1837,7 @@
         <span id="calLegendMoim"><span class="dot dot-moim"></span> 비모임</span>
         <span id="calLegendVoice"><span class="dot dot-voice"></span> b.voice</span>
         <span id="calLegendEvent"><span class="dot dot-event"></span> 행사</span>
+        <span id="calLegendAway"><span class="dot dot-away"></span> away</span>
         <span><span class="dot dot-rent"></span> 대관 가능</span>
       </div>
     </div>
@@ -1774,14 +1858,22 @@
       <div class="cal-cell" onclick="openRent('2026-07-01')"><div class="cal-day">1</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-02')"><div class="cal-day">2</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-03')"><div class="cal-day">3</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-07-04')"><div class="cal-day">4</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-07-04')">
+        <div class="cal-day">4</div>
+        <div class="cal-event ev-away" onclick="event.stopPropagation();scrollToEvent('yeonhuiFlea')">away</div>
+        <div class="cal-rent-btn">대관</div>
+      </div>
       <div class="cal-cell sun" onclick="openRent('2026-07-05')"><div class="cal-day">5</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-06')"><div class="cal-day">6</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-07')"><div class="cal-day">7</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-08')"><div class="cal-day">8</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-09')"><div class="cal-day">9</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-10')"><div class="cal-day">10</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-07-11')"><div class="cal-day">11</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-07-11')">
+        <div class="cal-day">11</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pado')">Let's talk!</div>
+        <div class="cal-rent-btn">대관</div>
+      </div>
       <div class="cal-cell sun" onclick="openRent('2026-07-12')"><div class="cal-day">12</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-13')"><div class="cal-day">13</div><div class="cal-rent-btn">대관</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-14')"><div class="cal-day">14</div><div class="cal-rent-btn">대관</div></div>
@@ -1840,84 +1932,57 @@
         <path d="M24,4 L24,10 M24,38 L24,44 M4,24 L10,24 M38,24 L44,24" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
     </div>
-    <div class="event-open-bar">
-      <div class="event-open-stat">
-        <span class="event-open-num" id="eventTotalCount">3</span>
-        <span class="event-open-label">개 행사</span>
-      </div>
-      <p class="event-open-desc">b.voice · 밤밀온 등 비북스 특별 행사입니다. 좌우로 넘기거나 아래 버튼으로 확인할 수 있어요.</p>
+    <div class="event-slider-top">
+      <p class="event-slider-summary"><strong><span id="eventTotalCount">4</span>개 행사</strong> · b.voice · 밤밀온 · 외부 — 좌우로 넘겨 포스터를 확인하세요</p>
+      <span class="event-slide-counter" id="eventSlideCounter">1 / 4</span>
     </div>
     <div class="event-slider-wrap" id="eventSliderViewport">
       <div class="event-slider" id="eventSlider">
 
       <div class="event-slide">
-      <article class="event-card type-bvoice" id="bvoice1">
-        <div class="event-card-head">
-          <div class="event-type-label">b.voice · EPISODE 02</div>
-          <h3 class="event-card-title">영화 &lt;드라이브&gt; 상영 및 정연감독 GV</h3>
-          <p class="event-card-subtitle">스튜디오 이상한 나라의 원더랜드 · 정연 감독</p>
+      <article class="event-card type-external" id="yeonhuiFlea">
+        <div class="event-poster-stack">
+        <div class="event-poster-wrap type-external" onclick="openLightbox('images/yeonhui_flea_july.jpg','들썩들썩 연희놀이터 플리마켓 셀러 모집')">
+          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/yeonhui_flea_july.jpg','들썩들썩 연희놀이터 플리마켓 셀러 모집')">🔍</button>
+          <img src="images/yeonhui_flea_july.jpg" alt="들썩들썩 연희놀이터 플리마켓 셀러 모집 — Happiness bookstore &amp; cafe × b.books">
         </div>
+        <button class="btn-event-apply type-external" id="apply-yeonhuiFlea" onclick="openEventApply('yeonhuiFlea')">셀러 신청하기 · 마지막 1자리</button>
+        </div>
+      </article>
+      </div>
+
+      <div class="event-slide">
+      <article class="event-card type-bvoice" id="bvoice1">
+        <div class="event-poster-stack">
         <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep02_drive.jpg','영화 &lt;드라이브&gt; — b.voice EP.02')">
           <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep02_drive.jpg','영화 &lt;드라이브&gt; — b.voice EP.02')">🔍</button>
           <img src="images/bvoice_ep02_drive.jpg" alt="영화 드라이브 상영 및 정연감독 GV — b.voice EPISODE 02">
         </div>
-        <div class="event-card-body">
-          <p class="event-desc">독립장편영화와 스크린 뒤의 이야기가 궁금하신 분들을 위한 b.voice. 1부 영화 &lt;드라이브&gt; 상영, 2부 제작 과정·장면 해설과 드라이브 아카이브 북 제작 후기.</p>
-          <div class="event-facts">
-            <div class="event-fact"><strong>일시</strong>7/19(일) 16:00–18:00</div>
-            <div class="event-fact"><strong>장소</strong>비북스 세미나실</div>
-            <div class="event-fact"><strong>참가비</strong>10,000원 (다과)</div>
-            <div class="event-fact"><strong>정원</strong>15명</div>
-          </div>
-          <button class="btn-event-apply type-bvoice" id="apply-bvoice1" onclick="openEventApply('bvoice1')">b.voice 신청하기</button>
+        <button class="btn-event-apply type-bvoice" id="apply-bvoice1" onclick="openEventApply('bvoice1')">b.voice 신청하기</button>
         </div>
       </article>
       </div>
 
       <div class="event-slide">
       <article class="event-card type-bvoice" id="bvoice2">
-        <div class="event-card-head">
-          <div class="event-type-label">b.voice · EPISODE 03</div>
-          <h3 class="event-card-title">소중한 ________ 에게</h3>
-          <p class="event-card-subtitle">이유진 서가 · 이유진 작가</p>
-        </div>
+        <div class="event-poster-stack">
         <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep03_book.jpg','소중한 ________ 에게 — b.voice EP.03')">
           <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep03_book.jpg','소중한 ________ 에게 — b.voice EP.03')">🔍</button>
           <img src="images/bvoice_ep03_book.jpg" alt="소중한 ________ 에게 — 이유진 작가 b.voice EPISODE 03">
         </div>
-        <div class="event-card-body">
-          <p class="event-desc">이유진 작가 북토크. 암 생존자로서의 따뜻한 이야기를 나눕니다. 현장 도서 구매 시 저자 직접 사인 및 엽서 증정.</p>
-          <div class="event-facts">
-            <div class="event-fact"><strong>일시</strong>7/25(토) 13:00–15:00</div>
-            <div class="event-fact"><strong>장소</strong>비북스 세미나실</div>
-            <div class="event-fact"><strong>참가비</strong>10,000원 (다과)</div>
-            <div class="event-fact"><strong>정원</strong>15명</div>
-          </div>
-          <button class="btn-event-apply type-bvoice" id="apply-bvoice2" onclick="openEventApply('bvoice2')">b.voice 신청하기</button>
+        <button class="btn-event-apply type-bvoice" id="apply-bvoice2" onclick="openEventApply('bvoice2')">b.voice 신청하기</button>
         </div>
       </article>
       </div>
 
       <div class="event-slide">
       <article class="event-card type-bammilon" id="bammilon">
-        <div class="event-card-head">
-          <div class="event-type-label">밤밀온 · b.am-mil-on</div>
-          <h3 class="event-card-title">밤이 밀려온다</h3>
-          <p class="event-card-subtitle">A Midsummer Night's Bookstore</p>
-        </div>
+        <div class="event-poster-stack">
         <div class="event-poster-wrap type-bammilon" onclick="openLightbox('images/bam_mil_on_july.jpg','밤이 밀려온다 — 밤밀온')">
           <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bam_mil_on_july.jpg','밤이 밀려온다 — 밤밀온')">🔍</button>
           <img src="images/bam_mil_on_july.jpg" alt="밤이 밀려온다 — A Midsummer Night's Bookstore 포스터">
         </div>
-        <div class="event-card-body">
-          <p class="event-desc">잠들지 않는 서점, 책과 함께하는 밀도 높은 밤. 한여름 밤, 비북스에서 밤새 책과 함께하는 특별한 시간을 보내요.</p>
-          <div class="event-facts">
-            <div class="event-fact"><strong>일시</strong>7/24(금) 23:00 – 7/25(토) 06:00</div>
-            <div class="event-fact"><strong>장소</strong>비북스 매장</div>
-            <div class="event-fact"><strong>참가비</strong>20,000원</div>
-            <div class="event-fact"><strong>정원</strong>10명</div>
-          </div>
-          <button class="btn-event-apply type-bammilon" id="apply-bammilon" onclick="openEventApply('bammilon')">밤밀온 참가 신청</button>
+        <button class="btn-event-apply type-bammilon" id="apply-bammilon" onclick="openEventApply('bammilon')">밤밀온 참가 신청</button>
         </div>
       </article>
       </div>
@@ -1925,10 +1990,7 @@
       </div>
     </div>
     <div class="slider-nav event-slider-nav">
-      <div style="display:flex;align-items:center;gap:10px">
-        <div class="slider-dots" id="eventSliderDots"></div>
-        <span class="event-slide-counter" id="eventSlideCounter">1 / 3</span>
-      </div>
+      <div class="slider-dots" id="eventSliderDots"></div>
       <div class="slider-arrows">
         <button type="button" class="sarr" aria-label="이전 행사" onclick="eventSlideMove(-1)">‹</button>
         <button type="button" class="sarr" aria-label="다음 행사" onclick="eventSlideMove(1)">›</button>
@@ -1952,13 +2014,45 @@
 
   <div class="moim-open-bar">
     <div class="moim-open-stat">
-      <span class="moim-open-num" id="moimTotalCount">1</span>
+      <span class="moim-open-num" id="moimTotalCount">2</span>
       <span class="moim-open-label">개 모임 개설</span>
     </div>
     <p class="moim-open-desc">7월 비북스 b.moim · 아래 번호 순서대로 모임을 확인할 수 있습니다.</p>
   </div>
 
     <div class="moim-grid">
+
+    <div class="moim-card" id="pado">
+      <div class="moim-poster ocean-pado-poster">
+        <svg class="poster-pado-illust" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <path d="M8,62 Q28,48 50,58 T92,52" stroke="rgba(255,255,255,0.45)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M10,72 Q34,58 54,68 T90,64" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <rect x="22" y="28" width="34" height="22" rx="8" fill="rgba(255,255,255,0.92)" stroke="#fff" stroke-width="1.2"/>
+          <rect x="44" y="38" width="34" height="22" rx="8" fill="rgba(255,255,255,0.75)" stroke="#fff" stroke-width="1.2"/>
+          <circle cx="72" cy="58" r="10" fill="#FFE08A" stroke="#fff" stroke-width="1.2"/>
+          <rect x="66" y="55" width="12" height="6" rx="3" fill="#fff"/>
+        </svg>
+        <div class="poster-title long">Let's talk!<br>마음 swich on</div>
+        <div class="poster-sub">책방 파도 · 7/11(토)</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">Let's talk! 마음 swich on</div>
+        <p class="moim-host-line">책방 파도</p>
+        <div class="moim-desc">내맘 나도 몰라?! 니맘 내맘 얘기하며 비폭력대화의 스위치를 켜보자!</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>7월 11일 (토) 15:30 – 18:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>8명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-pado" onclick="openApply('Let\'s talk! 마음 swich on','pado')">신청하기</button>
+        </div>
+      </div>
+    </div>
 
     <div class="moim-card" id="customtea">
       <div class="moim-poster ocean-tea-poster">
@@ -2300,6 +2394,13 @@ const MOIM_YEAR = 2026;
 const PAGE_MONTH = '7월';
 // session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
 const MOIMS = {
+  pado: {
+    name: "Let's talk! 마음 swich on",
+    sessions: [{ label: '7/11(토) 15:30–18:00', value: '7월11일' }],
+    capacity: 8,
+    amount: 10000,
+    hasSession: false
+  },
   customtea: {
     name: 'DIY 내 취향 가득 담은 커스텀 티음료 만들기!',
     sessions: [{ label: '7/19(일) 오전 11:00–13:00', value: '7월19일' }],
@@ -2310,6 +2411,28 @@ const MOIMS = {
 };
 
 const EVENTS = {
+  yeonhuiFlea: {
+    type: 'external',
+    typeLabel: '외부 행사 · away',
+    name: '들썩들썩 연희놀이터 플리마켓 셀러 모집',
+    subtitle: 'Happiness bookstore & cafe × b.books',
+    poster: 'images/yeonhui_flea_july.jpg',
+    away: true,
+    external: true,
+    applyUrl: 'https://happy.bbooks.co.kr/#apply',
+    sessions: [{ label: '7/4(토) 11:00–17:00', value: '7월4일_연희플리', _endMs: new Date(2026, 6, 4, 17, 0, 0).getTime() }],
+    capacity: 10,
+    filledCount: 9,
+    amount: null,
+    space: '해피니스북스토어앤카페 · 복사골문화센터',
+    infoHtml: `<p><strong>부천문화재단 어린이축제</strong> · 복사골문화센터<br>해피니스북스토어앤카페 내 7/4(토) 11:00–17:00</p>
+      <p>총 <strong>10팀</strong> · 상품 구성의 핵심 키워드는 <strong>「어린이」</strong></p>
+      <ul>
+        <li>수용: 핸드메이드, 문구, 그림책·아동서적, 장난감·소품, 체험 키트, 가족 대상 굿즈</li>
+        <li>불가: 성인용 중고·위험물</li>
+      </ul>
+      <div class="event-external-note">b.box day와 달리 부천문화재단 공식 행사로, 선정 기준이 있습니다.<br>현재 <strong>마지막 1자리</strong> 남았습니다.</div>`
+  },
   bvoice1: {
     type: 'bvoice',
     typeLabel: 'b.voice',
@@ -2352,6 +2475,7 @@ let curationPickIndex = -1;
 let latestMoimCounts = {};
 
 const MOIM_CURATION_META = {
+  pado: { cardId: 'pado', poster: '' },
   customtea: { cardId: 'customtea', poster: '' }
 };
 
@@ -2416,7 +2540,14 @@ function updateEventCapacity(counts) {
       soldOut(`apply-${key}`, '모집 완료');
       card?.classList.add('moim-sold-out');
     } else {
-      const label = ev.type === 'bammilon' ? '밤밀온 참가 신청' : 'b.voice 신청하기';
+      let label = ev.external
+        ? (ev.applyUrl ? '셀러 신청하기' : '셀러 신청 안내')
+        : (ev.type === 'bammilon' ? '밤밀온 참가 신청' : 'b.voice 신청하기');
+      if (ev.capacity != null && ev.filledCount != null) {
+        const remaining = ev.capacity - ev.filledCount;
+        if (remaining === 1) label += ' · 마지막 1자리';
+        else if (remaining > 1) label += ` · ${remaining}자리 남음`;
+      }
       resetApplyBtn(`apply-${key}`, label);
     }
   });
@@ -2515,6 +2646,7 @@ function isMoimApplyOpen(key, counts) {
 function isEventFullySoldOut(key, counts) {
   const ev = EVENTS[key];
   if (!ev || ev.comingSoon || !ev.capacity) return false;
+  if (ev.filledCount != null) return ev.filledCount >= ev.capacity;
   const session = ev.sessions[0]?.value;
   if (!session) return false;
   return getEventSessionCount(counts || latestEventCounts, ev.name, session) >= ev.capacity;
@@ -3040,14 +3172,33 @@ let eventFormTemplate = null;
 function openEventApply(key) {
   const ev = EVENTS[key];
   if (!ev || ev.comingSoon || isEventClosed(key, latestEventCounts)) return;
+  if (ev.applyUrl) {
+    window.open(ev.applyUrl, '_blank', 'noopener');
+    return;
+  }
   curEventKey = key;
   const modal = q('#eventApplyModal');
   modal.className = 'modal modal-event type-' + ev.type;
   q('#eventModalBadge').textContent = ev.typeLabel || '행사';
   q('#eventModalName').textContent = ev.name;
-  q('#eventModalDate').textContent = ev.sessions.map(s => s.label).join(' / ');
+  q('#eventModalDate').textContent = (ev.space ? ev.space + ' · ' : '') + ev.sessions.map(s => s.label).join(' / ');
   const amountEl = q('#eventModalAmount');
   const payBox = q('#eventPayBox');
+  const formEl = q('#eventApplyForm');
+  if (!eventFormTemplate) eventFormTemplate = formEl.innerHTML;
+
+  if (ev.external) {
+    payBox.style.display = 'none';
+    formEl.innerHTML = `
+      <div class="event-external-info">${ev.infoHtml || ''}</div>
+      <div class="modal-foot" style="margin-top:16px">
+        <button class="btn btn-cancel" onclick="closeOv('eventApplyOv')">닫기</button>
+      </div>`;
+    q('#eventApplyAlert').innerHTML = '';
+    openOv('eventApplyOv');
+    return;
+  }
+
   if (ev.amount) {
     amountEl.textContent = ev.amount.toLocaleString() + '원';
     payBox.style.display = '';
@@ -3057,8 +3208,6 @@ function openEventApply(key) {
     payBox.style.display = '';
     q('#eventPayNote').innerHTML = '참가비와 입금 안내는 행사 일정에 맞춰 별도로 안내드립니다.<br>신청 접수 후 담당자가 연락드릴게요.';
   }
-  const formEl = q('#eventApplyForm');
-  if (!eventFormTemplate) eventFormTemplate = formEl.innerHTML;
   formEl.innerHTML = eventFormTemplate;
   q('#eventApplyAlert').innerHTML = '';
   q('#eName').value = '';
@@ -3129,6 +3278,7 @@ const TT_END_MIN = 22 * 60;
 
 // 비모임 고정 일정 (공간별 실제 시간 기준, 겹치면 차단)
 const SCHEDULED_MOIM_BLOCKS = [
+  { date: '2026-07-11', space: '매장 테이블', start: '15:30', end: '18:00', tag: "Let's talk!" },
   { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
