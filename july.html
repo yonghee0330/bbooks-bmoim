@@ -2030,11 +2030,11 @@
           <circle cx="72" cy="58" r="10" fill="#FFE08A" stroke="#fff" stroke-width="1.2"/>
           <rect x="66" y="55" width="12" height="6" rx="3" fill="#fff"/>
         </svg>
-        <div class="poster-title long">Let's talk!<br>마음 swich on</div>
+        <div class="poster-title long">Let's talk!<br>마음 switch on</div>
         <div class="poster-sub">책방 파도 · 7/11(토)</div>
       </div>
       <div class="moim-body">
-        <div class="moim-name">Let's talk! 마음 swich on</div>
+        <div class="moim-name">Let's talk! 마음 switch on</div>
         <p class="moim-host-line">책방 파도</p>
         <div class="moim-desc">내맘 나도 몰라?! 니맘 내맘 얘기하며 비폭력대화의 스위치를 켜보자!</div>
         <div class="moim-meta">
@@ -2047,7 +2047,7 @@
             <div class="moim-price">10,000원</div>
             <div class="moim-cap">재료 준비 없음</div>
           </div>
-          <button class="btn-apply" id="apply-pado" onclick="openApply('Let\'s talk! 마음 swich on','pado')">신청하기</button>
+          <button class="btn-apply" id="apply-pado" onclick="openApply('Let\'s talk! 마음 switch on','pado')">신청하기</button>
         </div>
       </div>
     </div>
@@ -2392,7 +2392,7 @@ const PAGE_MONTH = '7월';
 // session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
 const MOIMS = {
   pado: {
-    name: "Let's talk! 마음 swich on",
+    name: "Let's talk! 마음 switch on",
     sessions: [{ label: '7/11(토) 15:30–18:00', value: '7월11일' }],
     capacity: 8,
     amount: 10000,
@@ -3179,13 +3179,10 @@ function openEventApply(key) {
   q('#eventModalBadge').textContent = ev.typeLabel || '행사';
   q('#eventModalName').textContent = ev.name;
   q('#eventModalDate').textContent = (ev.space ? ev.space + ' · ' : '') + ev.sessions.map(s => s.label).join(' / ');
-  const amountEl = q('#eventModalAmount');
-  const payBox = q('#eventPayBox');
   const formEl = q('#eventApplyForm');
   if (!eventFormTemplate) eventFormTemplate = formEl.innerHTML;
 
   if (ev.external) {
-    payBox.style.display = 'none';
     formEl.innerHTML = `
       <div class="event-external-info">${ev.infoHtml || ''}</div>
       <div class="modal-foot" style="margin-top:16px">
@@ -3196,6 +3193,13 @@ function openEventApply(key) {
     return;
   }
 
+  formEl.innerHTML = eventFormTemplate;
+  q('#eventApplyAlert').innerHTML = '';
+  q('#eName').value = '';
+  q('#ePhone').value = '';
+
+  const amountEl = q('#eventModalAmount');
+  const payBox = q('#eventPayBox');
   if (ev.amount) {
     amountEl.textContent = ev.amount.toLocaleString() + '원';
     payBox.style.display = '';
@@ -3205,11 +3209,10 @@ function openEventApply(key) {
     payBox.style.display = '';
     q('#eventPayNote').innerHTML = '참가비와 입금 안내는 행사 일정에 맞춰 별도로 안내드립니다.<br>신청 접수 후 담당자가 연락드릴게요.';
   }
-  formEl.innerHTML = eventFormTemplate;
-  q('#eventApplyAlert').innerHTML = '';
-  q('#eName').value = '';
-  q('#ePhone').value = '';
-  const btnLabel = ev.type === 'bammilon' ? '밤밀온 참가 신청' : '행사 신청하기';
+
+  const btnLabel = ev.type === 'bammilon'
+    ? `밤밀온 참가 신청 (${ev.amount.toLocaleString()}원)`
+    : '행사 신청하기';
   q('#eventSubmitBtn').textContent = btnLabel;
   openOv('eventApplyOv');
 }
