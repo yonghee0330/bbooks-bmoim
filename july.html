@@ -1,0 +1,3262 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>비북스 b.moim | 7월 모임 & 대관</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ocean-deep: #0a5f7a;
+      --ocean: #1a9ec4;
+      --ocean-light: #5ecde8;
+      --ocean-pale: #e3f6fc;
+      --coral: #ff7b54;
+      --coral-light: #ffb89a;
+      --sand: #fff9f2;
+      --sand-dark: #f0e6d8;
+      --navy: var(--ocean-deep);
+      --navy2: #0d7a9e;
+      --accent: var(--ocean);
+      --green: var(--ocean-deep);
+      --bg: var(--sand);
+      --white: #ffffff;
+      --text: #1a3a4a;
+      --muted: #5a7a8a;
+      --border: #c8e8f0;
+      --radius: 12px;
+      --voice: #92400e;
+      --voice-accent: #d97706;
+      --voice-bg: #fef9f0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: hidden; }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      max-width: 100%;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(94,205,232,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 90% 80%, rgba(255,123,84,0.06) 0%, transparent 50%);
+    }
+
+    /* ── 헤더 ─────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, var(--ocean-deep) 0%, #0d7a9e 100%);
+      padding: 20px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 18px,
+        rgba(255,255,255,0.12) 18px,
+        rgba(255,255,255,0.12) 36px
+      );
+    }
+    .logo {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      text-decoration: none;
+      position: relative;
+      z-index: 1;
+      display: block;
+    }
+    .logo .logo-dot { color: var(--coral-light); }
+    .logo-sub {
+      display: block;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.7);
+      margin-top: 2px;
+      letter-spacing: 0.05em;
+    }
+    .header-sub { font-size: 12px; color: rgba(255,255,255,.55); }
+
+    /* ── 히어로 ───────────────────────────── */
+    .hero {
+      background: linear-gradient(160deg, #0d7a9e 0%, var(--ocean) 45%, var(--ocean-light) 100%);
+      padding: 36px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 60%, rgba(255,255,255,0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(255,200,150,0.12) 0%, transparent 35%);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 32px;
+      background: var(--sand);
+      border-radius: 32px 32px 0 0;
+    }
+    .wave-deco {
+      position: absolute;
+      bottom: 28px;
+      left: 0; right: 0;
+      height: 40px;
+      z-index: 0;
+      opacity: 0.35;
+    }
+    .hero-illust {
+      width: min(200px, 50vw);
+      margin: 0 auto 16px;
+      position: relative;
+      z-index: 1;
+      animation: bob 3.5s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-6px) rotate(1deg); }
+    }
+    .hero-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      color: #fff;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(4px);
+    }
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 700;
+      line-height: 1.45;
+      margin-bottom: 10px;
+      color: #fff;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-sub, .hero p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+    .sec-head-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .sec-witty {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      opacity: 0.6;
+      margin-top: 4px;
+    }
+
+    /* ── 컨테이너 ─────────────────────────── */
+    .wrap { max-width: 760px; margin: 0 auto; padding: 32px 20px 80px; }
+    .sec-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+    .sec-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      color: var(--accent);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+
+    /* ── 캘린더 ───────────────────────────── */
+    .cal-wrap { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; margin-bottom: 40px; box-shadow: 0 2px 12px rgba(26,158,196,0.06); }
+    .cal-head {
+      background: linear-gradient(135deg, var(--ocean-deep) 0%, #0d7a9e 100%); color: white;
+      padding: 14px 20px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .cal-head-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .cal-head-center { flex: 1; text-align: center; min-width: 0; }
+    .cal-head strong { font-family: 'Noto Serif KR', serif; font-size: 17px; display: block; }
+    .cal-head-sub {
+      display: block; margin-top: 3px;
+      font-size: 11px; font-weight: 500; color: rgba(255,255,255,.62);
+    }
+    .cal-nav-btn {
+      flex-shrink: 0;
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      color: white;
+      font-size: 22px; line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, opacity .15s;
+    }
+    .cal-nav-btn:hover:not(:disabled) { background: rgba(255,255,255,.22); }
+    .cal-nav-btn:disabled { opacity: .35; cursor: default; }
+    .cal-carousel-viewport { overflow: hidden; touch-action: pan-y pinch-zoom; }
+    .cal-carousel-track {
+      display: flex;
+      transition: transform .32s ease;
+      will-change: transform;
+    }
+    .cal-month-panel { flex: 0 0 100%; min-width: 0; }
+    .cal-dots {
+      display: flex; justify-content: center; gap: 8px;
+      padding: 12px 16px 14px;
+      border-top: 1px solid var(--border);
+      background: var(--ocean-pale);
+    }
+    .cal-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: none; padding: 0;
+      background: #cbd5e1;
+      cursor: pointer;
+      transition: background .15s, transform .15s;
+    }
+    .cal-dot.active { background: var(--ocean); transform: scale(1.15); }
+    .sec-title-sub { font-size: 14px; font-weight: 500; color: var(--muted); }
+    .cal-legend { display: flex; gap: 12px; font-size: 11px; color: rgba(255,255,255,.7); flex-wrap: wrap; }
+    .cal-legend span { display: flex; align-items: center; gap: 4px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+    .dot-moim { background: var(--ocean); }
+    .dot-voice { background: #f59e0b; }
+    .dot-rent { background: #94a3b8; }
+
+    .cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+    .cal-dow {
+      padding: 8px 4px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      background: var(--ocean-pale);
+      border-bottom: 1px solid var(--border);
+    }
+    .cal-dow.sun { color: #ef4444; }
+    .cal-dow.sat { color: #3b82f6; }
+    .cal-cell {
+      min-height: 68px;
+      min-width: 0;
+      padding: 6px 6px 4px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      font-size: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: background .15s;
+      overflow: hidden;
+    }
+    .cal-cell:hover { background: var(--ocean-pale); }
+    .cal-cell:nth-child(7n) { border-right: none; }
+    .cal-cell.empty { background: #fafafa; cursor: default; }
+    .cal-cell.empty:hover { background: #fafafa; }
+    .cal-cell.today .cal-day { background: var(--navy); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; }
+    .cal-day { font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+    .cal-cell.sun .cal-day { color: #ef4444; }
+    .cal-cell.sat .cal-day { color: #3b82f6; }
+    .cal-event {
+      font-size: 10px;
+      padding: 2px 5px;
+      border-radius: 4px;
+      margin-bottom: 2px;
+      line-height: 1.3;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+    .ev-moim { background: var(--ocean-pale); color: var(--ocean-deep); }
+    .ev-voice { background: #fef3c7; color: #92400e; }
+    .ev-rent { background: #f1f5f9; color: var(--muted); font-size: 9px; }
+    .cal-rent-done { background: #fef3c7; color: #92400e; font-size: 9px; font-weight: 700; }
+    .cal-rent-slot {
+      background: #fffbeb;
+      color: #92400e;
+      font-size: 8px;
+      font-weight: 700;
+      white-space: normal;
+      word-break: keep-all;
+      line-height: 1.25;
+    }
+    .cal-rent-slot:hover { background: #fde68a; }
+    .cal-rent-btn {
+      position: absolute; bottom: 3px; right: 3px;
+      font-size: 9px; color: var(--muted);
+      background: #f1f5f9; border-radius: 3px;
+      padding: 1px 4px; cursor: pointer;
+    }
+
+    .sec-label.voice-label { color: var(--voice-accent); }
+
+    /* ── 특별 큐레이션 (b.voice + b.moim) ── */
+    .featured-zone {
+      margin-bottom: 48px;
+    }
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      max-width: 920px;
+      margin: 0 auto;
+      align-items: stretch;
+    }
+    .featured-grid .voice-event {
+      max-width: none;
+      margin: 0;
+    }
+    .featured-card-head {
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid transparent;
+    }
+    .featured-card-label {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      border-radius: 20px;
+      padding: 4px 10px;
+      margin-bottom: 6px;
+    }
+    .featured-card-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(14px, 3.5vw, 16px);
+      font-weight: 700;
+      line-height: 1.35;
+    }
+    .featured-card-lead {
+      font-size: 10px;
+      line-height: 1.55;
+      margin-top: 4px;
+      opacity: .88;
+    }
+    .voice-event {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fffdf8;
+      border: 2px solid #d97706;
+      box-shadow: 0 10px 32px rgba(146, 64, 14, .14);
+    }
+    .voice-event .featured-card-head {
+      background: linear-gradient(180deg, #fffbeb 0%, #fffdf8 100%);
+      border-bottom-color: #fde68a;
+    }
+    .voice-event .featured-card-label {
+      color: var(--voice);
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid #fcd34d;
+    }
+    .voice-event .featured-card-title { color: #78350f; }
+    .voice-event .featured-card-lead { color: #92400e; }
+    .moim-curation {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+      border: 2px solid #93c5fd;
+      box-shadow: 0 10px 32px rgba(37, 99, 235, .1);
+    }
+    .moim-curation .featured-card-head {
+      background: linear-gradient(180deg, #eff6ff 0%, #fff 100%);
+      border-bottom-color: #dbeafe;
+    }
+    .moim-curation .featured-card-label {
+      color: #2563eb;
+      background: rgba(255, 255, 255, .92);
+      border: 1px solid #bfdbfe;
+    }
+    .moim-curation .featured-card-title { color: #1e3a8a; }
+    .featured-poster {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      background: #f8fafc;
+      flex-shrink: 0;
+    }
+    .featured-poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .voice-event-poster {
+      position: relative;
+      background: #f5f0e6;
+    }
+    .voice-event-art {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .moim-curation-body {
+      padding: 12px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 6px;
+    }
+    .moim-curation-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.35;
+    }
+    .moim-curation-date {
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.45;
+    }
+    .moim-curation-badge {
+      align-self: flex-start;
+      font-size: 10px;
+      font-weight: 800;
+      color: #b45309;
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 999px;
+      padding: 3px 8px;
+    }
+    .moim-curation-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 6px;
+    }
+    .btn-curation-main {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      background: #2563eb;
+      cursor: pointer;
+    }
+    .btn-curation-main:hover { background: #1d4ed8; }
+    .btn-curation-sub {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #475569;
+      background: #fff;
+      cursor: pointer;
+    }
+    .btn-curation-sub:hover { background: #f8fafc; }
+    .voice-event-zoom {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .9);
+      color: var(--voice);
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .12);
+    }
+    .voice-event-body {
+      padding: 12px 14px 14px;
+      background: #fffdf8;
+      border-top: 2px solid #fcd34d;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 6px;
+    }
+    .voice-event-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(14px, 3.5vw, 16px);
+      font-weight: 700;
+      color: #1c1917;
+      line-height: 1.35;
+    }
+    .voice-event-host {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--voice);
+    }
+    .voice-event-desc {
+      font-size: 10px;
+      color: #57534e;
+      line-height: 1.55;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .voice-event-facts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 6px;
+    }
+    .voice-fact {
+      font-size: 9px;
+      line-height: 1.45;
+      color: #44403c;
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-radius: 6px;
+      padding: 5px 6px;
+    }
+    .voice-fact strong {
+      display: block;
+      font-size: 8px;
+      font-weight: 800;
+      color: #a16207;
+      letter-spacing: .03em;
+      margin-bottom: 1px;
+    }
+    .voice-event-cta {
+      flex-shrink: 0;
+      margin-top: auto;
+    }
+    .btn-voice-apply {
+      background: var(--voice);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: opacity .15s;
+      width: 100%;
+    }
+    .btn-voice-apply:hover { opacity: .88; }
+    .btn-voice-apply:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-voice-apply.sold-out { background: #94a3b8; cursor: not-allowed; }
+    .modal-voice .modal-title { color: var(--voice); }
+    .modal-voice .voice-modal-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      color: var(--voice);
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 20px;
+      padding: 3px 10px;
+      margin-bottom: 8px;
+    }
+    .modal-voice .btn-submit { background: var(--voice); }
+
+    /* ── 모임 카드 ────────────────────────── */
+    .moim-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media(min-width:600px) { .moim-grid { grid-template-columns: repeat(2,1fr); } }
+
+    .moim-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+      box-shadow: 0 2px 12px rgba(26,158,196,0.06);
+    }
+    .moim-card:hover { box-shadow: 0 8px 28px rgba(26,158,196,0.14); transform: translateY(-2px); }
+
+    /* 이미지 포스터 — 이미지 있을 때 */
+    .moim-poster-img {
+      width: 100%;
+      cursor: zoom-in;
+      position: relative;
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+    .moim-poster-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .moim-poster-img:hover::after {
+      content: '🔍 크게 보기';
+      position: absolute; bottom: 10px; right: 10px;
+      background: rgba(0,0,0,.55); color: white;
+      font-size: 11px; padding: 4px 10px;
+      border-radius: 12px;
+    }
+    .moim-poster-num {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      left: auto;
+      z-index: 3;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 28px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(10, 31, 68, .28);
+      pointer-events: none;
+    }
+    .moim-poster-num.is-left {
+      right: auto;
+      left: 10px;
+    }
+    .moim-open-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, var(--ocean-pale) 0%, #fff 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .moim-open-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .moim-open-num {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .moim-open-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ocean-deep);
+    }
+    .moim-open-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* 모임 포스터 2장+ 슬라이더 */
+    .poster-slider-wrap {
+      position: relative;
+      background: #e8eef5;
+      cursor: zoom-in;
+    }
+    .poster-slider-viewport {
+      width: 100%;
+      aspect-ratio: 819 / 1024;
+      overflow: hidden;
+      position: relative;
+    }
+    .poster-slider {
+      display: flex;
+      height: 100%;
+      transition: transform .35s ease;
+    }
+    .poster-slide {
+      min-width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .poster-slide img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      object-position: center;
+      display: block;
+      pointer-events: none;
+    }
+    .poster-slider-nav {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 28px 10px 10px;
+      background: linear-gradient(transparent, rgba(0,0,0,.5));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+    .poster-slider-nav .slider-dots,
+    .poster-slider-nav .slider-arrows { pointer-events: auto; }
+    .poster-slider-nav .sdot { background: rgba(255,255,255,.45); }
+    .poster-slider-nav .sdot.active { background: #fff; }
+    .poster-slider-nav .sarr {
+      background: rgba(255,255,255,.9);
+      border-color: transparent;
+      color: var(--navy);
+    }
+    .poster-slider-hint {
+      position: absolute; top: 10px; right: 10px;
+      font-size: 10px; font-weight: 600;
+      color: rgba(255,255,255,.9);
+      background: rgba(0,0,0,.35);
+      padding: 3px 8px;
+      border-radius: 10px;
+      pointer-events: none;
+    }
+
+    /* 타이포 포스터 — 이미지 없을 때 */
+    .moim-poster {
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .moim-poster.p1 { background: linear-gradient(135deg, #0A1F44 0%, #1a3558 100%); }
+    .moim-poster.p2 { background: linear-gradient(135deg, #2e3b1e 0%, #4a6741 100%); }
+    .moim-poster.p3 { background: linear-gradient(135deg, #3b1f5e 0%, #6b42a0 100%); }
+    .moim-poster.p4,
+    .moim-poster.ocean-tea-poster { background: linear-gradient(160deg, #0d7a9e 0%, var(--ocean) 50%, var(--ocean-light) 100%); }
+    .ocean-tea-poster .poster-tea-illust {
+      width: min(100px, 28vw);
+      margin-bottom: 8px;
+      z-index: 1;
+    }
+    .poster-host-mark {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.6);
+      object-fit: cover;
+      background: #fff;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .moim-poster.p5 { background: linear-gradient(135deg, #0f3d3e 0%, #1f7a76 100%); } /* 줌치풍경만들기 */
+    .moim-poster.p6 { background: linear-gradient(135deg, #111827 0%, #374151 100%); } /* 영화 한편 */
+    .moim-poster.p7 { background: linear-gradient(135deg, #1f4d3a 0%, #56a36b 100%); } /* 책잇기 */
+    .moim-poster.p8 { background: linear-gradient(135deg, #3f1d2b 0%, #b4535f 100%); } /* 편지모임 */
+    .moim-poster.p9 { background: linear-gradient(135deg, #1a1033 0%, #4a3f6b 55%, #8b6914 100%); } /* 황동만 */
+    .moim-poster.p10 { background: linear-gradient(135deg, #1a3d2e 0%, #4a7c59 55%, #8fbc8f 100%); } /* 영어 북클럽 */
+    .moim-poster.p11 { background: linear-gradient(135deg, #1e2a4a 0%, #4a5a8a 55%, #c9a96e 100%); } /* Creative Writing */
+    .poster-title.long { font-size: clamp(14px, 3.2vw, 19px); }
+    .poster-host.long { font-size: 10px; line-height: 1.5; text-align: center; max-width: 92%; }
+    .poster-deco {
+      position: absolute;
+      font-size: 80px;
+      opacity: .06;
+      right: -10px;
+      bottom: -10px;
+    }
+    .poster-badge {
+      font-size: 10px;
+      letter-spacing: .12em;
+      color: rgba(255,255,255,.5);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .poster-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(18px, 4vw, 24px);
+      font-weight: 700;
+      color: white;
+      text-align: center;
+      line-height: 1.4;
+      z-index: 1;
+    }
+    .poster-host {
+      font-size: 11px;
+      color: rgba(255,255,255,.5);
+      margin-top: 10px;
+      z-index: 1;
+    }
+    .poster-emoji {
+      font-size: clamp(36px, 8vw, 52px);
+      margin-bottom: 10px;
+      z-index: 1;
+    }
+    .poster-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,.55);
+      margin-top: 10px;
+      z-index: 1;
+    }
+
+    .moim-body { padding: 18px; }
+    .moim-name {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 17px; font-weight: 700;
+      color: var(--navy); margin-bottom: 6px;
+    }
+    .moim-desc { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+    .moim-host-line { font-size: 12px; color: var(--navy); font-weight: 600; margin-bottom: 8px; }
+    .moim-regular { display: inline-block; font-size: 11px; font-weight: 700; color: var(--ocean-deep); background: var(--ocean-pale); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; margin-bottom: 12px; }
+    .moim-meta { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+    .meta-row { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: var(--text); }
+    .meta-row .mi { color: var(--muted); width: 14px; flex-shrink: 0; text-align: center; font-size: 13px; }
+    .moim-foot {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .moim-price { font-size: 15px; font-weight: 700; color: var(--navy); }
+    .moim-cap { font-size: 11px; color: var(--muted); }
+    .btn-apply {
+      background: linear-gradient(135deg, var(--coral) 0%, #ff9a6c 100%);
+      color: white;
+      border: none; border-radius: 8px;
+      padding: 9px 18px; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: inherit;
+      transition: transform .15s, box-shadow .15s;
+      box-shadow: 0 4px 12px rgba(255,123,84,0.28);
+    }
+    .btn-apply:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(255,123,84,0.35); }
+    .btn-apply:disabled { opacity: .45; cursor: not-allowed; }
+
+    /* 회차 탭 */
+    .session-tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
+    .stab {
+      padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
+      border: 1px solid var(--border); background: var(--bg); color: var(--muted);
+      cursor: pointer; font-family: inherit; transition: all .15s;
+    }
+    .stab.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+    /* ── 대관 안내 ────────────────────────── */
+    .rent-box {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 22px 22px 22px 88px; margin-top: 40px;
+      position: relative;
+      box-shadow: 0 2px 12px rgba(26,158,196,0.06);
+      overflow: hidden;
+    }
+    .rent-box-illust {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 56px;
+      height: 56px;
+      opacity: 0.75;
+    }
+    .rent-box h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .rent-box p { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+    .btn-rent {
+      background: var(--bg); color: var(--navy);
+      border: 1px solid var(--border); border-radius: 8px;
+      padding: 10px 20px; font-size: 13px; font-weight: 700;
+      cursor: pointer; font-family: inherit; transition: all .15s;
+    }
+    .btn-rent:hover { background: var(--ocean-deep); color: white; border-color: var(--ocean-deep); }
+
+    /* 대관 신청 — 예약 현황 안내 */
+    .rent-blocked-wrap {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+    .rent-blocked-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #92400e;
+      margin-bottom: 8px;
+    }
+    .rent-blocked-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 8px;
+    }
+    .rent-blocked-item {
+      font-size: 11px;
+      line-height: 1.45;
+      padding: 6px 8px;
+      border-radius: 6px;
+      background: #fff;
+      border: 1px solid #fef3c7;
+      color: #78350f;
+    }
+    .rent-blocked-item.rent-blocked-moim {
+      background: #eff6ff;
+      border-color: #bfdbfe;
+      color: #1d4ed8;
+    }
+    .rent-blocked-hint {
+      font-size: 10px;
+      color: #a16207;
+      line-height: 1.5;
+    }
+
+    /* ── 모달 ─────────────────────────────── */
+    .ov {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.5); z-index: 200;
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .ov.on { display: flex; }
+    .modal {
+      background: white; border-radius: 16px;
+      padding: 28px; width: 100%; max-width: 420px;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 18px; font-weight: 700; color: var(--navy);
+      margin-bottom: 4px;
+    }
+    .modal-sub { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+    .fg { margin-bottom: 14px; }
+    .fg label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 5px; }
+    .fg input, .fg select, .fg textarea {
+      width: 100%; padding: 11px 13px;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 14px; font-family: inherit; color: var(--text);
+      outline: none; transition: border-color .15s;
+    }
+    .fg input:focus, .fg select:focus { border-color: var(--ocean); box-shadow: 0 0 0 3px rgba(26,158,196,0.15); }
+    .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .modal-foot { display: flex; gap: 8px; margin-top: 6px; }
+    .modal-foot .btn { flex: 1; padding: 12px; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; }
+    .btn-cancel { background: var(--bg); color: var(--text); }
+    .btn-submit { background: linear-gradient(135deg, var(--coral) 0%, #ff9a6c 100%); color: white; box-shadow: 0 4px 12px rgba(255,123,84,0.25); }
+    .btn-submit:disabled { opacity: .5; cursor: not-allowed; }
+
+    .alert { padding: 10px 13px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; }
+    .ae { background: #fee2e2; color: #991b1b; }
+    .ao { background: #dcfce7; color: #166534; }
+
+    /* 입금 안내 */
+    .pay-box {
+      background: var(--ocean-pale); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px; margin: 14px 0;
+      font-size: 14px; line-height: 1.8;
+    }
+    .pay-box strong { color: var(--navy); }
+    .pay-amount { font-size: 22px; font-weight: 700; color: var(--navy); }
+
+    .spin { display: inline-block; width: 13px; height: 13px; border: 2px solid rgba(255,255,255,.3); border-top-color: white; border-radius: 50%; animation: rot .6s linear infinite; vertical-align: middle; margin-right: 4px; }
+    @keyframes rot { to { transform: rotate(360deg); } }
+
+    /* ── 환불 정책 ────────────────────────── */
+    .refund { margin-top: 40px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .refund h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+    .refund p { font-size: 12px; color: var(--muted); line-height: 1.8; }
+
+    /* ── 라이트박스 ───────────────────────── */
+    .lightbox {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.88); z-index: 300;
+      align-items: center; justify-content: center;
+      padding: 20px; cursor: zoom-out;
+    }
+    .lightbox.on { display: flex; }
+    .lb-inner { position: relative; max-width: 100%; max-height: 90vh; }
+    .lightbox img {
+      max-width: 100%; max-height: 90vh;
+      border-radius: 10px;
+      object-fit: contain;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      display: block;
+    }
+    .lb-arr {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.2); color: white;
+      border: 1px solid rgba(255,255,255,.35);
+      font-size: 18px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lb-arr:hover { background: rgba(255,255,255,.35); }
+    .lb-arr.prev { left: -52px; }
+    .lb-arr.next { right: -52px; }
+    @media (max-width: 640px) {
+      .lb-arr.prev { left: 4px; }
+      .lb-arr.next { right: 4px; }
+    }
+    .lb-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,.15); color: white;
+      border: none; font-size: 20px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .moim-poster.has-img { cursor: zoom-in; }
+    .moim-poster.has-img:hover::after {
+      content: '🔍 크게 보기';
+      position: absolute; bottom: 10px; right: 10px;
+      background: rgba(0,0,0,.55); color: white;
+      font-size: 11px; padding: 4px 10px;
+      border-radius: 12px;
+    }
+
+    /* 포스터 이미지 슬롯 */
+    .poster-img-slot {
+      position: absolute; inset: 0;
+      z-index: 2;
+    }
+    .poster-img-slot img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .poster-img-slot img[src=""], .poster-img-slot img:not([src]) { display: none; }
+
+    .btn-apply.sold-out { background: #94a3b8; cursor: not-allowed; }
+    .moim-full-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      background: #fee2e2;
+      color: #991b1b;
+      vertical-align: middle;
+    }
+    .moim-ended-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      background: #e2e8f0;
+      color: #475569;
+      vertical-align: middle;
+    }
+    .moim-closed-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      background: #fef3c7;
+      color: #92400e;
+      vertical-align: middle;
+    }
+    .stab.stab-full {
+      opacity: .55;
+      text-decoration: line-through;
+    }
+    .stab.stab-ended {
+      opacity: .6;
+      color: #64748b;
+    }
+    .moim-card.moim-sold-out .moim-poster-img::before,
+    .moim-card.moim-sold-out .poster-slider-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: rgba(8, 18, 38, 0.58);
+      pointer-events: none;
+    }
+    .moim-card.moim-sold-out .moim-poster-img::after,
+    .moim-card.moim-sold-out .poster-slider-wrap::after {
+      content: 'SOLD OUT';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-10deg);
+      z-index: 5;
+      min-width: 68%;
+      max-width: 88%;
+      text-align: center;
+      background: rgba(185, 28, 28, 0.94);
+      color: #fff;
+      font-size: clamp(22px, 7vw, 38px);
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      line-height: 1.1;
+      padding: 14px 12px;
+      border: 3px solid #fff;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .38);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+    .moim-card.moim-sold-out .moim-poster-img:hover::after,
+    .moim-card.moim-sold-out .poster-slider-wrap:hover::after {
+      content: 'SOLD OUT';
+      left: 50%;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%) rotate(-10deg);
+      background: rgba(185, 28, 28, 0.94);
+      color: #fff;
+      font-size: clamp(22px, 7vw, 38px);
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      padding: 14px 12px;
+      border-radius: 8px;
+    }
+    .voice-event.moim-sold-out .voice-event-poster::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      background: rgba(8, 18, 38, 0.58);
+      pointer-events: none;
+    }
+    .voice-event.moim-sold-out .voice-event-poster::after {
+      content: 'SOLD OUT';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-10deg);
+      z-index: 4;
+      min-width: 68%;
+      text-align: center;
+      background: rgba(185, 28, 28, 0.94);
+      color: #fff;
+      font-size: clamp(20px, 6vw, 32px);
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      line-height: 1.1;
+      padding: 12px 10px;
+      border: 3px solid #fff;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .38);
+      border-radius: 8px;
+      pointer-events: none;
+    }
+    .moim-card.moim-ended .moim-poster-img::before,
+    .moim-card.moim-ended .poster-slider-wrap::before,
+    .voice-event.moim-ended .voice-event-poster::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: rgba(15, 23, 42, 0.62);
+      pointer-events: none;
+    }
+    .moim-card.moim-ended .moim-poster-img::after,
+    .moim-card.moim-ended .poster-slider-wrap::after,
+    .voice-event.moim-ended .voice-event-poster::after {
+      content: '모임 종료';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      z-index: 5;
+      min-width: 68%;
+      max-width: 88%;
+      text-align: center;
+      background: rgba(30, 41, 59, 0.94);
+      color: #fff;
+      font-size: clamp(20px, 6.5vw, 34px);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      padding: 14px 12px;
+      border: 3px solid rgba(255, 255, 255, .92);
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .38);
+      border-radius: 8px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .moim-card.moim-ended .moim-poster-img:hover::after,
+    .moim-card.moim-ended .poster-slider-wrap:hover::after {
+      content: '모임 종료';
+      left: 50%;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      background: rgba(30, 41, 59, 0.94);
+      color: #fff;
+      font-size: clamp(20px, 6.5vw, 34px);
+      padding: 14px 12px;
+      border-radius: 8px;
+    }
+    .moim-card.moim-closed .moim-poster-img::before,
+    .moim-card.moim-closed .poster-slider-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: rgba(8, 18, 38, 0.55);
+      pointer-events: none;
+    }
+    .moim-card.moim-closed .moim-poster-img::after,
+    .moim-card.moim-closed .poster-slider-wrap::after {
+      content: '모임 신청 마감';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      z-index: 5;
+      min-width: 72%;
+      max-width: 92%;
+      text-align: center;
+      background: rgba(146, 64, 14, 0.94);
+      color: #fff;
+      font-size: clamp(17px, 5.5vw, 28px);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      line-height: 1.25;
+      padding: 14px 10px;
+      border: 3px solid #fff;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .35);
+      border-radius: 8px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .moim-card.moim-closed .moim-poster-img:hover::after,
+    .moim-card.moim-closed .poster-slider-wrap:hover::after {
+      content: '모임 신청 마감';
+      left: 50%;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      background: rgba(146, 64, 14, 0.94);
+      color: #fff;
+      font-size: clamp(17px, 5.5vw, 28px);
+      padding: 14px 10px;
+      border-radius: 8px;
+    }
+
+    /* ── 시간 슬롯 ──────────────────────── */
+    .tslot {
+      padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 700;
+      border: 1px solid var(--border); background: var(--bg); color: var(--text);
+      cursor: pointer; font-family: inherit; transition: all .15s; white-space: nowrap;
+    }
+    .tslot:hover { border-color: var(--accent); color: var(--navy); }
+    .tslot.active { background: var(--navy); color: white; border-color: var(--navy); }
+    .tslot.blocked { background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0; cursor: not-allowed; text-decoration: line-through; }
+    .tslot.blocked-moim { border-color: var(--ocean-light); color: var(--ocean-deep); background: var(--ocean-pale); cursor: not-allowed; text-decoration: none; line-height: 1.35; }
+    .tslot.has-rent.blocked { border-color: #fcd34d; color: #92400e; background: #fffbeb; text-decoration: none; line-height: 1.35; }
+    .tslot-tag { display: block; font-size: 10px; font-weight: 700; margin-top: 2px; opacity: .85; }
+    @media (max-width: 480px) {
+      .tslot { font-size: 11px; padding: 6px 8px; }
+    }
+
+    /* 30분 시간표 */
+    .timetable {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .tcell {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      transition: all .15s;
+      font-family: inherit;
+      color: var(--text);
+    }
+    .tcell:hover { border-color: var(--accent); color: var(--navy); }
+    .tcell.disabled { background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0; cursor: not-allowed; }
+    .tcell.moim { background: var(--ocean-pale); color: var(--ocean-deep); border-color: var(--ocean-light); cursor: not-allowed; }
+    .tcell.rent { background: #fffbeb; color: #92400e; border-color: #fcd34d; cursor: not-allowed; }
+    .tcell.in-range { background: rgba(10,31,68,.10); border-color: rgba(10,31,68,.25); }
+    .tcell.sel-start,
+    .tcell.sel-end { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .tcell .time { font-weight: 800; font-size: 12px; }
+    .tcell .tag { font-size: 10px; font-weight: 800; opacity: .9; white-space: nowrap; }
+
+    /* ── 공간 소개 ───────────────────────── */
+    .space-section { margin-top: 48px; }
+    .space-filter {
+      display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .sf-btn {
+      padding: 7px 16px; border-radius: 20px; font-size: 13px; font-weight: 700;
+      border: 1px solid var(--border); background: var(--white); color: var(--muted);
+      cursor: pointer; font-family: inherit; transition: all .15s;
+    }
+    .sf-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+    .space-slider-wrap { position: relative; overflow: hidden; border-radius: var(--radius); }
+    .space-slider { display: flex; transition: transform .35s ease; }
+    .space-slide {
+      min-width: 100%; background: var(--white);
+      border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+    }
+    .space-img-wrap { position: relative; height: 220px; overflow: hidden; background: var(--bg); }
+    .space-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .space-img-tag {
+      position: absolute; top: 12px; left: 12px;
+      background: var(--navy); color: white;
+      padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;
+    }
+    .space-info { padding: 18px; }
+    .space-info h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .space-info p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .slider-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 12px;
+    }
+    .slider-dots { display: flex; gap: 6px; }
+    .sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background .2s; }
+    .sdot.active { background: var(--navy); }
+    .slider-arrows { display: flex; gap: 6px; }
+    .sarr {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 14px; transition: all .15s;
+    }
+    .sarr:hover { background: var(--navy); color: white; border-color: var(--navy); }
+
+    /* ── 푸터 ─────────────────────────────── */
+    footer {
+      background: var(--sand-dark);
+      color: var(--muted);
+      text-align: center; padding: 28px 20px;
+      font-size: 12px; line-height: 1.8;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--ocean-deep); text-decoration: none; }
+
+    /* ── 모바일 반응형 ─────────────────────── */
+    @media (max-width: 640px) {
+      header { padding: 12px 14px; }
+      header .logo { font-size: 16px; }
+
+      .hero { padding: 36px 16px 32px; }
+      .hero h1 { font-size: clamp(22px, 6vw, 28px); }
+
+      .wrap { padding: 24px 12px 60px; }
+      .sec-title { font-size: 18px; }
+
+      .cal-head {
+        gap: 10px;
+        padding: 12px 14px;
+      }
+      .cal-head-top { width: 100%; }
+      .cal-head strong { font-size: 15px; }
+      .cal-head-sub { font-size: 10px; }
+      .cal-nav-btn { width: 30px; height: 30px; font-size: 20px; }
+      .cal-legend {
+        flex-wrap: wrap;
+        gap: 6px 10px;
+        font-size: 10px;
+        line-height: 1.45;
+      }
+
+      .cal-dow { padding: 6px 2px; font-size: 10px; }
+      .cal-cell {
+        min-height: 54px;
+        padding: 3px 2px 18px;
+      }
+      .cal-day { font-size: 10px; margin-bottom: 2px; }
+      .cal-event {
+        font-size: 8px;
+        padding: 1px 2px;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        word-break: keep-all;
+        line-height: 1.25;
+      }
+      .cal-rent-btn {
+        font-size: 7px;
+        bottom: 2px;
+        right: 2px;
+        padding: 0 2px;
+      }
+
+      .moim-body { padding: 14px; }
+      .moim-name { font-size: 16px; }
+      .moim-desc { font-size: 12px; }
+      .meta-row { font-size: 11px; }
+      .moim-foot {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .moim-foot .btn-apply {
+        width: 100%;
+        padding: 11px 16px;
+      }
+
+      .featured-grid { grid-template-columns: 1fr; }
+      .featured-grid .voice-event { max-width: min(100%, 360px); margin: 0 auto; }
+      .moim-curation { max-width: min(100%, 360px); margin: 0 auto; }
+      .voice-event-desc { font-size: 9px; -webkit-line-clamp: 4; }
+      .voice-fact { font-size: 8px; padding: 4px 5px; }
+      .featured-poster { aspect-ratio: 3 / 4; }
+
+      .rent-box { padding: 18px 14px; }
+      .modal { padding: 20px 16px; border-radius: 14px; }
+      .fg-row { grid-template-columns: 1fr; }
+
+      .timetable { grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); }
+      .tcell { padding: 7px 8px; }
+      .tcell .tag { white-space: normal; font-size: 9px; }
+
+      .space-img-wrap { height: 180px; }
+      .space-info { padding: 14px; }
+    }
+
+    @media (max-width: 480px) {
+      .rent-box { padding: 18px 16px; }
+      .rent-box-illust { display: none; }
+      .sec-witty { width: 36px; height: 36px; }
+    }
+    @media (max-width: 380px) {
+      .cal-event { font-size: 7px; }
+      .cal-cell { padding-bottom: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="https://moim.bbooks.co.kr">
+    비북스 b<span class="logo-dot">.</span>moim
+    <span class="logo-sub">느슨하고 단단하게 함께 자라가는 모임</span>
+  </a>
+</header>
+
+<div class="hero">
+  <svg class="wave-deco" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,20 Q50,5 100,20 T200,20 T300,20 T400,20 L400,40 L0,40 Z" fill="rgba(255,255,255,0.3)"/>
+    <path d="M0,28 Q60,14 120,28 T240,28 T360,28 L400,28 L400,40 L0,40 Z" fill="rgba(255,255,255,0.15)"/>
+  </svg>
+  <svg class="hero-illust" viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="185" cy="28" r="18" fill="#FFE08A" opacity="0.9"/>
+    <circle cx="185" cy="28" r="22" fill="none" stroke="#FFE08A" stroke-width="1.5" opacity="0.4"/>
+    <path d="M0,110 C30,95 50,120 80,105 C110,90 130,115 160,100 C180,92 200,108 220,98 L220,140 L0,140 Z" fill="rgba(255,255,255,0.25)"/>
+    <path d="M0,118 C40,108 70,125 110,112 C150,99 180,120 220,110 L220,140 L0,140 Z" fill="rgba(255,255,255,0.4)"/>
+    <path d="M55,88 Q90,78 125,88 Q130,90 125,94 Q90,104 55,94 Q50,92 55,88 Z" fill="#FF7B54" stroke="#fff" stroke-width="1.5"/>
+    <ellipse cx="88" cy="76" rx="8" ry="10" fill="#FFD4B8"/>
+    <circle cx="88" cy="62" r="7" fill="#FFD4B8"/>
+    <path d="M78,72 Q65,65 60,58" stroke="#FFD4B8" stroke-width="3" stroke-linecap="round"/>
+    <path d="M98,72 Q115,62 120,52" stroke="#FFD4B8" stroke-width="3" stroke-linecap="round"/>
+    <path d="M82,84 Q75,95 70,100" stroke="#4A90A4" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M94,84 Q100,95 105,100" stroke="#4A90A4" stroke-width="3.5" stroke-linecap="round"/>
+    <rect x="112" y="46" width="14" height="18" rx="2" fill="#fff" stroke="#0a5f7a" stroke-width="1.2" transform="rotate(-15 119 55)"/>
+    <line x1="115" y1="51" x2="123" y2="49" stroke="#0a5f7a" stroke-width="0.8" transform="rotate(-15 119 55)"/>
+    <line x1="115" y1="55" x2="123" y2="53" stroke="#0a5f7a" stroke-width="0.8" transform="rotate(-15 119 55)"/>
+    <line x1="115" y1="59" x2="123" y2="57" stroke="#0a5f7a" stroke-width="0.8" transform="rotate(-15 119 55)"/>
+    <circle cx="130" cy="100" r="3" fill="rgba(255,255,255,0.6)"/>
+    <circle cx="140" cy="108" r="2" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="45" cy="105" r="2.5" fill="rgba(255,255,255,0.5)"/>
+  </svg>
+  <div class="hero-badge">🏄 2026 · 07</div>
+  <h1>7월 모임 &amp; 대관</h1>
+  <p class="hero-sub">이번 여름, 파도 타듯 가볍게 함께해요</p>
+</div>
+
+<div class="wrap">
+
+  <!-- ── 캘린더 ── -->
+  <div class="sec-head-row" style="margin-bottom:8px">
+    <div>
+      <div class="sec-label">Calendar</div>
+      <div class="sec-title">7월 일정 <span class="sec-title-sub">· 대관 9월까지</span></div>
+    </div>
+    <svg class="sec-witty" viewBox="0 0 48 48" aria-hidden="true">
+      <rect x="8" y="10" width="32" height="30" rx="4" fill="var(--ocean-pale)" stroke="var(--ocean)" stroke-width="1.5"/>
+      <line x1="8" y1="18" x2="40" y2="18" stroke="var(--ocean)" stroke-width="1.5"/>
+      <circle cx="16" cy="26" r="2" fill="var(--coral)"/>
+      <circle cx="24" cy="26" r="2" fill="var(--ocean-light)"/>
+      <circle cx="32" cy="26" r="2" fill="var(--ocean-light)"/>
+      <circle cx="16" cy="32" r="2" fill="var(--ocean-light)"/>
+      <circle cx="24" cy="32" r="2" fill="var(--coral)"/>
+    </svg>
+  </div>
+  <div class="cal-wrap" id="calWrap">
+    <div class="cal-head">
+      <div class="cal-head-top">
+        <button type="button" class="cal-nav-btn" id="calPrevBtn" aria-label="이전 달">‹</button>
+        <div class="cal-head-center">
+          <strong id="calMonthLabel">2026년 7월</strong>
+          <span class="cal-head-sub" id="calMonthSub">비모임 · 대관</span>
+        </div>
+        <button type="button" class="cal-nav-btn" id="calNextBtn" aria-label="다음 달">›</button>
+      </div>
+      <div class="cal-legend" id="calLegend">
+        <span id="calLegendMoim"><span class="dot dot-moim"></span> 비모임</span>
+        <span><span class="dot dot-rent"></span> 대관 가능</span>
+      </div>
+    </div>
+    <div class="cal-carousel-viewport" id="calCarouselViewport">
+      <div class="cal-carousel-track" id="calCarouselTrack">
+        <div class="cal-month-panel" data-cal-month="0">
+        <div class="cal-grid" id="calGridJuly">
+      <div class="cal-dow sun">일</div>
+      <div class="cal-dow">월</div>
+      <div class="cal-dow">화</div>
+      <div class="cal-dow">수</div>
+      <div class="cal-dow">목</div>
+      <div class="cal-dow">금</div>
+      <div class="cal-dow sat">토</div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell empty"></div>
+      <div class="cal-cell" onclick="openRent('2026-07-01')"><div class="cal-day">1</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-02')"><div class="cal-day">2</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-03')"><div class="cal-day">3</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-07-04')"><div class="cal-day">4</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-07-05')"><div class="cal-day">5</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-06')"><div class="cal-day">6</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-07')"><div class="cal-day">7</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-08')"><div class="cal-day">8</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-09')"><div class="cal-day">9</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-10')"><div class="cal-day">10</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-07-11')"><div class="cal-day">11</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-07-12')"><div class="cal-day">12</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-13')"><div class="cal-day">13</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-14')"><div class="cal-day">14</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-15')"><div class="cal-day">15</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-16')"><div class="cal-day">16</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-17')"><div class="cal-day">17</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-07-18')"><div class="cal-day">18</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-07-19')">
+        <div class="cal-day">19</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('customtea')">커스텀 티음료</div>
+        <div class="cal-rent-btn">대관</div>
+      </div>
+      <div class="cal-cell" onclick="openRent('2026-07-20')"><div class="cal-day">20</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-21')"><div class="cal-day">21</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-22')"><div class="cal-day">22</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-23')"><div class="cal-day">23</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-24')"><div class="cal-day">24</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-07-25')"><div class="cal-day">25</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-07-26')"><div class="cal-day">26</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-27')"><div class="cal-day">27</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-28')"><div class="cal-day">28</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-29')"><div class="cal-day">29</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-30')"><div class="cal-day">30</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-31')"><div class="cal-day">31</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell empty"></div>
+    </div>
+        </div>
+        <div class="cal-month-panel" data-cal-month="1" id="calPanelAugust"></div>
+        <div class="cal-month-panel" data-cal-month="2" id="calPanelSeptember"></div>
+      </div>
+    </div>
+    <div class="cal-dots" id="calDots" aria-label="캘린더 월 선택"></div>
+  </div>
+
+  <!-- ── 모임 카드 ── -->
+  <div class="sec-head-row" style="margin-bottom:16px">
+    <div>
+      <div class="sec-label">b.moim</div>
+      <div class="sec-title">7월 개설 모임</div>
+    </div>
+    <svg class="sec-witty" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M24,8 Q32,16 24,24 Q16,32 24,40" stroke="var(--ocean)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <circle cx="24" cy="8" r="4" fill="var(--coral)"/>
+      <path d="M12,20 Q8,28 12,36" stroke="var(--ocean-light)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      <path d="M36,20 Q40,28 36,36" stroke="var(--ocean-light)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="moim-open-bar">
+    <div class="moim-open-stat">
+      <span class="moim-open-num" id="moimTotalCount">1</span>
+      <span class="moim-open-label">개 모임 개설</span>
+    </div>
+    <p class="moim-open-desc">7월 비북스 b.moim · 아래 번호 순서대로 모임을 확인할 수 있습니다.</p>
+  </div>
+
+    <div class="moim-grid">
+
+    <div class="moim-card" id="customtea">
+      <div class="moim-poster ocean-tea-poster">
+        <svg class="poster-tea-illust" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <ellipse cx="50" cy="72" rx="28" ry="6" fill="rgba(255,255,255,0.25)"/>
+          <path d="M28,68 Q28,42 50,38 Q72,42 72,68 Z" fill="rgba(255,255,255,0.9)" stroke="#fff" stroke-width="1.5"/>
+          <path d="M32,68 L32,52 Q50,46 68,52 L68,68" fill="#5ecde8" opacity="0.85"/>
+          <path d="M72,55 Q82,52 84,58 Q82,64 72,62" fill="rgba(255,255,255,0.85)" stroke="#fff" stroke-width="1"/>
+          <path d="M38,38 Q50,28 62,38" stroke="#FFE08A" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <circle cx="44" cy="32" r="2" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="50" cy="28" r="1.5" fill="rgba(255,255,255,0.4)"/>
+          <circle cx="56" cy="32" r="2" fill="rgba(255,255,255,0.5)"/>
+        </svg>
+        <div class="poster-title">DIY 커스텀<br>티음료 만들기</div>
+        <div class="poster-sub">다온글방 · 7/19(일)</div>
+        <img src="images/다온글방.png" alt="다온글방" class="poster-host-mark"/>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">DIY 내 취향 가득 담은 커스텀 티음료 만들기!</div>
+        <p class="moim-host-line">다온글방</p>
+        <div class="moim-desc">차에 대한 관심이 높아지면서 차를 즐기는 방법이 다양해지고 있습니다! 차를 즐기는 다양한 방법들을 알아보고, 내 취향 가득 담은 나만의 커스텀 티음료를 만들어봐요!</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>7월 19일 (일) 오전 11:00 – 13:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>4명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">20,000원</div>
+            <div class="moim-cap">재료 준비 있음</div>
+          </div>
+          <button class="btn-apply" id="apply-customtea" onclick="openApply('DIY 내 취향 가득 담은 커스텀 티음료 만들기!','customtea')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── 대관 안내 ── -->
+  <div class="rent-box">
+    <svg class="rent-box-illust" viewBox="0 0 56 56" aria-hidden="true">
+      <path d="M8,32 L28,18 L48,32 L48,48 L8,48 Z" fill="var(--ocean-pale)" stroke="var(--ocean)" stroke-width="1.5" stroke-linejoin="round"/>
+      <rect x="22" y="36" width="12" height="12" rx="1" fill="var(--ocean)" opacity="0.7"/>
+      <path d="M0,50 Q14,44 28,50 T56,50 L56,56 L0,56 Z" fill="var(--ocean-light)" opacity="0.5"/>
+    </svg>
+    <h3>🏠 공간 대관 문의</h3>
+    <p>비북스 세미나실과 매장 테이블을 대관하실 수 있어요.<br>
+    비모임은 7월부터 시작하며, <strong>대관은 7–9월</strong>까지 캘린더에서 미리 신청할 수 있어요.<br>
+    캘린더를 넘기면 8·9월 대관 일정도 확인·신청할 수 있습니다.<br>
+    일정 확인 후 담당자가 연락드립니다.</p>
+    <button class="btn-rent" onclick="openRent('')">대관 신청하기</button>
+  </div>
+
+  <!-- ── 공간 소개 ── -->
+  <div class="space-section">
+    <div class="sec-head-row" style="margin-bottom:16px">
+      <div>
+        <div class="sec-label">Space</div>
+        <div class="sec-title">비북스 공간 소개</div>
+        <p style="font-size:13px;color:var(--muted);margin-top:6px">책이 있는 공간에서, 당신의 모임을 펼쳐보세요</p>
+      </div>
+      <svg class="sec-witty" viewBox="0 0 48 48" aria-hidden="true">
+        <rect x="10" y="14" width="10" height="26" rx="1" fill="var(--ocean-pale)" stroke="var(--ocean)" stroke-width="1.2"/>
+        <rect x="22" y="10" width="10" height="30" rx="1" fill="var(--coral-light)" stroke="var(--coral)" stroke-width="1.2" opacity="0.8"/>
+        <rect x="34" y="18" width="8" height="22" rx="1" fill="var(--ocean-pale)" stroke="var(--ocean)" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <div class="space-filter">
+      <button class="sf-btn active" onclick="filterSpace('all',this)">전체</button>
+      <button class="sf-btn" onclick="filterSpace('main',this)">🏠 매장 전체</button>
+      <button class="sf-btn" onclick="filterSpace('table',this)">☕ 매장 모임 테이블</button>
+      <button class="sf-btn" onclick="filterSpace('seminar',this)">📚 세미나실</button>
+    </div>
+    <div class="space-slider-wrap">
+      <div class="space-slider" id="spaceSlider">
+
+        <div class="space-slide" data-type="main">
+          <div class="space-img-wrap">
+            <img src="images/space_01.jpg" alt="비북스 매장 전체" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">🏠 매장 전체</span>
+          </div>
+          <div class="space-info">
+            <h3>비북스 매장 전체</h3>
+            <p>책장이 가득한 따뜻한 공간. 독립서점의 아늑함 속에서 당신만의 특별한 자리를 만들어보세요.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="main">
+          <div class="space-img-wrap">
+            <img src="images/space_02.jpg" alt="비북스 매장 전체 ②" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">🏠 매장 전체</span>
+          </div>
+          <div class="space-info">
+            <h3>비북스 매장 전체 ②</h3>
+            <p>소파와 의자가 어우러진 자유로운 배치. 북토크, 전시, 소규모 행사에 어울립니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="main">
+          <div class="space-img-wrap">
+            <img src="images/space_03.jpg" alt="비북스 매장 전체 ③" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">🏠 매장 전체</span>
+          </div>
+          <div class="space-info">
+            <h3>비북스 매장 전체 ③</h3>
+            <p>책으로 둘러싸인 고요한 공간. 낮부터 밤까지, 당신의 모임에 맞게 변합니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="table">
+          <div class="space-img-wrap">
+            <img src="images/table_01.jpg" alt="매장 모임 테이블" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">☕ 매장 모임 테이블</span>
+          </div>
+          <div class="space-info">
+            <h3>매장 모임 테이블</h3>
+            <p>책장 사이에 자리한 아늑한 원목 테이블. 4~6인 소규모 독서 모임·스터디·티타임에 딱입니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="table">
+          <div class="space-img-wrap">
+            <img src="images/table_02.jpg" alt="매장 모임 테이블 ②" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">☕ 매장 모임 테이블</span>
+          </div>
+          <div class="space-info">
+            <h3>매장 모임 테이블 ②</h3>
+            <p>테이블을 붙여 넓게 사용할 수 있어요. 더 많은 인원의 모임도 가능합니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="table">
+          <div class="space-img-wrap">
+            <img src="images/table_03.jpg" alt="매장 모임 테이블 ③" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">☕ 매장 모임 테이블</span>
+          </div>
+          <div class="space-info">
+            <h3>매장 모임 테이블 ③</h3>
+            <p>사방이 책으로 둘러싸인 공간에서 6~8인 모임도 넉넉하게. 조용하고 집중력 있는 자리입니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="seminar">
+          <div class="space-img-wrap">
+            <img src="images/seminar_01.jpg" alt="세미나실" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">📚 세미나실</span>
+          </div>
+          <div class="space-info">
+            <h3>세미나실</h3>
+            <p>대형 화이트보드와 원목 테이블, 가득 찬 책장이 어우러진 독립 공간. 강의·워크숍·팀 모임에 최적입니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="seminar">
+          <div class="space-img-wrap">
+            <img src="images/seminar_02.jpg" alt="세미나실 보드게임" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">📚 세미나실</span>
+          </div>
+          <div class="space-info">
+            <h3>세미나실 — 보드게임</h3>
+            <p>다빈치코드, 루미큐브, 딕싯 등 다양한 보드게임이 준비되어 있어요. 모임 후 가볍게 즐기기 좋습니다.</p>
+          </div>
+        </div>
+
+        <div class="space-slide" data-type="seminar">
+          <div class="space-img-wrap">
+            <img src="images/seminar_03.jpg" alt="세미나실 내장 전원" onerror="this.parentElement.style.background='#dde3ef';this.style.display='none'">
+            <span class="space-img-tag">📚 세미나실</span>
+          </div>
+          <div class="space-info">
+            <h3>세미나실 — 테이블 내장 전원</h3>
+            <p>테이블에 콘센트 + USB 포트가 내장되어 있어 노트북·스마트폰 충전이 편리합니다.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="slider-nav">
+      <div class="slider-dots" id="sliderDots"></div>
+      <div class="slider-arrows">
+        <button class="sarr" onclick="slideMove(-1)">‹</button>
+        <button class="sarr" onclick="slideMove(1)">›</button>
+      </div>
+    </div>
+  </div>
+
+
+    <h3>💳 환불 규정</h3>
+    <p>
+      <strong>재료 준비가 있는 모임</strong><br>
+      · 모임 2일 전 취소: 100% 환불<br>
+      · 모임 1일 전 취소: 50% 환불<br>
+      · 당일 취소: 환불 불가<br><br>
+      <strong>재료 준비가 없는 모임</strong><br>
+      · 모임 1일 전 취소: 100% 환불<br>
+      · 당일 취소: 환불 불가<br><br>
+      취소 문의는 비북스 공식 인스타그램 DM으로 부탁드립니다.
+    </p>
+  </div>
+
+</div>
+
+<!-- ══ 라이트박스 ══ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lb-close" onclick="event.stopPropagation();closeLightbox()">✕</button>
+  <div class="lb-inner" onclick="event.stopPropagation()">
+    <button type="button" class="lb-arr prev" id="lbPrev" style="display:none" onclick="lbMove(-1)">‹</button>
+    <img id="lbImg" src="" alt=""/>
+    <button type="button" class="lb-arr next" id="lbNext" style="display:none" onclick="lbMove(1)">›</button>
+  </div>
+</div>
+
+<!-- ══ 모달: 모임 신청 ══ -->
+<div class="ov" id="applyOv">
+  <div class="modal">
+    <div class="modal-title" id="modalMoimName"></div>
+    <div class="modal-sub" id="modalMoimDate"></div>
+    <div id="applyAlert"></div>
+    <div id="applyForm">
+      <div class="fg-row">
+        <div class="fg"><label>이름 *</label><input type="text" id="aName" placeholder="이름"/></div>
+        <div class="fg"><label>연락처 *</label><input type="tel" id="aPhone" placeholder="010-0000-0000"/></div>
+      </div>
+      <div id="sessionSelectWrap" style="display:none">
+        <div class="fg"><label>회차 선택 *</label>
+          <select id="aSession">
+            <option value="">회차를 선택해주세요</option>
+          </select>
+        </div>
+      </div>
+      <div class="pay-box">
+        <div style="font-size:12px;color:var(--ocean-deep);margin-bottom:4px">입금 안내</div>
+        <div class="pay-amount" id="modalAmount"></div>
+        <div style="font-size:12px;margin-top:6px">
+          <strong>모임통장: 카카오뱅크 7942-33-45474</strong> (예금주 경규환)<br>
+          입금자명은 신청 시 이름과 동일하게 부탁드립니다.
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-cancel" onclick="closeOv('applyOv')">취소</button>
+        <button class="btn btn-submit" id="submitBtn" onclick="submitApply()">신청하기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ 모달: 대관 신청 ══ -->
+<div class="ov" id="rentOv">
+  <div class="modal">
+    <div class="modal-title">🏠 공간 대관 신청</div>
+    <div class="modal-sub">비북스 담당자가 확인 후 연락드립니다</div>
+    <div id="rentAlert"></div>
+    <div class="fg"><label>공간 선택 *</label>
+      <select id="rSpace" onchange="renderTimeSlots()">
+        <option value="">선택해주세요</option>
+        <option value="세미나실">📌 세미나실</option>
+        <option value="매장 테이블">☕ 매장 테이블</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>희망 날짜 *</label>
+      <input type="date" id="rDate" min="2026-07-01" max="2026-09-30" onchange="renderTimeSlots()"/>
+    </div>
+    <div id="rentBlockedWrap" class="rent-blocked-wrap" hidden>
+      <div class="rent-blocked-title">📋 이 날 예약 현황</div>
+      <ul id="rentBlockedList" class="rent-blocked-list"></ul>
+      <p class="rent-blocked-hint">노란색 시간은 이미 대관 신청된 구간이에요. 아래에서 비어 있는 시간을 선택해주세요.</p>
+    </div>
+    <div class="fg">
+      <label>대관 시간 * <span id="rTimeNote" style="font-weight:400;color:var(--muted)"></span></label>
+      <div id="timeSlots" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+        <div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>
+      </div>
+      <input type="hidden" id="rTime"/>
+    </div>
+    <div class="fg-row">
+      <div class="fg"><label>성함 *</label><input type="text" id="rName" placeholder="이름"/></div>
+      <div class="fg"><label>연락처 *</label><input type="tel" id="rPhone" placeholder="010-0000-0000"/></div>
+    </div>
+    <div class="fg"><label>사용 목적</label><input type="text" id="rPurpose" placeholder="독서모임, 스터디 등"/></div>
+    <div class="fg"><label>인원</label><input type="number" id="rCount" placeholder="예: 6"/></div>
+    <div class="modal-foot">
+      <button class="btn btn-cancel" onclick="closeOv('rentOv')">취소</button>
+      <button class="btn btn-submit" id="rentBtn" onclick="submitRent()">신청하기</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2026 · 비북스 b.moim · 느슨하고 단단하게 함께 자라가는 모임<br>
+  <a href="apply/">모임 개설 신청하기 →</a>
+</footer>
+
+<script>
+// ══ 설정 ═══════════════════════════════
+const API = 'https://script.google.com/macros/s/AKfycbwfZYQ9FtaMWm6ZqyPhd1tByTzrQV352jtQZYT0-lplGlR0WOKCW_V928gLmRptuPik4g/exec';
+const RENT_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent('대관신청');
+const MOIM_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent('모임신청');
+const RENT_CAL_MONTHS = ['7월', '8월', '9월'];
+const CAL_PANELS = [
+  { year: 2026, month: 7, label: '2026년 7월', sub: '비모임 · 대관', hasMoim: true },
+  { year: 2026, month: 8, label: '2026년 8월', sub: '대관 신청 가능', hasMoim: false },
+  { year: 2026, month: 9, label: '2026년 9월', sub: '대관 신청 가능', hasMoim: false },
+];
+let calPanelIndex = 0;
+
+// ══ 모임 데이터 ════════════════════════
+const MOIM_YEAR = 2026;
+const PAGE_MONTH = '7월';
+// session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
+const MOIMS = {
+  customtea: {
+    name: 'DIY 내 취향 가득 담은 커스텀 티음료 만들기!',
+    sessions: [{ label: '7/19(일) 오전 11:00–13:00', value: '7월19일' }],
+    capacity: 4,
+    amount: 20000,
+    hasSession: false
+  }
+};
+
+const VOICES = {};
+
+let curMoimKey = '';
+let curVoiceKey = '';
+let curationPool = [];
+let curationPickIndex = -1;
+let latestMoimCounts = {};
+
+const MOIM_CURATION_META = {
+  customtea: { cardId: 'customtea', poster: '' }
+};
+
+const MOIM_DEFAULT_SESSION = {};
+Object.values(MOIMS).forEach(m => {
+  if (m.sessions.length === 1) MOIM_DEFAULT_SESSION[m.name] = m.sessions[0].value;
+});
+Object.values(VOICES).forEach(v => {
+  MOIM_DEFAULT_SESSION[v.name] = v.sessions[0].value;
+});
+
+function getMoimSessionCount(counts, name, sessionValue) {
+  if (name === '슬기로운 영화 속 클래식') {
+    return counts[`${name}_${sessionValue}`] ?? counts[`동서남북book_${sessionValue}`] ?? counts[name] ?? 0;
+  }
+  return counts[`${name}_${sessionValue}`] ?? counts[name] ?? 0;
+}
+
+function getSessionCapacity(m, sessionValue) {
+  return typeof m.capacity === 'object' ? m.capacity[sessionValue] : m.capacity;
+}
+
+function isSessionFull(m, sessionValue, counts) {
+  const cap = getSessionCapacity(m, sessionValue);
+  if (!cap) return false;
+  return getMoimSessionCount(counts, m.name, sessionValue) >= cap;
+}
+
+function getNowKstMs() {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' })).getTime();
+}
+
+function parseSessionEndMs(session) {
+  if (session._endMs != null) return session._endMs;
+  const label = session.label || '';
+  const dateMatch = label.match(/(\d{1,2})\/(\d{1,2})/);
+  if (!dateMatch) {
+    session._endMs = null;
+    return null;
+  }
+  const month = parseInt(dateMatch[1], 10);
+  const day = parseInt(dateMatch[2], 10);
+  const rangeMatch = label.match(/(\d{1,2}(?::\d{2})?)\s*[~–\-]\s*(\d{1,2}(?::\d{2})?)/);
+  if (!rangeMatch) {
+    session._endMs = new Date(MOIM_YEAR, month - 1, day, 23, 59, 59).getTime();
+    return session._endMs;
+  }
+  const isPM = label.includes('오후');
+  const isAM = label.includes('오전');
+  const startPart = rangeMatch[1];
+  const endPart = rangeMatch[2];
+  const startHour = startPart.includes(':')
+    ? parseInt(startPart.split(':')[0], 10)
+    : parseInt(startPart, 10);
+  let endHour = endPart.includes(':')
+    ? parseInt(endPart.split(':')[0], 10)
+    : parseInt(endPart, 10);
+  const endMin = endPart.includes(':') ? parseInt(endPart.split(':')[1], 10) : 0;
+  if (isPM && endHour < 12) endHour += 12;
+  if (isAM && endHour < startHour) endHour += 12;
+  session._endMs = new Date(MOIM_YEAR, month - 1, day, endHour, endMin, 0).getTime();
+  return session._endMs;
+}
+
+function isSessionEnded(session) {
+  const endMs = parseSessionEndMs(session);
+  if (endMs == null) return false;
+  return getNowKstMs() > endMs;
+}
+
+function isSessionClosed(m, session, counts) {
+  if (m.applyClosed) return true;
+  return isSessionEnded(session) || isSessionFull(m, session.value, counts);
+}
+
+function isMoimFullySoldOut(key, counts) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  return m.sessions.every(s => isSessionFull(m, s.value, counts || latestMoimCounts));
+}
+
+function isMoimFullyEnded(key) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  return m.sessions.every(s => isSessionEnded(s));
+}
+
+function isMoimFullyClosed(key, counts) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  counts = counts || latestMoimCounts;
+  return m.sessions.every(s => isSessionClosed(m, s, counts));
+}
+
+function isMoimApplyOpen(key, counts) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  counts = counts || latestMoimCounts;
+  return m.sessions.some(s => !isSessionClosed(m, s, counts));
+}
+
+function isVoiceFullySoldOut(key, counts) {
+  const v = VOICES[key];
+  if (!v) return false;
+  const session = v.sessions[0].value;
+  return getMoimSessionCount(counts || latestMoimCounts, v.name, session) >= v.capacity;
+}
+
+function isVoiceEnded(key) {
+  const v = VOICES[key];
+  return v ? isSessionEnded(v.sessions[0]) : false;
+}
+
+function isVoiceClosed(key, counts) {
+  return isVoiceEnded(key) || isVoiceFullySoldOut(key, counts);
+}
+
+function resolveSessionKey(moimName, session) {
+  if (!session) return MOIM_DEFAULT_SESSION[moimName] || '';
+  const m = Object.values(MOIMS).find(x => x.name === moimName)
+    || Object.values(VOICES).find(x => x.name === moimName);
+  if (!m) return session;
+  if (m.sessions.some(s => s.value === session)) return session;
+  const prefixed = m.sessions.find(s => s.value.startsWith(session));
+  return prefixed ? prefixed.value : session;
+}
+
+function normalizeApplySession(rawF, rawV, moimName) {
+  if (rawF) return String(rawF).trim();
+  const s = String(rawV ?? '').trim();
+  if (!s) return MOIM_DEFAULT_SESSION[moimName] || '';
+  const dm = s.match(/Date\((\d+),(\d+),(\d+)\)/);
+  if (dm) {
+    const month = parseInt(dm[2], 10) + 1;
+    const day = parseInt(dm[3], 10);
+    return `${month}월${day}일`;
+  }
+  return s;
+}
+
+function addMoimCount(counts, moimName, sessionValue) {
+  if (!moimName) return;
+  if (sessionValue) {
+    counts[`${moimName}_${sessionValue}`] = (counts[`${moimName}_${sessionValue}`] || 0) + 1;
+    if (moimName === '슬기로운 영화 속 클래식') {
+      counts[`동서남북book_${sessionValue}`] = counts[`${moimName}_${sessionValue}`];
+    }
+  }
+  counts[moimName] = (counts[moimName] || 0) + 1;
+}
+
+function countsFromMoimGviz(data) {
+  const counts = {};
+  (data?.table?.rows || []).forEach(row => {
+    const cells = row.c || [];
+    if (cells[1]?.v !== PAGE_MONTH) return;
+    const note = String(cells[7]?.v || '');
+    if (note.includes('취소')) return;
+    const moimName = String(cells[2]?.v || '').trim();
+    const name = String(cells[4]?.v || '').trim();
+    if (!moimName || !name) return;
+    const session = resolveSessionKey(
+      moimName,
+      normalizeApplySession(cells[3]?.f, cells[3]?.v, moimName)
+    );
+    addMoimCount(counts, moimName, session);
+  });
+  return counts;
+}
+
+async function loadMoimCounts() {
+  try {
+    const res = await fetch(MOIM_SHEET_GVIZ, { redirect: 'follow' });
+    const data = parseGvizResponse(await res.text());
+    if (data) latestMoimCounts = countsFromMoimGviz(data);
+  } catch (e) {
+    console.warn('모임 신청 현황 로딩 실패:', e);
+  }
+  updateMoimCapacity(latestMoimCounts);
+  updateMoimCuration(latestMoimCounts);
+}
+
+function soldOut(btnId, label = '모집 완료') {
+  const btn = q(`#${btnId}`);
+  if (!btn) return;
+  btn.disabled = true;
+  btn.classList.add('sold-out');
+  btn.textContent = label;
+}
+
+function resetApplyBtn(btnId, label = '신청하기') {
+  const btn = q(`#${btnId}`);
+  if (!btn) return;
+  btn.disabled = false;
+  btn.classList.remove('sold-out');
+  btn.textContent = label;
+}
+
+function setSessionMetaBadge(meta, type) {
+  if (!meta) return;
+  meta.querySelectorAll('.moim-full-badge, .moim-ended-badge, .moim-closed-badge').forEach(el => el.remove());
+  if (!type) return;
+  const labels = { full: '모집 완료', ended: '모임 종료', closed: '모임 신청 마감' };
+  const classes = { full: 'moim-full-badge', ended: 'moim-ended-badge', closed: 'moim-closed-badge' };
+  const badge = document.createElement('span');
+  badge.className = classes[type];
+  badge.textContent = labels[type];
+  const capRow = [...meta.querySelectorAll('.meta-row')].find(r => r.textContent.includes('👥'));
+  (capRow || meta).appendChild(badge);
+}
+
+function updateSessionTab(tab, ended, full) {
+  if (!tab) return;
+  if (!tab.dataset.baseLabel) {
+    tab.dataset.baseLabel = tab.textContent.replace(' ✓', '').replace(' ·종료', '');
+  }
+  tab.classList.toggle('stab-ended', ended);
+  tab.classList.toggle('stab-full', full && !ended);
+  if (ended) tab.textContent = `${tab.dataset.baseLabel} ·종료`;
+  else if (full) tab.textContent = `${tab.dataset.baseLabel} ✓`;
+  else tab.textContent = tab.dataset.baseLabel;
+}
+
+function updateMoimCapacity(counts) {
+  counts = counts || latestMoimCounts || {};
+
+  Object.entries(MOIMS).forEach(([key, m]) => {
+    const btn = q(`#apply-${key}`);
+    if (!btn) return;
+    const card = btn.closest('.moim-card');
+    const allEnded = isMoimFullyEnded(key);
+    const allSold = isMoimFullySoldOut(key, counts);
+    const applyOpen = isMoimApplyOpen(key, counts);
+
+    card?.classList.remove('moim-sold-out', 'moim-ended', 'moim-closed');
+    if (allEnded) {
+      soldOut(`apply-${key}`, '모임 종료');
+      card?.classList.add('moim-ended');
+    } else if (m.applyClosed) {
+      soldOut(`apply-${key}`, '모임 신청 마감');
+      card?.classList.add('moim-closed');
+    } else if (allSold) {
+      soldOut(`apply-${key}`, '모집 완료');
+      card?.classList.add('moim-sold-out');
+    } else if (!applyOpen) {
+      soldOut(`apply-${key}`, '신청 마감');
+    } else {
+      resetApplyBtn(`apply-${key}`);
+    }
+
+    const metas = card ? card.querySelectorAll('.moim-meta') : [];
+    const tabs = card ? card.querySelectorAll('.stab') : [];
+    m.sessions.forEach((session, idx) => {
+      const ended = isSessionEnded(session);
+      const full = isSessionFull(m, session.value, counts);
+      const badgeType = m.applyClosed ? 'closed' : (ended ? 'ended' : (full ? 'full' : null));
+      setSessionMetaBadge(metas[idx], badgeType);
+      updateSessionTab(tabs[idx], ended, full);
+    });
+  });
+
+  Object.entries(VOICES).forEach(([key, v]) => {
+    const voiceCard = q(`#${key}`);
+    voiceCard?.classList.remove('moim-sold-out', 'moim-ended');
+    if (isVoiceEnded(key)) {
+      soldOut(`apply-${key}`, '모임 종료');
+      voiceCard?.classList.add('moim-ended');
+    } else if (isVoiceFullySoldOut(key, counts)) {
+      soldOut(`apply-${key}`, '모집 완료');
+      voiceCard?.classList.add('moim-sold-out');
+    } else {
+      resetApplyBtn(`apply-${key}`, 'b.voice 신청하기');
+    }
+  });
+}
+
+function buildAlmostFullMoimSlots(counts) {
+  const slots = [];
+  Object.entries(MOIMS).forEach(([key, m]) => {
+    const meta = MOIM_CURATION_META[key];
+    if (!meta) return;
+    m.sessions.forEach(session => {
+      if (isSessionEnded(session) || m.applyClosed) return;
+      const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
+      const cur = getMoimSessionCount(counts, m.name, session.value);
+      const remaining = cap - cur;
+      if (remaining <= 0) return;
+      const fillRatio = cur / cap;
+      const almostFull = remaining <= 2 || fillRatio >= 0.6;
+      if (!almostFull) return;
+      slots.push({
+        key,
+        cardId: meta.cardId,
+        poster: meta.poster,
+        name: m.name,
+        sessionLabel: session.label,
+        amount: m.amount,
+        remaining,
+        fillRatio
+      });
+    });
+  });
+  return slots.sort((a, b) => a.remaining - b.remaining || b.fillRatio - a.fillRatio);
+}
+
+function pickCurationSlot(excludeIndex = -1) {
+  if (!curationPool.length) return null;
+  if (curationPool.length === 1) {
+    curationPickIndex = 0;
+    return curationPool[0];
+  }
+  let idx;
+  do {
+    idx = Math.floor(Math.random() * curationPool.length);
+  } while (idx === excludeIndex && curationPool.length > 1);
+  curationPickIndex = idx;
+  return curationPool[idx];
+}
+
+function buildCurationSlots(counts) {
+  const almostFull = buildAlmostFullMoimSlots(counts);
+  if (almostFull.length) return almostFull;
+
+  const open = [];
+  Object.entries(MOIMS).forEach(([key, m]) => {
+    const meta = MOIM_CURATION_META[key];
+    if (!meta) return;
+    m.sessions.forEach(session => {
+      if (isSessionEnded(session) || m.applyClosed) return;
+      const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
+      const cur = getMoimSessionCount(counts, m.name, session.value);
+      if (cap - cur <= 0) return;
+      open.push({
+        key,
+        cardId: meta.cardId,
+        poster: meta.poster,
+        name: m.name,
+        sessionLabel: session.label,
+        amount: m.amount,
+        remaining: cap - cur,
+        fillRatio: cur / cap
+      });
+    });
+  });
+  return open.sort((a, b) => a.remaining - b.remaining);
+}
+
+function renderMoimCuration(excludeIndex = -1) {
+  const posterEl = q('#curationPoster');
+  if (!posterEl) return;
+  const slot = pickCurationSlot(excludeIndex);
+  if (!slot) return;
+
+  posterEl.src = slot.poster;
+  q('#curationPoster').alt = `${slot.name} 포스터`;
+  q('#curationName').textContent = slot.name;
+  q('#curationDate').textContent = `${slot.sessionLabel} · ${slot.amount.toLocaleString()}원`;
+  q('#curationGoBtn').onclick = () => scrollToMoim(slot.cardId);
+}
+
+function updateMoimCuration(counts) {
+  curationPool = buildCurationSlots(counts || {});
+  renderMoimCuration();
+}
+
+// ══ 대관·캘린더 데이터 로딩 ═══════════════
+function parseGvizResponse(text) {
+  const match = String(text).match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);/);
+  if (!match) return null;
+  try { return JSON.parse(match[1]); } catch { return null; }
+}
+
+function rentEntriesFromGviz(data) {
+  const rows = data?.table?.rows || [];
+  const entries = [];
+  rows.forEach(row => {
+    const cells = row.c || [];
+    const month = cells[1]?.v;
+    if (!RENT_CAL_MONTHS.includes(month)) return;
+    const note = String(cells[9]?.v || '');
+    if (note.includes('취소')) return;
+    const space = cells[2]?.v || '';
+    const dateRaw = cells[3]?.f || cells[3]?.v || '';
+    const time = cells[4]?.v || '';
+    const dateStr = normalizeRentDate(dateRaw);
+    if (!dateStr || !time) return;
+    entries.push({ date: dateStr, space, time });
+  });
+  return entries;
+}
+
+function rentMonthFromDate(dateStr) {
+  const m = String(dateStr || '').match(/^\d{4}-(\d{2})-/);
+  if (!m) return '7월';
+  return `${parseInt(m[1], 10)}월`;
+}
+
+function tagRentDateCells() {
+  document.querySelectorAll('.cal-cell[onclick*="openRent"]').forEach(cell => {
+    const match = cell.getAttribute('onclick')?.match(/openRent\('([^']*)'\)/);
+    if (match?.[1]) cell.dataset.rentDate = match[1];
+  });
+}
+
+function buildRentMonthGrid(year, month) {
+  const firstDow = new Date(year, month - 1, 1).getDay();
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const trailing = (7 - ((firstDow + daysInMonth) % 7)) % 7;
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  let html = `
+    <div class="cal-dow sun">일</div>
+    <div class="cal-dow">월</div>
+    <div class="cal-dow">화</div>
+    <div class="cal-dow">수</div>
+    <div class="cal-dow">목</div>
+    <div class="cal-dow">금</div>
+    <div class="cal-dow sat">토</div>`;
+
+  for (let i = 0; i < firstDow; i++) {
+    html += '<div class="cal-cell empty"></div>';
+  }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${year}-${pad2(month)}-${pad2(day)}`;
+    const dow = (firstDow + day - 1) % 7;
+    const cls = [
+      'cal-cell',
+      dow === 0 ? 'sun' : '',
+      dow === 6 ? 'sat' : '',
+      dateStr === todayStr ? 'today' : ''
+    ].filter(Boolean).join(' ');
+    html += `<div class="${cls}" data-rent-date="${dateStr}" onclick="openRent('${dateStr}')">
+      <div class="cal-day">${day}</div>
+      <div class="cal-rent-btn">대관</div>
+    </div>`;
+  }
+
+  for (let i = 0; i < trailing; i++) {
+    html += '<div class="cal-cell empty"></div>';
+  }
+
+  return `<div class="cal-grid">${html}</div>`;
+}
+
+function updateCalCarouselUI() {
+  const panel = CAL_PANELS[calPanelIndex];
+  const track = q('#calCarouselTrack');
+  if (track) track.style.transform = `translateX(-${calPanelIndex * 100}%)`;
+
+  const label = q('#calMonthLabel');
+  const sub = q('#calMonthSub');
+  if (label) label.textContent = panel.label;
+  if (sub) sub.textContent = panel.sub;
+
+  const prev = q('#calPrevBtn');
+  const next = q('#calNextBtn');
+  if (prev) prev.disabled = calPanelIndex <= 0;
+  if (next) next.disabled = calPanelIndex >= CAL_PANELS.length - 1;
+
+  const moimLegend = q('#calLegendMoim');
+  const voiceLegend = q('#calLegendVoice');
+  if (moimLegend) moimLegend.style.display = panel.hasMoim ? '' : 'none';
+  if (voiceLegend) voiceLegend.style.display = panel.hasMoim ? '' : 'none';
+
+  q('#calDots')?.querySelectorAll('.cal-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === calPanelIndex);
+    dot.setAttribute('aria-current', i === calPanelIndex ? 'true' : 'false');
+  });
+}
+
+function goCalMonth(index) {
+  if (index < 0 || index >= CAL_PANELS.length || index === calPanelIndex) return;
+  calPanelIndex = index;
+  updateCalCarouselUI();
+}
+
+function initCalCarousel() {
+  const august = q('#calPanelAugust');
+  const september = q('#calPanelSeptember');
+  if (august) august.innerHTML = buildRentMonthGrid(2026, 8);
+  if (september) september.innerHTML = buildRentMonthGrid(2026, 9);
+
+  tagRentDateCells();
+
+  const dots = q('#calDots');
+  if (dots) {
+    dots.innerHTML = CAL_PANELS.map((p, i) =>
+      `<button type="button" class="cal-dot${i === 0 ? ' active' : ''}" aria-label="${p.label}" aria-current="${i === 0 ? 'true' : 'false'}" onclick="goCalMonth(${i})"></button>`
+    ).join('');
+  }
+
+  q('#calPrevBtn')?.addEventListener('click', () => goCalMonth(calPanelIndex - 1));
+  q('#calNextBtn')?.addEventListener('click', () => goCalMonth(calPanelIndex + 1));
+
+  const viewport = q('#calCarouselViewport');
+  if (viewport) {
+    let touchStartX = 0;
+    viewport.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    viewport.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(dx) < 48) return;
+      goCalMonth(dx > 0 ? calPanelIndex - 1 : calPanelIndex + 1);
+    }, { passive: true });
+  }
+
+  updateCalCarouselUI();
+}
+
+async function loadRentBookings() {
+  try {
+    const res = await fetch(RENT_SHEET_GVIZ, { redirect: 'follow' });
+    const data = parseGvizResponse(await res.text());
+    if (!data) return;
+    buildRentBookings(rentEntriesFromGviz(data));
+    renderCalendarRentBadges();
+    if (q('#rDate')?.value) renderTimeSlots();
+  } catch (e) {
+    console.warn('대관 시트 로딩 실패:', e);
+  }
+}
+
+async function loadCounts() {
+  await loadMoimCounts();
+  await loadRentBookings();
+}
+
+// ══ 모임 신청 모달 ══════════════════════
+function openApply(name, key) {
+  if (!isMoimApplyOpen(key, latestMoimCounts)) return;
+  curMoimKey = key;
+  const m = MOIMS[key];
+  q('#modalMoimName').textContent = m.name;
+  q('#modalMoimDate').textContent = m.sessions.map(s => s.label).join(' / ');
+  q('#modalAmount').textContent = m.amount.toLocaleString() + '원';
+  q('#applyAlert').innerHTML = '';
+  q('#aName').value = ''; q('#aPhone').value = '';
+
+  const sw = q('#sessionSelectWrap');
+  if (m.hasSession) {
+    sw.style.display = 'block';
+    const sel = q('#aSession');
+    sel.innerHTML = '<option value="">회차를 선택해주세요</option>';
+    m.sessions.forEach(s => {
+      const ended = isSessionEnded(s);
+      const full = isSessionFull(m, s.value, latestMoimCounts);
+      const closed = m.applyClosed || ended || full;
+      const suffix = m.applyClosed ? ' (모임 신청 마감)' : (ended ? ' (모임 종료)' : (full ? ' (모집 완료)' : ''));
+      sel.innerHTML += `<option value="${s.value}"${closed ? ' disabled' : ''}>${s.label}${suffix}</option>`;
+    });
+  } else {
+    sw.style.display = 'none';
+    if (isSessionClosed(m, m.sessions[0], latestMoimCounts)) return;
+  }
+  openOv('applyOv');
+}
+
+async function submitApply() {
+  const name = q('#aName').value.trim();
+  const phone = q('#aPhone').value.trim();
+  const m = MOIMS[curMoimKey];
+  let session = m.hasSession ? q('#aSession').value : m.sessions[0].value;
+
+  if (!name || !phone) { flash('applyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
+  if (m.hasSession && !session) { flash('applyAlert', '회차를 선택해주세요.', 'e'); return; }
+  const pickedSession = m.sessions.find(s => s.value === session) || m.sessions[0];
+  if (m.applyClosed) {
+    flash('applyAlert', '모임 신청이 마감되었습니다.', 'e');
+    return;
+  }
+  if (isSessionEnded(pickedSession)) {
+    flash('applyAlert', '모임이 종료되어 신청할 수 없습니다.', 'e');
+    return;
+  }
+  if (isSessionFull(m, session, latestMoimCounts)) {
+    flash('applyAlert', '선택한 회차는 모집이 완료되었습니다.', 'e');
+    return;
+  }
+
+  setLoad('submitBtn', true, '신청 중...');
+  try {
+    await POST({
+      action: 'apply',
+      month: PAGE_MONTH,
+      moimName: m.name,
+      session,
+      name,
+      phone,
+      amount: m.amount,
+      date: new Date().toLocaleString('ko-KR')
+    });
+    q('#applyForm').innerHTML = `
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:40px;margin-bottom:12px">✅</div>
+        <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px">신청 완료!</div>
+        <div class="pay-box" style="text-align:left">
+          <div style="font-size:12px;color:var(--ocean-deep);margin-bottom:4px">입금해주세요</div>
+          <div class="pay-amount">${m.amount.toLocaleString()}원</div>
+          <div style="font-size:12px;margin-top:6px">
+            <strong>모임통장: 카카오뱅크 7942-33-45474</strong><br>(예금주 경규환)<br>
+            입금자명: <strong>${name}</strong>
+          </div>
+        </div>
+        <button class="btn-apply" style="width:100%;margin-top:8px" onclick="closeOv('applyOv')">닫기</button>
+      </div>`;
+    setTimeout(loadCounts, 1500); // 신청 후 인원 갱신
+  } catch {
+    flash('applyAlert', '신청 중 오류가 발생했습니다. 인스타그램 DM으로 문의해주세요.', 'e');
+    setLoad('submitBtn', false, '신청하기');
+  }
+}
+
+// ══ b.voice 신청 모달 ════════════════════
+let voiceFormTemplate = null;
+
+function openVoiceApply(key) {
+  if (isVoiceClosed(key, latestMoimCounts)) return;
+  curVoiceKey = key;
+  const v = VOICES[key];
+  const formEl = q('#voiceApplyForm');
+  if (!voiceFormTemplate) voiceFormTemplate = formEl.innerHTML;
+  formEl.innerHTML = voiceFormTemplate;
+  q('#voiceModalName').textContent = v.name;
+  q('#voiceModalDate').textContent = v.sessions.map(s => s.label).join(' / ');
+  q('#voiceModalAmount').textContent = v.amount.toLocaleString() + '원';
+  q('#voiceApplyAlert').innerHTML = '';
+  q('#vName').value = '';
+  q('#vPhone').value = '';
+  openOv('voiceApplyOv');
+}
+
+// b.voice도 비모임과 동일 API·구글 시트(action: apply)로 저장
+async function submitVoiceApply() {
+  const name = q('#vName').value.trim();
+  const phone = q('#vPhone').value.trim();
+  const v = VOICES[curVoiceKey];
+  const session = v.sessions[0].value;
+
+  if (!name || !phone) { flash('voiceApplyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
+  if (isVoiceEnded(curVoiceKey)) {
+    flash('voiceApplyAlert', '모임이 종료되어 신청할 수 없습니다.', 'e');
+    return;
+  }
+  if (isVoiceFullySoldOut(curVoiceKey, latestMoimCounts)) {
+    flash('voiceApplyAlert', '모집이 완료되었습니다.', 'e');
+    return;
+  }
+
+  setLoad('voiceSubmitBtn', true, '신청 중...');
+  try {
+    await POST({
+      action: 'apply',
+      month: PAGE_MONTH,
+      moimName: v.name,
+      session,
+      name,
+      phone,
+      amount: v.amount,
+      date: new Date().toLocaleString('ko-KR')
+    });
+    q('#voiceApplyForm').innerHTML = `
+      <div style="text-align:center;padding:20px 0">
+        <div style="font-size:40px;margin-bottom:12px">✅</div>
+        <div style="font-size:16px;font-weight:700;color:var(--voice);margin-bottom:8px">b.voice 신청 완료!</div>
+        <div class="pay-box" style="text-align:left;background:#fffbeb;border-color:#fde68a">
+          <div style="font-size:12px;color:var(--voice);margin-bottom:4px">입금해주세요</div>
+          <div class="pay-amount" style="color:var(--voice)">${v.amount.toLocaleString()}원</div>
+          <div style="font-size:12px;margin-top:6px">
+            <strong>모임통장: 카카오뱅크 7942-33-45474</strong><br>(예금주 경규환)<br>
+            입금자명: <strong>${name}</strong>
+          </div>
+        </div>
+        <button class="btn-voice-apply" style="width:100%;margin-top:8px" onclick="closeOv('voiceApplyOv')">닫기</button>
+      </div>`;
+    setTimeout(loadCounts, 1500);
+  } catch {
+    flash('voiceApplyAlert', '신청 중 오류가 발생했습니다. 인스타그램 DM으로 문의해주세요.', 'e');
+    setLoad('voiceSubmitBtn', false, 'b.voice 신청하기');
+  }
+}
+
+// ══ 대관 신청 ════════════════════════════
+
+/**
+ * 30분 단위 시간표를 보여주고, 신청 시 "선택한 구간"만 채우는 방식.
+ * - 08:00~22:00, 30분 단위 셀
+ * - 모임/기존 대관 구간은 해당 셀만 비활성화
+ * - 사용자는 시작/끝을 선택해 연속 구간으로 신청
+ */
+const TT_STEP_MIN = 30;
+const TT_START_MIN = 8 * 60;
+const TT_END_MIN = 22 * 60;
+
+// 비모임 고정 일정 (공간별 실제 시간 기준, 겹치면 차단)
+const SCHEDULED_MOIM_BLOCKS = [
+  { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료' }
+];
+
+// API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
+// 형식: { 'YYYY-MM-DD': { '세미나실': ['14:00–16:00', ...], '매장 테이블': [...] } }
+let rentSlotsByDate = {};
+let rentBookingsByDate = {};
+
+function shortSpaceLabel(space) {
+  if (space === '세미나실') return '세미나';
+  if (space === '매장 테이블') return '테이블';
+  return space || '대관';
+}
+
+function compactTimeRange(timeStr) {
+  const r = parseTimeRangeToMinutes(timeStr);
+  if (!r) return normalizeDash(timeStr);
+  const fmt = (min) => {
+    const h = Math.floor(min / 60);
+    const m = min % 60;
+    return m === 0 ? String(h) : `${h}:${pad2(m)}`;
+  };
+  return `${fmt(r.startMin)}–${fmt(r.endMin)}`;
+}
+
+function formatRentBookingLabels(space, timeStr) {
+  const time = timeStr ? normalizeDash(timeStr) : '';
+  const sp = shortSpaceLabel(space);
+  if (time) {
+    return {
+      shortLabel: `${sp} ${compactTimeRange(time)}`,
+      fullLabel: `${space || '대관'} ${time}`
+    };
+  }
+  return { shortLabel: '대관있음', fullLabel: `${space || '대관'} (시간 미정)` };
+}
+
+function formatRentSlotTag(space, timeStr) {
+  const time = compactTimeRange(timeStr);
+  const sp = shortSpaceLabel(space);
+  return time ? `대관 ${time} · ${sp}` : '대관';
+}
+
+function buildRentBookings(rentEntries) {
+  rentSlotsByDate = {};
+  rentBookingsByDate = {};
+  rentEntries.forEach(entry => {
+    const rawDate = typeof entry === 'string' ? entry : (entry.date || entry.날짜);
+    const dateStr = normalizeRentDate(rawDate);
+    if (!dateStr) return;
+    const timeStr = typeof entry === 'string' ? null : (entry.time || entry.시간 || entry.timeSlot);
+    const rawSpace = typeof entry === 'string' ? '' : (entry.space || entry.venue || entry.place || entry.장소);
+    const space = normalizeSpace(rawSpace) || '_any';
+    const displaySpace = space === '_any' ? '' : space;
+    const labels = formatRentBookingLabels(displaySpace, timeStr);
+    const key = `${displaySpace}|${labels.fullLabel}`;
+
+    if (!rentBookingsByDate[dateStr]) rentBookingsByDate[dateStr] = [];
+    if (!rentBookingsByDate[dateStr].some(b => `${b.space}|${b.fullLabel}` === key)) {
+      rentBookingsByDate[dateStr].push({
+        space: displaySpace,
+        time: timeStr ? normalizeDash(timeStr) : '',
+        shortLabel: labels.shortLabel,
+        fullLabel: labels.fullLabel
+      });
+    }
+
+    if (timeStr) {
+      if (!rentSlotsByDate[dateStr]) rentSlotsByDate[dateStr] = {};
+      if (!rentSlotsByDate[dateStr][space]) rentSlotsByDate[dateStr][space] = [];
+      const normTime = normalizeDash(timeStr);
+      if (!rentSlotsByDate[dateStr][space].includes(normTime)) {
+        rentSlotsByDate[dateStr][space].push(normTime);
+      }
+    }
+  });
+}
+
+function renderCalendarRentBadges() {
+  document.querySelectorAll('.cal-rent-slot').forEach(el => el.remove());
+  Object.entries(rentBookingsByDate).forEach(([dateStr, bookings]) => {
+    const cell = document.querySelector(`.cal-cell[data-rent-date="${dateStr}"]`);
+    if (!cell) return;
+    const anchor = cell.querySelector('.cal-rent-btn') || null;
+    bookings.forEach(booking => {
+      const badge = document.createElement('div');
+      badge.className = 'cal-event cal-rent-slot';
+      badge.textContent = booking.shortLabel;
+      badge.title = `${booking.fullLabel} · 클릭하면 대관 신청`;
+      badge.onclick = (e) => {
+        e.stopPropagation();
+        openRent(dateStr);
+      };
+      if (anchor) cell.insertBefore(badge, anchor);
+      else cell.appendChild(badge);
+    });
+  });
+}
+
+function getScheduleSummary(date, spaceFilter) {
+  const items = [];
+  SCHEDULED_MOIM_BLOCKS
+    .filter(b => b.date === date && (!spaceFilter || b.space === spaceFilter))
+    .forEach(b => {
+      items.push({
+        kind: 'moim',
+        text: `비모임 · ${b.space} ${b.start}–${b.end} (${b.tag})`
+      });
+    });
+  (rentBookingsByDate[date] || [])
+    .filter(b => !spaceFilter || !b.space || b.space === spaceFilter)
+    .forEach(b => {
+      items.push({
+        kind: 'rent',
+        text: `대관 · ${b.fullLabel}`
+      });
+    });
+  return items;
+}
+
+function updateRentBlockedSummary() {
+  const wrap = q('#rentBlockedWrap');
+  const list = q('#rentBlockedList');
+  const date = q('#rDate')?.value;
+  const space = q('#rSpace')?.value || '';
+  if (!wrap || !list) return;
+  if (!date) {
+    wrap.hidden = true;
+    return;
+  }
+  const items = getScheduleSummary(date, space || null);
+  if (!items.length) {
+    wrap.hidden = true;
+    return;
+  }
+  wrap.hidden = false;
+  list.innerHTML = items.map(it =>
+    `<li class="rent-blocked-item rent-blocked-${it.kind}">${it.text}</li>`
+  ).join('');
+}
+
+function pad2(n) { return String(n).padStart(2, '0'); }
+
+function minutesToHHMM(min) {
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return `${pad2(h)}:${pad2(m)}`;
+}
+
+function normalizeDash(s) {
+  return String(s || '').replace(/~/g, '–').replace(/-/g, '–');
+}
+
+function normalizeSpace(spaceStr) {
+  const s = String(spaceStr || '').trim();
+  if (!s) return '';
+  if (s.includes('세미나')) return '세미나실';
+  if (s.includes('테이블') || s.includes('매장')) return '매장 테이블';
+  return s;
+}
+
+function normalizeRentDate(dateStr) {
+  if (!dateStr) return null;
+  const s = String(dateStr).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const iso = s.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (iso) {
+    return `${iso[1]}-${iso[2].padStart(2,'0')}-${iso[3].padStart(2,'0')}`;
+  }
+  const kr = s.match(/(7|8|9)\s*월\s*(\d{1,2})\s*일/);
+  if (kr) return `2026-${kr[1].padStart(2, '0')}-${String(parseInt(kr[2], 10)).padStart(2, '0')}`;
+  return null;
+}
+
+function parseHHMMToMinutes(hhmm) {
+  const m = String(hhmm).trim().match(/^(\d{1,2}):(\d{2})$/);
+  if (!m) return null;
+  const h = parseInt(m[1], 10);
+  const min = parseInt(m[2], 10);
+  if (Number.isNaN(h) || Number.isNaN(min)) return null;
+  return h * 60 + min;
+}
+
+/** "14:00–16:00" / "14:00~16:00" / "14:00-16:00" 등 → { startMin, endMin } */
+function parseTimeRangeToMinutes(rangeStr) {
+  if (!rangeStr) return null;
+  const s = normalizeDash(String(rangeStr).trim());
+  const m = s.match(/(\d{1,2}:\d{2})\s*[~–\-]\s*(\d{1,2}:\d{2})/);
+  if (!m) return null;
+  const startMin = parseHHMMToMinutes(m[1]);
+  const endMin = parseHHMMToMinutes(m[2]);
+  if (startMin == null || endMin == null) return null;
+  return { startMin, endMin };
+}
+
+function getBlockedRangesForDate(date, space) {
+  const moimRanges = SCHEDULED_MOIM_BLOCKS
+    .filter(b => b.date === date && (!space || b.space === space))
+    .map(b => {
+      const startMin = parseHHMMToMinutes(b.start);
+      const endMin = parseHHMMToMinutes(b.end);
+      if (startMin == null || endMin == null) return null;
+      return { startMin, endMin, tag: b.tag, kind: 'moim' };
+    })
+    .filter(Boolean);
+
+  const bySpace = rentSlotsByDate[date] || {};
+  const spaceSlots = (bySpace[space] || []).concat(bySpace._any || []);
+  const rentRanges = spaceSlots
+    .map(timeStr => {
+      const r = parseTimeRangeToMinutes(timeStr);
+      if (!r) return null;
+      return { ...r, tag: formatRentSlotTag(space, timeStr), kind: 'rent' };
+    })
+    .filter(Boolean);
+
+  return { moimRanges, rentRanges };
+}
+
+function isMinuteInRange(min, range) {
+  return min >= range.startMin && min < range.endMin;
+}
+
+function getCellKind(date, cellMin) {
+  const space = q('#rSpace')?.value || '';
+  const { moimRanges, rentRanges } = getBlockedRangesForDate(date, space);
+  const moimHit = moimRanges.find(r => isMinuteInRange(cellMin, r));
+  if (moimHit) return { kind: 'moim', tag: moimHit.tag };
+  const rentHit = rentRanges.find(r => isMinuteInRange(cellMin, r));
+  if (rentHit) return { kind: 'rent', tag: rentHit.tag };
+  return null;
+}
+
+let ttStart = null; // minutes
+let ttEnd = null;   // minutes, exclusive
+
+function setTimeNote(text) {
+  const el = q('#rTimeNote');
+  if (el) el.textContent = text || '';
+}
+
+function clearSelection() {
+  ttStart = null;
+  ttEnd = null;
+  q('#rTime').value = '';
+  setTimeNote('');
+}
+
+function selectionLabel() {
+  if (ttStart == null || ttEnd == null) return '';
+  return `${minutesToHHMM(ttStart)}–${minutesToHHMM(ttEnd)}`;
+}
+
+function isSelectionValid(date, startMin, endMin) {
+  if (!date || startMin == null || endMin == null) return false;
+  if (endMin <= startMin) return false;
+  if (startMin < TT_START_MIN || endMin > TT_END_MIN) return false;
+  if ((startMin - TT_START_MIN) % TT_STEP_MIN !== 0) return false;
+  if ((endMin - TT_START_MIN) % TT_STEP_MIN !== 0) return false;
+
+  for (let t = startMin; t < endMin; t += TT_STEP_MIN) {
+    if (getCellKind(date, t)) return false;
+  }
+  return true;
+}
+
+function applySelection(date, startMin, endMin) {
+  if (!isSelectionValid(date, startMin, endMin)) {
+    flash('rentAlert', '선택한 구간에 모임/대관이 포함되어 있어요. 다른 시간으로 골라주세요.', 'e');
+    clearSelection();
+    renderTimeSlots();
+    return;
+  }
+  ttStart = startMin;
+  ttEnd = endMin;
+  q('#rTime').value = selectionLabel();
+  setTimeNote(`선택됨: ${selectionLabel()}`);
+  renderTimeSlots();
+}
+
+function onCellClick(cellMin) {
+  const date = q('#rDate').value;
+  if (!date) return;
+  if (getCellKind(date, cellMin)) return;
+
+  if (ttStart == null) {
+    ttStart = cellMin;
+    ttEnd = null;
+    q('#rTime').value = '';
+    setTimeNote(`시작 구간: ${minutesToHHMM(ttStart)}–${minutesToHHMM(ttStart + TT_STEP_MIN)} (끝 구간을 선택하세요)`);
+    renderTimeSlots();
+    return;
+  }
+
+  // 두 번째 클릭으로 "끝 구간" 결정
+  // 셀은 [cellMin, cellMin+30) 구간을 뜻함 → 끝은 cellMin+30
+  const s = Math.min(ttStart, cellMin);
+  const e = Math.max(ttStart + TT_STEP_MIN, cellMin + TT_STEP_MIN);
+  applySelection(date, s, e);
+}
+
+function renderTimeSlots() {
+  const date = q('#rDate').value;
+  const wrap = q('#timeSlots');
+  const space = q('#rSpace').value;
+  // 날짜 바뀌면 선택 초기화
+  if (!date) {
+    clearSelection();
+    wrap.innerHTML = '<div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>';
+    updateRentBlockedSummary();
+    return;
+  }
+  if (!space) {
+    clearSelection();
+    wrap.innerHTML = '<div style="font-size:12px;color:var(--muted)">공간을 먼저 선택해주세요</div>';
+    updateRentBlockedSummary();
+    return;
+  }
+
+  // 선택이 있는데, 범위 밖/유효성 깨졌으면 초기화
+  if (ttStart != null && ttEnd != null && !isSelectionValid(date, ttStart, ttEnd)) {
+    clearSelection();
+  }
+
+  const cells = [];
+  for (let t = TT_START_MIN; t < TT_END_MIN; t += TT_STEP_MIN) {
+    cells.push(t);
+  }
+
+  wrap.classList.add('timetable');
+  wrap.innerHTML = cells.map(t => {
+    const kind = getCellKind(date, t);
+    const isDisabled = Boolean(kind);
+    const inRange = ttStart != null && ttEnd != null && t >= ttStart && t < ttEnd;
+    const isStart = ttStart != null && t === ttStart;
+    const isEndCell = ttEnd != null && (t + TT_STEP_MIN) === ttEnd;
+
+    const cls = [
+      'tcell',
+      isDisabled ? 'disabled' : '',
+      kind?.kind === 'moim' ? 'moim' : '',
+      kind?.kind === 'rent' ? 'rent' : '',
+      inRange ? 'in-range' : '',
+      isStart ? 'sel-start' : '',
+      isEndCell ? 'sel-end' : '',
+    ].filter(Boolean).join(' ');
+
+    const tag = kind?.tag ? `<span class="tag">${kind.tag}</span>` : '';
+    const time = `<span class="time">${minutesToHHMM(t)}–${minutesToHHMM(t + TT_STEP_MIN)}</span>`;
+    const handler = isDisabled ? '' : `onclick="onCellClick(${t})"`;
+    const title = kind?.tag ? `title="${kind.tag}"` : '';
+    return `<button type="button" class="${cls}" ${handler} ${title}>${time}${tag}</button>`;
+  }).join('');
+
+  updateRentBlockedSummary();
+}
+
+function openRent(date) {
+  q('#rName').value=''; q('#rPhone').value='';
+  q('#rPurpose').value=''; q('#rCount').value='';
+  q('#rTime').value='';
+  q('#rentAlert').innerHTML='';
+  clearSelection();
+  if (date) {
+    q('#rDate').value = date;
+    const panelIdx = CAL_PANELS.findIndex(p => p.year === parseInt(date.slice(0, 4), 10) && p.month === parseInt(date.slice(5, 7), 10));
+    if (panelIdx >= 0) goCalMonth(panelIdx);
+    renderTimeSlots();
+  } else {
+    q('#rDate').value = '';
+    q('#timeSlots').innerHTML = '<div style="font-size:12px;color:var(--muted)">날짜를 먼저 선택해주세요</div>';
+    updateRentBlockedSummary();
+  }
+  openOv('rentOv');
+}
+
+async function submitRent() {
+  const space=q('#rSpace').value, date=q('#rDate').value;
+  const time=q('#rTime').value;
+  const name=q('#rName').value.trim(), phone=q('#rPhone').value.trim();
+  if (!space||!date||!name||!phone) { flash('rentAlert','필수 항목을 입력해주세요.','e'); return; }
+  if (!time) { flash('rentAlert','시작 시간을 선택해주세요.','e'); return; }
+  const parsed = parseTimeRangeToMinutes(time);
+  if (!parsed || !isSelectionValid(date, parsed.startMin, parsed.endMin)) {
+    flash('rentAlert','선택할 수 없는 시간대입니다. 다른 시간을 골라주세요.','e');
+    return;
+  }
+  setLoad('rentBtn',true,'신청 중...');
+  try {
+    await POST({
+      action:'rent', month: rentMonthFromDate(date), space, date, time,
+      name, phone, purpose:q('#rPurpose').value, count:q('#rCount').value,
+      reqDate:new Date().toLocaleString('ko-KR')
+    });
+    flash('rentAlert','✅ 대관 신청이 접수되었습니다! 담당자가 연락드릴게요.','o');
+    setLoad('rentBtn',false,'신청하기');
+    await loadCounts();
+    clearSelection();
+    if (q('#rDate').value) renderTimeSlots();
+  } catch {
+    flash('rentAlert','오류가 발생했습니다. 인스타그램 DM으로 문의해주세요.','e');
+    setLoad('rentBtn',false,'신청하기');
+  }
+}
+
+// ══ 회차 탭 ══════════════════════════════
+function selectSession(btn, id) {
+  const card = btn.closest('.moim-card');
+  card.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  card.querySelectorAll('.moim-meta').forEach(m => m.style.display = 'none');
+  const target = document.getElementById(id + '-meta');
+  if (target) target.style.display = 'flex';
+}
+
+// ══ 캘린더 스크롤 ════════════════════════
+function scrollToMoim(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function scrollToVoice(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ══ API ══════════════════════════════════
+async function POST(data) {
+  const r = await fetch(API, {
+    method: 'POST', redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(data)
+  });
+  return r.json();
+}
+
+// ══ 라이트박스 ══════════════════════════
+let lbImages = [], lbIndex = 0;
+
+function openLightbox(src, alt) {
+  lbImages = [src];
+  lbIndex = 0;
+  updateLightbox(alt || '');
+  q('#lightbox').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function openPosterLightbox(sliderId) {
+  const wrap = document.getElementById(`poster-slider-${sliderId}`);
+  if (!wrap) return;
+  try {
+    lbImages = JSON.parse(wrap.dataset.posters || '[]');
+  } catch { lbImages = []; }
+  if (!lbImages.length) return;
+  const state = posterSliderState[sliderId] || { index: 0 };
+  lbIndex = state.index;
+  updateLightbox(wrap.dataset.alt || '');
+  q('#lightbox').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function updateLightbox(alt) {
+  q('#lbImg').src = lbImages[lbIndex];
+  q('#lbImg').alt = alt;
+  const multi = lbImages.length > 1;
+  q('#lbPrev').style.display = multi ? 'flex' : 'none';
+  q('#lbNext').style.display = multi ? 'flex' : 'none';
+}
+
+function lbMove(dir) {
+  if (lbImages.length < 2) return;
+  lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+  updateLightbox(q('#lbImg').alt);
+}
+
+function closeLightbox() {
+  q('#lightbox').classList.remove('on');
+  document.body.style.overflow = '';
+  lbImages = [];
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+  if (!q('#lightbox').classList.contains('on')) return;
+  if (e.key === 'ArrowLeft') lbMove(-1);
+  if (e.key === 'ArrowRight') lbMove(1);
+});
+
+// ══ 모임 포스터 슬라이더 ═══════════════════
+const posterSliderState = {};
+
+function initMoimPosterSliders() {
+  document.querySelectorAll('[data-slider]').forEach(track => {
+    const id = track.dataset.slider;
+    const slides = track.querySelectorAll('.poster-slide');
+    if (!slides.length) return;
+    posterSliderState[id] = { index: 0, total: slides.length };
+    const dotsEl = document.querySelector(`[data-dots="${id}"]`);
+    if (dotsEl) {
+      dotsEl.innerHTML = Array.from(slides).map((_, i) =>
+        `<div class="sdot${i === 0 ? ' active' : ''}" onclick="posterGo('${id}', ${i})"></div>`
+      ).join('');
+    }
+    updatePosterSlider(id);
+  });
+}
+
+function posterSlide(id, dir) {
+  const s = posterSliderState[id];
+  if (!s) return;
+  s.index = (s.index + dir + s.total) % s.total;
+  updatePosterSlider(id);
+}
+
+function posterGo(id, i) {
+  const s = posterSliderState[id];
+  if (!s) return;
+  s.index = i;
+  updatePosterSlider(id);
+}
+
+function updatePosterSlider(id) {
+  const s = posterSliderState[id];
+  const track = document.querySelector(`[data-slider="${id}"]`);
+  if (!track || !s) return;
+  track.style.transform = `translateX(-${s.index * 100}%)`;
+  document.querySelectorAll(`[data-dots="${id}"] .sdot`).forEach((d, i) => {
+    d.classList.toggle('active', i === s.index);
+  });
+  const wrap = document.getElementById(`poster-slider-${id}`);
+  const hint = wrap && wrap.querySelector('.poster-slider-hint');
+  if (hint) hint.textContent = `${s.index + 1} / ${s.total}`;
+}
+
+// ══ 공간 슬라이더 ════════════════════════
+let allSlides = [], visibleSlides = [], curSlide = 0;
+
+function initSlider() {
+  allSlides = Array.from(document.querySelectorAll('.space-slide'));
+  showSlides(allSlides);
+}
+
+function showSlides(slides) {
+  visibleSlides = slides;
+  curSlide = 0;
+  allSlides.forEach(s => s.style.display = 'none');
+  visibleSlides.forEach(s => s.style.display = 'block');
+  updateSlider();
+  buildDots();
+}
+
+function filterSpace(type, btn) {
+  document.querySelectorAll('.sf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const filtered = type === 'all' ? allSlides : allSlides.filter(s => s.dataset.type === type);
+  showSlides(filtered);
+}
+
+function slideMove(dir) {
+  curSlide = (curSlide + dir + visibleSlides.length) % visibleSlides.length;
+  updateSlider();
+}
+
+function updateSlider() {
+  visibleSlides.forEach((s, i) => { s.style.order = i; });
+  q('#spaceSlider').style.transform = `translateX(-${curSlide * 100}%)`;
+  document.querySelectorAll('.sdot').forEach((d, i) => {
+    d.classList.toggle('active', i === curSlide);
+  });
+}
+
+function buildDots() {
+  q('#sliderDots').innerHTML = visibleSlides.map((_, i) =>
+    `<div class="sdot${i===0?' active':''}" onclick="goSlide(${i})"></div>`
+  ).join('');
+}
+
+function goSlide(i) { curSlide = i; updateSlider(); }
+
+function initMoimOverview() {
+  const cards = document.querySelectorAll('.moim-grid > .moim-card');
+  const totalEl = q('#moimTotalCount');
+  if (totalEl) totalEl.textContent = cards.length;
+
+  cards.forEach((card, index) => {
+    const poster = card.querySelector('.moim-poster-img, .poster-slider-wrap, .moim-poster');
+    if (!poster || poster.querySelector('.moim-poster-num')) return;
+    const num = document.createElement('span');
+    num.className = 'moim-poster-num';
+    num.textContent = index + 1;
+    num.setAttribute('aria-label', `${index + 1}번 모임`);
+    poster.appendChild(num);
+  });
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initSlider();
+  initMoimPosterSliders();
+  initMoimOverview();
+  initCalCarousel();
+  updateMoimCuration({});
+  loadCounts();
+  q('#curationShuffleBtn')?.addEventListener('click', () => renderMoimCuration(curationPickIndex));
+});
+
+// ══ 유틸 ════════════════════════════════
+const q = sel => document.querySelector(sel);
+function flash(id, msg, type) {
+  const el = q(`#${id}`);
+  el.innerHTML = `<div class="alert ${type==='e'?'ae':'ao'}">${msg}</div>`;
+  if (type!=='o') setTimeout(()=>{el.innerHTML='';}, 5000);
+}
+function setLoad(id, on, txt) {
+  const b = q(`#${id}`); b.disabled = on;
+  b.innerHTML = on ? `<span class="spin"></span>${txt}` : txt;
+}
+function openOv(id)  { q(`#${id}`).classList.add('on'); }
+function closeOv(id) { q(`#${id}`).classList.remove('on'); }
+document.querySelectorAll('.ov').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target===ov) ov.classList.remove('on'); });
+});
+</script>
+</body>
+</html>
