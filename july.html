@@ -306,11 +306,9 @@
     .ev-bvoice { background: #fef3c7; color: #92400e; }
     .ev-away {
       background: #e2e8f0;
-      color: #64748b;
-      font-size: 8px;
-      font-weight: 700;
-      letter-spacing: .06em;
-      text-transform: uppercase;
+      color: #475569;
+      font-size: 9px;
+      font-weight: 600;
     }
 
     /* ── 행사 섹션 ─────────────────────────── */
@@ -1837,7 +1835,7 @@
         <span id="calLegendMoim"><span class="dot dot-moim"></span> 비모임</span>
         <span id="calLegendVoice"><span class="dot dot-voice"></span> b.voice</span>
         <span id="calLegendEvent"><span class="dot dot-event"></span> 행사</span>
-        <span id="calLegendAway"><span class="dot dot-away"></span> away</span>
+        <span id="calLegendAway"><span class="dot dot-away"></span> 외부행사</span>
         <span><span class="dot dot-rent"></span> 대관 가능</span>
       </div>
     </div>
@@ -1855,59 +1853,59 @@
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
-      <div class="cal-cell" onclick="openRent('2026-07-01')"><div class="cal-day">1</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-02')"><div class="cal-day">2</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-03')"><div class="cal-day">3</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-01')"><div class="cal-day">1</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-02')"><div class="cal-day">2</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-03')"><div class="cal-day">3</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-07-04')">
         <div class="cal-day">4</div>
-        <div class="cal-event ev-away" onclick="event.stopPropagation();scrollToEvent('yeonhuiFlea')">away</div>
-        <div class="cal-rent-btn">대관</div>
+        <div class="cal-event ev-away" onclick="event.stopPropagation();scrollToEvent('yeonhuiFlea')">연희놀이터 플리마켓</div>
+        <div class="cal-rent-btn">[대관]</div>
       </div>
-      <div class="cal-cell sun" onclick="openRent('2026-07-05')"><div class="cal-day">5</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-06')"><div class="cal-day">6</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-07')"><div class="cal-day">7</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-08')"><div class="cal-day">8</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-09')"><div class="cal-day">9</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-10')"><div class="cal-day">10</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-07-05')"><div class="cal-day">5</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-06')"><div class="cal-day">6</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-07')"><div class="cal-day">7</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-08')"><div class="cal-day">8</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-09')"><div class="cal-day">9</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-10')"><div class="cal-day">10</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-07-11')">
         <div class="cal-day">11</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pado')">Let's talk!</div>
-        <div class="cal-rent-btn">대관</div>
+        <div class="cal-rent-btn">[대관]</div>
       </div>
-      <div class="cal-cell sun" onclick="openRent('2026-07-12')"><div class="cal-day">12</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-13')"><div class="cal-day">13</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-14')"><div class="cal-day">14</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-15')"><div class="cal-day">15</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-16')"><div class="cal-day">16</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-17')"><div class="cal-day">17</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-07-18')"><div class="cal-day">18</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-07-12')"><div class="cal-day">12</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-13')"><div class="cal-day">13</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-14')"><div class="cal-day">14</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-15')"><div class="cal-day">15</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-16')"><div class="cal-day">16</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-17')"><div class="cal-day">17</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-07-18')"><div class="cal-day">18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-07-19')">
         <div class="cal-day">19</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('customtea')">커스텀 티음료</div>
-        <div class="cal-event ev-bvoice" onclick="event.stopPropagation();scrollToEvent('bvoice1')">b.voice</div>
-        <div class="cal-rent-btn">대관</div>
+        <div class="cal-event ev-bvoice" onclick="event.stopPropagation();scrollToEvent('bvoice1')">b.voice ep2</div>
+        <div class="cal-rent-btn">[대관]</div>
       </div>
-      <div class="cal-cell" onclick="openRent('2026-07-20')"><div class="cal-day">20</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-21')"><div class="cal-day">21</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-22')"><div class="cal-day">22</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-23')"><div class="cal-day">23</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-21')"><div class="cal-day">21</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-22')"><div class="cal-day">22</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-23')"><div class="cal-day">23</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-24')">
         <div class="cal-day">24</div>
-        <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('bammilon')">밤밀온</div>
-        <div class="cal-rent-btn">대관</div>
+        <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('bammilon')">밤밀온 23-06</div>
+        <div class="cal-rent-btn">[대관]</div>
       </div>
       <div class="cal-cell sat" onclick="openRent('2026-07-25')">
         <div class="cal-day">25</div>
-        <div class="cal-event ev-bvoice" onclick="event.stopPropagation();scrollToEvent('bvoice2')">b.voice</div>
-        <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('bammilon')">밤밀온</div>
-        <div class="cal-rent-btn">대관</div>
+        <div class="cal-event ev-bvoice" onclick="event.stopPropagation();scrollToEvent('bvoice2')">b.voice ep3</div>
+        <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('bammilon')">밤밀온 23-06</div>
+        <div class="cal-rent-btn">[대관]</div>
       </div>
-      <div class="cal-cell sun" onclick="openRent('2026-07-26')"><div class="cal-day">26</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-27')"><div class="cal-day">27</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-28')"><div class="cal-day">28</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-29')"><div class="cal-day">29</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-30')"><div class="cal-day">30</div><div class="cal-rent-btn">대관</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-31')"><div class="cal-day">31</div><div class="cal-rent-btn">대관</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-07-26')"><div class="cal-day">26</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-28')"><div class="cal-day">28</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-29')"><div class="cal-day">29</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-30')"><div class="cal-day">30</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-31')"><div class="cal-day">31</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell empty"></div>
     </div>
         </div>
@@ -2985,7 +2983,7 @@ function buildRentMonthGrid(year, month) {
     ].filter(Boolean).join(' ');
     html += `<div class="${cls}" data-rent-date="${dateStr}" onclick="openRent('${dateStr}')">
       <div class="cal-day">${day}</div>
-      <div class="cal-rent-btn">대관</div>
+      <div class="cal-rent-btn">[대관]</div>
     </div>`;
   }
 
