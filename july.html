@@ -403,6 +403,7 @@
     .event-card.type-bvoice .event-card-title { color: #78350f; }
     .event-card.type-bammilon .event-card-title { color: #fff; }
     .event-card-subtitle { font-size: 11px; margin-top: 4px; opacity: .85; }
+    .event-card.type-bvoice .event-card-subtitle { color: #92400e; font-size: 10px; margin-top: 3px; }
     .event-card.type-bammilon .event-card-subtitle { color: #c4b5fd; }
     .event-poster-wrap {
       position: relative;
@@ -413,11 +414,11 @@
     .event-poster-wrap img {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: cover;
+      object-position: center;
       display: block;
     }
-    .event-poster-wrap.type-bvoice { background: #f5f0e6; }
-    .event-poster-wrap.type-bvoice img { object-fit: cover; }
+    .event-poster-wrap.type-bvoice { background: #1a1a2e; }
     .event-poster-placeholder {
       aspect-ratio: 1 / 1;
       display: flex;
@@ -469,6 +470,9 @@
       padding: 5px 7px;
     }
     .event-fact strong { display: block; font-size: 9px; color: var(--muted); margin-bottom: 1px; }
+    .event-card.type-bvoice .event-desc {
+      -webkit-line-clamp: 5;
+    }
     .event-card.type-bvoice .event-fact { background: #fffbeb; border-color: #fde68a; }
     .event-soon-badge {
       align-self: flex-start;
@@ -1748,6 +1752,7 @@
       </div>
       <div class="cal-legend" id="calLegend">
         <span id="calLegendMoim"><span class="dot dot-moim"></span> 비모임</span>
+        <span id="calLegendVoice"><span class="dot dot-voice"></span> b.voice</span>
         <span id="calLegendEvent"><span class="dot dot-event"></span> 행사</span>
         <span><span class="dot dot-rent"></span> 대관 가능</span>
       </div>
@@ -1787,6 +1792,7 @@
       <div class="cal-cell sun" onclick="openRent('2026-07-19')">
         <div class="cal-day">19</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('customtea')">커스텀 티음료</div>
+        <div class="cal-event ev-bvoice" onclick="event.stopPropagation();scrollToEvent('bvoice1')">b.voice</div>
         <div class="cal-rent-btn">대관</div>
       </div>
       <div class="cal-cell" onclick="openRent('2026-07-20')"><div class="cal-day">20</div><div class="cal-rent-btn">대관</div></div>
@@ -1800,6 +1806,7 @@
       </div>
       <div class="cal-cell sat" onclick="openRent('2026-07-25')">
         <div class="cal-day">25</div>
+        <div class="cal-event ev-bvoice" onclick="event.stopPropagation();scrollToEvent('bvoice2')">b.voice</div>
         <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('bammilon')">밤밀온</div>
         <div class="cal-rent-btn">대관</div>
       </div>
@@ -1846,16 +1853,23 @@
       <div class="event-slide">
       <article class="event-card type-bvoice" id="bvoice1">
         <div class="event-card-head">
-          <div class="event-type-label">b.voice</div>
-          <h3 class="event-card-title">7월 b.voice #1</h3>
+          <div class="event-type-label">b.voice · EPISODE 02</div>
+          <h3 class="event-card-title">영화 &lt;드라이브&gt; 상영 및 정연감독 GV</h3>
+          <p class="event-card-subtitle">스튜디오 이상한 나라의 원더랜드 · 정연 감독</p>
         </div>
-        <div class="event-poster-placeholder">
-          <div class="ph-icon">🎙️</div>
-          <div class="ph-text">점주의 목소리<br>일정·포스터 공개 예정</div>
+        <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep02_drive.jpg','영화 &lt;드라이브&gt; — b.voice EP.02')">
+          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep02_drive.jpg','영화 &lt;드라이브&gt; — b.voice EP.02')">🔍</button>
+          <img src="images/bvoice_ep02_drive.jpg" alt="영화 드라이브 상영 및 정연감독 GV — b.voice EPISODE 02">
         </div>
         <div class="event-card-body">
-          <span class="event-soon-badge">COMING SOON</span>
-          <p class="event-desc">비북스 점주가 미니 강연이나 북토크로, 하고 싶은 이야기를 꺼내는 b.voice 두 번째·세 번째 목소리를 준비 중입니다.</p>
+          <p class="event-desc">독립장편영화와 스크린 뒤의 이야기가 궁금하신 분들을 위한 b.voice. 1부 영화 &lt;드라이브&gt; 상영, 2부 제작 과정·장면 해설과 드라이브 아카이브 북 제작 후기.</p>
+          <div class="event-facts">
+            <div class="event-fact"><strong>일시</strong>7/19(일) 16:00–18:00</div>
+            <div class="event-fact"><strong>장소</strong>비북스 세미나실</div>
+            <div class="event-fact"><strong>참가비</strong>10,000원 (다과)</div>
+            <div class="event-fact"><strong>정원</strong>15명</div>
+          </div>
+          <button class="btn-event-apply type-bvoice" id="apply-bvoice1" onclick="openEventApply('bvoice1')">b.voice 신청하기</button>
         </div>
       </article>
       </div>
@@ -1863,16 +1877,23 @@
       <div class="event-slide">
       <article class="event-card type-bvoice" id="bvoice2">
         <div class="event-card-head">
-          <div class="event-type-label">b.voice</div>
-          <h3 class="event-card-title">7월 b.voice #2</h3>
+          <div class="event-type-label">b.voice · EPISODE 03</div>
+          <h3 class="event-card-title">소중한 ________ 에게</h3>
+          <p class="event-card-subtitle">이유진 서가 · 이유진 작가</p>
         </div>
-        <div class="event-poster-placeholder">
-          <div class="ph-icon">🎙️</div>
-          <div class="ph-text">점주의 목소리<br>일정·포스터 공개 예정</div>
+        <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep03_book.jpg','소중한 ________ 에게 — b.voice EP.03')">
+          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep03_book.jpg','소중한 ________ 에게 — b.voice EP.03')">🔍</button>
+          <img src="images/bvoice_ep03_book.jpg" alt="소중한 ________ 에게 — 이유진 작가 b.voice EPISODE 03">
         </div>
         <div class="event-card-body">
-          <span class="event-soon-badge">COMING SOON</span>
-          <p class="event-desc">일정과 내용이 확정되는 대로 이 자리에 포스터와 신청 버튼이 열립니다.</p>
+          <p class="event-desc">이유진 작가 북토크. 암 생존자로서의 따뜻한 이야기를 나눕니다. 현장 도서 구매 시 저자 직접 사인 및 엽서 증정.</p>
+          <div class="event-facts">
+            <div class="event-fact"><strong>일시</strong>7/25(토) 13:00–15:00</div>
+            <div class="event-fact"><strong>장소</strong>비북스 세미나실</div>
+            <div class="event-fact"><strong>참가비</strong>10,000원 (다과)</div>
+            <div class="event-fact"><strong>정원</strong>15명</div>
+          </div>
+          <button class="btn-event-apply type-bvoice" id="apply-bvoice2" onclick="openEventApply('bvoice2')">b.voice 신청하기</button>
         </div>
       </article>
       </div>
@@ -2292,20 +2313,24 @@ const EVENTS = {
   bvoice1: {
     type: 'bvoice',
     typeLabel: 'b.voice',
-    name: '7월 b.voice #1',
-    comingSoon: true,
-    sessions: [],
-    capacity: null,
-    amount: null
+    name: '영화 <드라이브> 상영 및 정연감독 GV',
+    subtitle: '스튜디오 이상한 나라의 원더랜드 · 정연 감독',
+    poster: 'images/bvoice_ep02_drive.jpg',
+    sessions: [{ label: '7/19(일) 16:00–18:00', value: '7월19일_bvoice', _endMs: new Date(2026, 6, 19, 18, 0, 0).getTime() }],
+    capacity: 15,
+    amount: 10000,
+    space: '비북스 세미나실'
   },
   bvoice2: {
     type: 'bvoice',
     typeLabel: 'b.voice',
-    name: '7월 b.voice #2',
-    comingSoon: true,
-    sessions: [],
-    capacity: null,
-    amount: null
+    name: '소중한 ________ 에게',
+    subtitle: '이유진 서가 · 이유진 작가',
+    poster: 'images/bvoice_ep03_book.jpg',
+    sessions: [{ label: '7/25(토) 13:00–15:00', value: '7월25일_bvoice', _endMs: new Date(2026, 6, 25, 15, 0, 0).getTime() }],
+    capacity: 15,
+    amount: 10000,
+    space: '비북스 세미나실'
   },
   bammilon: {
     type: 'bammilon',
@@ -3107,6 +3132,8 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
+  { date: '2026-07-19', space: '세미나실', start: '16:00', end: '18:00', tag: 'b.voice EP.02' },
+  { date: '2026-07-25', space: '세미나실', start: '13:00', end: '15:00', tag: 'b.voice EP.03' },
   { date: '2026-07-24', space: '세미나실', start: '08:00', end: '22:00', tag: '밤밀온' },
   { date: '2026-07-24', space: '매장 테이블', start: '08:00', end: '22:00', tag: '밤밀온' },
   { date: '2026-07-25', space: '세미나실', start: '08:00', end: '22:00', tag: '밤밀온' },
