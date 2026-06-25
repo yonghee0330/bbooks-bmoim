@@ -1072,6 +1072,22 @@
     .moim-poster.p4,
     .moim-poster.ocean-tea-poster { background: linear-gradient(160deg, #0d7a9e 0%, var(--ocean) 50%, var(--ocean-light) 100%); }
     .moim-poster.ocean-pado-poster { background: linear-gradient(155deg, #1e40af 0%, var(--ocean) 45%, #7dd3fc 100%); }
+    .moim-poster.ocean-wedlibrary-poster { background: linear-gradient(155deg, #14532d 0%, #15803d 45%, #86efac 100%); }
+    .ocean-wedlibrary-poster .poster-wedlibrary-illust {
+      width: 58%;
+      max-width: 132px;
+      margin: 0 auto 8px;
+      display: block;
+      opacity: 0.95;
+    }
+    .moim-poster.ocean-pilsa-poster { background: linear-gradient(155deg, #4c1d95 0%, #7c3aed 45%, #c4b5fd 100%); }
+    .ocean-pilsa-poster .poster-pilsa-illust {
+      width: 58%;
+      max-width: 132px;
+      margin: 0 auto 8px;
+      display: block;
+      opacity: 0.95;
+    }
     .moim-poster.ocean-minbook-poster { background: linear-gradient(155deg, #7c2d12 0%, #ea580c 42%, #fdba74 100%); }
     .ocean-minbook-poster .poster-minbook-illust {
       width: 58%;
@@ -1883,7 +1899,11 @@
       <div class="cal-cell sun" onclick="openRent('2026-07-12')"><div class="cal-day">12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-13')"><div class="cal-day">13</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-14')"><div class="cal-day">14</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-15')"><div class="cal-day">15</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-15')">
+        <div class="cal-day">15</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('wedlibrary')">수요일의 서재</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-07-16')"><div class="cal-day">16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-17')"><div class="cal-day">17</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-07-18')">
@@ -1912,7 +1932,11 @@
         <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('bammilon')">밤밀온 23-06</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
-      <div class="cal-cell sun" onclick="openRent('2026-07-26')"><div class="cal-day">26</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-07-26')">
+        <div class="cal-day">26</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pilsa')">필사 다이어리</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-07-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-28')"><div class="cal-day">28</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-29')"><div class="cal-day">29</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2024,7 +2048,7 @@
 
   <div class="moim-open-bar">
     <div class="moim-open-stat">
-      <span class="moim-open-num" id="moimTotalCount">3</span>
+      <span class="moim-open-num" id="moimTotalCount">5</span>
       <span class="moim-open-label">개 모임 개설</span>
     </div>
     <p class="moim-open-desc">7월 비북스 b.moim · 아래 번호 순서대로 모임을 확인할 수 있습니다.</p>
@@ -2060,6 +2084,52 @@
             <div class="moim-cap">재료 준비 없음</div>
           </div>
           <button class="btn-apply" id="apply-pado" onclick="openApply('Let\'s talk! 마음 switch on','pado')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="wedlibrary">
+      <div class="moim-poster ocean-wedlibrary-poster">
+        <svg class="poster-wedlibrary-illust" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <rect x="24" y="30" width="16" height="44" rx="2" fill="rgba(255,255,255,0.85)" stroke="#fff" stroke-width="1.2"/>
+          <rect x="42" y="26" width="16" height="48" rx="2" fill="rgba(255,255,255,0.95)" stroke="#fff" stroke-width="1.2"/>
+          <rect x="60" y="34" width="16" height="40" rx="2" fill="rgba(255,255,255,0.8)" stroke="#fff" stroke-width="1.2"/>
+          <path d="M46,38 H54 M46,44 H52 M46,50 H54" stroke="rgba(21,128,61,0.45)" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="72" cy="24" r="8" fill="#FFE08A" stroke="#fff" stroke-width="1.2"/>
+        </svg>
+        <div class="poster-title long">수요일의 서재<br>7월 독서모임</div>
+        <div class="poster-sub">아침놀 · 7/15(수)</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">수요일의 서재×7월 독서모임</div>
+        <p class="moim-host-line">아침놀(이미옥)</p>
+        <div class="moim-desc">
+          수요일의 서재, 한 주의 쉼표를 찍어보세요.<br>
+          읽고, 나누고, 한 문장을 남기는 시간<br>
+          김애란의 &lt;안녕이라 그랬어&gt;와 함께 나눠요!
+        </div>
+        <div class="session-tabs">
+          <button class="stab active" onclick="selectSession(this,'wed1')">① 오전</button>
+          <button class="stab" onclick="selectSession(this,'wed2')">② 오후</button>
+        </div>
+        <div class="moim-meta" id="wed1-meta">
+          <div class="meta-row"><span class="mi">📅</span>7월 15일 (수) 오전 10:30 – 12:30</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+          <div class="meta-row"><span class="mi">📚</span>김애란 &lt;안녕이라 그랬어&gt;</div>
+        </div>
+        <div class="moim-meta" id="wed2-meta" style="display:none">
+          <div class="meta-row"><span class="mi">📅</span>7월 15일 (수) 오후 6:30 – 8:30</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+          <div class="meta-row"><span class="mi">📚</span>김애란 &lt;안녕이라 그랬어&gt;</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-wedlibrary" onclick="openApply('수요일의 서재×7월 독서모임','wedlibrary')">신청하기</button>
         </div>
       </div>
     </div>
@@ -2117,6 +2187,39 @@
             <div class="moim-cap">재료 준비 있음</div>
           </div>
           <button class="btn-apply" id="apply-customtea" onclick="openApply('DIY 내 취향 가득 담은 커스텀 티음료 만들기!','customtea')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="pilsa">
+      <div class="moim-poster ocean-pilsa-poster">
+        <svg class="poster-pilsa-illust" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <rect x="30" y="22" width="40" height="56" rx="4" fill="rgba(255,255,255,0.92)" stroke="#fff" stroke-width="1.5"/>
+          <path d="M38,22 V78" stroke="rgba(124,58,237,0.35)" stroke-width="1.5"/>
+          <rect x="42" y="34" width="22" height="2.5" rx="1.25" fill="#ddd6fe"/>
+          <rect x="42" y="42" width="18" height="2.5" rx="1.25" fill="rgba(124,58,237,0.35)"/>
+          <rect x="42" y="50" width="20" height="2.5" rx="1.25" fill="rgba(124,58,237,0.25)"/>
+          <circle cx="58" cy="62" r="7" fill="#FFE08A" stroke="#fff" stroke-width="1.2"/>
+          <path d="M68,30 L76,38 M76,30 L68,38" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="poster-title long">필사(筆寫)적인<br>다이어리</div>
+        <div class="poster-sub">책방 파도 · 7/26(일)</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">필사(筆寫)적인 다이어리</div>
+        <p class="moim-host-line">책방 파도</p>
+        <div class="moim-desc">시필사&amp;감성다꾸모임<br>시 한 줄에 위로받고, 스티커 한 장에 행복해지는 본격 '손끝 감성 자극' 모임입니다.</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>7월 26일 (일) 오후 2:00 – 4:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>4명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 있음</div>
+          </div>
+          <button class="btn-apply" id="apply-pilsa" onclick="openApply('필사(筆寫)적인 다이어리','pilsa')">신청하기</button>
         </div>
       </div>
     </div>
@@ -2433,6 +2536,16 @@ const MOIMS = {
     amount: 10000,
     hasSession: false
   },
+  wedlibrary: {
+    name: '수요일의 서재×7월 독서모임',
+    sessions: [
+      { label: '① 7/15(수) 오전 10:30–12:30', value: '7월15일_오전' },
+      { label: '② 7/15(수) 오후 6:30–8:30', value: '7월15일_오후' }
+    ],
+    capacity: { '7월15일_오전': 6, '7월15일_오후': 6 },
+    amount: 10000,
+    hasSession: true
+  },
   customtea: {
     name: 'DIY 내 취향 가득 담은 커스텀 티음료 만들기!',
     sessions: [{ label: '7/19(일) 오전 11:00–13:00', value: '7월19일' }],
@@ -2445,6 +2558,13 @@ const MOIMS = {
     sessions: [{ label: '7/18(토) 15:00–17:00', value: '7월18일' }],
     capacity: 6,
     amount: 15000,
+    hasSession: false
+  },
+  pilsa: {
+    name: '필사(筆寫)적인 다이어리',
+    sessions: [{ label: '7/26(일) 오후 2:00–4:00', value: '7월26일' }],
+    capacity: 4,
+    amount: 10000,
     hasSession: false
   }
 };
@@ -2515,7 +2635,9 @@ let latestMoimCounts = {};
 
 const MOIM_CURATION_META = {
   pado: { cardId: 'pado', poster: '' },
+  wedlibrary: { cardId: 'wedlibrary', poster: '' },
   minbook: { cardId: 'minbook', poster: '' },
+  pilsa: { cardId: 'pilsa', poster: '' },
   customtea: { cardId: 'customtea', poster: 'images/customtea_july.jpg' }
 };
 
@@ -2760,14 +2882,15 @@ function countsFromMoimGviz(data) {
   (data?.table?.rows || []).forEach(row => {
     const cells = row.c || [];
     if (cells[1]?.v !== PAGE_MONTH) return;
-    const note = String(cells[7]?.v || '');
+    if (String(cells[2]?.v || '').trim() !== '비모임') return;
+    const note = String(cells[9]?.v || '');
     if (note.includes('취소')) return;
-    const moimName = String(cells[2]?.v || '').trim();
-    const name = String(cells[4]?.v || '').trim();
+    const moimName = String(cells[3]?.v || '').trim();
+    const name = String(cells[5]?.v || '').trim();
     if (!moimName || !name) return;
     const session = resolveSessionKey(
       moimName,
-      normalizeApplySession(cells[3]?.f, cells[3]?.v, moimName)
+      normalizeApplySession(cells[4]?.f, cells[4]?.v, moimName)
     );
     addMoimCount(counts, moimName, session);
   });
@@ -3322,8 +3445,11 @@ const TT_END_MIN = 22 * 60;
 // 비모임 고정 일정 (공간별 실제 시간 기준, 겹치면 차단)
 const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-07-11', space: '매장 테이블', start: '15:30', end: '18:00', tag: "Let's talk!" },
+  { date: '2026-07-15', space: '매장 테이블', start: '10:30', end: '12:30', tag: '수요일의 서재 ①' },
+  { date: '2026-07-15', space: '매장 테이블', start: '18:30', end: '20:30', tag: '수요일의 서재 ②' },
   { date: '2026-07-18', space: '매장 테이블', start: '15:00', end: '17:00', tag: '미니북' },
-  { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료' }
+  { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료' },
+  { date: '2026-07-26', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사 다이어리' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
   { date: '2026-07-19', space: '세미나실', start: '16:00', end: '18:00', tag: 'b.voice EP.02' },
