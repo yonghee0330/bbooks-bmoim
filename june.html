@@ -1810,35 +1810,15 @@
 
     <!-- Reading Wave · 책방,파도 x 또봐 만화방 -->
     <div class="moim-card" id="readingwave">
-      <div class="poster-slider-wrap" id="poster-slider-readingwave"
-           onclick="openPosterLightbox('readingwave')"
-           data-posters='["images/readingwave_6월_1.png","images/readingwave_6월_2.png"]'
-           data-alt="Reading Wave 포스터">
-        <span class="poster-slider-hint">1 / 2</span>
-        <div class="poster-slider-viewport">
-          <div class="poster-slider" data-slider="readingwave">
-            <div class="poster-slide">
-              <img src="images/readingwave_6월_1.png" alt="Reading Wave 포스터 1">
-            </div>
-            <div class="poster-slide">
-              <img src="images/readingwave_6월_2.png" alt="Reading Wave 포스터 2">
-            </div>
-          </div>
-        </div>
-        <div class="poster-slider-nav" onclick="event.stopPropagation()">
-          <div class="slider-dots" data-dots="readingwave"></div>
-          <div class="slider-arrows">
-            <button type="button" class="sarr" aria-label="이전" onclick="posterSlide('readingwave', -1)">‹</button>
-            <button type="button" class="sarr" aria-label="다음" onclick="posterSlide('readingwave', 1)">›</button>
-          </div>
-        </div>
+      <div class="moim-poster-img" onclick="openLightbox('images/readingwave_june.jpg','Reading Wave 포스터')">
+        <img src="images/readingwave_june.jpg" alt="Reading Wave 포스터">
       </div>
       <div class="moim-body">
         <div class="moim-name">책방,파도 x 또봐 만화방 : Reading Wave</div>
         <p class="moim-host-line">책방,파도 · 또봐 만화방</p>
         <div class="moim-desc">
-          뉴욕에 READING RHYTHMS이 있다면, 부천에는 READING WAVE가 있다.<br><br>
-          조용히 책에 집중하는 시간. 각자 문장의 파도를 타고, 마음을 가볍게 나누는 시간.
+          뉴욕엔 Reading Rhythms, 부천엔?!<br><br>
+          조용히 책에 집중하는 시간. 각자 문장의 파도를 타고, 마음을 가볍게 나누는 시간입니다.
         </div>
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>6월 27일 (토) 오후 2:00 – 4:00</div>
@@ -1849,7 +1829,7 @@
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
-            <div class="moim-cap">준비물: 책 1권</div>
+            <div class="moim-cap">준비물: 책 1권 · 공간사용료 5,000원 포함</div>
           </div>
           <button class="btn-apply" id="apply-readingwave" onclick="openApply('책방,파도 x 또봐 만화방 : Reading Wave','readingwave')">신청하기</button>
         </div>
@@ -2292,7 +2272,7 @@ const MOIM_CURATION_META = {
   creativewriting: { cardId: 'creativewriting', poster: 'images/creativewriting_june.jpg' },
   letter: { cardId: 'letter', poster: 'images/letter_6월.png' },
   engbookclub: { cardId: 'engbookclub', poster: 'images/engbookclub_june.jpg' },
-  readingwave: { cardId: 'readingwave', poster: 'images/readingwave_6월_1.png' },
+  readingwave: { cardId: 'readingwave', poster: 'images/readingwave_june.jpg' },
   nextdoor: { cardId: 'nextdoor', poster: 'images/drive_teatime_june.jpg' }
 };
 
