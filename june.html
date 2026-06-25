@@ -1443,7 +1443,7 @@
       <!-- 5주 -->
       <div class="cal-cell sun" onclick="openRent('2026-06-28')">
         <div class="cal-day">28</div>
-        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('nextdoor')">황동만 옆집?</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('nextdoor')">DRIVE Teatime</div>
         <div class="cal-rent-btn">대관</div>
       </div>
       <div class="cal-cell" onclick="openRent('2026-06-29')"><div class="cal-day">29</div><div class="cal-rent-btn">대관</div></div>
@@ -1856,30 +1856,28 @@
       </div>
     </div>
 
-    <!-- 우리집 옆집에 황동만이 산다? -->
+    <!-- 영화는 어떻게 만들어지나요? · DRIVE 정연 감독 Teatime -->
     <div class="moim-card" id="nextdoor">
-      <div class="moim-poster-img" onclick="openLightbox('images/nextdoor_6월.png','우리집 옆집에 황동만이 산다? 포스터')">
-        <img src="images/nextdoor_6월.png" alt="우리집 옆집에 황동만이 산다? 포스터">
+      <div class="moim-poster-img" onclick="openLightbox('images/drive_tealtime_6월.jpg','영화는 어떻게 만들어지나요? — DRIVE 정연 감독 Teatime 포스터')">
+        <img src="images/drive_tealtime_6월.jpg" alt="영화는 어떻게 만들어지나요? 독립영화 DRIVE 정연 감독과 Teatime 포스터">
       </div>
       <div class="moim-body">
-        <div class="moim-name">우리집 옆집에 황동만이 산다?</div>
-        <p class="moim-host-line">스튜디오 이상한 나라의 원더랜드</p>
+        <div class="moim-name">영화는 어떻게 만들어지나요? : 독립영화 &lt;DRIVE&gt; 정연 감독과 Teatime</div>
+        <p class="moim-host-line">스튜디오 이상한 나라의 원더랜드 · 정연 감독</p>
         <div class="moim-desc">
-          최근 드라마 &lt;모두가 자신의 무가치함과 씨우고 있다&gt;를 계기로, 영화를 제작 중인 감독(영화 드라이브)과 함께 시나리오·촬영·편집·개봉·홍보·배급 등 제작 과정과 상업·독립·단편·장편 영화 이야기를 편하게 나눕니다.<br><br>
-          영화에 대한 궁금함은 주제 불문 환영합니다. 질문 보따리를 들고 가볍게 오세요. 모임이 이어지면 짧은 영화(29초 영화 등)를 함께 만드는 날도 기대해 봅니다.
+          현재 영화 제작 중인 감독과 함께 차 한잔 마시며, 영화 감독, 시나리오, 촬영, 편집, 개봉, 홍보, 배급 등 영화 제작 과정과 상업·독립·단편·장편 영화, OTT에 대해 세상 편하게!
         </div>
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>6월 28일 (일) 오후 3:00 – 5:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
-          <div class="meta-row"><span class="mi">👥</span>7명</div>
-          <div class="meta-row"><span class="mi">📚</span>모임 참가자 &lt;드라이브 아카이브 북&gt; 1만원 구입 가능</div>
+          <div class="meta-row"><span class="mi">👥</span>5명</div>
         </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
-            <div class="moim-cap">재료 준비 없음</div>
+            <div class="moim-cap">참가비 중 공간사용료 5,000원 포함</div>
           </div>
-          <button class="btn-apply" id="apply-nextdoor" onclick="openApply('우리집 옆집에 황동만이 산다?','nextdoor')">신청하기</button>
+          <button class="btn-apply" id="apply-nextdoor" onclick="openApply('영화는 어떻게 만들어지나요? : 독립영화 &lt;DRIVE&gt; 정연 감독과 Teatime','nextdoor')">신청하기</button>
         </div>
       </div>
     </div>
@@ -2258,9 +2256,9 @@ const MOIMS = {
     hasSession: false
   },
   nextdoor: {
-    name: '우리집 옆집에 황동만이 산다?',
+    name: '영화는 어떻게 만들어지나요? : 독립영화 <DRIVE> 정연 감독과 Teatime',
     sessions: [{ label: '6/28(일) 오후 3:00–5:00', value: '6월28일' }],
-    capacity: 7,
+    capacity: 5,
     amount: 10000,
     hasSession: false
   }
@@ -2295,7 +2293,7 @@ const MOIM_CURATION_META = {
   letter: { cardId: 'letter', poster: 'images/letter_6월.png' },
   engbookclub: { cardId: 'engbookclub', poster: 'images/engbookclub_6월.png' },
   readingwave: { cardId: 'readingwave', poster: 'images/readingwave_6월_1.png' },
-  nextdoor: { cardId: 'nextdoor', poster: 'images/nextdoor_6월.png' }
+  nextdoor: { cardId: 'nextdoor', poster: 'images/drive_tealtime_6월.jpg' }
 };
 
 const MOIM_DEFAULT_SESSION = {};
@@ -3004,7 +3002,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-06-24', space: '세미나실',   start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-06-27', space: '세미나실',   start: '10:00', end: '12:00', tag: '영어 북클럽' },
   { date: '2026-06-27', space: '세미나실',   start: '14:00', end: '16:00', tag: 'Reading Wave' },
-  { date: '2026-06-28', space: '세미나실',   start: '15:00', end: '17:00', tag: '황동만 옆집?' },
+  { date: '2026-06-28', space: '세미나실',   start: '15:00', end: '17:00', tag: 'DRIVE Teatime' },
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
