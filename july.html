@@ -1882,7 +1882,7 @@
       <div class="cal-cell" onclick="openRent('2026-07-03')"><div class="cal-day">3</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-07-04')">
         <div class="cal-day">4</div>
-        <div class="cal-event ev-away" onclick="event.stopPropagation();scrollToEvent('yeonhuiFlea')">연희놀이터 플리마켓</div>
+        <div class="cal-event ev-away" onclick="event.stopPropagation();window.open('https://happy.bbooks.co.kr/#apply','_blank')">연희놀이터 플리마켓</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
       <div class="cal-cell sun" onclick="openRent('2026-07-05')"><div class="cal-day">5</div><div class="cal-rent-btn">[대관]</div></div>
@@ -1967,23 +1967,11 @@
       </svg>
     </div>
     <div class="event-slider-top">
-      <p class="event-slider-summary"><strong><span id="eventTotalCount">4</span>개 행사</strong> · b.voice · 밤밀온 · 외부 — 좌우로 넘겨 포스터를 확인하세요</p>
-      <span class="event-slide-counter" id="eventSlideCounter">1 / 4</span>
+      <p class="event-slider-summary"><strong><span id="eventTotalCount">3</span>개 행사</strong> · b.voice · 밤밀온 — 좌우로 넘겨 포스터를 확인하세요</p>
+      <span class="event-slide-counter" id="eventSlideCounter">1 / 3</span>
     </div>
     <div class="event-slider-wrap" id="eventSliderViewport">
       <div class="event-slider" id="eventSlider">
-
-      <div class="event-slide">
-      <article class="event-card type-external" id="yeonhuiFlea">
-        <div class="event-poster-stack">
-        <div class="event-poster-wrap type-external" onclick="openLightbox('images/yeonhui_flea_july.jpg','들썩들썩 연희놀이터 플리마켓 셀러 모집')">
-          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/yeonhui_flea_july.jpg','들썩들썩 연희놀이터 플리마켓 셀러 모집')">🔍</button>
-          <img src="images/yeonhui_flea_july.jpg" alt="들썩들썩 연희놀이터 플리마켓 셀러 모집 — Happiness bookstore &amp; cafe × b.books">
-        </div>
-        <button class="btn-event-apply type-external" id="apply-yeonhuiFlea" onclick="openEventApply('yeonhuiFlea')">셀러 신청하기 · 마지막 1자리</button>
-        </div>
-      </article>
-      </div>
 
       <div class="event-slide">
       <article class="event-card type-bvoice" id="bvoice1">
@@ -2057,17 +2045,25 @@
     <div class="moim-grid">
 
     <div class="moim-card" id="pado">
-      <div class="moim-poster ocean-pado-poster">
-        <svg class="poster-pado-illust" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-          <path d="M8,62 Q28,48 50,58 T92,52" stroke="rgba(255,255,255,0.45)" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <path d="M10,72 Q34,58 54,68 T90,64" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <rect x="22" y="28" width="34" height="22" rx="8" fill="rgba(255,255,255,0.92)" stroke="#fff" stroke-width="1.2"/>
-          <rect x="44" y="38" width="34" height="22" rx="8" fill="rgba(255,255,255,0.75)" stroke="#fff" stroke-width="1.2"/>
-          <circle cx="72" cy="58" r="10" fill="#FFE08A" stroke="#fff" stroke-width="1.2"/>
-          <rect x="66" y="55" width="12" height="6" rx="3" fill="#fff"/>
-        </svg>
-        <div class="poster-title long">Let's talk!<br>마음 switch on</div>
-        <div class="poster-sub">책방 파도 · 7/11(토)</div>
+      <div class="poster-slider-wrap" id="poster-slider-pado"
+           onclick="openPosterLightbox('pado')"
+           data-posters='["images/pado_switch_on_july.jpg","images/pado_switch_on_july_1.jpg","images/pado_switch_on_july_2.jpg"]'
+           data-alt="Let's talk! 마음 switch on">
+        <div class="poster-slider-viewport">
+          <div class="poster-slider" data-slider="pado">
+            <div class="poster-slide"><img src="images/pado_switch_on_july.jpg" alt="비폭력대화 SWITCH ON — Let's talk! 마음 switch on"></div>
+            <div class="poster-slide"><img src="images/pado_switch_on_july_1.jpg" alt="놀이와 카드로 알아보는 느낌말"></div>
+            <div class="poster-slide"><img src="images/pado_switch_on_july_2.jpg" alt="토닥토닥, 소중한 나의 느낌"></div>
+          </div>
+        </div>
+        <div class="poster-slider-nav">
+          <div class="slider-dots" data-dots="pado"></div>
+          <div class="slider-arrows">
+            <button type="button" class="sarr" aria-label="이전 포스터" onclick="event.stopPropagation();posterSlide('pado',-1)">‹</button>
+            <button type="button" class="sarr" aria-label="다음 포스터" onclick="event.stopPropagation();posterSlide('pado',1)">›</button>
+          </div>
+        </div>
+        <span class="poster-slider-hint">1 / 3</span>
       </div>
       <div class="moim-body">
         <div class="moim-name">Let's talk! 마음 switch on</div>
@@ -2192,18 +2188,24 @@
     </div>
 
     <div class="moim-card" id="pilsa">
-      <div class="moim-poster ocean-pilsa-poster">
-        <svg class="poster-pilsa-illust" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-          <rect x="30" y="22" width="40" height="56" rx="4" fill="rgba(255,255,255,0.92)" stroke="#fff" stroke-width="1.5"/>
-          <path d="M38,22 V78" stroke="rgba(124,58,237,0.35)" stroke-width="1.5"/>
-          <rect x="42" y="34" width="22" height="2.5" rx="1.25" fill="#ddd6fe"/>
-          <rect x="42" y="42" width="18" height="2.5" rx="1.25" fill="rgba(124,58,237,0.35)"/>
-          <rect x="42" y="50" width="20" height="2.5" rx="1.25" fill="rgba(124,58,237,0.25)"/>
-          <circle cx="58" cy="62" r="7" fill="#FFE08A" stroke="#fff" stroke-width="1.2"/>
-          <path d="M68,30 L76,38 M76,30 L68,38" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <div class="poster-title long">필사(筆寫)적인<br>다이어리</div>
-        <div class="poster-sub">책방 파도 · 7/26(일)</div>
+      <div class="poster-slider-wrap" id="poster-slider-pilsa"
+           onclick="openPosterLightbox('pilsa')"
+           data-posters='["images/pilsa_diary_july.jpg","images/pilsa_diary_july_1.jpg"]'
+           data-alt="필사(筆寫)적인 다이어리">
+        <div class="poster-slider-viewport">
+          <div class="poster-slider" data-slider="pilsa">
+            <div class="poster-slide"><img src="images/pilsa_diary_july.jpg" alt="필사(筆寫)적인 다이어리 — 7/26(일)"></div>
+            <div class="poster-slide"><img src="images/pilsa_diary_july_1.jpg" alt="시필사 &amp; 감성다꾸모임"></div>
+          </div>
+        </div>
+        <div class="poster-slider-nav">
+          <div class="slider-dots" data-dots="pilsa"></div>
+          <div class="slider-arrows">
+            <button type="button" class="sarr" aria-label="이전 포스터" onclick="event.stopPropagation();posterSlide('pilsa',-1)">‹</button>
+            <button type="button" class="sarr" aria-label="다음 포스터" onclick="event.stopPropagation();posterSlide('pilsa',1)">›</button>
+          </div>
+        </div>
+        <span class="poster-slider-hint">1 / 2</span>
       </div>
       <div class="moim-body">
         <div class="moim-name">필사(筆寫)적인 다이어리</div>
@@ -2570,28 +2572,6 @@ const MOIMS = {
 };
 
 const EVENTS = {
-  yeonhuiFlea: {
-    type: 'external',
-    typeLabel: '외부 행사 · away',
-    name: '들썩들썩 연희놀이터 플리마켓 셀러 모집',
-    subtitle: 'Happiness bookstore & cafe × b.books',
-    poster: 'images/yeonhui_flea_july.jpg',
-    away: true,
-    external: true,
-    applyUrl: 'https://happy.bbooks.co.kr/#apply',
-    sessions: [{ label: '7/4(토) 11:00–17:00', value: '7월4일_연희플리', _endMs: new Date(2026, 6, 4, 17, 0, 0).getTime() }],
-    capacity: 10,
-    filledCount: 9,
-    amount: null,
-    space: '해피니스북스토어앤카페 · 복사골문화센터',
-    infoHtml: `<p><strong>부천문화재단 어린이축제</strong> · 복사골문화센터<br>해피니스북스토어앤카페 내 7/4(토) 11:00–17:00</p>
-      <p>총 <strong>10팀</strong> · 상품 구성의 핵심 키워드는 <strong>「어린이」</strong></p>
-      <ul>
-        <li>수용: 핸드메이드, 문구, 그림책·아동서적, 장난감·소품, 체험 키트, 가족 대상 굿즈</li>
-        <li>불가: 성인용 중고·위험물</li>
-      </ul>
-      <div class="event-external-note">b.box day와 달리 부천문화재단 공식 행사로, 선정 기준이 있습니다.<br>현재 <strong>마지막 1자리</strong> 남았습니다.</div>`
-  },
   bvoice1: {
     type: 'bvoice',
     typeLabel: 'b.voice',
@@ -2634,10 +2614,10 @@ let curationPickIndex = -1;
 let latestMoimCounts = {};
 
 const MOIM_CURATION_META = {
-  pado: { cardId: 'pado', poster: '' },
+  pado: { cardId: 'pado', poster: 'images/pado_switch_on_july.jpg' },
   wedlibrary: { cardId: 'wedlibrary', poster: '' },
   minbook: { cardId: 'minbook', poster: '' },
-  pilsa: { cardId: 'pilsa', poster: '' },
+  pilsa: { cardId: 'pilsa', poster: 'images/pilsa_diary_july.jpg' },
   customtea: { cardId: 'customtea', poster: 'images/customtea_july.jpg' }
 };
 
@@ -2882,15 +2862,14 @@ function countsFromMoimGviz(data) {
   (data?.table?.rows || []).forEach(row => {
     const cells = row.c || [];
     if (cells[1]?.v !== PAGE_MONTH) return;
-    if (String(cells[2]?.v || '').trim() !== '비모임') return;
-    const note = String(cells[9]?.v || '');
+    const note = String(cells[7]?.v || '');
     if (note.includes('취소')) return;
-    const moimName = String(cells[3]?.v || '').trim();
-    const name = String(cells[5]?.v || '').trim();
+    const moimName = String(cells[2]?.v || '').trim();
+    const name = String(cells[4]?.v || '').trim();
     if (!moimName || !name) return;
     const session = resolveSessionKey(
       moimName,
-      normalizeApplySession(cells[4]?.f, cells[4]?.v, moimName)
+      normalizeApplySession(cells[3]?.f, cells[3]?.v, moimName)
     );
     addMoimCount(counts, moimName, session);
   });
