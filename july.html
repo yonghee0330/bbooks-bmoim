@@ -433,6 +433,125 @@
       display: block;
     }
     .event-poster-wrap.type-bvoice { background: #1a1a2e; }
+    .event-poster-wrap.type-bvoice.event-poster-typo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(20px, 5vw, 36px);
+      box-sizing: border-box;
+      cursor: default;
+    }
+    .event-poster-typo-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      z-index: 1;
+      width: 100%;
+      max-width: 92%;
+    }
+    .event-poster-typo .ep-badge {
+      font-size: clamp(10px, 2.2vw, 12px);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: clamp(10px, 2.5vw, 14px);
+    }
+    .event-poster-typo .ep-illust {
+      width: clamp(56px, 14vw, 80px);
+      margin-bottom: clamp(8px, 2vw, 12px);
+      opacity: 0.92;
+    }
+    .event-poster-typo .ep-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(22px, 6vw, 36px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+    .event-poster-typo .ep-title.long {
+      font-size: clamp(18px, 4.8vw, 28px);
+      line-height: 1.35;
+    }
+    .event-poster-typo .ep-title-en {
+      font-size: clamp(11px, 2.4vw, 13px);
+      letter-spacing: .22em;
+      color: rgba(255,255,255,.72);
+      margin-top: 4px;
+    }
+    .event-poster-typo .ep-type {
+      font-size: clamp(11px, 2.6vw, 13px);
+      color: rgba(255,255,255,.82);
+      margin-top: clamp(8px, 2vw, 12px);
+      font-weight: 600;
+    }
+    .event-poster-typo .ep-book {
+      font-size: clamp(11px, 2.6vw, 13px);
+      color: rgba(255,255,255,.78);
+      margin-top: 6px;
+    }
+    .event-poster-typo .ep-host {
+      font-size: clamp(10px, 2.4vw, 12px);
+      color: rgba(255,255,255,.62);
+      margin-top: clamp(6px, 1.5vw, 10px);
+      line-height: 1.5;
+    }
+    .event-poster-typo .ep-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: clamp(14px, 3.5vw, 22px);
+      font-size: clamp(10px, 2.4vw, 12px);
+      color: rgba(255,255,255,.92);
+      font-weight: 600;
+      line-height: 1.45;
+      width: 100%;
+      max-width: 280px;
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-sizing: border-box;
+      text-align: left;
+    }
+    .event-poster-typo .ep-meta span {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .event-poster-typo .ep-meta em {
+      font-style: normal;
+      color: rgba(255,255,255,.65);
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .event-poster-wrap.bvoice-ep02 {
+      background: #6e7684;
+    }
+    .bvoice-ep02 .ep-badge {
+      color: #fff;
+      background: #ea580c;
+      border-radius: 999px;
+      padding: 5px 14px;
+      letter-spacing: .1em;
+    }
+    .bvoice-ep02 .ep-meta {
+      background: rgba(255,255,255,.14);
+    }
+    .event-poster-wrap.bvoice-ep03 {
+      background: #e8676f;
+    }
+    .bvoice-ep03 .ep-badge {
+      color: rgba(255,255,255,.88);
+    }
+    .bvoice-ep03 .ep-meta {
+      background: rgba(168, 58, 66, 0.38);
+    }
+    .bvoice-ep03 .ep-x-mark {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: 0.22;
+    }
     .event-poster-wrap.type-bammilon {
       display: flex;
       align-items: center;
@@ -2067,9 +2186,28 @@
       <div class="event-slide">
       <article class="event-card type-bvoice" id="bvoice1">
         <div class="event-poster-stack">
-        <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep02_drive.jpg','영화 &lt;드라이브&gt; — b.voice EP.02')">
-          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep02_drive.jpg','영화 &lt;드라이브&gt; — b.voice EP.02')">🔍</button>
-          <img src="images/bvoice_ep02_drive.jpg" alt="영화 드라이브 상영 및 정연감독 GV — b.voice EPISODE 02">
+        <div class="event-poster-wrap type-bvoice event-poster-typo bvoice-ep02">
+          <div class="event-poster-typo-inner">
+            <div class="ep-badge">b.voice EPISODE 02</div>
+            <svg class="ep-illust" viewBox="0 0 80 48" fill="none" aria-hidden="true">
+              <rect x="8" y="18" width="44" height="22" rx="3" fill="rgba(255,255,255,0.35)"/>
+              <rect x="52" y="24" width="18" height="10" rx="2" fill="rgba(255,255,255,0.28)"/>
+              <circle cx="20" cy="40" r="4" fill="rgba(255,255,255,0.4)"/>
+              <circle cx="40" cy="40" r="4" fill="rgba(255,255,255,0.4)"/>
+              <path d="M14,18 L24,8 H56 L66,18" stroke="rgba(255,255,255,0.5)" stroke-width="2" fill="none"/>
+              <circle cx="58" cy="14" r="3" fill="rgba(234,88,12,0.85)"/>
+            </svg>
+            <div class="ep-title">드라이브</div>
+            <div class="ep-title-en">DRIVE</div>
+            <div class="ep-type">상영 + 정연 감독 GV</div>
+            <div class="ep-host">스튜디오 이상한 나라의 원더랜드 · 정연 감독</div>
+            <div class="ep-meta">
+              <span><em>날짜</em><span>7/19(일) 16:00–18:00</span></span>
+              <span><em>인원</em><span>15명</span></span>
+              <span><em>참가비</em><span>10,000원</span></span>
+              <span><em>장소</em><span>계단 좌석</span></span>
+            </div>
+          </div>
         </div>
         <button class="btn-event-apply type-bvoice" id="apply-bvoice1" onclick="openEventApply('bvoice1')">b.voice 신청하기</button>
         </div>
@@ -2079,9 +2217,24 @@
       <div class="event-slide">
       <article class="event-card type-bvoice" id="bvoice2">
         <div class="event-poster-stack">
-        <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep03_book.jpg','소중한 ________ 에게 — b.voice EP.03')">
-          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep03_book.jpg','소중한 ________ 에게 — b.voice EP.03')">🔍</button>
-          <img src="images/bvoice_ep03_book.jpg" alt="소중한 ________ 에게 — 이유진 작가 b.voice EPISODE 03">
+        <div class="event-poster-wrap type-bvoice event-poster-typo bvoice-ep03">
+          <svg class="ep-x-mark" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+            <line x1="18" y1="18" x2="82" y2="82" stroke="#fff" stroke-width="1.2"/>
+            <line x1="82" y1="18" x2="18" y2="82" stroke="#fff" stroke-width="1.2"/>
+          </svg>
+          <div class="event-poster-typo-inner">
+            <div class="ep-badge">b.voice EPISODE 03</div>
+            <div class="ep-title">소중한 ________ 에게</div>
+            <div class="ep-book">&lt;소중한 나에게&gt; · 이유진 작가</div>
+            <div class="ep-type">북토크</div>
+            <div class="ep-host">이유진 서가</div>
+            <div class="ep-meta">
+              <span><em>날짜</em><span>7/25(토) 13:00–15:00</span></span>
+              <span><em>인원</em><span>15명</span></span>
+              <span><em>참가비</em><span>10,000원</span></span>
+              <span><em>장소</em><span>계단 좌석</span></span>
+            </div>
+          </div>
         </div>
         <button class="btn-event-apply type-bvoice" id="apply-bvoice2" onclick="openEventApply('bvoice2')">b.voice 신청하기</button>
         </div>
@@ -2326,10 +2479,14 @@
         <p class="moim-host-line">모퉁이 우표점 · 호스트 온수</p>
         <span class="moim-regular">매월 마지막 주 수요일 정기모임 · 정원 1명</span>
         <div class="moim-desc">
+          &lt;한 사람을 위한 편지&gt;는 한 사람을 떠올리며 전하고 싶은 마음을 오래 생각하는 시간입니다.<br><br>
           아날로그 도구인 타자기로 편지를 쓰고, 보내는 마음의 마침표처럼 우표를 붙입니다.<br><br>
-          천천한 타자기의 소리와 속도에 맞추어 단어와 문장을 고릅니다. 한 사람을 오래 생각하는 시간을 나눕니다.<br><br>
-          누군가를 향한 마음을 적어보아도 좋고, 나를 향한 이야기를 적어보아도 좋겠습니다. 타자기 사용법도 알려드립니다.<br><br>
-          이 모임은 타자기라는 도구를 통해 곰곰이 글을 꺼내어보는 데에 의의가 있습니다. 타자기로 편지를 완성하셔도 좋고, 손글씨로 천천히 이어 적으셔도 좋습니다. 한 사람에게 닿을 편지를 함께 완성합니다.
+          천천한 타자기의 소리와 속도에 맞추어 단어와 문장을 고릅니다.<br><br>
+          누군가를 향한 마음을 적어보아도 좋고, 나를 향한 이야기를 적어보아도 좋겠습니다.<br><br>
+          타자기 사용법을 알려드립니다. (4벌식)<br><br>
+          이 모임은 타자기라는 도구를 통해 곰곰이 글을 꺼내어보는 데에 의의가 있습니다.<br><br>
+          타자기로 편지를 완성하셔도 좋고, 손글씨로 천천히 이어 적으셔도 좋습니다.<br><br>
+          한 사람에게 닿을 편지를 함께 완성합니다.
         </div>
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>7월 29일 (수) 오전 11:00 – 1:00</div>
@@ -2733,7 +2890,7 @@ const EVENTS = {
     sessions: [{ label: '7/19(일) 16:00–18:00', value: '7월19일_bvoice', _endMs: new Date(2026, 6, 19, 18, 0, 0).getTime() }],
     capacity: 15,
     amount: 10000,
-    space: '비북스 세미나실'
+    space: '비북스 계단 좌석'
   },
   bvoice2: {
     type: 'bvoice',
@@ -2744,7 +2901,7 @@ const EVENTS = {
     sessions: [{ label: '7/25(토) 13:00–15:00', value: '7월25일_bvoice', _endMs: new Date(2026, 6, 25, 15, 0, 0).getTime() }],
     capacity: 15,
     amount: 10000,
-    space: '비북스 세미나실'
+    space: '비북스 계단 좌석'
   },
   bammilon: {
     type: 'bammilon',
@@ -3585,8 +3742,8 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-07-29', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
-  { date: '2026-07-19', space: '세미나실', start: '16:00', end: '18:00', tag: 'b.voice EP.02' },
-  { date: '2026-07-25', space: '세미나실', start: '13:00', end: '15:00', tag: 'b.voice EP.03' },
+  { date: '2026-07-19', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.voice EP.02' },
+  { date: '2026-07-25', space: '계단 좌석', start: '13:00', end: '15:00', tag: 'b.voice EP.03' },
   { date: '2026-07-24', space: '세미나실', start: '08:00', end: '22:00', tag: '밤밀온' },
   { date: '2026-07-24', space: '매장 테이블', start: '08:00', end: '22:00', tag: '밤밀온' },
   { date: '2026-07-25', space: '세미나실', start: '08:00', end: '22:00', tag: '밤밀온' },
@@ -3693,8 +3850,8 @@ function renderCalendarRentBadges() {
 
 function getScheduleSummary(date, spaceFilter) {
   const items = [];
-  SCHEDULED_MOIM_BLOCKS
-    .filter(b => b.date === date && (!spaceFilter || b.space === spaceFilter))
+  getAllScheduledBlocks()
+    .filter(b => b.date === date && (!spaceFilter || scheduledBlockBlocksSpace(b.space, spaceFilter)))
     .forEach(b => {
       items.push({
         kind: 'moim',
@@ -3702,7 +3859,7 @@ function getScheduleSummary(date, spaceFilter) {
       });
     });
   (rentBookingsByDate[date] || [])
-    .filter(b => !spaceFilter || !b.space || b.space === spaceFilter)
+    .filter(b => !spaceFilter || rentBookingBlocksSpace(b.space, spaceFilter))
     .forEach(b => {
       items.push({
         kind: 'rent',
@@ -3789,9 +3946,51 @@ function parseTimeRangeToMinutes(rangeStr) {
   return { startMin, endMin };
 }
 
+function getAllScheduledBlocks() {
+  const blocks = [...SCHEDULED_MOIM_BLOCKS];
+  if (typeof SCHEDULED_EVENT_BLOCKS !== 'undefined') {
+    blocks.push(...SCHEDULED_EVENT_BLOCKS);
+  }
+  return blocks;
+}
+
+/** 대관 신청 시 같은 시간대에 함께 잡을 수 없는 공간 */
+function getRentConflictSpaces(space) {
+  if (!space) return [];
+  const out = new Set([space, '전체 대관']);
+  if (space === '전체 대관') {
+    out.add('세미나실');
+    out.add('매장 테이블');
+    out.add('계단 좌석');
+  }
+  if (space === '계단 좌석') out.add('매장 테이블');
+  if (space === '매장 테이블') out.add('계단 좌석');
+  return [...out];
+}
+
+/** 모임·행사가 선택한 대관 공간을 막는지 (같은 장소 / 계단↔테이블 / 전체 대관) */
+function scheduledBlockBlocksSpace(blockSpace, requestedSpace) {
+  if (!requestedSpace) return true;
+  if (blockSpace === requestedSpace) return true;
+  if (requestedSpace === '계단 좌석' && blockSpace === '매장 테이블') return true;
+  if (requestedSpace === '매장 테이블' && blockSpace === '계단 좌석') return true;
+  if (requestedSpace === '전체 대관') return true;
+  return false;
+}
+
+/** 기존 대관이 선택한 공간 신청을 막는지 */
+function rentBookingBlocksSpace(bookingSpace, requestedSpace) {
+  if (!requestedSpace) return true;
+  const norm = bookingSpace ? normalizeSpace(bookingSpace) : '_any';
+  if (!norm || norm === '_any') return true;
+  return getRentConflictSpaces(requestedSpace).includes(norm);
+}
+
 function getBlockedRangesForDate(date, space) {
-  const moimRanges = [...SCHEDULED_MOIM_BLOCKS, ...SCHEDULED_EVENT_BLOCKS]
-    .filter(b => b.date === date && (!space || b.space === space))
+  if (!space) return { moimRanges: [], rentRanges: [] };
+
+  const moimRanges = getAllScheduledBlocks()
+    .filter(b => b.date === date && scheduledBlockBlocksSpace(b.space, space))
     .map(b => {
       const startMin = parseHHMMToMinutes(b.start);
       const endMin = parseHHMMToMinutes(b.end);
@@ -3801,14 +4000,26 @@ function getBlockedRangesForDate(date, space) {
     .filter(Boolean);
 
   const bySpace = rentSlotsByDate[date] || {};
-  const spaceSlots = (bySpace[space] || []).concat(bySpace._any || []);
-  const rentRanges = spaceSlots
-    .map(timeStr => {
-      const r = parseTimeRangeToMinutes(timeStr);
-      if (!r) return null;
-      return { ...r, tag: formatRentSlotTag(space, timeStr), kind: 'rent' };
-    })
-    .filter(Boolean);
+  const rentRanges = [];
+  const seen = new Set();
+
+  const addRentRange = (sp, timeStr) => {
+    const r = parseTimeRangeToMinutes(timeStr);
+    if (!r) return;
+    const key = `${sp}|${r.startMin}|${r.endMin}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    rentRanges.push({
+      ...r,
+      tag: formatRentSlotTag(sp === '_any' ? '' : sp, timeStr),
+      kind: 'rent'
+    });
+  };
+
+  getRentConflictSpaces(space).forEach(sp => {
+    (bySpace[sp] || []).forEach(timeStr => addRentRange(sp, timeStr));
+  });
+  (bySpace._any || []).forEach(timeStr => addRentRange('_any', timeStr));
 
   return { moimRanges, rentRanges };
 }
