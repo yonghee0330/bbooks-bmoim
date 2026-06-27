@@ -1267,6 +1267,41 @@
       line-height: 1.5;
     }
 
+    /* 대관 신청 모달 — 요금·환불 안내 */
+    .rent-modal-note {
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 10px;
+      line-height: 1.55;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .rent-modal-note-bottom { margin-bottom: 0; margin-top: 4px; }
+    .rent-modal-note.fee {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+    }
+    .rent-modal-note.refund {
+      background: var(--sand-dark);
+      border: 1px solid var(--border);
+    }
+    .rent-modal-note-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 5px;
+    }
+    .rent-modal-fee-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .rent-modal-fee-list li::before { content: '· '; color: var(--ocean); font-weight: 700; }
+    .rent-modal-note strong { font-weight: 600; color: var(--text); }
+
     /* ── 모달 ─────────────────────────────── */
     .ov {
       display: none; position: fixed; inset: 0;
@@ -1319,9 +1354,16 @@
     @keyframes rot { to { transform: rotate(360deg); } }
 
     /* ── 환불 정책 ────────────────────────── */
-    .refund { margin-top: 40px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-    .refund h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
-    .refund p { font-size: 12px; color: var(--muted); line-height: 1.8; }
+    .refund {
+      margin: 28px 0 24px;
+      padding: 12px 14px;
+      background: var(--sand-dark);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .refund h3 { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .refund p { font-size: 11px; color: var(--muted); line-height: 1.65; }
+    .refund strong { font-weight: 600; color: var(--text); }
 
     /* ── 라이트박스 ───────────────────────── */
     .lightbox {
@@ -1671,6 +1713,48 @@
     .space-info { padding: 18px; }
     .space-info h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
     .space-info p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .space-fee-box {
+      margin-bottom: 20px;
+      padding: 16px 18px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #f0f9ff 0%, #fff 100%);
+      border: 1px solid #bae6fd;
+    }
+    .space-fee-box h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .space-fee-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .space-fee-list li {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.55;
+      padding-left: 14px;
+      position: relative;
+    }
+    .space-fee-list li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--ocean);
+      font-weight: 700;
+    }
+    .space-fee-list strong { color: var(--navy); font-weight: 700; }
+    .space-fee-note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
     .slider-nav {
       display: flex; justify-content: space-between; align-items: center;
       margin-top: 12px;
@@ -2228,6 +2312,17 @@
 
   </div>
 
+  <div class="refund">
+    <h3>💳 환불 규정</h3>
+    <p>
+      <strong>재료 준비가 있는 모임</strong><br>
+      · 모임 2일 전 취소: 100% 환불 · 1일 전: 50% · 당일: 환불 불가<br>
+      <strong>재료 준비가 없는 모임</strong><br>
+      · 모임 1일 전 취소: 100% 환불 · 당일: 환불 불가<br>
+      취소 문의는 비북스 공식 인스타그램 DM으로 부탁드립니다.
+    </p>
+  </div>
+
   <!-- ── 대관 안내 ── -->
   <div class="rent-box">
     <svg class="rent-box-illust" viewBox="0 0 56 56" aria-hidden="true">
@@ -2236,7 +2331,7 @@
       <path d="M0,50 Q14,44 28,50 T56,50 L56,56 L0,56 Z" fill="var(--ocean-light)" opacity="0.5"/>
     </svg>
     <h3>🏠 공간 대관 문의</h3>
-    <p>비북스 세미나실과 매장 테이블을 대관하실 수 있어요.<br>
+    <p>비북스 세미나실·매장 테이블·계단 좌석·전체 대관을 신청하실 수 있어요.<br>
     비모임은 7월부터 시작하며, <strong>대관은 7–9월</strong>까지 캘린더에서 미리 신청할 수 있어요.<br>
     캘린더를 넘기면 8·9월 대관 일정도 확인·신청할 수 있습니다.<br>
     일정 확인 후 담당자가 연락드립니다.</p>
@@ -2256,6 +2351,15 @@
         <rect x="22" y="10" width="10" height="30" rx="1" fill="var(--coral-light)" stroke="var(--coral)" stroke-width="1.2" opacity="0.8"/>
         <rect x="34" y="18" width="8" height="22" rx="1" fill="var(--ocean-pale)" stroke="var(--ocean)" stroke-width="1.2"/>
       </svg>
+    </div>
+    <div class="space-fee-box">
+      <h4>💰 공간 이용료 안내</h4>
+      <ul class="space-fee-list">
+        <li><strong>세미나실 / 매장 테이블</strong> (최대 8인) · 2시간 기준 1인당 5,000원</li>
+        <li><strong>계단 좌석</strong> (최대 20인) · 시간당 50,000원</li>
+        <li><strong>전체 대관</strong> (최대 40인) · 시간당 100,000원</li>
+      </ul>
+      <p class="space-fee-note">세미나실과 매장 테이블은 동일 요금입니다. 정확한 금액은 신청 후 담당자가 안내드립니다.</p>
     </div>
     <div class="space-filter">
       <button class="sf-btn active" onclick="filterSpace('all',this)">전체</button>
@@ -2377,19 +2481,6 @@
   </div>
 
 
-    <h3>💳 환불 규정</h3>
-    <p>
-      <strong>재료 준비가 있는 모임</strong><br>
-      · 모임 2일 전 취소: 100% 환불<br>
-      · 모임 1일 전 취소: 50% 환불<br>
-      · 당일 취소: 환불 불가<br><br>
-      <strong>재료 준비가 없는 모임</strong><br>
-      · 모임 1일 전 취소: 100% 환불<br>
-      · 당일 취소: 환불 불가<br><br>
-      취소 문의는 비북스 공식 인스타그램 DM으로 부탁드립니다.
-    </p>
-  </div>
-
 </div>
 
 <!-- ══ 라이트박스 ══ -->
@@ -2471,12 +2562,22 @@
   <div class="modal">
     <div class="modal-title">🏠 공간 대관 신청</div>
     <div class="modal-sub">비북스 담당자가 확인 후 연락드립니다</div>
+    <div class="rent-modal-note fee">
+      <div class="rent-modal-note-title">💰 공간 이용료 안내</div>
+      <ul class="rent-modal-fee-list">
+        <li><strong>세미나실 / 매장 테이블</strong> (최대 8인) · 2시간 기준 1인당 5,000원</li>
+        <li><strong>계단 좌석</strong> (최대 20인) · 시간당 50,000원</li>
+        <li><strong>전체 대관</strong> (최대 40인) · 시간당 100,000원</li>
+      </ul>
+    </div>
     <div id="rentAlert"></div>
     <div class="fg"><label>공간 선택 *</label>
       <select id="rSpace" onchange="renderTimeSlots()">
         <option value="">선택해주세요</option>
         <option value="세미나실">📌 세미나실</option>
         <option value="매장 테이블">☕ 매장 테이블</option>
+        <option value="계단 좌석">🪜 계단 좌석</option>
+        <option value="전체 대관">🏠 전체 대관</option>
       </select>
     </div>
     <div class="fg">
@@ -2501,6 +2602,14 @@
     </div>
     <div class="fg"><label>사용 목적</label><input type="text" id="rPurpose" placeholder="독서모임, 스터디 등"/></div>
     <div class="fg"><label>인원</label><input type="number" id="rCount" placeholder="예: 6"/></div>
+    <div class="rent-modal-note refund rent-modal-note-bottom">
+      <div class="rent-modal-note-title">💳 환불 규정</div>
+      <p>
+        <strong>재료 준비가 있는 모임</strong> · 2일 전 100% · 1일 전 50% · 당일 불가<br>
+        <strong>재료 준비가 없는 모임</strong> · 1일 전 100% · 당일 불가<br>
+        취소는 비북스 공식 인스타그램 DM으로 문의해주세요.
+      </p>
+    </div>
     <div class="modal-foot">
       <button class="btn btn-cancel" onclick="closeOv('rentOv')">취소</button>
       <button class="btn btn-submit" id="rentBtn" onclick="submitRent()">신청하기</button>
@@ -3447,6 +3556,8 @@ let rentBookingsByDate = {};
 function shortSpaceLabel(space) {
   if (space === '세미나실') return '세미나';
   if (space === '매장 테이블') return '테이블';
+  if (space === '계단 좌석') return '계단';
+  if (space === '전체 대관') return '전체';
   return space || '대관';
 }
 
@@ -3592,8 +3703,10 @@ function normalizeDash(s) {
 function normalizeSpace(spaceStr) {
   const s = String(spaceStr || '').trim();
   if (!s) return '';
+  if (s.includes('전체')) return '전체 대관';
+  if (s.includes('계단') || s.includes('매장홀')) return '계단 좌석';
   if (s.includes('세미나')) return '세미나실';
-  if (s.includes('테이블') || s.includes('매장')) return '매장 테이블';
+  if (s.includes('테이블') || (s.includes('매장') && !s.includes('홀'))) return '매장 테이블';
   return s;
 }
 
