@@ -411,6 +411,7 @@
     .event-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,158,196,0.12); }
     .event-card.type-bvoice { border-color: #fcd34d; background: #fffdf8; }
     .event-card.type-bammilon { border-color: #7c3aed; }
+    .event-card.type-yes24 { border-color: #5b7a9a; background: #f4f7fb; }
     .event-card.type-external { border-color: #94a3b8; background: #f8fafc; }
     .event-card-head { display: none; }
     .event-card-body { display: none; }
@@ -552,6 +553,82 @@
       pointer-events: none;
       opacity: 0.22;
     }
+    .event-poster-wrap.type-yes24 {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: space-between;
+      padding: 0;
+      background: #1f3352;
+      box-sizing: border-box;
+      cursor: zoom-in;
+      overflow: hidden;
+    }
+    .event-poster-wrap.type-yes24::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 22px 22px;
+      pointer-events: none;
+    }
+    .yes24-poster-top {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: clamp(14px, 3.5vw, 22px) clamp(14px, 3.5vw, 20px) clamp(10px, 2.5vw, 14px);
+      z-index: 1;
+    }
+    .yes24-badge {
+      font-size: clamp(9px, 2vw, 11px);
+      letter-spacing: .12em;
+      color: rgba(255,255,255,.72);
+      text-transform: uppercase;
+      margin-bottom: clamp(8px, 2vw, 12px);
+    }
+    .yes24-cover-img {
+      width: clamp(108px, 28vw, 160px);
+      height: auto;
+      display: block;
+      border-radius: 2px;
+      box-shadow: 0 8px 22px rgba(0,0,0,.38);
+    }
+    .yes24-poster-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(16px, 4vw, 22px);
+      font-weight: 700;
+      color: #fff;
+      margin-top: clamp(10px, 2.5vw, 14px);
+      line-height: 1.3;
+    }
+    .yes24-poster-author {
+      font-size: clamp(10px, 2.4vw, 12px);
+      color: rgba(255,255,255,.68);
+      margin-top: 4px;
+    }
+    .yes24-poster-lead {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(10px, 2.4vw, 12px);
+      line-height: 1.55;
+      color: rgba(255,255,255,.88);
+      margin: clamp(8px, 2vw, 12px) 0 0;
+      max-width: 92%;
+    }
+    .yes24-poster-foot {
+      width: 100%;
+      background: #8ec4dc;
+      color: #1f3352;
+      padding: clamp(9px, 2.2vw, 12px) clamp(12px, 3vw, 16px);
+      font-size: clamp(10px, 2.3vw, 12px);
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.45;
+      z-index: 1;
+      flex-shrink: 0;
+    }
     .event-poster-wrap.type-bammilon {
       display: flex;
       align-items: center;
@@ -673,6 +750,10 @@
       color: #fff;
       box-shadow: 0 4px 14px rgba(124,58,237,0.35);
     }
+    .btn-event-apply.type-yes24 {
+      background: #1f3352;
+      color: #fff;
+    }
     .btn-event-apply.type-external {
       background: #334155;
       color: #fff;
@@ -715,6 +796,7 @@
     }
     .modal-event.type-bvoice .event-modal-badge { background: #fef3c7; color: var(--voice); border: 1px solid #fcd34d; }
     .modal-event.type-bammilon .event-modal-badge { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
+    .modal-event.type-yes24 .event-modal-badge { background: #dbeafe; color: #1f3352; border: 1px solid #8ec4dc; }
     .modal-event.type-external .event-modal-badge { background: #e2e8f0; color: #475569; border: 1px solid #cbd5e1; }
     .event-external-info {
       font-size: 13px;
@@ -2141,6 +2223,7 @@
       <div class="cal-cell sun" onclick="openRent('2026-07-26')">
         <div class="cal-day">26</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pilsa')">필사 다이어리</div>
+        <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24kwon')">예스24 북토크</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
       <div class="cal-cell" onclick="openRent('2026-07-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2177,8 +2260,8 @@
       </svg>
     </div>
     <div class="event-slider-top">
-      <p class="event-slider-summary"><strong><span id="eventTotalCount">3</span>개 행사</strong> · b.voice · 밤밀온 — 좌우로 넘겨 포스터를 확인하세요</p>
-      <span class="event-slide-counter" id="eventSlideCounter">1 / 3</span>
+      <p class="event-slider-summary"><strong><span id="eventTotalCount">4</span>개 행사</strong> · b.voice · 밤밀온 · 예스24 — 좌우로 넘겨 포스터를 확인하세요</p>
+      <span class="event-slide-counter" id="eventSlideCounter">1 / 4</span>
     </div>
     <div class="event-slider-wrap" id="eventSliderViewport">
       <div class="event-slider" id="eventSlider">
@@ -2249,6 +2332,25 @@
           <img src="images/bam_mil_on_july.jpg" alt="밤이 밀려온다 — A Midsummer Night's Bookstore 포스터">
         </div>
         <button class="btn-event-apply type-bammilon" id="apply-bammilon" onclick="openEventApply('bammilon')">밤밀온 참가 신청</button>
+        </div>
+      </article>
+      </div>
+
+      <div class="event-slide">
+      <article class="event-card type-yes24" id="yes24kwon">
+        <div class="event-poster-stack">
+        <div class="event-poster-wrap type-yes24" onclick="openLightbox('images/yes24_name_empty_july.jpg','예스24 북토크 — 이름의 빈자리에')">
+          <button type="button" class="event-poster-zoom" aria-label="표지 크게 보기" onclick="event.stopPropagation();openLightbox('images/yes24_name_empty_july.jpg','예스24 북토크 — 이름의 빈자리에')">🔍</button>
+          <div class="yes24-poster-top">
+            <div class="yes24-badge">YES24 BOOK TALK</div>
+            <img src="images/yes24_name_empty_july.jpg" class="yes24-cover-img" alt="이름의 빈자리에 — 권혁란">
+            <div class="yes24-poster-title">이름의 빈자리에</div>
+            <div class="yes24-poster-author">권혁란 작가</div>
+            <p class="yes24-poster-lead">소설 《프랑켄슈타인》의 괴물부터 《시녀 이야기》 속 여성들까지<br>이름은 어떻게 인간을 만들고, 지우고, 연결하는가</p>
+          </div>
+          <div class="yes24-poster-foot">7/26(일) 16:00–18:00 · 정원 30명 · 계단 좌석</div>
+        </div>
+        <button class="btn-event-apply type-yes24" id="apply-yes24kwon" onclick="openEventApply('yes24kwon')">예스24 북토크 신청하기</button>
         </div>
       </article>
       </div>
@@ -2913,6 +3015,16 @@ const EVENTS = {
     capacity: 10,
     amount: 20000,
     space: '비북스 매장'
+  },
+  yes24kwon: {
+    type: 'yes24',
+    typeLabel: '예스24 북토크',
+    name: '예스24 북토크 — 《이름의 빈자리에》',
+    subtitle: '권혁란 작가',
+    poster: 'images/yes24_name_empty_july.jpg',
+    sessions: [{ label: '7/26(일) 16:00–18:00', value: '7월26일_예스24', _endMs: new Date(2026, 6, 26, 18, 0, 0).getTime() }],
+    capacity: 30,
+    space: '비북스 계단 좌석'
   }
 };
 
@@ -2994,7 +3106,9 @@ function updateEventCapacity(counts) {
     } else {
       let label = ev.external
         ? (ev.applyUrl ? '셀러 신청하기' : '셀러 신청 안내')
-        : (ev.type === 'bammilon' ? '밤밀온 참가 신청' : 'b.voice 신청하기');
+        : (ev.type === 'bammilon' ? '밤밀온 참가 신청'
+          : ev.type === 'yes24' ? '예스24 북토크 신청하기'
+          : 'b.voice 신청하기');
       if (ev.capacity != null && ev.filledCount != null) {
         const remaining = ev.capacity - ev.filledCount;
         if (remaining === 1) label += ' · 마지막 1자리';
@@ -3667,7 +3781,9 @@ function openEventApply(key) {
 
   const btnLabel = ev.type === 'bammilon'
     ? `밤밀온 참가 신청 (${ev.amount.toLocaleString()}원)`
-    : '행사 신청하기';
+    : ev.type === 'yes24'
+      ? '예스24 북토크 신청하기'
+      : '행사 신청하기';
   q('#eventSubmitBtn').textContent = btnLabel;
   openOv('eventApplyOv');
 }
@@ -3747,7 +3863,8 @@ const SCHEDULED_EVENT_BLOCKS = [
   { date: '2026-07-24', space: '세미나실', start: '08:00', end: '22:00', tag: '밤밀온' },
   { date: '2026-07-24', space: '매장 테이블', start: '08:00', end: '22:00', tag: '밤밀온' },
   { date: '2026-07-25', space: '세미나실', start: '08:00', end: '22:00', tag: '밤밀온' },
-  { date: '2026-07-25', space: '매장 테이블', start: '08:00', end: '22:00', tag: '밤밀온' }
+  { date: '2026-07-25', space: '매장 테이블', start: '08:00', end: '22:00', tag: '밤밀온' },
+  { date: '2026-07-26', space: '계단 좌석', start: '16:00', end: '18:00', tag: '예스24 북토크' }
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
