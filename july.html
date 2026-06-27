@@ -565,21 +565,25 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(15,23,42,0.45);
+      background: rgba(15,23,42,0.22);
       z-index: 2;
     }
     .event-card.moim-sold-out .event-poster-wrap::after {
-      content: 'SOLD OUT';
+      content: '모집 완료';
       position: absolute;
       top: 50%; left: 50%;
-      transform: translate(-50%,-50%) rotate(-12deg);
+      transform: translate(-50%,-50%) rotate(-8deg);
       z-index: 3;
-      font-size: clamp(18px, 4vw, 24px);
-      font-weight: 900;
+      font-size: clamp(12px, 3vw, 15px);
+      font-weight: 800;
       color: #fff;
-      border: 3px solid #fff;
-      padding: 6px 16px;
-      letter-spacing: .08em;
+      background: rgba(185, 28, 28, 0.88);
+      border: 2px solid rgba(255,255,255,0.9);
+      padding: 5px 12px;
+      letter-spacing: 0.04em;
+      border-radius: 6px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.2);
+      white-space: nowrap;
     }
     .modal-event .event-modal-badge {
       display: inline-block;
@@ -1442,8 +1446,8 @@
       border-radius: 999px;
       font-size: 10px;
       font-weight: 800;
-      background: #e2e8f0;
-      color: #475569;
+      background: #fef3c7;
+      color: #b45309;
       vertical-align: middle;
     }
     .moim-closed-badge {
@@ -1471,76 +1475,75 @@
       position: absolute;
       inset: 0;
       z-index: 4;
-      background: rgba(8, 18, 38, 0.58);
+      background: rgba(8, 18, 38, 0.22);
       pointer-events: none;
     }
     .moim-card.moim-sold-out .moim-poster-img::after,
     .moim-card.moim-sold-out .poster-slider-wrap::after {
-      content: 'SOLD OUT';
+      content: '모집 완료';
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%) rotate(-10deg);
+      transform: translate(-50%, -50%) rotate(-8deg);
       z-index: 5;
-      min-width: 68%;
-      max-width: 88%;
       text-align: center;
-      background: rgba(185, 28, 28, 0.94);
+      background: rgba(185, 28, 28, 0.88);
       color: #fff;
-      font-size: clamp(22px, 7vw, 38px);
-      font-weight: 900;
-      letter-spacing: 0.16em;
-      line-height: 1.1;
-      padding: 14px 12px;
-      border: 3px solid #fff;
-      box-shadow: 0 10px 32px rgba(0, 0, 0, .38);
-      border-radius: 8px;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      padding: 6px 14px;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .22);
+      border-radius: 6px;
       pointer-events: none;
+      white-space: nowrap;
     }
     .moim-card.moim-sold-out .moim-poster-img:hover::after,
     .moim-card.moim-sold-out .poster-slider-wrap:hover::after {
-      content: 'SOLD OUT';
+      content: '모집 완료';
       left: 50%;
       top: 50%;
       right: auto;
       bottom: auto;
-      transform: translate(-50%, -50%) rotate(-10deg);
-      background: rgba(185, 28, 28, 0.94);
+      transform: translate(-50%, -50%) rotate(-8deg);
+      background: rgba(185, 28, 28, 0.88);
       color: #fff;
-      font-size: clamp(22px, 7vw, 38px);
-      font-weight: 900;
-      letter-spacing: 0.16em;
-      padding: 14px 12px;
-      border-radius: 8px;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 6px 14px;
+      border-radius: 6px;
     }
     .voice-event.moim-sold-out .voice-event-poster::before {
       content: '';
       position: absolute;
       inset: 0;
       z-index: 3;
-      background: rgba(8, 18, 38, 0.58);
+      background: rgba(8, 18, 38, 0.22);
       pointer-events: none;
     }
     .voice-event.moim-sold-out .voice-event-poster::after {
-      content: 'SOLD OUT';
+      content: '모집 완료';
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%) rotate(-10deg);
+      transform: translate(-50%, -50%) rotate(-8deg);
       z-index: 4;
-      min-width: 68%;
       text-align: center;
-      background: rgba(185, 28, 28, 0.94);
+      background: rgba(185, 28, 28, 0.88);
       color: #fff;
-      font-size: clamp(20px, 6vw, 32px);
-      font-weight: 900;
-      letter-spacing: 0.16em;
-      line-height: 1.1;
-      padding: 12px 10px;
-      border: 3px solid #fff;
-      box-shadow: 0 10px 32px rgba(0, 0, 0, .38);
-      border-radius: 8px;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      padding: 6px 14px;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .22);
+      border-radius: 6px;
       pointer-events: none;
+      white-space: nowrap;
     }
     .moim-card.moim-ended .moim-poster-img::before,
     .moim-card.moim-ended .poster-slider-wrap::before,
@@ -1549,7 +1552,7 @@
       position: absolute;
       inset: 0;
       z-index: 4;
-      background: rgba(15, 23, 42, 0.62);
+      background: rgba(15, 23, 42, 0.22);
       pointer-events: none;
     }
     .moim-card.moim-ended .moim-poster-img::after,
@@ -1561,19 +1564,17 @@
       top: 50%;
       transform: translate(-50%, -50%) rotate(-8deg);
       z-index: 5;
-      min-width: 68%;
-      max-width: 88%;
       text-align: center;
-      background: rgba(30, 41, 59, 0.94);
+      background: rgba(217, 119, 6, 0.92);
       color: #fff;
-      font-size: clamp(20px, 6.5vw, 34px);
-      font-weight: 900;
-      letter-spacing: 0.08em;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
       line-height: 1.2;
-      padding: 14px 12px;
-      border: 3px solid rgba(255, 255, 255, .92);
-      box-shadow: 0 10px 32px rgba(0, 0, 0, .38);
-      border-radius: 8px;
+      padding: 6px 14px;
+      border: 2px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.35);
+      border-radius: 6px;
       pointer-events: none;
       white-space: nowrap;
     }
@@ -1585,11 +1586,13 @@
       right: auto;
       bottom: auto;
       transform: translate(-50%, -50%) rotate(-8deg);
-      background: rgba(30, 41, 59, 0.94);
+      background: rgba(217, 119, 6, 0.92);
       color: #fff;
-      font-size: clamp(20px, 6.5vw, 34px);
-      padding: 14px 12px;
-      border-radius: 8px;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 6px 14px;
+      border-radius: 6px;
     }
     .moim-card.moim-closed .moim-poster-img::before,
     .moim-card.moim-closed .poster-slider-wrap::before {
@@ -2023,7 +2026,11 @@
       </div>
       <div class="cal-cell" onclick="openRent('2026-07-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-28')"><div class="cal-day">28</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-29')"><div class="cal-day">29</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-29')">
+        <div class="cal-day">29</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('letter')">한 사람을 위한 편지</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-07-30')"><div class="cal-day">30</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-31')"><div class="cal-day">31</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell empty"></div>
@@ -2120,7 +2127,7 @@
 
   <div class="moim-open-bar">
     <div class="moim-open-stat">
-      <span class="moim-open-num" id="moimTotalCount">5</span>
+      <span class="moim-open-num" id="moimTotalCount">6</span>
       <span class="moim-open-label">개 모임 개설</span>
     </div>
     <p class="moim-open-desc">7월 비북스 b.moim · 아래 번호 순서대로 모임을 확인할 수 있습니다.</p>
@@ -2306,6 +2313,35 @@
             <div class="moim-cap">재료 준비 있음</div>
           </div>
           <button class="btn-apply" id="apply-pilsa" onclick="openApply('필사(筆寫)적인 다이어리','pilsa')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="letter">
+      <div class="moim-poster-img" onclick="openLightbox('images/letter_july.png','한 사람을 위한 편지 포스터')">
+        <img src="images/letter_july.png" alt="한 사람을 위한 편지 포스터">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">한 사람을 위한 편지</div>
+        <p class="moim-host-line">모퉁이 우표점 · 호스트 온수</p>
+        <span class="moim-regular">매월 마지막 주 수요일 정기모임 · 정원 1명</span>
+        <div class="moim-desc">
+          아날로그 도구인 타자기로 편지를 쓰고, 보내는 마음의 마침표처럼 우표를 붙입니다.<br><br>
+          천천한 타자기의 소리와 속도에 맞추어 단어와 문장을 고릅니다. 한 사람을 오래 생각하는 시간을 나눕니다.<br><br>
+          누군가를 향한 마음을 적어보아도 좋고, 나를 향한 이야기를 적어보아도 좋겠습니다. 타자기 사용법도 알려드립니다.<br><br>
+          이 모임은 타자기라는 도구를 통해 곰곰이 글을 꺼내어보는 데에 의의가 있습니다. 타자기로 편지를 완성하셔도 좋고, 손글씨로 천천히 이어 적으셔도 좋습니다. 한 사람에게 닿을 편지를 함께 완성합니다.
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>7월 29일 (수) 오전 11:00 – 1:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>1명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">30,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-letter" onclick="openApply('한 사람을 위한 편지','letter')">신청하기</button>
         </div>
       </div>
     </div>
@@ -2677,6 +2713,13 @@ const MOIMS = {
     capacity: 4,
     amount: 10000,
     hasSession: false
+  },
+  letter: {
+    name: '한 사람을 위한 편지',
+    sessions: [{ label: '7/29(수) 오전 11:00–1:00', value: '7월29일' }],
+    capacity: 1,
+    amount: 30000,
+    hasSession: false
   }
 };
 
@@ -2727,7 +2770,8 @@ const MOIM_CURATION_META = {
   wedlibrary: { cardId: 'wedlibrary', poster: '' },
   minbook: { cardId: 'minbook', poster: '' },
   pilsa: { cardId: 'pilsa', poster: 'images/pilsa_diary_july.jpg' },
-  customtea: { cardId: 'customtea', poster: 'images/customtea_july.jpg' }
+  customtea: { cardId: 'customtea', poster: 'images/customtea_july.jpg' },
+  letter: { cardId: 'letter', poster: 'images/letter_july.png' }
 };
 
 const MOIM_DEFAULT_SESSION = {};
@@ -3537,7 +3581,8 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-07-15', space: '매장 테이블', start: '18:30', end: '20:30', tag: '수요일의 서재 ②' },
   { date: '2026-07-18', space: '매장 테이블', start: '15:00', end: '17:00', tag: '미니북' },
   { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료' },
-  { date: '2026-07-26', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사 다이어리' }
+  { date: '2026-07-26', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사 다이어리' },
+  { date: '2026-07-29', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
   { date: '2026-07-19', space: '세미나실', start: '16:00', end: '18:00', tag: 'b.voice EP.02' },
