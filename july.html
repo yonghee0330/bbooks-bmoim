@@ -2193,7 +2193,11 @@
         <div class="cal-rent-btn">[대관]</div>
       </div>
       <div class="cal-cell" onclick="openRent('2026-07-16')"><div class="cal-day">16</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-17')"><div class="cal-day">17</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-17')">
+        <div class="cal-day">17</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('movietalk')">영화 한편</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell sat" onclick="openRent('2026-07-18')">
         <div class="cal-day">18</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('minbook')">미니북</div>
@@ -2382,7 +2386,7 @@
 
   <div class="moim-open-bar">
     <div class="moim-open-stat">
-      <span class="moim-open-num" id="moimTotalCount">6</span>
+      <span class="moim-open-num" id="moimTotalCount">7</span>
       <span class="moim-open-label">개 모임 개설</span>
     </div>
     <p class="moim-open-desc">7월 비북스 b.moim · 아래 번호 순서대로 모임을 확인할 수 있습니다.</p>
@@ -2472,6 +2476,29 @@
             <div class="moim-cap">재료 준비 없음</div>
           </div>
           <button class="btn-apply" id="apply-wedlibrary" onclick="openApply('수요일의 서재×7월 독서모임','wedlibrary')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="movietalk">
+      <div class="moim-poster-img" onclick="openLightbox('images/movie_talk_july.jpg','영화한편, 이야기 한잔 포스터')">
+        <img src="images/movie_talk_july.jpg" alt="영화 한편, 이야기 한잔 — 영화 모임 포스터">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">영화한편, 이야기 한잔</div>
+        <p class="moim-host-line">앗트</p>
+        <div class="moim-desc">혼자 볼 때는 지나쳤던 장면, 함께 이야기하면 새로운 의미가 됩니다.<br><br>편안한 마음으로 영화와 삶을 나누는 모임입니다.</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>7월 17일 (금) 오후 7:00 – 8:30</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>5명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-movietalk" onclick="openApply('영화한편, 이야기 한잔','movietalk')">신청하기</button>
         </div>
       </div>
     </div>
@@ -2952,6 +2979,13 @@ const MOIMS = {
     amount: 10000,
     hasSession: true
   },
+  movietalk: {
+    name: '영화한편, 이야기 한잔',
+    sessions: [{ label: '7/17(금) 19:00–20:30', value: '7월17일' }],
+    capacity: 5,
+    amount: 10000,
+    hasSession: false
+  },
   customtea: {
     name: 'DIY 내 취향 가득 담은 커스텀 티음료 만들기!',
     sessions: [{ label: '7/19(일) 오전 11:00–13:00', value: '7월19일' }],
@@ -3037,6 +3071,7 @@ let latestMoimCounts = {};
 const MOIM_CURATION_META = {
   pado: { cardId: 'pado', poster: 'images/pado_switch_on_july.jpg' },
   wedlibrary: { cardId: 'wedlibrary', poster: '' },
+  movietalk: { cardId: 'movietalk', poster: 'images/movie_talk_july.jpg' },
   minbook: { cardId: 'minbook', poster: '' },
   pilsa: { cardId: 'pilsa', poster: 'images/pilsa_diary_july.jpg' },
   customtea: { cardId: 'customtea', poster: 'images/customtea_july.jpg' },
@@ -3852,6 +3887,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-07-11', space: '매장 테이블', start: '15:30', end: '18:00', tag: "Let's talk!" },
   { date: '2026-07-15', space: '매장 테이블', start: '10:30', end: '12:30', tag: '수요일의 서재 ①' },
   { date: '2026-07-15', space: '매장 테이블', start: '18:30', end: '20:30', tag: '수요일의 서재 ②' },
+  { date: '2026-07-17', space: '세미나실', start: '19:00', end: '20:30', tag: '영화 한편' },
   { date: '2026-07-18', space: '매장 테이블', start: '15:00', end: '17:00', tag: '미니북' },
   { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료' },
   { date: '2026-07-26', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사 다이어리' },
