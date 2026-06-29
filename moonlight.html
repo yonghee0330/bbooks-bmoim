@@ -113,6 +113,36 @@
     font-size:.82rem; line-height:1.5; cursor:pointer;
   }
   .deposit-confirm input{margin-top:.15rem; accent-color:var(--ember);}
+
+  .modal-backdrop{
+    position:fixed; inset:0; z-index:50;
+    background:rgba(16,20,42,.72);
+    backdrop-filter:blur(4px);
+    display:flex; align-items:center; justify-content:center;
+    padding:1.25rem;
+  }
+  .modal-backdrop.hidden{display:none;}
+  .modal-card{
+    width:100%; max-width:24rem;
+    background:var(--paper); color:var(--ink);
+    border-radius:1.25rem;
+    padding:1.5rem 1.35rem;
+    box-shadow:0 24px 48px -12px rgba(0,0,0,.45);
+  }
+  .modal-card h3{font-family:'Gowun Batang',serif; font-size:1.15rem; margin-bottom:.65rem;}
+  .modal-benefit{
+    margin-top:.85rem; padding:.85rem;
+    border-radius:.75rem;
+    border:1px solid rgba(227,166,85,.35);
+    background:rgba(227,166,85,.08);
+    font-size:.82rem; line-height:1.6;
+  }
+  .modal-actions{display:flex; flex-direction:column; gap:.55rem; margin-top:1.1rem;}
+  .modal-close{
+    width:100%; padding:.65rem;
+    border-radius:.5rem; border:1px solid rgba(38,36,32,.15);
+    background:transparent; color:var(--ink); font-size:.85rem; cursor:pointer;
+  }
 </style>
 </head>
 <body class="leading-relaxed">
@@ -203,18 +233,26 @@
   </div>
 </section>
 
-<!-- ===================== 시즌권 ===================== -->
+<!-- ===================== 1개월권 ===================== -->
 <section class="px-6 py-14 border-t border-[var(--night-3)]">
   <div class="max-w-3xl mx-auto text-center">
-    <h2 class="font-display text-2xl mb-3">한 달, 통째로</h2>
+    <h2 class="font-display text-2xl mb-3">1개월권</h2>
     <p class="text-[var(--soft)] text-sm mb-10">
       월·금·일 정기모임 + 지정도서 모임까지, 한 달이면 약 13회.<br>
-      회차마다 내면 약 70,000원 — 시즌권이면 절반 이하입니다.
+      회차마다 내면 약 70,000원 — 1개월권이면 절반 이하입니다.
     </p>
     <div class="inline-flex flex-col items-center gap-3 rounded-2xl border border-[var(--night-3)] px-10 py-8">
       <p class="font-mono text-sm text-[var(--soft)] line-through">정가 약 70,000원 / 월</p>
-      <p class="font-display text-4xl text-[var(--ember)]">30,000원</p>
-      <p class="text-xs text-[var(--soft)]">한 달 시즌권 · 모든 정기모임 + 지정도서모임 무제한</p>
+      <p class="font-display text-3xl md:text-4xl text-[var(--ember)] leading-snug">1개월권 특가(7월한정)<br><span class="font-mono text-4xl md:text-5xl">30,000원</span></p>
+      <p class="text-xs text-[var(--soft)]">1개월권 · 모든 정기모임 + 지정도서모임 무제한</p>
+    </div>
+
+    <div class="mt-8 mx-auto max-w-md rounded-2xl border border-[var(--ember)]/40 bg-[var(--ember)]/5 px-6 py-5 text-left">
+      <p class="font-mono text-xs text-[var(--ember)] mb-2 tracking-wide">연계 추가혜택</p>
+      <p class="text-sm text-[var(--moonlight)] leading-relaxed">
+        달빛 리딩 클럽 1개월권 회원이 <strong>[밤밀온]</strong> 신청 시, <strong class="text-[var(--ember)]">5,000원 추가 할인</strong>
+      </p>
+      <p class="text-sm text-[var(--soft)] mt-1.5 font-mono">20,000원 → 15,000원</p>
     </div>
   </div>
 </section>
@@ -246,7 +284,7 @@
             <input type="radio" name="plan" value="dropin" checked> 회차별로 참여
           </label>
           <label class="flex items-center gap-2 text-sm">
-            <input type="radio" name="plan" value="season"> 한 달 시즌권 (30,000원)
+            <input type="radio" name="plan" value="season"> 1개월권 특가(7월한정) 30,000원
           </label>
         </div>
         <div id="dropinTypes" class="mt-3 rounded-lg border border-black/8 bg-white/50 px-3 py-2.5 text-sm space-y-1">
@@ -267,7 +305,10 @@
         <div class="bank-box-label">비북스 입금 계좌</div>
         <div id="paySeasonBlock" class="hidden">
           <div class="bank-amount">30,000원</div>
-          <p class="text-sm mt-1">한 달 시즌권 (정기모임 + 지정도서모임 무제한)</p>
+          <p class="text-sm mt-1"><strong>1개월권 특가(7월한정)</strong> · 정기모임 + 지정도서모임 무제한</p>
+          <p class="bank-flow-note" style="margin-top:.5rem">
+            1개월권 회원은 <strong>[밤밀온]</strong> 신청 시 5,000원 추가 할인 (20,000원 → 15,000원)
+          </p>
         </div>
         <div id="payDropinBlock">
           <div class="text-sm space-y-1 mb-2">
@@ -316,6 +357,25 @@
   장소 안내는 추후 업데이트됩니다.
 </footer>
 
+<div id="successModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="successModalTitle">
+  <div class="modal-card">
+    <h3 id="successModalTitle">신청이 접수됐습니다 🌙</h3>
+    <p id="successModalSummary" class="text-sm leading-relaxed"></p>
+    <div id="successModalBenefit" class="modal-benefit hidden">
+      <strong>연계 추가혜택</strong><br>
+      1개월권 회원이시니 <strong>[밤밀온]</strong> 신청 시 5,000원 추가 할인됩니다.<br>
+      <span class="font-mono">20,000원 → 15,000원</span>
+    </div>
+    <p class="text-xs text-[var(--ink)]/60 mt-3 leading-relaxed">
+      입금 내역 확인 후 담당자가 연락드릴게요.
+    </p>
+    <div class="modal-actions">
+      <a href="july.html#bammilon" class="ember-btn w-full py-3 rounded-lg font-medium text-center">밤밀온 7월 모임 신청하기</a>
+      <button type="button" class="modal-close" id="successModalClose">닫기</button>
+    </div>
+  </div>
+</div>
+
 <script>
   // ===== 설정: 기존 비북스 챌린지와 같은 Apps Script 웹앱 URL =====
   // TODO: challenge-appscript-full.gs 배포 URL을 여기에 붙여넣으세요
@@ -335,6 +395,27 @@
   const noteHint = document.getElementById('noteHint');
   const depositConfirm = document.getElementById('depositConfirm');
   const planInputs = form.querySelectorAll('input[name="plan"]');
+  const successModal = document.getElementById('successModal');
+  const successModalSummary = document.getElementById('successModalSummary');
+  const successModalBenefit = document.getElementById('successModalBenefit');
+  const successModalClose = document.getElementById('successModalClose');
+
+  function openSuccessModal(summaryHtml, showBenefit) {
+    successModalSummary.innerHTML = summaryHtml;
+    successModalBenefit.classList.toggle('hidden', !showBenefit);
+    successModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSuccessModal() {
+    successModal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  successModalClose.addEventListener('click', closeSuccessModal);
+  successModal.addEventListener('click', e => {
+    if (e.target === successModal) closeSuccessModal();
+  });
 
   function updatePayAmountLabel() {
     const plan = form.querySelector('input[name="plan"]:checked')?.value;
@@ -383,7 +464,7 @@
     }
 
     const planLabel = plan === 'season'
-      ? '한 달 시즌권 (30,000원)'
+      ? '1개월권 특가(7월한정) (30,000원)'
       : '회차별 참여 (심야 자유 독서 5,000원 / 달빛 심야 독서모임 10,000원)';
 
     submitBtn.disabled = true;
@@ -402,12 +483,13 @@
         })
       });
 
-      confirmSummary.innerHTML =
+      const summaryHtml =
         `${name}님, <strong>${planLabel}</strong>으로 신청해주셨어요.` +
         (note ? `<br>참여 신청: ${note}` : '');
 
+      confirmSummary.innerHTML = summaryHtml;
       confirmPanel.classList.remove('hidden');
-      confirmPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      openSuccessModal(summaryHtml, plan === 'season');
       form.reset();
       depositConfirm.checked = false;
       updatePayAmountLabel();
