@@ -1313,6 +1313,39 @@
       margin-bottom: 8px;
       z-index: 1;
     }
+    .moim-poster.ocean-moonlight-poster {
+      background: linear-gradient(155deg, #10142a 0%, #1b2147 45%, #262d57 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .ocean-moonlight-poster::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 15% 25%, rgba(243,236,214,.5), transparent),
+        radial-gradient(1px 1px at 75% 15%, rgba(243,236,214,.4), transparent),
+        radial-gradient(1px 1px at 55% 70%, rgba(243,236,214,.35), transparent),
+        radial-gradient(1px 1px at 88% 58%, rgba(243,236,214,.3), transparent);
+      pointer-events: none;
+    }
+    .ocean-moonlight-poster .poster-moon-illust {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 35%, #fffaf0, #f3ecd6 55%, #d9cfa9 100%);
+      box-shadow: 0 0 24px 6px rgba(243,236,214,.2);
+      z-index: 1;
+      position: relative;
+    }
+    .ocean-moonlight-poster .poster-title,
+    .ocean-moonlight-poster .poster-sub {
+      z-index: 1;
+      position: relative;
+      color: #f3ecd6;
+    }
+    .ocean-moonlight-poster .poster-sub { color: rgba(169,177,216,.9); font-size: 11px; }
     .moim-poster.p5 { background: linear-gradient(135deg, #0f3d3e 0%, #1f7a76 100%); } /* 줌치풍경만들기 */
     .moim-poster.p6 { background: linear-gradient(135deg, #111827 0%, #374151 100%); } /* 영화 한편 */
     .moim-poster.p7 { background: linear-gradient(135deg, #1f4d3a 0%, #56a36b 100%); } /* 책잇기 */
@@ -2167,25 +2200,49 @@
       <div class="cal-cell empty"></div>
       <div class="cal-cell" onclick="openRent('2026-07-01')"><div class="cal-day">1</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-02')"><div class="cal-day">2</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-03')"><div class="cal-day">3</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-03')">
+        <div class="cal-day">3</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell sat" onclick="openRent('2026-07-04')">
         <div class="cal-day">4</div>
         <div class="cal-event ev-away" onclick="event.stopPropagation();window.open('https://happy.bbooks.co.kr/#apply','_blank')">연희놀이터 플리마켓</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
-      <div class="cal-cell sun" onclick="openRent('2026-07-05')"><div class="cal-day">5</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-06')"><div class="cal-day">6</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-07-05')">
+        <div class="cal-day">5</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
+      <div class="cal-cell" onclick="openRent('2026-07-06')">
+        <div class="cal-day">6</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-07-07')"><div class="cal-day">7</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-08')"><div class="cal-day">8</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-09')"><div class="cal-day">9</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-10')"><div class="cal-day">10</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-10')">
+        <div class="cal-day">10</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell sat" onclick="openRent('2026-07-11')">
         <div class="cal-day">11</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pado')">Let's talk!</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
-      <div class="cal-cell sun" onclick="openRent('2026-07-12')"><div class="cal-day">12</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-13')"><div class="cal-day">13</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-07-12')">
+        <div class="cal-day">12</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
+      <div class="cal-cell" onclick="openRent('2026-07-13')">
+        <div class="cal-day">13</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-07-14')"><div class="cal-day">14</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-15')">
         <div class="cal-day">15</div>
@@ -2196,6 +2253,7 @@
       <div class="cal-cell" onclick="openRent('2026-07-17')">
         <div class="cal-day">17</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('movietalk')">영화 한편</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
       <div class="cal-cell sat" onclick="openRent('2026-07-18')">
@@ -2207,15 +2265,21 @@
         <div class="cal-day">19</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('customtea')">커스텀 티음료</div>
         <div class="cal-event ev-bvoice" onclick="event.stopPropagation();scrollToEvent('bvoice1')">b.voice ep2</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
-      <div class="cal-cell" onclick="openRent('2026-07-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-20')">
+        <div class="cal-day">20</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛 지정도서</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-07-21')"><div class="cal-day">21</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-22')"><div class="cal-day">22</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-23')"><div class="cal-day">23</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-24')">
         <div class="cal-day">24</div>
         <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('bammilon')">밤밀온 23-06</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
       <div class="cal-cell sat" onclick="openRent('2026-07-25')">
@@ -2228,9 +2292,14 @@
         <div class="cal-day">26</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pilsa')">필사 다이어리</div>
         <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24kwon')">예스24 북토크</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
-      <div class="cal-cell" onclick="openRent('2026-07-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-27')">
+        <div class="cal-day">27</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell" onclick="openRent('2026-07-28')"><div class="cal-day">28</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-07-29')">
         <div class="cal-day">29</div>
@@ -2238,7 +2307,11 @@
         <div class="cal-rent-btn">[대관]</div>
       </div>
       <div class="cal-cell" onclick="openRent('2026-07-30')"><div class="cal-day">30</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-07-31')"><div class="cal-day">31</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-07-31')">
+        <div class="cal-day">31</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
+        <div class="cal-rent-btn">[대관]</div>
+      </div>
       <div class="cal-cell empty"></div>
     </div>
         </div>
@@ -2386,7 +2459,7 @@
 
   <div class="moim-open-bar">
     <div class="moim-open-stat">
-      <span class="moim-open-num" id="moimTotalCount">7</span>
+      <span class="moim-open-num" id="moimTotalCount">8</span>
       <span class="moim-open-label">개 모임 개설</span>
     </div>
     <p class="moim-open-desc">7월 비북스 b.moim · 아래 번호 순서대로 모임을 확인할 수 있습니다.</p>
@@ -2628,6 +2701,35 @@
             <div class="moim-cap">재료 준비 없음</div>
           </div>
           <button class="btn-apply" id="apply-letter" onclick="openApply('한 사람을 위한 편지','letter')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="moonlight">
+      <div class="moim-poster ocean-moonlight-poster">
+        <div class="poster-moon-illust" aria-hidden="true"></div>
+        <div class="poster-title long">달빛 리딩<br>클럽</div>
+        <div class="poster-sub">썬북 · 월·금·일</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">달빛 리딩 클럽</div>
+        <p class="moim-host-line">0.1평 점주 썬북</p>
+        <span class="moim-regular">매월 진행 · 월·금·일 심야 독서</span>
+        <div class="moim-desc">
+          월·금·일 저녁, 비북스의 불이 늦게까지 켜져 있습니다.<br><br>
+          각자의 속도로 책을 읽다가 10시가 되면 원하는 사람들끼리 모여 오늘 읽은 한 페이지를 가볍게 나눕니다.<br><br>
+          심야 자유 독서(5,000원/회)와 월 1회 지정도서 모임(10,000원/회)이 함께 진행됩니다. 7월 지정도서 모임은 7/20(월)입니다.
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>7월 한 달 · 월·금·일 20:00–23:00</div>
+          <div class="meta-row"><span class="mi">📌</span>비북스 매장</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">5,000원 <span style="font-size:12px;font-weight:500">/ 회차</span></div>
+            <div class="moim-cap">시즌권 30,000원 · 재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-moonlight" onclick="openApply('달빛 리딩 클럽','moonlight')">신청하기</button>
         </div>
       </div>
     </div>
@@ -3013,6 +3115,14 @@ const MOIMS = {
     capacity: 1,
     amount: 30000,
     hasSession: false
+  },
+  moonlight: {
+    name: '달빛 리딩 클럽',
+    sessions: [{ label: '7월 한 달 · 월·금·일 20:00–23:00', value: '7월_달빛', _endMs: new Date(2026, 6, 31, 23, 59, 59).getTime() }],
+    capacity: null,
+    amount: 0,
+    hasSession: false,
+    applyUrl: 'moonlight.html#apply'
   }
 };
 
@@ -3395,6 +3505,18 @@ function updateMoimCapacity(counts) {
     const btn = q(`#apply-${key}`);
     if (!btn) return;
     const card = btn.closest('.moim-card');
+
+    if (m.applyUrl) {
+      card?.classList.remove('moim-sold-out', 'moim-ended', 'moim-closed');
+      if (isMoimFullyEnded(key)) {
+        soldOut(`apply-${key}`, '모임 종료');
+        card?.classList.add('moim-ended');
+      } else {
+        resetApplyBtn(`apply-${key}`);
+      }
+      return;
+    }
+
     const allEnded = isMoimFullyEnded(key);
     const allSold = isMoimFullySoldOut(key, counts);
     const applyOpen = isMoimApplyOpen(key, counts);
@@ -3684,9 +3806,13 @@ async function loadCounts() {
 
 // ══ 모임 신청 모달 ══════════════════════
 function openApply(name, key) {
+  const m = MOIMS[key];
+  if (m?.applyUrl) {
+    window.location.href = m.applyUrl;
+    return;
+  }
   if (!isMoimApplyOpen(key, latestMoimCounts)) return;
   curMoimKey = key;
-  const m = MOIMS[key];
   q('#modalMoimName').textContent = m.name;
   q('#modalMoimDate').textContent = m.sessions.map(s => s.label).join(' / ');
   q('#modalAmount').textContent = m.amount.toLocaleString() + '원';
@@ -3891,7 +4017,20 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-07-18', space: '매장 테이블', start: '15:00', end: '17:00', tag: '미니북' },
   { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료' },
   { date: '2026-07-26', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사 다이어리' },
-  { date: '2026-07-29', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' }
+  { date: '2026-07-29', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
+  { date: '2026-07-03', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-05', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-06', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-10', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-12', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-13', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-17', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-19', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-20', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-24', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-26', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-27', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
+  { date: '2026-07-31', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
   { date: '2026-07-19', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.voice EP.02' },
