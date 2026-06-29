@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>달빛 리딩 클럽 | 비북스 심야 독서모임</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night-1:#10142a;   /* 가장 어두운 밤하늘 */
+    --night-2:#1b2147;   /* 패널 배경 */
+    --night-3:#262d57;   /* 보더/구분선 */
+    --moonlight:#f3ecd6; /* 달빛 크림 */
+    --ember:#e3a655;     /* 촛불/등 색 포인트 */
+    --soft:#a9b1d8;      /* 본문 보조 텍스트 */
+    --paper:#f8f4ea;     /* 종이 카드 배경 */
+    --ink:#262420;       /* 종이 위 텍스트 */
+  }
+  *{box-sizing:border-box;}
+  body{
+    background:var(--night-1);
+    color:var(--moonlight);
+    font-family:'Noto Sans KR',sans-serif;
+  }
+  .font-display{font-family:'Gowun Batang',serif;}
+  .font-mono{font-family:'JetBrains Mono',monospace;}
+
+  /* 별가루 배경 */
+  .stars{
+    position:absolute; inset:0; overflow:hidden; pointer-events:none;
+    background-image:
+      radial-gradient(1.5px 1.5px at 10% 20%, rgba(243,236,214,.5), transparent),
+      radial-gradient(1.5px 1.5px at 80% 10%, rgba(243,236,214,.4), transparent),
+      radial-gradient(1px 1px at 60% 70%, rgba(243,236,214,.35), transparent),
+      radial-gradient(1.5px 1.5px at 30% 80%, rgba(243,236,214,.4), transparent),
+      radial-gradient(1px 1px at 90% 60%, rgba(243,236,214,.3), transparent),
+      radial-gradient(1px 1px at 45% 40%, rgba(243,236,214,.3), transparent);
+    background-repeat:no-repeat;
+  }
+
+  .moon{
+    width:160px;height:160px;border-radius:50%;
+    background:radial-gradient(circle at 38% 35%, #fffaf0, var(--moonlight) 55%, #d9cfa9 100%);
+    box-shadow:0 0 60px 18px rgba(243,236,214,.25), 0 0 120px 40px rgba(227,166,85,.08);
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .moon{animation:float 7s ease-in-out infinite;}
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+  .timeline-track{
+    position:relative; height:6px; border-radius:999px;
+    background:var(--night-3);
+    overflow:hidden;
+  }
+  .timeline-fill-quiet{
+    position:absolute; inset:0; width:83.3%; /* 8~10시 = 2/2.5h */
+    background:linear-gradient(90deg, rgba(169,177,216,.25), rgba(169,177,216,.55));
+  }
+  .timeline-fill-gather{
+    position:absolute; right:0; top:0; bottom:0; width:16.7%; /* 10~10:30 */
+    background:linear-gradient(90deg, rgba(227,166,85,.55), rgba(227,166,85,.9));
+  }
+  .tick{font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--soft);}
+
+  .paper-card{
+    background:var(--paper); color:var(--ink);
+    border-radius:1.25rem;
+  }
+  .ember-btn{
+    background:var(--ember); color:#241a0c;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .ember-btn:hover{transform:translateY(-1px); box-shadow:0 8px 24px -8px rgba(227,166,85,.6);}
+  .ember-btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
+    outline:2px solid var(--ember); outline-offset:2px;
+  }
+
+  .day-chip input{display:none;}
+  .day-chip span{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:.5rem 1rem; border-radius:999px; border:1px solid var(--night-3);
+    color:var(--soft); cursor:pointer; font-size:.875rem; transition:all .15s ease;
+  }
+  .day-chip input:checked + span{
+    background:var(--ember); color:#241a0c; border-color:var(--ember); font-weight:600;
+  }
+</style>
+</head>
+<body class="leading-relaxed">
+
+<!-- ===================== HERO ===================== -->
+<header class="relative px-6 pt-14 pb-20 overflow-hidden">
+  <div class="stars"></div>
+  <div class="relative max-w-3xl mx-auto text-center">
+    <p class="text-sm tracking-[0.3em] text-[var(--soft)] mb-6">B B O O K S &nbsp;·&nbsp; 평일 저녁, 느슨한 독서</p>
+    <div class="flex justify-center mb-8">
+      <div class="moon"></div>
+    </div>
+    <h1 class="font-display text-5xl md:text-6xl mb-4">달빛 리딩 클럽</h1>
+    <p class="text-[var(--soft)] text-base md:text-lg max-w-xl mx-auto">
+      월·금·일 저녁, 비북스의 불이 늦게까지 켜져 있습니다.<br>
+      각자의 속도로 책을 읽다가, 10시가 되면 원하는 사람들끼리 모여<br>
+      오늘 읽은 한 페이지를 가볍게 나눕니다. 진행은 0.1평 점주 <span class="text-[var(--moonlight)] font-medium">썬북</span>님.
+    </p>
+    <a href="#apply" class="ember-btn inline-block mt-9 px-8 py-3 rounded-full font-medium">신청하러 가기</a>
+  </div>
+</header>
+
+<!-- ===================== 오늘 저녁의 흐름 (시그니처 타임라인) ===================== -->
+<section class="px-6 py-14 border-t border-[var(--night-3)]">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="font-display text-2xl mb-2 text-center">오늘 저녁의 흐름</h2>
+    <p class="text-center text-[var(--soft)] text-sm mb-10">월요일 · 금요일 · 일요일, 8PM – 11PM</p>
+
+    <div class="timeline-track mb-2">
+      <div class="timeline-fill-quiet"></div>
+      <div class="timeline-fill-gather"></div>
+    </div>
+    <div class="flex justify-between tick mb-12">
+      <span>8:00 PM</span><span>9:00 PM</span><span>10:00 PM</span><span>10:30 PM</span><span>~11:00 PM</span>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="rounded-xl border border-[var(--night-3)] p-6">
+        <p class="font-mono text-xs text-[var(--soft)] mb-2">8:00 — 10:00 PM</p>
+        <h3 class="font-display text-lg mb-2">혼자, 자유롭게</h3>
+        <p class="text-sm text-[var(--soft)]">
+          매장에 머무는 동안 각자 가능한 만큼 책을 읽습니다. 오는 시간, 머무는 시간 모두 자유.
+          차·커피·과자와 함께 하루를 마무리하는 시간.
+        </p>
+      </div>
+      <div class="rounded-xl border border-[var(--ember)]/40 p-6 bg-[var(--ember)]/5">
+        <p class="font-mono text-xs text-[var(--ember)] mb-2">10:00 — 10:30 PM</p>
+        <h3 class="font-display text-lg mb-2">원하는 사람들끼리</h3>
+        <p class="text-sm text-[var(--soft)]">
+          썬북님 진행으로 테이블에 모여, 오늘 읽은 책을 가볍게 소개합니다.
+          참여는 자유 — 그냥 책만 읽고 가셔도 좋습니다.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 모임 종류 ===================== -->
+<section class="px-6 py-14 border-t border-[var(--night-3)]">
+  <div class="max-w-4xl mx-auto">
+    <h2 class="font-display text-2xl mb-10 text-center">두 가지 모임</h2>
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <div class="paper-card p-7">
+        <p class="font-mono text-xs text-[var(--ember)] mb-3">매주 · 월 / 금 / 일</p>
+        <h3 class="font-display text-xl mb-3">정기 심야 독서</h3>
+        <ul class="text-sm space-y-2 mb-5">
+          <li>· 8PM – 10PM, 자유롭게 머물며 독서</li>
+          <li>· 10PM부터 30분, 가벼운 책 소개 모임 (선택)</li>
+          <li>· 차 · 커피 · 과자 포함</li>
+        </ul>
+        <p class="font-mono text-2xl">5,000<span class="text-sm">원 / 1회</span></p>
+      </div>
+
+      <div class="paper-card p-7 ring-2 ring-[var(--ember)]">
+        <p class="font-mono text-xs text-[var(--ember)] mb-3">월 1회 · 지정도서</p>
+        <h3 class="font-display text-xl mb-3">달빛 심야 독서모임</h3>
+        <ul class="text-sm space-y-2 mb-5">
+          <li>· 7월은 7/20(월), 8월부터 매달 마지막 주 금요일</li>
+          <li>· 8PM – 10PM (이후도 자유롭게 이어짐)</li>
+          <li>· 그 달의 달빛 지정도서를 읽고 참여</li>
+          <li>· 썬북님 발제로 깊이 있는 이야기</li>
+        </ul>
+        <p class="font-mono text-2xl">10,000<span class="text-sm">원 / 1회</span></p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 시즌권 ===================== -->
+<section class="px-6 py-14 border-t border-[var(--night-3)]">
+  <div class="max-w-3xl mx-auto text-center">
+    <h2 class="font-display text-2xl mb-3">한 달, 통째로</h2>
+    <p class="text-[var(--soft)] text-sm mb-10">
+      월·금·일 정기모임 + 지정도서 모임까지, 한 달이면 약 13회.<br>
+      회차마다 내면 약 70,000원 — 시즌권이면 절반 이하입니다.
+    </p>
+    <div class="inline-flex flex-col items-center gap-3 rounded-2xl border border-[var(--night-3)] px-10 py-8">
+      <p class="font-mono text-sm text-[var(--soft)] line-through">정가 약 70,000원 / 월</p>
+      <p class="font-display text-4xl text-[var(--ember)]">30,000원</p>
+      <p class="text-xs text-[var(--soft)]">한 달 시즌권 · 모든 정기모임 + 지정도서모임 무제한</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 신청 폼 ===================== -->
+<section id="apply" class="px-6 py-16 border-t border-[var(--night-3)]">
+  <div class="max-w-xl mx-auto">
+    <h2 class="font-display text-2xl mb-2 text-center">신청하기</h2>
+    <p class="text-center text-[var(--soft)] text-sm mb-10">참여 방식만 골라주시면 됩니다. 요일은 나중에 바뀌어도 괜찮아요.</p>
+
+    <form id="signupForm" class="paper-card p-7 space-y-5">
+
+      <div>
+        <label class="block text-sm font-medium mb-1">이름</label>
+        <input type="text" id="name" required
+          class="w-full rounded-lg border border-black/10 px-3 py-2 bg-white/70 text-sm">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">연락처 (전화번호)</label>
+        <input type="tel" id="phone" required placeholder="010-0000-0000"
+          class="w-full rounded-lg border border-black/10 px-3 py-2 bg-white/70 text-sm">
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2">참여 방식</label>
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 text-sm">
+            <input type="radio" name="plan" value="dropin" checked> 회차별로 참여 (정기 5,000원 / 지정도서 10,000원)
+          </label>
+          <label class="flex items-center gap-2 text-sm">
+            <input type="radio" name="plan" value="season"> 한 달 시즌권 (30,000원)
+          </label>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-2">주로 참여하고 싶은 요일 <span class="text-xs text-[var(--ink)]/50">(복수 선택, 선택 안 해도 무방)</span></label>
+        <div class="flex gap-3 flex-wrap">
+          <label class="day-chip"><input type="checkbox" value="월"><span>월요일</span></label>
+          <label class="day-chip"><input type="checkbox" value="금"><span>금요일</span></label>
+          <label class="day-chip"><input type="checkbox" value="일"><span>일요일</span></label>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">남기실 말 (선택)</label>
+        <textarea id="note" rows="2"
+          class="w-full rounded-lg border border-black/10 px-3 py-2 bg-white/70 text-sm"></textarea>
+      </div>
+
+      <button type="submit" class="ember-btn w-full py-3 rounded-lg font-medium">신청 보내기</button>
+    </form>
+
+    <!-- 신청 완료 후 안내 -->
+    <div id="confirmPanel" class="paper-card p-7 mt-6 hidden">
+      <h3 class="font-display text-lg mb-3">신청이 접수됐습니다 🌙</h3>
+      <p id="confirmSummary" class="text-sm mb-4"></p>
+      <p class="text-sm text-[var(--ink)]/70">
+        참가비 안내와 일정 확인은 비북스 카카오톡 오픈채팅으로 드릴게요.<br>
+        <!-- TODO: 실제 오픈채팅 링크/계좌 정보로 교체하세요 -->
+        <span class="font-mono text-xs">[ 카카오톡 오픈채팅 링크 입력 ]</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="px-6 py-10 text-center text-xs text-[var(--soft)] border-t border-[var(--night-3)]">
+  달빛 리딩 클럽 · 비북스 · 진행 0.1평 점주 썬북<br>
+  <!-- TODO: 실제 매장 주소/지도 링크로 교체하세요 -->
+  장소 안내는 추후 업데이트됩니다.
+</footer>
+
+<script>
+  // ===== 설정: 기존 비북스 챌린지와 같은 Apps Script 웹앱 URL =====
+  // TODO: challenge-appscript-full.gs 배포 URL을 여기에 붙여넣으세요
+  const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwmKpptDy_rt4SUMf4LToEHDSwsIsPQNIVZNBec3rvHjneB6c8qHWe_En0Li13PKJ5zOQ/exec';
+
+  const form = document.getElementById('signupForm');
+  const confirmPanel = document.getElementById('confirmPanel');
+  const confirmSummary = document.getElementById('confirmSummary');
+  const submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const plan = form.querySelector('input[name="plan"]:checked').value;
+    const days = Array.from(form.querySelectorAll('.day-chip input:checked')).map(el => el.value);
+    const note = document.getElementById('note').value.trim();
+
+    const planLabel = plan === 'season'
+      ? '한 달 시즌권 (30,000원)'
+      : '회차별 참여 (정기 5,000원 / 지정도서 10,000원)';
+    const daysLabel = days.length ? days.join(', ') + '요일' : '추후 결정';
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = '보내는 중...';
+
+    try {
+      // Apps Script 웹앱은 브라우저 fetch에 CORS 헤더를 내려주지 않으므로
+      // no-cors로 전송하고, 응답 내용은 읽지 않습니다 (요청이 실패하지 않으면 성공으로 간주).
+      await fetch(GAS_WEB_APP_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'moonlightApply',
+          name, phone, plan, days, note
+        })
+      });
+
+      confirmSummary.innerHTML =
+        `${name}님, <strong>${planLabel}</strong>으로 신청해주셨어요.<br>` +
+        `희망 요일: ${daysLabel}` +
+        (note ? `<br>남기신 말: ${note}` : '');
+
+      confirmPanel.classList.remove('hidden');
+      confirmPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      form.reset();
+
+    } catch (err) {
+      alert('전송 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
+      console.error('신청 전송 오류:', err);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '신청 보내기';
+    }
+  });
+</script>
+
+</body>
+</html>
