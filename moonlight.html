@@ -87,6 +87,32 @@
   .day-chip input:checked + span{
     background:var(--ember); color:#241a0c; border-color:var(--ember); font-weight:600;
   }
+
+  .bank-box{
+    border:1px solid rgba(38,36,32,.12);
+    border-radius:.75rem;
+    padding:1rem 1.1rem;
+    background:rgba(255,255,255,.55);
+  }
+  .bank-box-label{
+    font-size:.7rem; font-weight:700; letter-spacing:.08em;
+    color:rgba(38,36,32,.55); margin-bottom:.5rem;
+  }
+  .bank-amount{
+    font-family:'JetBrains Mono',monospace;
+    font-size:1.35rem; font-weight:600; color:var(--ink);
+    margin-bottom:.35rem;
+  }
+  .bank-detail{font-size:.82rem; line-height:1.65;}
+  .bank-flow-note{
+    margin-top:.65rem; font-size:.75rem;
+    color:rgba(38,36,32,.62); line-height:1.55;
+  }
+  .deposit-confirm{
+    display:flex; align-items:flex-start; gap:.5rem;
+    font-size:.82rem; line-height:1.5; cursor:pointer;
+  }
+  .deposit-confirm input{margin-top:.15rem; accent-color:var(--ember);}
 </style>
 </head>
 <body class="leading-relaxed">
@@ -152,7 +178,7 @@
 
       <div class="paper-card p-7">
         <p class="font-mono text-xs text-[var(--ember)] mb-3">매주 · 월 / 금 / 일</p>
-        <h3 class="font-display text-xl mb-3">정기 심야 독서</h3>
+        <h3 class="font-display text-xl mb-3">심야 자유 독서</h3>
         <ul class="text-sm space-y-2 mb-5">
           <li>· 8PM – 10PM, 자유롭게 머물며 독서</li>
           <li>· 10PM부터 30분, 가벼운 책 소개 모임 (선택)</li>
@@ -166,7 +192,7 @@
         <h3 class="font-display text-xl mb-3">달빛 심야 독서모임</h3>
         <ul class="text-sm space-y-2 mb-5">
           <li>· 7월은 7/20(월), 8월부터 매달 마지막 주 금요일</li>
-          <li>· 8PM – 10PM (이후도 자유롭게 이어짐)</li>
+          <li>· 8PM – 10PM</li>
           <li>· 그 달의 달빛 지정도서를 읽고 참여</li>
           <li>· 썬북님 발제로 깊이 있는 이야기</li>
         </ul>
@@ -197,7 +223,7 @@
 <section id="apply" class="px-6 py-16 border-t border-[var(--night-3)]">
   <div class="max-w-xl mx-auto">
     <h2 class="font-display text-2xl mb-2 text-center">신청하기</h2>
-    <p class="text-center text-[var(--soft)] text-sm mb-10">참여 방식만 골라주시면 됩니다. 요일은 나중에 바뀌어도 괜찮아요.</p>
+    <p class="text-center text-[var(--soft)] text-sm mb-10">참여 방식을 골라주신 뒤, 참가비를 입금하고 신청을 완료해주세요.</p>
 
     <form id="signupForm" class="paper-card p-7 space-y-5">
 
@@ -217,30 +243,59 @@
         <label class="block text-sm font-medium mb-2">참여 방식</label>
         <div class="space-y-2">
           <label class="flex items-center gap-2 text-sm">
-            <input type="radio" name="plan" value="dropin" checked> 회차별로 참여 (정기 5,000원 / 지정도서 10,000원)
+            <input type="radio" name="plan" value="dropin" checked> 회차별로 참여
           </label>
           <label class="flex items-center gap-2 text-sm">
             <input type="radio" name="plan" value="season"> 한 달 시즌권 (30,000원)
           </label>
         </div>
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium mb-2">주로 참여하고 싶은 요일 <span class="text-xs text-[var(--ink)]/50">(복수 선택, 선택 안 해도 무방)</span></label>
-        <div class="flex gap-3 flex-wrap">
-          <label class="day-chip"><input type="checkbox" value="월"><span>월요일</span></label>
-          <label class="day-chip"><input type="checkbox" value="금"><span>금요일</span></label>
-          <label class="day-chip"><input type="checkbox" value="일"><span>일요일</span></label>
+        <div id="dropinTypes" class="mt-3 rounded-lg border border-black/8 bg-white/50 px-3 py-2.5 text-sm space-y-1">
+          <p>· <strong>심야 자유 독서</strong> — 5,000원 / 회</p>
+          <p>· <strong>달빛 심야 독서모임</strong> — 10,000원 / 회</p>
         </div>
       </div>
 
       <div>
-        <label class="block text-sm font-medium mb-1">남기실 말 (선택)</label>
-        <textarea id="note" rows="2"
+        <label class="block text-sm font-medium mb-1" id="noteLabel">참여 신청일</label>
+        <textarea id="note" rows="3" required
+          placeholder="예) 7/5(일) 심야 자유 독서, 7/12(일) 심야 자유 독서, 7/20(월) 달빛 심야 독서모임"
           class="w-full rounded-lg border border-black/10 px-3 py-2 bg-white/70 text-sm"></textarea>
+        <p class="text-xs text-[var(--ink)]/55 mt-1.5" id="noteHint">참여하실 날짜와 모임 종류를 자유롭게 적어주세요.</p>
       </div>
 
-      <button type="submit" class="ember-btn w-full py-3 rounded-lg font-medium">신청 보내기</button>
+      <div class="bank-box">
+        <div class="bank-box-label">비북스 입금 계좌</div>
+        <div id="paySeasonBlock" class="hidden">
+          <div class="bank-amount">30,000원</div>
+          <p class="text-sm mt-1">한 달 시즌권 (정기모임 + 지정도서모임 무제한)</p>
+        </div>
+        <div id="payDropinBlock">
+          <div class="text-sm space-y-1 mb-2">
+            <p>심야 자유 독서 <strong class="font-mono">5,000원</strong> / 회</p>
+            <p>달빛 심야 독서모임 <strong class="font-mono">10,000원</strong> / 회</p>
+          </div>
+          <p class="bank-flow-note" style="margin-top:0">
+            회차별 신청은 참여하실 회차 금액을 <strong>합산하여</strong> 입금해주세요.<br>
+            예) 7/5(일)·7/12(일) 심야 자유 독서 2회 + 7/20(월) 달빛 심야 독서모임 1회<br>
+            → 5,000×2 + 10,000 = <strong>20,000원</strong>
+          </p>
+        </div>
+        <div class="bank-detail">
+          <div><strong>카카오뱅크 7942-33-45474</strong></div>
+          <div>예금주 경규환</div>
+          <div style="margin-top:.45rem;padding-top:.45rem;border-top:1px dashed rgba(38,36,32,.15)">
+            입금자명: <strong id="depositorName">—</strong>
+          </div>
+        </div>
+        <p class="bank-flow-note">① 위 계좌로 참가비를 입금해주세요 (입금자명 = 신청 이름과 동일)<br>② 입금 후 아래를 체크하고 신청을 완료해주세요</p>
+      </div>
+
+      <label class="deposit-confirm">
+        <input type="checkbox" id="depositConfirm"/>
+        <span>참가비 입금을 완료했습니다</span>
+      </label>
+
+      <button type="submit" class="ember-btn w-full py-3 rounded-lg font-medium">입금 확인 후 신청 보내기</button>
     </form>
 
     <!-- 신청 완료 후 안내 -->
@@ -248,9 +303,8 @@
       <h3 class="font-display text-lg mb-3">신청이 접수됐습니다 🌙</h3>
       <p id="confirmSummary" class="text-sm mb-4"></p>
       <p class="text-sm text-[var(--ink)]/70">
-        참가비 안내와 일정 확인은 비북스 카카오톡 오픈채팅으로 드릴게요.<br>
-        <!-- TODO: 실제 오픈채팅 링크/계좌 정보로 교체하세요 -->
-        <span class="font-mono text-xs">[ 카카오톡 오픈채팅 링크 입력 ]</span>
+        입금 내역 확인 후 담당자가 연락드릴게요.<br>
+        일정·세부 안내는 비북스 카카오톡 오픈채팅으로 드립니다.
       </p>
     </div>
   </div>
@@ -271,20 +325,66 @@
   const confirmPanel = document.getElementById('confirmPanel');
   const confirmSummary = document.getElementById('confirmSummary');
   const submitBtn = form.querySelector('button[type="submit"]');
+  const nameInput = document.getElementById('name');
+  const depositorNameEl = document.getElementById('depositorName');
+  const paySeasonBlock = document.getElementById('paySeasonBlock');
+  const payDropinBlock = document.getElementById('payDropinBlock');
+  const dropinTypes = document.getElementById('dropinTypes');
+  const noteInput = document.getElementById('note');
+  const noteLabel = document.getElementById('noteLabel');
+  const noteHint = document.getElementById('noteHint');
+  const depositConfirm = document.getElementById('depositConfirm');
+  const planInputs = form.querySelectorAll('input[name="plan"]');
+
+  function updatePayAmountLabel() {
+    const plan = form.querySelector('input[name="plan"]:checked')?.value;
+    const isSeason = plan === 'season';
+    paySeasonBlock.classList.toggle('hidden', !isSeason);
+    payDropinBlock.classList.toggle('hidden', isSeason);
+    dropinTypes.classList.toggle('hidden', isSeason);
+    noteInput.required = !isSeason;
+    noteLabel.textContent = isSeason ? '남기실 말 (선택)' : '참여 신청일';
+    noteHint.textContent = isSeason
+      ? '추가로 전달하실 내용이 있으면 적어주세요.'
+      : '참여하실 날짜와 모임 종류를 자유롭게 적어주세요.';
+    noteInput.placeholder = isSeason
+      ? '예) 첫 참여는 7/5(일) 예정입니다'
+      : '예) 7/5(일) 심야 자유 독서, 7/12(일) 심야 자유 독서, 7/20(월) 달빛 심야 독서모임';
+  }
+
+  function syncDepositorName() {
+    depositorNameEl.textContent = nameInput.value.trim() || '—';
+  }
+
+  nameInput.addEventListener('input', syncDepositorName);
+  planInputs.forEach(input => input.addEventListener('change', updatePayAmountLabel));
+  updatePayAmountLabel();
+  syncDepositorName();
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const name = document.getElementById('name').value.trim();
+    const name = nameInput.value.trim();
     const phone = document.getElementById('phone').value.trim();
     const plan = form.querySelector('input[name="plan"]:checked').value;
-    const days = Array.from(form.querySelectorAll('.day-chip input:checked')).map(el => el.value);
-    const note = document.getElementById('note').value.trim();
+    const note = noteInput.value.trim();
+
+    if (!name || !phone) {
+      alert('이름과 연락처를 입력해주세요.');
+      return;
+    }
+    if (plan === 'dropin' && !note) {
+      alert('참여 신청일을 입력해주세요.');
+      return;
+    }
+    if (!depositConfirm.checked) {
+      alert('참가비 입금 후 체크박스를 선택해주세요.');
+      return;
+    }
 
     const planLabel = plan === 'season'
       ? '한 달 시즌권 (30,000원)'
-      : '회차별 참여 (정기 5,000원 / 지정도서 10,000원)';
-    const daysLabel = days.length ? days.join(', ') + '요일' : '추후 결정';
+      : '회차별 참여 (심야 자유 독서 5,000원 / 달빛 심야 독서모임 10,000원)';
 
     submitBtn.disabled = true;
     submitBtn.textContent = '보내는 중...';
@@ -298,25 +398,27 @@
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
           action: 'moonlightApply',
-          name, phone, plan, days, note
+          name, phone, plan, note
         })
       });
 
       confirmSummary.innerHTML =
-        `${name}님, <strong>${planLabel}</strong>으로 신청해주셨어요.<br>` +
-        `희망 요일: ${daysLabel}` +
-        (note ? `<br>남기신 말: ${note}` : '');
+        `${name}님, <strong>${planLabel}</strong>으로 신청해주셨어요.` +
+        (note ? `<br>참여 신청: ${note}` : '');
 
       confirmPanel.classList.remove('hidden');
       confirmPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
       form.reset();
+      depositConfirm.checked = false;
+      updatePayAmountLabel();
+      syncDepositorName();
 
     } catch (err) {
       alert('전송 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
       console.error('신청 전송 오류:', err);
     } finally {
       submitBtn.disabled = false;
-      submitBtn.textContent = '신청 보내기';
+      submitBtn.textContent = '입금 확인 후 신청 보내기';
     }
   });
 </script>
