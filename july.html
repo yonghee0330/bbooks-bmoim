@@ -322,18 +322,18 @@
     }
     .event-zone .sec-label { color: #dc2626; }
     .event-open-bar { display: none; }
-    .event-slider-top {
+    .event-overview-top {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       padding: 0 2px;
       font-size: 12px;
       line-height: 1.45;
       color: var(--muted);
     }
-    .event-slider-summary {
+    .event-overview-summary {
       flex: 1;
       min-width: 0;
       margin: 0;
@@ -341,63 +341,34 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .event-slider-summary strong {
+    .event-overview-summary strong {
       color: var(--ocean-deep);
       font-weight: 700;
     }
-    .event-slider-top .event-slide-counter {
-      flex-shrink: 0;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--ocean-deep);
-      letter-spacing: .04em;
+
+    .event-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
     }
-    .event-slider-wrap {
-      position: relative;
-      overflow: hidden;
-      border-radius: 16px;
-      touch-action: pan-y pinch-zoom;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      max-height: min(92vw, 520px);
-      background: #fff;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 16px rgba(26,158,196,0.08);
+    @media (min-width: 880px) {
+      .event-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
-    .event-slider {
-      display: flex;
-      height: 100%;
-      transition: transform .35s ease;
-      will-change: transform;
+    @media (max-width: 430px) {
+      .event-grid { grid-template-columns: 1fr; }
     }
-    .event-slide {
-      min-width: 100%;
-      width: 100%;
-      height: 100%;
-      flex-shrink: 0;
-      box-sizing: border-box;
-    }
-    .event-slide .event-card {
-      width: 100%;
-      max-width: none;
-      height: 100%;
-      margin: 0;
-      border-radius: 0;
-      border: none;
-      box-shadow: none;
-      display: flex;
-      flex-direction: column;
-    }
-    .event-slide .event-card:hover { transform: none; box-shadow: none; }
+
+    .event-grid .event-card { height: 100%; }
     .event-poster-stack {
-      flex: 1;
       display: flex;
       flex-direction: column;
-      min-height: 0;
       height: 100%;
     }
-    .event-slider-nav { margin-top: 14px; }
-    .event-slider-nav .sdot.active { background: var(--ocean); }
+    .event-grid .event-poster-wrap {
+      flex: none;
+      aspect-ratio: 4 / 5;
+      border-bottom: 1px solid var(--border);
+    }
     .event-card {
       display: flex;
       flex-direction: column;
@@ -2395,14 +2366,11 @@
         <path d="M24,4 L24,10 M24,38 L24,44 M4,24 L10,24 M38,24 L44,24" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"/>
       </svg>
     </div>
-    <div class="event-slider-top">
-      <p class="event-slider-summary"><strong><span id="eventTotalCount">4</span>개 행사</strong> · b.voice · 밤밀온 · 책방에서 만나요 — 좌우로 넘겨 포스터를 확인하세요</p>
-      <span class="event-slide-counter" id="eventSlideCounter">1 / 4</span>
+    <div class="event-overview-top">
+      <p class="event-overview-summary"><strong><span id="eventTotalCount">4</span>개 행사</strong> · b.voice · 밤밀온 · 책방에서 만나요</p>
     </div>
-    <div class="event-slider-wrap" id="eventSliderViewport">
-      <div class="event-slider" id="eventSlider">
 
-      <div class="event-slide">
+    <div class="event-grid" id="eventGrid">
       <article class="event-card type-bvoice" id="bvoice1">
         <div class="event-poster-stack">
         <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep02_drive.jpg','b.voice EP.02 — DRIVE')">
@@ -2412,9 +2380,6 @@
         <button class="btn-event-apply type-bvoice" id="apply-bvoice1" onclick="openEventApply('bvoice1')">b.voice 신청하기</button>
         </div>
       </article>
-      </div>
-
-      <div class="event-slide">
       <article class="event-card type-bvoice" id="bvoice2">
         <div class="event-poster-stack">
         <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep03_book.jpg','b.voice EP.03 — 소중한 ___ 에게')">
@@ -2424,9 +2389,6 @@
         <button class="btn-event-apply type-bvoice" id="apply-bvoice2" onclick="openEventApply('bvoice2')">b.voice 신청하기</button>
         </div>
       </article>
-      </div>
-
-      <div class="event-slide">
       <article class="event-card type-bammilon" id="bammilon">
         <div class="event-poster-stack">
         <div class="event-poster-wrap type-bammilon" onclick="openLightbox('images/bam_mil_on_july.jpg','밤이 밀려온다 — 밤밀온')">
@@ -2436,9 +2398,6 @@
         <button class="btn-event-apply type-bammilon" id="apply-bammilon" onclick="openEventApply('bammilon')">밤밀온 참가 신청</button>
         </div>
       </article>
-      </div>
-
-      <div class="event-slide">
       <article class="event-card type-yes24" id="yes24kwon">
         <div class="event-poster-stack">
         <div class="event-poster-wrap type-yes24" onclick="openLightbox('images/yes24_name_empty_july.jpg','책방에서 만나요 — 이름의 빈자리에')">
@@ -2457,16 +2416,6 @@
         </div>
         </div>
       </article>
-      </div>
-
-      </div>
-    </div>
-    <div class="slider-nav event-slider-nav">
-      <div class="slider-dots" id="eventSliderDots"></div>
-      <div class="slider-arrows">
-        <button type="button" class="sarr" aria-label="이전 행사" onclick="eventSlideMove(-1)">‹</button>
-        <button type="button" class="sarr" aria-label="다음 행사" onclick="eventSlideMove(1)">›</button>
-      </div>
     </div>
   </div>
 
@@ -4863,75 +4812,14 @@ function goSlide(i) { curSlide = i; updateSlider(); }
 
 
 function initEventOverview() {
-  const slides = document.querySelectorAll('#eventSlider .event-slide');
+  const cards = document.querySelectorAll('#eventZone .event-card');
   const totalEl = q('#eventTotalCount');
-  if (totalEl) totalEl.textContent = slides.length;
-  initEventSlider();
-}
-
-let curEventSlide = 0;
-let eventSlideCount = 0;
-
-function initEventSlider() {
-  const slides = document.querySelectorAll('#eventSlider .event-slide');
-  eventSlideCount = slides.length;
-  curEventSlide = 0;
-  buildEventDots();
-  updateEventSlider();
-
-  const viewport = q('#eventSliderViewport');
-  if (!viewport || eventSlideCount <= 1) return;
-  let touchStartX = 0;
-  viewport.addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].clientX;
-  }, { passive: true });
-  viewport.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) < 40) return;
-    eventSlideMove(dx < 0 ? 1 : -1);
-  }, { passive: true });
-}
-
-function eventSlideMove(dir) {
-  if (eventSlideCount <= 1) return;
-  curEventSlide = (curEventSlide + dir + eventSlideCount) % eventSlideCount;
-  updateEventSlider();
-}
-
-function updateEventSlider() {
-  const track = q('#eventSlider');
-  if (track) track.style.transform = `translateX(-${curEventSlide * 100}%)`;
-  document.querySelectorAll('#eventSliderDots .sdot').forEach((d, i) => {
-    d.classList.toggle('active', i === curEventSlide);
-  });
-  const counter = q('#eventSlideCounter');
-  if (counter && eventSlideCount) counter.textContent = `${curEventSlide + 1} / ${eventSlideCount}`;
-}
-
-function buildEventDots() {
-  const dots = q('#eventSliderDots');
-  if (!dots) return;
-  dots.innerHTML = Array.from({ length: eventSlideCount }, (_, i) =>
-    `<div class="sdot${i === 0 ? ' active' : ''}" onclick="goEventSlide(${i})"></div>`
-  ).join('');
-}
-
-function goEventSlide(i) {
-  if (i < 0 || i >= eventSlideCount) return;
-  curEventSlide = i;
-  updateEventSlider();
+  if (totalEl) totalEl.textContent = cards.length;
 }
 
 function scrollToEvent(id) {
   const el = document.getElementById(id);
   if (!el) return;
-  const slide = el.closest('.event-slide');
-  const slides = Array.from(document.querySelectorAll('#eventSlider .event-slide'));
-  const idx = slides.indexOf(slide);
-  if (idx >= 0) {
-    curEventSlide = idx;
-    updateEventSlider();
-  }
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
