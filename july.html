@@ -364,10 +364,27 @@
       flex-direction: column;
       height: 100%;
     }
-    .event-grid .event-poster-wrap {
+    .event-grid .event-poster-wrap,
+    .event-grid .poster-slider-wrap {
       flex: none;
       aspect-ratio: 4 / 5;
       border-bottom: 1px solid var(--border);
+    }
+    .event-grid .poster-slider-wrap {
+      background: #1f3352;
+      overflow: hidden;
+    }
+    .event-grid .poster-slider-viewport {
+      height: 100%;
+      aspect-ratio: auto;
+    }
+    .event-grid .poster-slide img {
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      max-height: none;
+      object-fit: contain;
+      object-position: center top;
     }
     .event-card {
       display: flex;
@@ -537,21 +554,12 @@
       object-position: center top;
     }
     .event-poster-wrap.type-bammilon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px 20px;
-      background: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
-      box-sizing: border-box;
+      background: #0f172a;
+      cursor: zoom-in;
     }
     .event-poster-wrap.type-bammilon img {
-      position: static;
-      width: auto;
-      height: auto;
-      max-width: 100%;
-      max-height: 100%;
       object-fit: contain;
-      object-position: center;
+      object-position: center top;
     }
     .event-poster-wrap.type-external {
       display: flex;
@@ -676,14 +684,17 @@
     .btn-event-apply:hover { transform: translateY(-1px); }
     .btn-event-apply:disabled { opacity: .45; cursor: not-allowed; transform: none; }
     .event-card.moim-sold-out .event-poster-wrap::before,
-    .event-card.moim-ended .event-poster-wrap::before {
+    .event-card.moim-ended .event-poster-wrap::before,
+    .event-card.moim-sold-out .poster-slider-wrap::before,
+    .event-card.moim-ended .poster-slider-wrap::before {
       content: '';
       position: absolute;
       inset: 0;
       background: rgba(15,23,42,0.22);
       z-index: 2;
     }
-    .event-card.moim-sold-out .event-poster-wrap::after {
+    .event-card.moim-sold-out .event-poster-wrap::after,
+    .event-card.moim-sold-out .poster-slider-wrap::after {
       content: '모집 완료';
       position: absolute;
       top: 50%; left: 50%;
@@ -737,11 +748,29 @@
       line-height: 1.55;
       color: var(--text);
     }
+    .event-info-foot .event-info-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      color: #1f3352;
+      background: #dbeafe;
+      border: 1px solid #8ec4dc;
+      border-radius: 999px;
+      padding: 3px 9px;
+      margin-bottom: 8px;
+    }
     .event-info-foot .event-info-name {
       font-weight: 700;
       font-size: 13px;
       margin-bottom: 6px;
       color: #1f3352;
+    }
+    .event-info-foot .event-info-desc {
+      font-size: 11px;
+      color: #475569;
+      line-height: 1.55;
+      margin: 0 0 8px;
     }
     .event-info-foot .event-info-meta { color: var(--muted); margin-bottom: 2px; }
     .event-info-foot .event-info-note {
@@ -749,7 +778,37 @@
       font-size: 11px;
       color: #5b7a9a;
     }
+    .event-info-foot .event-info-note + .event-info-note { margin-top: 4px; }
     .book-order-section { margin: 14px 0 4px; }
+    .yes24-host-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 12px 0 4px;
+      padding: 12px 14px;
+      border: 1px solid #fdba74;
+      border-radius: 10px;
+      background: #fff7ed;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #9a3412;
+      font-weight: 600;
+    }
+    .yes24-host-check input {
+      margin-top: 2px;
+      accent-color: #ea580c;
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+    }
+    .yes24-host-check .yes24-host-sub {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #c2410c;
+    }
     .book-order-label {
       display: block;
       font-size: 13px;
@@ -785,6 +844,49 @@
       color: #1f3352;
       white-space: nowrap;
     }
+    .yes24-delivery {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed #cbd5e1;
+    }
+    .yes24-delivery-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .yes24-delivery-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 12px;
+      border: 1px solid #dbeafe;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+    }
+    .yes24-delivery-item:has(input:checked) {
+      border-color: #ea580c;
+      background: #fff7ed;
+      color: #9a3412;
+    }
+    .yes24-delivery-item input {
+      accent-color: #ea580c;
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+    }
+    .yes24-delivery-item .yes24-delivery-sub {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .yes24-delivery-item:has(input:checked) .yes24-delivery-sub { color: #c2410c; }
     .yes24-amount-breakdown { display: flex; flex-direction: column; gap: 4px; }
     .yes24-amount-row {
       display: flex;
@@ -2321,7 +2423,7 @@
       <div class="cal-cell sun" onclick="openRent('2026-07-26')">
         <div class="cal-day">26</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pilsa')">필사 다이어리</div>
-        <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24kwon')">책방에서 만나요</div>
+        <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24kwon')">b.talks</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
@@ -2367,7 +2469,7 @@
       </svg>
     </div>
     <div class="event-overview-top">
-      <p class="event-overview-summary"><strong><span id="eventTotalCount">4</span>개 행사</strong> · b.voice · 밤밀온 · 책방에서 만나요</p>
+      <p class="event-overview-summary"><strong><span id="eventTotalCount">4</span>개 행사</strong> · b.voice · 밤밀온 · b.talks</p>
     </div>
 
     <div class="event-grid" id="eventGrid">
@@ -2400,18 +2502,38 @@
       </article>
       <article class="event-card type-yes24" id="yes24kwon">
         <div class="event-poster-stack">
-        <div class="event-poster-wrap type-yes24" onclick="openLightbox('images/yes24_name_empty_july.jpg','책방에서 만나요 — 이름의 빈자리에')">
-          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/yes24_name_empty_july.jpg','책방에서 만나요 — 이름의 빈자리에')">🔍</button>
-          <img src="images/yes24_name_empty_july.jpg" alt="'책방에서 만나요' 비톡스 x 예스24 책방 콜라보 — 이름의 빈자리에, 권혁란 작가">
+        <div class="poster-slider-wrap" id="poster-slider-btalks"
+             onclick="openPosterLightbox('btalks')"
+             data-posters='["images/btalks_july_01.jpg","images/btalks_july_02.jpg","images/btalks_july_03.jpg","images/btalks_july_04.jpg"]'
+             data-alt="7월의 b.talks — 《이름의 빈자리에》 권혁란 작가와의 만남">
+          <div class="poster-slider-viewport">
+            <div class="poster-slider" data-slider="btalks">
+              <div class="poster-slide"><img src="images/btalks_july_01.jpg" alt="《이름의 빈자리에》 권혁란 작가와의 만남"></div>
+              <div class="poster-slide"><img src="images/btalks_july_02.jpg" alt="《이름의 빈자리에》 프롤로그 중에서"></div>
+              <div class="poster-slide"><img src="images/btalks_july_03.jpg" alt="7월의 b.talks 행사 안내"></div>
+              <div class="poster-slide"><img src="images/btalks_july_04.jpg" alt="비북스 x 한겨레출판 x 예스24"></div>
+            </div>
+          </div>
+          <div class="poster-slider-nav">
+            <div class="slider-dots" data-dots="btalks"></div>
+            <div class="slider-arrows">
+              <button type="button" class="sarr" aria-label="이전 포스터" onclick="event.stopPropagation();posterSlide('btalks',-1)">‹</button>
+              <button type="button" class="sarr" aria-label="다음 포스터" onclick="event.stopPropagation();posterSlide('btalks',1)">›</button>
+            </div>
+          </div>
+          <span class="poster-slider-hint">1 / 4</span>
         </div>
         <div class="yes24-apply-panel">
-        <button class="btn-event-apply type-yes24" id="apply-yes24kwon" onclick="openEventApply('yes24kwon')">'책방에서 만나요' 신청하기</button>
+        <button class="btn-event-apply type-yes24" id="apply-yes24kwon" onclick="openEventApply('yes24kwon')">b.talks 신청하기</button>
         <div class="event-info-foot type-yes24">
-          <p class="event-info-name">《이름의 빈자리에》 권혁란작가와의 만남</p>
-          <p class="event-info-meta">2026년 7월 26일(일) 16:00~18:00 · 계단 좌석</p>
-          <p class="event-info-meta">참가비 10,000원 (간단한 다과 제공)</p>
-          <p class="event-info-note">* 현장 책구매(미리 신청도 가능) + 저자 친필 사인회</p>
+          <span class="event-info-badge">7월의 b.talks · 비북스 x 한겨레출판 x 예스24</span>
+          <p class="event-info-name">《이름의 빈자리에》 권혁란 작가와의 만남</p>
+          <p class="event-info-desc">이름이 어떻게 인간을 만들고, 지우고, 다시 연결하는가. 권혁란 작가와 함께 이름·존재·사랑에 대해 이야기합니다.</p>
+          <p class="event-info-meta">2026년 7월 26일(일) 오후 4시 · 비북스</p>
+          <p class="event-info-meta">참가비 10,000원 / 0.1평 점주 무료 (간단한 다과 제공)</p>
+          <p class="event-info-note">* 도서 사전 주문 가능 · 행사 후 저자 사인회</p>
           <p class="event-info-note">* 참가비 포함 3만원 이상 미리 주문 시 무료 배송</p>
+          <p class="event-info-note">* 이번 7월의 b.talks는 예스24의 지원을 받아 진행합니다.</p>
         </div>
         </div>
         </div>
@@ -2527,16 +2649,8 @@
     </div>
 
     <div class="moim-card" id="wedlibrary">
-      <div class="moim-poster ocean-wedlibrary-poster">
-        <svg class="poster-wedlibrary-illust" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-          <rect x="24" y="30" width="16" height="44" rx="2" fill="rgba(255,255,255,0.85)" stroke="#fff" stroke-width="1.2"/>
-          <rect x="42" y="26" width="16" height="48" rx="2" fill="rgba(255,255,255,0.95)" stroke="#fff" stroke-width="1.2"/>
-          <rect x="60" y="34" width="16" height="40" rx="2" fill="rgba(255,255,255,0.8)" stroke="#fff" stroke-width="1.2"/>
-          <path d="M46,38 H54 M46,44 H52 M46,50 H54" stroke="rgba(21,128,61,0.45)" stroke-width="1.5" stroke-linecap="round"/>
-          <circle cx="72" cy="24" r="8" fill="#FFE08A" stroke="#fff" stroke-width="1.2"/>
-        </svg>
-        <div class="poster-title long">수요일의 서재<br>7월 독서모임</div>
-        <div class="poster-sub">아침놀 · 7/15(수)</div>
+      <div class="moim-poster-img" onclick="openLightbox('images/wedlibrary_july.jpg','수요일의 서재 7월 독서모임 포스터')">
+        <img src="images/wedlibrary_july.jpg" alt="수요일의 서재 — 김애란 『안녕이라 그랬어』 7월 독서모임 포스터">
       </div>
       <div class="moim-body">
         <div class="moim-name">수요일의 서재×7월 독서모임</div>
@@ -2551,21 +2665,21 @@
           <button class="stab" onclick="selectSession(this,'wed2')">② 오후</button>
         </div>
         <div class="moim-meta" id="wed1-meta">
-          <div class="meta-row"><span class="mi">📅</span>7월 15일 (수) 오전 10:30 – 12:30</div>
-          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">📅</span>7월 15일 (수) 오전 10:30 – 12:00</div>
+          <div class="meta-row"><span class="mi">📌</span>비북스 매장내</div>
           <div class="meta-row"><span class="mi">👥</span>6명</div>
           <div class="meta-row"><span class="mi">📚</span>김애란 &lt;안녕이라 그랬어&gt;</div>
         </div>
         <div class="moim-meta" id="wed2-meta" style="display:none">
-          <div class="meta-row"><span class="mi">📅</span>7월 15일 (수) 오후 6:30 – 8:30</div>
-          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">📅</span>7월 15일 (수) 오후 6:30 – 8:00</div>
+          <div class="meta-row"><span class="mi">📌</span>비북스 매장내</div>
           <div class="meta-row"><span class="mi">👥</span>6명</div>
           <div class="meta-row"><span class="mi">📚</span>김애란 &lt;안녕이라 그랬어&gt;</div>
         </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
-            <div class="moim-cap">재료 준비 없음</div>
+            <div class="moim-cap">티·다과·필사 엽서 포함</div>
           </div>
           <button class="btn-apply" id="apply-wedlibrary" onclick="openApply('수요일의 서재×7월 독서모임','wedlibrary')">신청하기</button>
         </div>
@@ -2596,33 +2710,22 @@
     </div>
 
     <div class="moim-card" id="minbook">
-      <div class="moim-poster ocean-minbook-poster">
-        <svg class="poster-minbook-illust" viewBox="0 0 100 100" fill="none" aria-hidden="true">
-          <rect x="28" y="24" width="44" height="52" rx="4" fill="rgba(255,255,255,0.92)" stroke="#fff" stroke-width="1.5"/>
-          <path d="M36,24 V76" stroke="rgba(234,88,12,0.35)" stroke-width="1.5"/>
-          <rect x="40" y="34" width="24" height="3" rx="1.5" fill="#fdba74"/>
-          <rect x="40" y="42" width="20" height="2.5" rx="1.25" fill="rgba(234,88,12,0.45)"/>
-          <rect x="40" y="48" width="22" height="2.5" rx="1.25" fill="rgba(234,88,12,0.35)"/>
-          <rect x="40" y="54" width="18" height="2.5" rx="1.25" fill="rgba(234,88,12,0.35)"/>
-          <circle cx="62" cy="62" r="8" fill="#FFE08A" stroke="#fff" stroke-width="1.2"/>
-          <path d="M58,62 Q62,58 66,62" stroke="#ea580c" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-        </svg>
-        <div class="poster-title long">나만의<br>미니북 만들기</div>
-        <div class="poster-sub">선이와 병수 · 7/18(토)</div>
+      <div class="moim-poster-img" onclick="openLightbox('images/minbook_july.jpg','나만의 미니북 만들기 포스터')">
+        <img src="images/minbook_july.jpg" alt="나만의 미니북 만들기 — 7월 18일 토요일 15시~17시">
       </div>
       <div class="moim-body">
         <div class="moim-name">나만의 미니북 만들기</div>
         <p class="moim-host-line">선이와 병수</p>
-        <div class="moim-desc">글을 잘 쓰지 않아도 그림을 잘 그리지 못해도 괜찮아요. 나만의 이야기를 꺼내 작고 귀여운 미니북을 만들어 보아요.</div>
+        <div class="moim-desc">작은 책 안에 나의 이야기와 소중한 순간을 담아보세요. 나만의 이야기를 담은 세상에 하나뿐인 미니북, 함께 만들어봐요!</div>
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>7월 18일 (토) 15:00 – 17:00</div>
-          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">📌</span>비북스 매장내</div>
           <div class="meta-row"><span class="mi">👥</span>6명</div>
         </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">15,000원</div>
-            <div class="moim-cap">재료 준비 없음</div>
+            <div class="moim-cap">재료비 포함</div>
           </div>
           <button class="btn-apply" id="apply-minbook" onclick="openApply('나만의 미니북 만들기','minbook')">신청하기</button>
         </div>
@@ -3100,8 +3203,8 @@ const MOIMS = {
   wedlibrary: {
     name: '수요일의 서재×7월 독서모임',
     sessions: [
-      { label: '① 7/15(수) 오전 10:30–12:30', value: '7월15일_오전' },
-      { label: '② 7/15(수) 오후 6:30–8:30', value: '7월15일_오후' }
+      { label: '① 7/15(수) 오전 10:30–12:00', value: '7월15일_오전' },
+      { label: '② 7/15(수) 오후 6:30–8:00', value: '7월15일_오후' }
     ],
     capacity: { '7월15일_오전': 6, '7월15일_오후': 6 },
     amount: 10000,
@@ -3188,15 +3291,21 @@ const EVENTS = {
   },
   yes24kwon: {
     type: 'yes24',
-    typeLabel: "'책방에서 만나요' 비톡스 x 예스24 책방 콜라보",
-    name: '《이름의 빈자리에》 권혁란작가와의 만남',
-    subtitle: '권혁란 작가',
-    poster: 'images/yes24_name_empty_july.jpg',
-    sessions: [{ label: '2026년 7월 26일(일) 16:00~18:00', value: '7월26일_예스24', _endMs: new Date(2026, 6, 26, 18, 0, 0).getTime() }],
+    typeLabel: '7월의 b.talks · 비북스 x 한겨레출판 x 예스24',
+    name: '《이름의 빈자리에》 권혁란 작가와의 만남',
+    subtitle: '이름이 어떻게 인간을 만들고, 지우고, 다시 연결하는가',
+    poster: 'images/btalks_july_01.jpg',
+    posters: [
+      'images/btalks_july_01.jpg',
+      'images/btalks_july_02.jpg',
+      'images/btalks_july_03.jpg',
+      'images/btalks_july_04.jpg'
+    ],
+    sessions: [{ label: '2026년 7월 26일(일) 오후 4시', value: '7월26일_예스24', _endMs: new Date(2026, 6, 26, 18, 0, 0).getTime() }],
     capacity: 30,
     amount: 10000,
-    space: '비북스 계단 좌석',
-    feeNote: '간단한 다과 제공',
+    space: '비북스',
+    feeNote: '0.1평 점주 무료 · 간단한 다과 제공',
     freeShippingMin: 30000,
     bookOrder: true,
     books: [
@@ -3218,9 +3327,9 @@ let latestMoimCounts = {};
 const MOIM_CURATION_META = {
   pado: { cardId: 'pado', poster: 'images/pado_switch_on_july.jpg' },
   sentcollect: { cardId: 'sentcollect', poster: '' },
-  wedlibrary: { cardId: 'wedlibrary', poster: '' },
+  wedlibrary: { cardId: 'wedlibrary', poster: 'images/wedlibrary_july.jpg' },
   movietalk: { cardId: 'movietalk', poster: 'images/movie_talk_july.jpg' },
-  minbook: { cardId: 'minbook', poster: '' },
+  minbook: { cardId: 'minbook', poster: 'images/minbook_july.jpg' },
   pilsa: { cardId: 'pilsa', poster: 'images/pilsa_diary_july.jpg' },
   customtea: { cardId: 'customtea', poster: 'images/customtea_july.jpg' },
   letter: { cardId: 'letter', poster: 'images/letter_july.png' }
@@ -3290,7 +3399,7 @@ function updateEventCapacity(counts) {
       let label = ev.external
         ? (ev.applyUrl ? '셀러 신청하기' : '셀러 신청 안내')
         : (ev.type === 'bammilon' ? '밤밀온 참가 신청'
-          : ev.type === 'yes24' ? "'책방에서 만나요' 신청하기"
+          : ev.type === 'yes24' ? 'b.talks 신청하기'
           : 'b.voice 신청하기');
       if (ev.capacity != null && ev.filledCount != null) {
         const remaining = ev.capacity - ev.filledCount;
@@ -3951,7 +4060,7 @@ function openEventApply(key) {
   dateParts.push(...ev.sessions.map(s => s.label));
   if (ev.amount && ev.feeNote) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원 (${ev.feeNote})`);
   else if (ev.amount) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원`);
-  if (ev.bookOrder) dateParts.push('현장 책구매 + 저자 친필 사인회 · 참가비 포함 3만원 이상 무료 배송');
+  if (ev.bookOrder) dateParts.push('도서 사전 주문 · 행사 후 저자 사인회 · 참가비 포함 3만원 이상 무료 배송');
   q('#eventModalDate').textContent = dateParts.join(' · ');
   const formEl = q('#eventApplyForm');
   if (!eventFormTemplate) eventFormTemplate = formEl.innerHTML;
@@ -3997,7 +4106,7 @@ function openEventApply(key) {
   const btnLabel = ev.type === 'bammilon'
     ? `밤밀온 참가 신청 (${ev.amount.toLocaleString()}원)`
     : ev.type === 'yes24'
-      ? (ev.bookOrder ? "'책방에서 만나요' 신청하기" : "'책방에서 만나요' 신청하기")
+      ? 'b.talks 신청하기'
       : '행사 신청하기';
   q('#eventSubmitBtn').textContent = btnLabel;
   openOv('eventApplyOv');
@@ -4007,9 +4116,15 @@ function openVoiceApply(key) { openEventApply(key); }
 
 function buildYes24BookOrderHtml(ev) {
   return `
+    <label class="yes24-host-check">
+      <input type="checkbox" id="yes24HostCheck" onchange="updateYes24ApplyTotal()">
+      <span>점주입니다
+        <span class="yes24-host-sub">0.1평 점주 · 참가비 무료 (도서 주문 시 도서비만 입금)</span>
+      </span>
+    </label>
     <div class="book-order-section">
-      <label class="book-order-label">도서 미리 신청 (선택)</label>
-      <p class="book-order-hint">체크하신 도서는 현장 수령 또는 배송(참가비 포함 3만원 이상 무료) · 저자 친필 사인해드립니다. 도서비는 참가비와 합산하여 입금해주세요.</p>
+      <label class="book-order-label">도서 사전 주문 (선택)</label>
+      <p class="book-order-hint">행사 후 저자 사인회가 있습니다. 사전 주문 도서는 참가비와 합산하여 선결제해 주세요. 택배는 참가비 포함 3만원 이상 시 무료 배송입니다.</p>
       <div class="book-order-list" id="yes24BookList">
         ${ev.books.map(b => `
           <label class="book-order-item">
@@ -4018,6 +4133,23 @@ function buildYes24BookOrderHtml(ev) {
             <span class="book-order-price">정가 ${b.price.toLocaleString()}원</span>
           </label>
         `).join('')}
+      </div>
+      <div class="yes24-delivery" id="yes24DeliveryWrap" style="display:none">
+        <label class="book-order-label">수령 방법 *</label>
+        <div class="yes24-delivery-list">
+          <label class="yes24-delivery-item">
+            <input type="radio" name="yes24delivery" value="delivery" onchange="updateYes24ApplyTotal()">
+            <span>택배로 받기
+              <span class="yes24-delivery-sub">참가비 포함 3만원 이상 무료 배송</span>
+            </span>
+          </label>
+          <label class="yes24-delivery-item">
+            <input type="radio" name="yes24delivery" value="pickup" onchange="updateYes24ApplyTotal()">
+            <span>현장에서 수령하기 (선결제)
+              <span class="yes24-delivery-sub">행사 당일 현장 수령 · 사전 입금</span>
+            </span>
+          </label>
+        </div>
       </div>
     </div>`;
 }
@@ -4033,35 +4165,83 @@ function getYes24SelectedBooks() {
   return picked;
 }
 
+function isYes24Host() {
+  return !!q('#yes24HostCheck')?.checked;
+}
+
+function getYes24Delivery() {
+  return q('input[name="yes24delivery"]:checked')?.value || '';
+}
+
+function getYes24DeliveryLabel(value) {
+  if (value === 'delivery') return '택배로 받기';
+  if (value === 'pickup') return '현장에서 수령하기 (선결제)';
+  return '';
+}
+
 function updateYes24ApplyTotal() {
   const ev = EVENTS[curEventKey];
   if (!ev?.bookOrder) return;
-  const base = ev.amount || 0;
+  const isHost = isYes24Host();
+  const base = isHost ? 0 : (ev.amount || 0);
   const freeMin = ev.freeShippingMin || 30000;
   const selected = getYes24SelectedBooks();
   const bookTotal = selected.reduce((sum, b) => sum + b.price, 0);
   const total = base + bookTotal;
-  const freeShip = total >= freeMin;
+  const delivery = getYes24Delivery();
+  const wantsDelivery = delivery === 'delivery';
+  const freeShip = wantsDelivery && total >= freeMin;
+
+  const deliveryWrap = q('#yes24DeliveryWrap');
+  if (deliveryWrap) deliveryWrap.style.display = bookTotal > 0 ? '' : 'none';
+  if (bookTotal === 0) {
+    q('#yes24DeliveryWrap')?.querySelectorAll('input[name="yes24delivery"]').forEach(inp => { inp.checked = false; });
+  }
+
   const amountEl = q('#eventModalAmount');
   if (amountEl) {
+    const feeLabel = isHost ? '참가비 (점주 무료)' : '참가비';
+    const feeValue = isHost ? '무료' : `${base.toLocaleString()}원`;
+    let shipHtml = '';
+    if (bookTotal > 0 && delivery === 'pickup') {
+      shipHtml = `<div class="yes24-shipping-badge">현장 수령 · 선결제</div>`;
+    } else if (bookTotal > 0 && wantsDelivery) {
+      shipHtml = freeShip
+        ? `<div class="yes24-shipping-badge">✓ 참가비 포함 ${freeMin.toLocaleString()}원 이상 — 무료 배송</div>`
+        : `<div class="yes24-shipping-hint">참가비 포함 ${freeMin.toLocaleString()}원 이상 주문 시 무료 배송 (${(freeMin - total).toLocaleString()}원 더 담으면 무료)</div>`;
+    } else if (bookTotal > 0) {
+      shipHtml = `<div class="yes24-shipping-hint">수령 방법을 선택해 주세요</div>`;
+    }
     amountEl.innerHTML = `
       <div class="yes24-amount-breakdown">
-        <div class="yes24-amount-row"><span>참가비</span><span>${base.toLocaleString()}원</span></div>
+        <div class="yes24-amount-row"><span>${feeLabel}</span><span>${feeValue}</span></div>
         ${bookTotal > 0 ? `<div class="yes24-amount-row"><span>도서비 (정가)</span><span>${bookTotal.toLocaleString()}원</span></div>` : ''}
-        <div class="yes24-amount-row total"><span>합계</span><span>${total.toLocaleString()}원</span></div>
-        ${freeShip
-          ? `<div class="yes24-shipping-badge">✓ 참가비 포함 ${freeMin.toLocaleString()}원 이상 — 무료 배송</div>`
-          : `<div class="yes24-shipping-hint">참가비 포함 ${freeMin.toLocaleString()}원 이상 주문 시 무료 배송 (${(freeMin - total).toLocaleString()}원 더 담으면 무료)</div>`}
+        ${delivery ? `<div class="yes24-amount-row"><span>수령</span><span>${getYes24DeliveryLabel(delivery)}</span></div>` : ''}
+        <div class="yes24-amount-row total"><span>합계</span><span>${total === 0 ? '무료' : total.toLocaleString() + '원'}</span></div>
+        ${shipHtml}
       </div>`;
   }
   const payNote = q('#eventPayNote');
   if (payNote) {
-    const shipLine = freeShip
-      ? `<br>배송: 참가비 포함 합계 ${freeMin.toLocaleString()}원 이상 — <strong>무료 배송</strong>`
-      : `<br>배송: 참가비 포함 ${freeMin.toLocaleString()}원 이상 주문 시 무료 배송`;
-    payNote.innerHTML = bookTotal > 0
-      ? `선택 도서: ${selected.map(b => b.title).join(', ')}${shipLine}<br><strong>모임통장: 카카오뱅크 7942-33-45474</strong> (예금주 경규환)<br>합계 금액을 입금해주세요. 입금자명 = 신청 이름`
-      : `도서 없이 참가만 신청 시 참가비 ${base.toLocaleString()}원${shipLine}<br><strong>모임통장: 카카오뱅크 7942-33-45474</strong> (예금주 경규환)<br>입금자명은 신청 시 이름과 동일하게 부탁드립니다.`;
+    const bankLine = '<strong>모임통장: 카카오뱅크 7942-33-45474</strong> (예금주 경규환)';
+    let shipLine = '';
+    if (bookTotal > 0 && delivery === 'pickup') {
+      shipLine = '<br>수령: 현장에서 수령하기 (선결제)';
+    } else if (bookTotal > 0 && wantsDelivery) {
+      shipLine = freeShip
+        ? `<br>수령: 택배로 받기 · 참가비 포함 합계 ${freeMin.toLocaleString()}원 이상 — <strong>무료 배송</strong>`
+        : `<br>수령: 택배로 받기 · 참가비 포함 ${freeMin.toLocaleString()}원 이상 주문 시 무료 배송`;
+    }
+    if (total === 0) {
+      payNote.innerHTML = isHost
+        ? '0.1평 점주 참가비 무료 · 입금할 금액이 없습니다.'
+        : '입금할 금액이 없습니다.';
+    } else if (bookTotal > 0) {
+      const hostLine = isHost ? '점주 참가비 무료 · ' : '';
+      payNote.innerHTML = `${hostLine}선택 도서: ${selected.map(b => b.title).join(', ')}${shipLine}<br>${bankLine}<br>합계 금액을 입금해주세요. 입금자명 = 신청 이름`;
+    } else {
+      payNote.innerHTML = `도서 없이 참가만 신청 시 참가비 ${base.toLocaleString()}원<br>${bankLine}<br>입금자명은 신청 시 이름과 동일하게 부탁드립니다.`;
+    }
   }
 }
 
@@ -4081,17 +4261,30 @@ async function submitEventApply() {
     return;
   }
 
+  const isHost = ev.bookOrder && isYes24Host();
+  let amount = isHost ? 0 : (ev.amount || 0);
+  let booksLabel = '';
+  let noteParts = [];
+  let deliveryLabel = '';
+  if (ev.bookOrder) {
+    const selected = getYes24SelectedBooks();
+    const delivery = getYes24Delivery();
+    if (selected.length && !delivery) {
+      flash('eventApplyAlert', '도서 수령 방법을 선택해주세요.', 'e');
+      return;
+    }
+    booksLabel = selected.length
+      ? selected.map(b => `${b.title} (정가 ${b.price.toLocaleString()}원)`).join(', ')
+      : '도서 미신청';
+    amount += selected.reduce((sum, b) => sum + b.price, 0);
+    deliveryLabel = getYes24DeliveryLabel(delivery);
+    if (isHost) noteParts.push('0.1평 점주 (참가비 무료)');
+    if (deliveryLabel) noteParts.push(`수령: ${deliveryLabel}`);
+  }
+
   setLoad('eventSubmitBtn', true, '신청 중...');
   try {
-    let amount = ev.amount || 0;
-    let booksLabel = '';
-    if (ev.bookOrder) {
-      const selected = getYes24SelectedBooks();
-      booksLabel = selected.length
-        ? selected.map(b => `${b.title} (정가 ${b.price.toLocaleString()}원)`).join(', ')
-        : '도서 미신청';
-      amount += selected.reduce((sum, b) => sum + b.price, 0);
-    }
+    const note = noteParts.join(' · ');
     await POST({
       action: 'eventApply',
       month: PAGE_MONTH,
@@ -4102,11 +4295,14 @@ async function submitEventApply() {
       phone,
       amount,
       books: booksLabel,
+      note,
       date: new Date().toLocaleString('ko-KR')
     });
+    const feeMsg = isHost ? '참가비 무료 (점주)' : `참가비 ${(ev.amount || 0).toLocaleString()}원`;
+    const deliveryMsg = deliveryLabel ? `<br>수령: ${deliveryLabel}` : '';
     const booksMsg = ev.bookOrder && booksLabel !== '도서 미신청'
-      ? `<br>도서: ${booksLabel}<br>합계 ${amount.toLocaleString()}원`
-      : (ev.bookOrder ? `<br>참가비 ${(ev.amount || 0).toLocaleString()}원` : '');
+      ? `<br>${feeMsg}<br>도서: ${booksLabel}${deliveryMsg}<br>합계 ${amount.toLocaleString()}원`
+      : (ev.bookOrder ? `<br>${feeMsg}` : '');
     q('#eventApplyForm').innerHTML = `
       <div style="text-align:center;padding:20px 0">
         <div style="font-size:40px;margin-bottom:12px">✅</div>
@@ -4139,8 +4335,8 @@ const TT_END_MIN = 22 * 60;
 const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-07-11', space: '매장 테이블', start: '15:30', end: '18:00', tag: "Let's talk!" },
   { date: '2026-07-11', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가' },
-  { date: '2026-07-15', space: '매장 테이블', start: '10:30', end: '12:30', tag: '수요일의 서재 ①' },
-  { date: '2026-07-15', space: '매장 테이블', start: '18:30', end: '20:30', tag: '수요일의 서재 ②' },
+  { date: '2026-07-15', space: '매장 테이블', start: '10:30', end: '12:00', tag: '수요일의 서재 ①' },
+  { date: '2026-07-15', space: '매장 테이블', start: '18:30', end: '20:00', tag: '수요일의 서재 ②' },
   { date: '2026-07-17', space: '세미나실', start: '19:00', end: '20:30', tag: '영화 한편' },
   { date: '2026-07-18', space: '매장 테이블', start: '15:00', end: '17:00', tag: '미니북' },
   { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료' },
@@ -4168,7 +4364,7 @@ const SCHEDULED_EVENT_BLOCKS = [
   { date: '2026-07-24', space: '매장 테이블', start: '08:00', end: '22:00', tag: '밤밀온' },
   { date: '2026-07-25', space: '세미나실', start: '08:00', end: '22:00', tag: '밤밀온' },
   { date: '2026-07-25', space: '매장 테이블', start: '08:00', end: '22:00', tag: '밤밀온' },
-  { date: '2026-07-26', space: '계단 좌석', start: '16:00', end: '18:00', tag: '책방에서 만나요' }
+  { date: '2026-07-26', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.talks' }
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
