@@ -289,6 +289,9 @@
   }
   .stepper span{min-width:20px;text-align:center;font-weight:700;}
   .book-select-list{display:flex;flex-direction:column;gap:10px;}
+  .book-order-panel{display:none;margin-top:12px;}
+  .book-order-panel.on{display:flex;flex-direction:column;gap:10px;}
+  .book-order-hint{font-size:12.5px;color:var(--muted-dim);margin:0 0 4px;}
   .book-select{
     display:flex;align-items:center;gap:12px;
     border:1px solid var(--card-line);border-radius:10px;padding:12px 14px;
@@ -632,9 +635,18 @@
           <textarea id="f-dates" placeholder="참여하실 날짜를 자유롭게 적어주세요. 예) 7/5(일), 7/12(일), 7/20(월)"></textarea>
         </div>
 
-        <div class="field">
+        <div class="field" id="book-order-field">
           <label>7월의 책, 함께 구입하기</label>
-          <div class="book-select-list" id="book-select-list"></div>
+          <div class="radio-row">
+            <label class="radio-chip" id="book-order-chip">
+              <input type="checkbox" id="f-book-order">
+              도서 주문하기
+            </label>
+          </div>
+          <div class="book-order-panel" id="book-order-panel">
+            <p class="book-order-hint">주문할 도서를 선택해주세요. 참가비와 합산하여 입금해주시면 됩니다.</p>
+            <div class="book-select-list" id="book-select-list"></div>
+          </div>
         </div>
 
         <div class="field" style="margin-bottom:0;">
@@ -831,6 +843,28 @@ BOOKS.forEach(b => {
 shelf.appendChild(topRow);
 shelf.appendChild(bottomRow);
 
+// ---- book order toggle ----
+const bookOrderChip = document.getElementById('book-order-chip');
+const bookOrderInput = document.getElementById('f-book-order');
+const bookOrderPanel = document.getElementById('book-order-panel');
+
+function setBookOrderActive(on) {
+  bookOrderInput.checked = on;
+  bookOrderChip.classList.toggle('active', on);
+  bookOrderPanel.classList.toggle('on', on);
+  if (!on) {
+    document.querySelectorAll('#book-select-list input:checked').forEach(inp => {
+      inp.checked = false;
+      inp.closest('.book-select')?.classList.remove('checked');
+    });
+  }
+  updateSummary();
+}
+
+bookOrderChip.addEventListener('click', e => {
+  if (e.target.tagName !== 'INPUT') setBookOrderActive(!bookOrderInput.checked);
+});
+
 // ---- render book select list ----
 const listEl = document.getElementById('book-select-list');
 BOOKS.forEach(b => {
@@ -890,6 +924,7 @@ bammilonChip.addEventListener('click', e => {
 });
 
 function selectedBooks() {
+  if (!bookOrderInput.checked) return [];
   return Array.from(document.querySelectorAll('#book-select-list input:checked')).map(inp =>
     BOOKS.find(b => b.id === inp.dataset.id)
   );
@@ -975,14 +1010,15 @@ function buildSessionLabel() {
 function buildNote() {
   const dates = document.getElementById('f-dates').value.trim();
   const parts = [];
+  if (dates) parts.push(dates);
   if (ptype === 'pass' && bammilonInput.checked) parts.push('밤밀온 연계 할인');
-  if (dates) parts.push('참여일: ' + dates);
   return parts.join(' · ');
 }
 
 function buildBooksLabel() {
+  if (!bookOrderInput.checked) return '';
   const books = selectedBooks();
-  return books.length ? books.map(b => b.title).join(', ') : '';
+  return books.map(b => b.title).join(', ');
 }
 
 function showApplyError(msg) {
@@ -995,6 +1031,7 @@ submitBtn.addEventListener('click', async () => {
   const phone = document.getElementById('f-phone').value.trim();
   const total = updateSummary();
   const session = buildSessionLabel();
+  const note = buildNote();
   const books = buildBooksLabel();
 
   applyAlert.classList.remove('show');
@@ -1002,8 +1039,12 @@ submitBtn.addEventListener('click', async () => {
     showApplyError('이름과 연락처를 입력해주세요.');
     return;
   }
-  if (!session && !books) {
-    showApplyError('참여 회차 또는 도서를 선택해주세요.');
+  if (!session && !books && !note) {
+    showApplyError('참여 회차, 참여 날짜 또는 도서를 선택해주세요.');
+    return;
+  }
+  if (bookOrderInput.checked && !books) {
+    showApplyError('도서 주문하기를 선택하셨다면 주문할 도서를 골라주세요.');
     return;
   }
   if (!confirmBox.checked) {
@@ -1018,13 +1059,13 @@ submitBtn.addEventListener('click', async () => {
       action: 'apply',
       month: PAGE_MONTH,
       moimName: MOIM_NAME,
-      session: session || '도서만',
+      session: session || (books ? '도서주문' : '날짜만'),
       name,
       phone,
       amount: total,
       date: new Date().toLocaleString('ko-KR'),
-      note: buildNote(),
-      books: books || '도서 미신청'
+      note,
+      books
     });
     document.querySelector('.form-card').style.display = 'none';
     document.getElementById('summary-card').querySelectorAll('.bank-box,.confirm-row,.submit-btn,#summary-lines,.summary-total,h3,.apply-alert').forEach(el => {
