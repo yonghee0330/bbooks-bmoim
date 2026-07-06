@@ -290,6 +290,8 @@
   .stepper span{min-width:20px;text-align:center;font-weight:700;}
   .book-select-list{display:flex;flex-direction:column;gap:10px;}
   .book-order-hint{font-size:12.5px;color:var(--muted-dim);margin:0 0 10px;}
+  .field-hint{font-size:12px;color:var(--muted-dim);margin:8px 0 0;}
+  .sub-label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:8px;}
   .book-select{
     display:flex;align-items:center;gap:12px;
     border:1px solid var(--card-line);border-radius:10px;padding:12px 14px;
@@ -631,15 +633,22 @@
           </div>
         </div>
 
+        <div class="field" id="schedule-field">
+          <label>참여 일정</label>
+          <div id="free-dates-wrap" style="display:none">
+            <span class="sub-label">심야 자유 독서 — 언제 오시나요?</span>
+            <textarea id="f-dates-free" placeholder="참여 예정일을 적어주세요. 예) 7/5(일), 7/12(금), 7/18(일)"></textarea>
+            <p class="field-hint">선택하신 회차 수에 맞춰 날짜를 적어주세요. (월·금·일 20:00–23:00)</p>
+          </div>
+          <div id="pass-dates-wrap" style="display:none">
+            <textarea id="f-dates-pass" placeholder="주로 참여하실 요일·날짜를 적어주세요. (선택)"></textarea>
+          </div>
+        </div>
+
         <div class="field" id="book-order-field">
           <label>7월의 책, 함께 주문하기</label>
           <p class="book-order-hint">참여 방식과 관계없이 도서만 주문하셔도 됩니다. 선택하면 오른쪽에 모임비·도서비 합계가 표시됩니다.</p>
           <div class="book-select-list" id="book-select-list"></div>
-        </div>
-
-        <div class="field">
-          <label>참여 신청일 (선택)</label>
-          <textarea id="f-dates" placeholder="참여하실 날짜를 자유롭게 적어주세요. 예) 7/5(일), 7/12(일), 7/20(월)"></textarea>
         </div>
 
         <div class="field" style="margin-bottom:0;">
@@ -860,7 +869,24 @@ BOOKS.forEach(b => {
 
 // ---- participation type toggle ----
 const ptypeChips = document.querySelectorAll('#participation-type .radio-chip');
+const freeDatesWrap = document.getElementById('free-dates-wrap');
+const passDatesWrap = document.getElementById('pass-dates-wrap');
+const scheduleField = document.getElementById('schedule-field');
 let ptype = 'session';
+
+function updateScheduleVisibility() {
+  if (ptype === 'pass') {
+    freeDatesWrap.style.display = 'none';
+    passDatesWrap.style.display = '';
+    scheduleField.style.display = '';
+  } else {
+    passDatesWrap.style.display = 'none';
+    const showFree = counts.free > 0;
+    freeDatesWrap.style.display = showFree ? '' : 'none';
+    scheduleField.style.display = showFree ? '' : 'none';
+  }
+}
+
 ptypeChips.forEach(chip => {
   chip.addEventListener('click', () => {
     ptypeChips.forEach(c => c.classList.remove('active'));
@@ -868,6 +894,7 @@ ptypeChips.forEach(chip => {
     chip.querySelector('input').checked = true;
     ptype = chip.dataset.type;
     document.getElementById('session-counts').style.display = (ptype === 'session') ? '' : 'none';
+    updateScheduleVisibility();
     updateSummary();
   });
 });
@@ -880,6 +907,7 @@ document.querySelectorAll('.stepper button').forEach(btn => {
     const dir = parseInt(btn.dataset.dir, 10);
     counts[target] = Math.max(0, counts[target] + dir);
     document.getElementById('count-' + target).textContent = counts[target];
+    updateScheduleVisibility();
     updateSummary();
   });
 });
@@ -988,9 +1016,13 @@ function buildSessionLabel() {
 }
 
 function buildNote() {
-  const dates = document.getElementById('f-dates').value.trim();
   const parts = [];
-  if (dates) parts.push(dates);
+  const freeDates = document.getElementById('f-dates-free').value.trim();
+  const passDates = document.getElementById('f-dates-pass').value.trim();
+
+  if (counts.free > 0 && freeDates) parts.push('자유독서: ' + freeDates);
+  if (counts.deep > 0) parts.push('달리클럽: 7/20(월)');
+  if (ptype === 'pass' && passDates) parts.push(passDates);
   if (ptype === 'pass' && bammilonInput.checked) parts.push('밤밀온 연계 할인');
   return parts.join(' · ');
 }
@@ -1023,7 +1055,11 @@ submitBtn.addEventListener('click', async () => {
     return;
   }
   if (!hasParticipation && !hasBooks && !note) {
-    showApplyError('참여 회차, 참여 날짜 또는 도서를 선택해주세요.');
+    showApplyError('참여 회차, 참여 일정 또는 도서를 선택해주세요.');
+    return;
+  }
+  if (ptype === 'session' && counts.free > 0 && !document.getElementById('f-dates-free').value.trim()) {
+    showApplyError('심야 자유 독서 참여 예정일을 적어주세요.');
     return;
   }
   if (!confirmBox.checked) {
@@ -1066,6 +1102,7 @@ submitBtn.addEventListener('click', async () => {
 });
 
 initPosterSliders();
+updateScheduleVisibility();
 updateSummary();
 </script>
 </body>
