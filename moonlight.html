@@ -3,507 +3,710 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>달빛 리딩 클럽 | 비북스 심야 독서모임</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<title>달빛 리딩클럽 | 비북스 moonlight reading club</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <style>
   :root{
-    --night-1:#10142a;   /* 가장 어두운 밤하늘 */
-    --night-2:#1b2147;   /* 패널 배경 */
-    --night-3:#262d57;   /* 보더/구분선 */
-    --moonlight:#f3ecd6; /* 달빛 크림 */
-    --ember:#e3a655;     /* 촛불/등 색 포인트 */
-    --soft:#a9b1d8;      /* 본문 보조 텍스트 */
-    --paper:#f8f4ea;     /* 종이 카드 배경 */
-    --ink:#262420;       /* 종이 위 텍스트 */
+    --navy: #12163a;
+    --navy-deep: #0a0d24;
+    --black: #0a0a0e;
+    --card: #171b40;
+    --card-line: rgba(255,255,255,0.08);
+    --yellow: #f5ea3d;
+    --yellow-soft: rgba(245,234,61,0.12);
+    --cyan: #4fd8e8;
+    --cyan-soft: rgba(79,216,232,0.12);
+    --cream: #f6f4ec;
+    --muted: #a3a8c8;
+    --muted-dim: #6c7096;
+    --radius: 18px;
   }
   *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
   body{
-    background:var(--night-1);
-    color:var(--moonlight);
-    font-family:'Noto Sans KR',sans-serif;
+    margin:0;
+    font-family:'Pretendard', -apple-system, sans-serif;
+    background:var(--navy-deep);
+    color:var(--cream);
+    line-height:1.6;
   }
-  .font-display{font-family:'Gowun Batang',serif;}
-  .font-mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;letter-spacing:0.14em;font-weight:700;
+    color:var(--yellow);text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{content:'';width:16px;height:1px;background:var(--yellow);display:inline-block;}
+  h1,h2,h3{font-weight:800;margin:0;letter-spacing:-0.02em;}
+  p{margin:0;}
 
-  /* 별가루 배경 */
-  .stars{
-    position:absolute; inset:0; overflow:hidden; pointer-events:none;
-    background-image:
-      radial-gradient(1.5px 1.5px at 10% 20%, rgba(243,236,214,.5), transparent),
-      radial-gradient(1.5px 1.5px at 80% 10%, rgba(243,236,214,.4), transparent),
-      radial-gradient(1px 1px at 60% 70%, rgba(243,236,214,.35), transparent),
-      radial-gradient(1.5px 1.5px at 30% 80%, rgba(243,236,214,.4), transparent),
-      radial-gradient(1px 1px at 90% 60%, rgba(243,236,214,.3), transparent),
-      radial-gradient(1px 1px at 45% 40%, rgba(243,236,214,.3), transparent);
-    background-repeat:no-repeat;
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,13,36,0.82);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--card-line);
   }
-
-  .moon{
-    width:160px;height:160px;border-radius:50%;
-    background:radial-gradient(circle at 38% 35%, #fffaf0, var(--moonlight) 55%, #d9cfa9 100%);
-    box-shadow:0 0 60px 18px rgba(243,236,214,.25), 0 0 120px 40px rgba(227,166,85,.08);
-  }
-  @media (prefers-reduced-motion:no-preference){
-    .moon{animation:float 7s ease-in-out infinite;}
-  }
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-
-  .timeline-track{
-    position:relative; height:6px; border-radius:999px;
-    background:var(--night-3);
-    overflow:hidden;
-  }
-  .timeline-fill-quiet{
-    position:absolute; inset:0; width:83.3%; /* 8~10시 = 2/2.5h */
-    background:linear-gradient(90deg, rgba(169,177,216,.25), rgba(169,177,216,.55));
-  }
-  .timeline-fill-gather{
-    position:absolute; right:0; top:0; bottom:0; width:16.7%; /* 10~10:30 */
-    background:linear-gradient(90deg, rgba(227,166,85,.55), rgba(227,166,85,.9));
-  }
-  .tick{font-family:'JetBrains Mono',monospace; font-size:.7rem; color:var(--soft);}
-
-  .paper-card{
-    background:var(--paper); color:var(--ink);
-    border-radius:1.25rem;
-  }
-  .ember-btn{
-    background:var(--ember); color:#241a0c;
-    transition:transform .15s ease, box-shadow .15s ease;
-  }
-  .ember-btn:hover{transform:translateY(-1px); box-shadow:0 8px 24px -8px rgba(227,166,85,.6);}
-  .ember-btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible{
-    outline:2px solid var(--ember); outline-offset:2px;
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1080px;margin:0 auto;}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;letter-spacing:0.02em;}
+  .brand .moon{color:var(--yellow);font-size:16px;}
+  .nav-cta{
+    font-size:13px;font-weight:700;background:var(--yellow);color:#141414;
+    padding:9px 18px;border-radius:100px;text-decoration:none;
   }
 
-  .day-chip input{display:none;}
-  .day-chip span{
-    display:inline-flex; align-items:center; justify-content:center;
-    padding:.5rem 1rem; border-radius:999px; border:1px solid var(--night-3);
-    color:var(--soft); cursor:pointer; font-size:.875rem; transition:all .15s ease;
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;overflow:hidden;
+    min-height:640px;display:flex;align-items:flex-end;
+    padding-top:80px;
   }
-  .day-chip input:checked + span{
-    background:var(--ember); color:#241a0c; border-color:var(--ember); font-weight:600;
+  .hero-bg{
+    position:absolute;inset:0;
+    background:url('./assets/hero-chair.jpg') center 30% / cover no-repeat;
   }
+  .hero-bg::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(10,13,36,0.55) 0%, rgba(10,13,36,0.72) 45%, var(--navy-deep) 96%),
+               linear-gradient(90deg, rgba(10,13,36,0.92) 0%, rgba(10,13,36,0.35) 55%);
+  }
+  .hero-inner{position:relative;z-index:2;padding:60px 24px 64px;width:100%;}
+  .hero-inner .wrap{padding:0;}
+  .hero h1{font-size:clamp(38px,6vw,64px);line-height:1.08;margin-bottom:18px;}
+  .hero h1 .accent{color:var(--yellow);}
+  .hero p.lede{font-size:17px;color:var(--muted);max-width:480px;margin-bottom:28px;}
+  .hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px;}
+  .pill{
+    border:1px solid var(--card-line);background:rgba(255,255,255,0.04);
+    padding:8px 16px;border-radius:100px;font-size:13px;font-weight:600;color:var(--cream);
+  }
+  .pill b{color:var(--yellow);}
+  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:14px 26px;border-radius:100px;font-weight:700;font-size:15px;
+    text-decoration:none;border:1px solid transparent;cursor:pointer;
+  }
+  .btn-primary{background:var(--yellow);color:#141414;}
+  .btn-primary:hover{background:#fff17a;}
+  .btn-outline{border-color:rgba(255,255,255,0.28);color:var(--cream);background:transparent;}
+  .btn-outline:hover{border-color:var(--yellow);color:var(--yellow);}
 
+  /* ---------- section shell ---------- */
+  section{padding:88px 0;}
+  .section-head{max-width:640px;margin-bottom:44px;}
+  .section-head h2{font-size:clamp(26px,4vw,36px);margin-bottom:14px;}
+  .section-head p{color:var(--muted);font-size:15.5px;}
+
+  /* ---------- curation (featured) ---------- */
+  .curation{
+    background:linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+    border-top:1px solid var(--card-line);
+    border-bottom:1px solid var(--card-line);
+    position:relative;
+  }
+  .shelf-row{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+  }
+  .shelf-row.top{margin-bottom:22px;}
+  .book-card{
+    position:relative;
+    background:var(--card);
+    border:1px solid var(--card-line);
+    border-radius:14px;
+    padding:20px 18px 18px;
+    display:flex;flex-direction:column;
+    min-height:210px;
+    transition:transform .18s ease, border-color .18s ease;
+  }
+  .book-card:hover{transform:translateY(-4px);border-color:rgba(245,234,61,0.4);}
+  .book-card::after{
+    content:'';position:absolute;left:14px;right:14px;bottom:0;height:6px;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 100%);
+    border-radius:0 0 14px 14px;
+  }
+  .book-tag{
+    display:inline-block;font-size:11px;font-weight:800;letter-spacing:0.04em;
+    padding:4px 10px;border-radius:100px;margin-bottom:12px;width:fit-content;
+  }
+  .book-tag.designated{background:var(--yellow-soft);color:var(--yellow);}
+  .book-tag.pick{background:var(--cyan-soft);color:var(--cyan);}
+  .book-title{font-size:16.5px;font-weight:800;line-height:1.32;margin-bottom:6px;}
+  .book-meta{font-size:13px;color:var(--muted-dim);margin-bottom:auto;}
+  .book-price{display:flex;align-items:baseline;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px dashed var(--card-line);}
+  .book-price .label{font-size:12px;color:var(--muted-dim);}
+  .book-price .amt{font-size:17px;font-weight:800;}
+  .book-card.featured{
+    grid-column:span 2;
+    background:linear-gradient(135deg, rgba(245,234,61,0.09), var(--card) 55%);
+    border-color:rgba(245,234,61,0.35);
+    min-height:210px;
+  }
+  .book-card.featured .book-title{font-size:20px;}
+
+  .curation-note{
+    margin-top:26px;display:flex;align-items:center;gap:10px;
+    font-size:13.5px;color:var(--muted-dim);
+  }
+  .curation-note b{color:var(--cream);}
+
+  /* ---------- flow / timeline ---------- */
+  .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .flow-card{
+    background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
+    padding:28px 26px;
+  }
+  .flow-time{font-size:13px;color:var(--yellow);font-weight:800;margin-bottom:10px;letter-spacing:0.03em;}
+  .flow-card h3{font-size:19px;margin-bottom:10px;}
+  .flow-card p{color:var(--muted);font-size:14.5px;}
+
+  /* ---------- programs ---------- */
+  .program-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .program-card{
+    background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
+    padding:32px 28px;position:relative;overflow:hidden;
+  }
+  .program-card.highlight{border-color:rgba(245,234,61,0.4);}
+  .program-freq{font-size:13px;color:var(--muted-dim);font-weight:700;margin-bottom:6px;}
+  .program-card h3{font-size:22px;margin-bottom:16px;}
+  .program-list{list-style:none;padding:0;margin:0 0 22px;}
+  .program-list li{
+    font-size:14px;color:var(--muted);padding-left:16px;position:relative;margin-bottom:8px;
+  }
+  .program-list li::before{content:'·';position:absolute;left:0;color:var(--yellow);font-weight:800;}
+  .program-price{font-size:26px;font-weight:800;}
+  .program-price span{font-size:14px;color:var(--muted-dim);font-weight:600;}
+
+  /* ---------- pass promo ---------- */
+  .pass{
+    background:var(--black);
+    position:relative;overflow:hidden;
+  }
+  .pass-bg{position:absolute;inset:0;opacity:0.28;background:url('./assets/night-reading.jpg') center 20% / cover no-repeat;}
+  .pass-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,14,0.4), var(--black) 85%);}
+  .pass-inner{position:relative;z-index:2;}
+  .pass-card{
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(245,234,61,0.3);
+    border-radius:24px;padding:44px 40px;
+  }
+  .pass-label{font-size:13px;color:var(--yellow);font-weight:800;letter-spacing:0.04em;margin-bottom:14px;}
+  .pass-price-row{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
+  .pass-old{font-size:22px;color:var(--muted-dim);text-decoration:line-through;}
+  .pass-new{font-size:44px;font-weight:800;color:var(--yellow);}
+  .pass-desc{color:var(--muted);font-size:14.5px;margin-bottom:26px;}
+  .pass-benefits{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .benefit-box{
+    background:rgba(255,255,255,0.04);border:1px solid var(--card-line);border-radius:12px;padding:16px 18px;
+    font-size:13.5px;color:var(--muted);
+  }
+  .benefit-box b{color:var(--cream);display:block;margin-bottom:4px;font-size:14px;}
+
+  /* ---------- apply form ---------- */
+  .apply{background:var(--navy);}
+  .apply-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:28px;align-items:start;}
+  .form-card{
+    background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
+    padding:32px;
+  }
+  .field{margin-bottom:20px;}
+  .field label{display:block;font-size:13.5px;font-weight:700;color:var(--cream);margin-bottom:8px;}
+  .field input[type=text], .field input[type=tel], .field textarea{
+    width:100%;background:var(--navy-deep);border:1px solid var(--card-line);border-radius:10px;
+    padding:12px 14px;color:var(--cream);font-size:14.5px;font-family:inherit;
+  }
+  .field textarea{resize:vertical;min-height:70px;}
+  .radio-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .radio-chip{
+    border:1px solid var(--card-line);border-radius:10px;padding:12px 16px;font-size:13.5px;
+    cursor:pointer;flex:1;min-width:140px;text-align:center;font-weight:600;color:var(--muted);
+    transition:all .15s ease;
+  }
+  .radio-chip input{display:none;}
+  .radio-chip.active{border-color:var(--yellow);background:var(--yellow-soft);color:var(--yellow);}
+  .count-row{display:flex;align-items:center;gap:14px;}
+  .count-row .count-label{flex:1;font-size:14px;color:var(--muted);}
+  .stepper{display:flex;align-items:center;gap:10px;}
+  .stepper button{
+    width:30px;height:30px;border-radius:8px;border:1px solid var(--card-line);
+    background:var(--navy-deep);color:var(--cream);font-size:16px;cursor:pointer;
+  }
+  .stepper span{min-width:20px;text-align:center;font-weight:700;}
+
+  .book-select-list{display:flex;flex-direction:column;gap:10px;}
+  .book-select{
+    display:flex;align-items:center;gap:12px;
+    border:1px solid var(--card-line);border-radius:10px;padding:12px 14px;
+    cursor:pointer;transition:border-color .15s ease, background .15s ease;
+  }
+  .book-select:hover{border-color:rgba(245,234,61,0.35);}
+  .book-select.checked{border-color:var(--yellow);background:var(--yellow-soft);}
+  .book-select input{display:none;}
+  .book-select .check-box{
+    width:18px;height:18px;border-radius:5px;border:1.5px solid var(--muted-dim);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--navy-deep);
+  }
+  .book-select.checked .check-box{background:var(--yellow);border-color:var(--yellow);}
+  .book-select .b-info{flex:1;min-width:0;}
+  .book-select .b-title{font-size:13.5px;font-weight:700;}
+  .book-select .b-meta{font-size:12px;color:var(--muted-dim);}
+  .book-select .b-price{font-size:13.5px;font-weight:800;white-space:nowrap;}
+  .bs-tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:100px;margin-left:6px;}
+  .bs-tag.designated{background:var(--yellow-soft);color:var(--yellow);}
+  .bs-tag.pick{background:var(--cyan-soft);color:var(--cyan);}
+
+  /* summary card */
+  .summary-card{
+    background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
+    padding:28px;position:sticky;top:90px;
+  }
+  .summary-card h3{font-size:16px;margin-bottom:18px;}
+  .summary-line{display:flex;justify-content:space-between;font-size:13.5px;color:var(--muted);padding:8px 0;border-bottom:1px dashed var(--card-line);}
+  .summary-line b{color:var(--cream);font-weight:700;}
+  .summary-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;padding-top:16px;border-top:1px solid var(--card-line);}
+  .summary-total .t-label{font-size:14px;color:var(--muted);}
+  .summary-total .t-amt{font-size:28px;font-weight:800;color:var(--yellow);}
   .bank-box{
-    border:1px solid rgba(38,36,32,.12);
-    border-radius:.75rem;
-    padding:1rem 1.1rem;
-    background:rgba(255,255,255,.55);
+    margin-top:20px;background:var(--navy-deep);border:1px solid var(--card-line);border-radius:12px;
+    padding:18px;font-size:13.5px;color:var(--muted);
   }
-  .bank-box-label{
-    font-size:.7rem; font-weight:700; letter-spacing:.08em;
-    color:rgba(38,36,32,.55); margin-bottom:.5rem;
+  .bank-box .acc{font-size:16px;font-weight:800;color:var(--cream);margin:6px 0;}
+  .confirm-row{display:flex;align-items:flex-start;gap:10px;margin-top:18px;font-size:13px;color:var(--muted);}
+  .confirm-row input{margin-top:3px;}
+  .submit-btn{
+    width:100%;margin-top:16px;padding:15px;border-radius:12px;border:none;
+    background:var(--yellow);color:#141414;font-weight:800;font-size:15px;cursor:pointer;
   }
-  .bank-amount{
-    font-family:'JetBrains Mono',monospace;
-    font-size:1.35rem; font-weight:600; color:var(--ink);
-    margin-bottom:.35rem;
-  }
-  .bank-detail{font-size:.82rem; line-height:1.65;}
-  .bank-flow-note{
-    margin-top:.65rem; font-size:.75rem;
-    color:rgba(38,36,32,.62); line-height:1.55;
-  }
-  .deposit-confirm{
-    display:flex; align-items:flex-start; gap:.5rem;
-    font-size:.82rem; line-height:1.5; cursor:pointer;
-  }
-  .deposit-confirm input{margin-top:.15rem; accent-color:var(--ember);}
+  .submit-btn:disabled{opacity:0.4;cursor:not-allowed;}
 
-  .modal-backdrop{
-    position:fixed; inset:0; z-index:50;
-    background:rgba(16,20,42,.72);
-    backdrop-filter:blur(4px);
-    display:flex; align-items:center; justify-content:center;
-    padding:1.25rem;
+  .success-panel{display:none;text-align:center;padding:20px 4px;}
+  .success-panel .moon-big{font-size:34px;margin-bottom:14px;}
+  .success-panel h3{font-size:18px;margin-bottom:10px;}
+  .success-panel p{color:var(--muted);font-size:13.5px;margin-bottom:4px;}
+
+  footer{padding:44px 0 60px;text-align:center;color:var(--muted-dim);font-size:13px;}
+
+  @media (max-width:860px){
+    .shelf-row{grid-template-columns:repeat(2,1fr);}
+    .book-card.featured{grid-column:span 2;}
+    .flow-grid, .program-grid{grid-template-columns:1fr;}
+    .apply-grid{grid-template-columns:1fr;}
+    .pass-benefits{grid-template-columns:1fr;}
+    .summary-card{position:static;}
   }
-  .modal-backdrop.hidden{display:none;}
-  .modal-card{
-    width:100%; max-width:24rem;
-    background:var(--paper); color:var(--ink);
-    border-radius:1.25rem;
-    padding:1.5rem 1.35rem;
-    box-shadow:0 24px 48px -12px rgba(0,0,0,.45);
-  }
-  .modal-card h3{font-family:'Gowun Batang',serif; font-size:1.15rem; margin-bottom:.65rem;}
-  .modal-benefit{
-    margin-top:.85rem; padding:.85rem;
-    border-radius:.75rem;
-    border:1px solid rgba(227,166,85,.35);
-    background:rgba(227,166,85,.08);
-    font-size:.82rem; line-height:1.6;
-  }
-  .modal-actions{display:flex; flex-direction:column; gap:.55rem; margin-top:1.1rem;}
-  .modal-close{
-    width:100%; padding:.65rem;
-    border-radius:.5rem; border:1px solid rgba(38,36,32,.15);
-    background:transparent; color:var(--ink); font-size:.85rem; cursor:pointer;
+  @media (max-width:520px){
+    .shelf-row{grid-template-columns:1fr 1fr;}
   }
 </style>
 </head>
-<body class="leading-relaxed">
+<body>
 
-<!-- ===================== HERO ===================== -->
-<header class="relative px-6 pt-14 pb-20 overflow-hidden">
-  <div class="stars"></div>
-  <div class="relative max-w-3xl mx-auto text-center">
-    <p class="text-sm tracking-[0.3em] text-[var(--soft)] mb-6">B B O O K S &nbsp;·&nbsp; 평일 저녁, 느슨한 독서</p>
-    <div class="flex justify-center mb-8">
-      <div class="moon"></div>
-    </div>
-    <h1 class="font-display text-5xl md:text-6xl mb-4">달빛 리딩 클럽</h1>
-    <p class="text-[var(--soft)] text-base md:text-lg max-w-xl mx-auto">
-      월·금·일 저녁, 비북스의 불이 늦게까지 켜져 있습니다.<br>
-      각자의 속도로 책을 읽다가, 10시가 되면 원하는 사람들끼리 모여<br>
-      오늘 읽은 한 페이지를 가볍게 나눕니다. 진행은 0.1평 점주 <span class="text-[var(--moonlight)] font-medium">썬북</span>님.
-    </p>
-    <a href="#apply" class="ember-btn inline-block mt-9 px-8 py-3 rounded-full font-medium">신청하러 가기</a>
+<header>
+  <div class="nav">
+    <div class="brand"><span class="moon">☾</span> B.BOOKS · 달빛 리딩클럽</div>
+    <a class="nav-cta" href="#apply">신청하기</a>
   </div>
 </header>
 
-<!-- ===================== 오늘 저녁의 흐름 (시그니처 타임라인) ===================== -->
-<section class="px-6 py-14 border-t border-[var(--night-3)]">
-  <div class="max-w-3xl mx-auto">
-    <h2 class="font-display text-2xl mb-2 text-center">오늘 저녁의 흐름</h2>
-    <p class="text-center text-[var(--soft)] text-sm mb-10">월요일 · 금요일 · 일요일, 8PM – 11PM</p>
-
-    <div class="timeline-track mb-2">
-      <div class="timeline-fill-quiet"></div>
-      <div class="timeline-fill-gather"></div>
-    </div>
-    <div class="flex justify-between tick mb-12">
-      <span>8:00 PM</span><span>9:00 PM</span><span>10:00 PM</span><span>10:30 PM</span><span>~11:00 PM</span>
-    </div>
-
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="rounded-xl border border-[var(--night-3)] p-6">
-        <p class="font-mono text-xs text-[var(--soft)] mb-2">8:00 — 10:00 PM</p>
-        <h3 class="font-display text-lg mb-2">혼자, 자유롭게</h3>
-        <p class="text-sm text-[var(--soft)]">
-          매장에 머무는 동안 각자 가능한 만큼 책을 읽습니다. 오는 시간, 머무는 시간 모두 자유.
-          차·커피·과자와 함께 하루를 마무리하는 시간.
-        </p>
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="wrap">
+      <div class="eyebrow">moonlight reading club</div>
+      <h1>월·금·일 저녁,<br>비북스 불이 <span class="accent">늦게까지</span> 켜져 있습니다.</h1>
+      <p class="lede">각자의 속도로 책을 읽다가, 10시가 되면 원하는 사람들끼리 모여 오늘 읽은 한 페이지를 가볍게 나눕니다. 진행은 0.1평 점주 썬북친구(@sun__book79).</p>
+      <div class="hero-meta">
+        <span class="pill">매주 <b>월 · 금 · 일</b></span>
+        <span class="pill">8:00 PM – 11:00 PM</span>
+        <span class="pill">7월 지정도서 <b>《시간의 감촉》</b></span>
       </div>
-      <div class="rounded-xl border border-[var(--ember)]/40 p-6 bg-[var(--ember)]/5">
-        <p class="font-mono text-xs text-[var(--ember)] mb-2">10:00 — 10:30 PM</p>
-        <h3 class="font-display text-lg mb-2">원하는 사람들끼리</h3>
-        <p class="text-sm text-[var(--soft)]">
-          썬북님 진행으로 테이블에 모여, 오늘 읽은 책을 가볍게 소개합니다.
-          참여는 자유 — 그냥 책만 읽고 가셔도 좋습니다.
-        </p>
+      <div class="hero-cta">
+        <a href="#curation" class="btn btn-outline">7월의 책 먼저 보기</a>
+        <a href="#apply" class="btn btn-primary">신청하러 가기</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===================== 모임 종류 ===================== -->
-<section class="px-6 py-14 border-t border-[var(--night-3)]">
-  <div class="max-w-4xl mx-auto">
-    <h2 class="font-display text-2xl mb-10 text-center">두 가지 모임</h2>
-    <div class="grid md:grid-cols-2 gap-6">
+<!-- ===================== 큐레이션 (상단 강조) ===================== -->
+<section class="curation" id="curation">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Curation</div>
+      <h2>7월, 달빛리딩클럽이 고른 책</h2>
+      <p>지정도서 1권과 함께 읽으면 좋을 추천도서 7권. 정가는 온라인 서점 기준이며, 신청서에서 원하는 책을 함께 구입할 수 있습니다.</p>
+    </div>
 
-      <div class="paper-card p-7">
-        <p class="font-mono text-xs text-[var(--ember)] mb-3">매주 · 월 / 금 / 일</p>
-        <h3 class="font-display text-xl mb-3">심야 자유 독서</h3>
-        <ul class="text-sm space-y-2 mb-5">
-          <li>· 8PM – 10PM, 자유롭게 머물며 독서</li>
-          <li>· 10PM부터 30분, 가벼운 책 소개 모임 (선택)</li>
-          <li>· 차 · 커피 · 과자 포함</li>
-        </ul>
-        <p class="font-mono text-2xl">5,000<span class="text-sm">원 / 1회</span></p>
+    <div id="book-shelf"></div>
+
+    <p class="curation-note">
+      <b>지정도서</b>는 달빛 심야 독서모임(7/20 월) 발제 도서, <b>추천도서</b>는 심야 자유독서 시간에 곁들이기 좋은 7월의 책입니다.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== 오늘 저녁의 흐름 ===================== -->
+<section class="flow">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Tonight</div>
+      <h2>오늘 저녁의 흐름</h2>
+      <p>매주 월요일 · 금요일 · 일요일, 8PM – 11PM</p>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-card">
+        <div class="flow-time">8:00 — 10:00 PM</div>
+        <h3>혼자, 자유롭게</h3>
+        <p>매장에 머무는 동안 각자 가능한 만큼 책을 읽습니다. 오는 시간, 머무는 시간 모두 자유. 차·커피·과자와 함께 하루를 마무리하는 시간.</p>
       </div>
-
-      <div class="paper-card p-7 ring-2 ring-[var(--ember)]">
-        <p class="font-mono text-xs text-[var(--ember)] mb-3">월 1회 · 지정도서</p>
-        <h3 class="font-display text-xl mb-3">달빛 심야 독서모임</h3>
-        <ul class="text-sm space-y-2 mb-5">
-          <li>· 7월은 7/20(월), 8월부터 매달 마지막 주 금요일</li>
-          <li>· 8PM – 10PM</li>
-          <li>· 그 달의 달빛 지정도서를 읽고 참여</li>
-          <li>· 썬북님 발제로 깊이 있는 이야기</li>
-        </ul>
-        <p class="font-mono text-2xl">10,000<span class="text-sm">원 / 1회</span></p>
+      <div class="flow-card">
+        <div class="flow-time">10:00 — 10:30 PM</div>
+        <h3>원하는 사람들끼리</h3>
+        <p>썬북친구님 진행으로 테이블에 모여, 오늘 읽은 책을 가볍게 소개합니다. 참여는 자유 — 그냥 책만 읽고 가셔도 좋습니다.</p>
       </div>
+    </div>
+  </div>
+</section>
 
+<!-- ===================== 두 가지 모임 ===================== -->
+<section class="programs">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Programs</div>
+      <h2>두 가지 모임</h2>
+    </div>
+    <div class="program-grid">
+      <div class="program-card">
+        <div class="program-freq">매주 · 월 / 금 / 일</div>
+        <h3>심야 자유 독서</h3>
+        <ul class="program-list">
+          <li>8PM – 10PM, 자유롭게 머물며 독서</li>
+          <li>10PM부터 30분, 가벼운 책 소개 모임 (선택)</li>
+          <li>차 · 커피 · 과자 포함</li>
+        </ul>
+        <div class="program-price">5,000원 <span>/ 1회</span></div>
+      </div>
+      <div class="program-card highlight">
+        <div class="program-freq">월 1회 · 지정도서 · 7월 20일(월)</div>
+        <h3>달빛 심야 독서모임</h3>
+        <ul class="program-list">
+          <li>7월 지정도서 《시간의 감촉》(은희경) 읽고 참여</li>
+          <li>8PM – 10PM, 썬북친구님 발제로 깊이 있는 이야기</li>
+          <li>차 · 커피 · 과자 포함</li>
+        </ul>
+        <div class="program-price">10,000원 <span>/ 1회</span></div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ===================== 1개월권 ===================== -->
-<section class="px-6 py-14 border-t border-[var(--night-3)]">
-  <div class="max-w-3xl mx-auto text-center">
-    <h2 class="font-display text-2xl mb-3">1개월권</h2>
-    <p class="text-[var(--soft)] text-sm mb-10">
-      월·금·일 정기모임 + 지정도서 모임까지, 한 달이면 약 13회.<br>
-      회차마다 내면 약 70,000원 — 1개월권이면 절반 이하입니다.
-    </p>
-    <div class="inline-flex flex-col items-center gap-3 rounded-2xl border border-[var(--night-3)] px-10 py-8">
-      <p class="font-mono text-sm text-[var(--soft)] line-through">정가 약 70,000원 / 월</p>
-      <p class="font-display text-3xl md:text-4xl text-[var(--ember)] leading-snug">1개월권 특가(7월한정)<br><span class="font-mono text-4xl md:text-5xl">30,000원</span></p>
-      <p class="text-xs text-[var(--soft)]">1개월권 · 모든 정기모임 + 지정도서모임 무제한</p>
+<section class="pass">
+  <div class="pass-bg"></div>
+  <div class="wrap pass-inner">
+    <div class="section-head">
+      <div class="eyebrow">7월 한정</div>
+      <h2>1개월권 특가</h2>
+      <p>월·금·일 정기모임 + 지정도서 모임까지, 한 달이면 약 13회. 회차마다 내면 약 70,000원 — 1개월권이면 절반 이하입니다.</p>
     </div>
-
-    <div class="mt-8 mx-auto max-w-md rounded-2xl border border-[var(--ember)]/40 bg-[var(--ember)]/5 px-6 py-5 text-left">
-      <p class="font-mono text-xs text-[var(--ember)] mb-2 tracking-wide">연계 추가혜택</p>
-      <p class="text-sm text-[var(--moonlight)] leading-relaxed">
-        달빛 리딩 클럽 1개월권 회원이 <strong>[밤밀온]</strong> 신청 시, <strong class="text-[var(--ember)]">5,000원 추가 할인</strong>
-      </p>
-      <p class="text-sm text-[var(--soft)] mt-1.5 font-mono">20,000원 → 15,000원</p>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== 신청 폼 ===================== -->
-<section id="apply" class="px-6 py-16 border-t border-[var(--night-3)]">
-  <div class="max-w-xl mx-auto">
-    <h2 class="font-display text-2xl mb-2 text-center">신청하기</h2>
-    <p class="text-center text-[var(--soft)] text-sm mb-10">참여 방식을 골라주신 뒤, 참가비를 입금하고 신청을 완료해주세요.</p>
-
-    <form id="signupForm" class="paper-card p-7 space-y-5">
-
-      <div>
-        <label class="block text-sm font-medium mb-1">이름</label>
-        <input type="text" id="name" required
-          class="w-full rounded-lg border border-black/10 px-3 py-2 bg-white/70 text-sm">
+    <div class="pass-card">
+      <div class="pass-label">1개월권 · 모든 정기모임 + 지정도서모임 무제한</div>
+      <div class="pass-price-row">
+        <span class="pass-old">70,000원</span>
+        <span class="pass-new">30,000원</span>
       </div>
-
-      <div>
-        <label class="block text-sm font-medium mb-1">연락처 (전화번호)</label>
-        <input type="tel" id="phone" required placeholder="010-0000-0000"
-          class="w-full rounded-lg border border-black/10 px-3 py-2 bg-white/70 text-sm">
+      <p class="pass-desc">정가 약 70,000원 / 월 → 7월 한정 특가 30,000원</p>
+      <div class="pass-benefits">
+        <div class="benefit-box"><b>혜택 1</b>독서모임 2종 무제한 — 심야자유독서(매주 월·금·일) + 달리클럽 독서모임</div>
+        <div class="benefit-box"><b>혜택 2</b>「밤밀온」신청 시, 5,000원 할인 (20,000원 → 15,000원)</div>
       </div>
-
-      <div>
-        <label class="block text-sm font-medium mb-2">참여 방식</label>
-        <div class="space-y-2">
-          <label class="flex items-center gap-2 text-sm">
-            <input type="radio" name="plan" value="dropin" checked> 회차별로 참여
-          </label>
-          <label class="flex items-center gap-2 text-sm">
-            <input type="radio" name="plan" value="season"> 1개월권 특가(7월한정) 30,000원
-          </label>
-        </div>
-        <div id="dropinTypes" class="mt-3 rounded-lg border border-black/8 bg-white/50 px-3 py-2.5 text-sm space-y-1">
-          <p>· <strong>심야 자유 독서</strong> — 5,000원 / 회</p>
-          <p>· <strong>달빛 심야 독서모임</strong> — 10,000원 / 회</p>
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-sm font-medium mb-1" id="noteLabel">참여 신청일</label>
-        <textarea id="note" rows="3" required
-          placeholder="예) 7/5(일) 심야 자유 독서, 7/12(일) 심야 자유 독서, 7/20(월) 달빛 심야 독서모임"
-          class="w-full rounded-lg border border-black/10 px-3 py-2 bg-white/70 text-sm"></textarea>
-        <p class="text-xs text-[var(--ink)]/55 mt-1.5" id="noteHint">참여하실 날짜와 모임 종류를 자유롭게 적어주세요.</p>
-      </div>
-
-      <div class="bank-box">
-        <div class="bank-box-label">비북스 입금 계좌</div>
-        <div id="paySeasonBlock" class="hidden">
-          <div class="bank-amount">30,000원</div>
-          <p class="text-sm mt-1"><strong>1개월권 특가(7월한정)</strong> · 정기모임 + 지정도서모임 무제한</p>
-          <p class="bank-flow-note" style="margin-top:.5rem">
-            1개월권 회원은 <strong>[밤밀온]</strong> 신청 시 5,000원 추가 할인 (20,000원 → 15,000원)
-          </p>
-        </div>
-        <div id="payDropinBlock">
-          <div class="text-sm space-y-1 mb-2">
-            <p>심야 자유 독서 <strong class="font-mono">5,000원</strong> / 회</p>
-            <p>달빛 심야 독서모임 <strong class="font-mono">10,000원</strong> / 회</p>
-          </div>
-          <p class="bank-flow-note" style="margin-top:0">
-            회차별 신청은 참여하실 회차 금액을 <strong>합산하여</strong> 입금해주세요.<br>
-            예) 7/5(일)·7/12(일) 심야 자유 독서 2회 + 7/20(월) 달빛 심야 독서모임 1회<br>
-            → 5,000×2 + 10,000 = <strong>20,000원</strong>
-          </p>
-        </div>
-        <div class="bank-detail">
-          <div><strong>카카오뱅크 7942-33-45474</strong></div>
-          <div>예금주 경규환</div>
-          <div style="margin-top:.45rem;padding-top:.45rem;border-top:1px dashed rgba(38,36,32,.15)">
-            입금자명: <strong id="depositorName">—</strong>
-          </div>
-        </div>
-        <p class="bank-flow-note">① 위 계좌로 참가비를 입금해주세요 (입금자명 = 신청 이름과 동일)<br>② 입금 후 아래를 체크하고 신청을 완료해주세요</p>
-      </div>
-
-      <label class="deposit-confirm">
-        <input type="checkbox" id="depositConfirm"/>
-        <span>참가비 입금을 완료했습니다</span>
-      </label>
-
-      <button type="submit" class="ember-btn w-full py-3 rounded-lg font-medium">입금 확인 후 신청 보내기</button>
-    </form>
-
-    <!-- 신청 완료 후 안내 -->
-    <div id="confirmPanel" class="paper-card p-7 mt-6 hidden">
-      <h3 class="font-display text-lg mb-3">신청이 접수됐습니다 🌙</h3>
-      <p id="confirmSummary" class="text-sm mb-4"></p>
-      <p class="text-sm text-[var(--ink)]/70">
-        입금 내역 확인 후 담당자가 연락드릴게요.<br>
-        일정·세부 안내는 비북스 카카오톡 오픈채팅으로 드립니다.
-      </p>
     </div>
   </div>
 </section>
 
-<footer class="px-6 py-10 text-center text-xs text-[var(--soft)] border-t border-[var(--night-3)]">
-  달빛 리딩 클럽 · 비북스 · 진행 0.1평 점주 썬북<br>
-  <!-- TODO: 실제 매장 주소/지도 링크로 교체하세요 -->
+<!-- ===================== 신청하기 ===================== -->
+<section class="apply" id="apply">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Apply</div>
+      <h2>신청하기</h2>
+      <p>참여 방식을 고르고, 원하시면 7월의 책도 함께 구입해보세요. 참가비를 입금하고 신청을 완료해주세요.</p>
+    </div>
+
+    <div class="apply-grid">
+      <!-- 왼쪽: 입력 폼 -->
+      <div class="form-card">
+        <div class="field">
+          <label>이름</label>
+          <input type="text" id="f-name" placeholder="신청자 이름">
+        </div>
+        <div class="field">
+          <label>연락처 (전화번호)</label>
+          <input type="tel" id="f-phone" placeholder="010-0000-0000">
+        </div>
+
+        <div class="field">
+          <label>참여 방식</label>
+          <div class="radio-row" id="participation-type">
+            <label class="radio-chip active" data-type="session">
+              <input type="radio" name="ptype" value="session" checked>회차별로 참여
+            </label>
+            <label class="radio-chip" data-type="pass">
+              <input type="radio" name="ptype" value="pass">1개월권 특가 (30,000원)
+            </label>
+          </div>
+        </div>
+
+        <div class="field" id="session-counts">
+          <label>참여 회차 선택</label>
+          <div class="count-row">
+            <span class="count-label">심야 자유 독서 (5,000원 / 회)</span>
+            <div class="stepper">
+              <button type="button" data-target="free" data-dir="-1">−</button>
+              <span id="count-free">0</span>
+              <button type="button" data-target="free" data-dir="1">+</button>
+            </div>
+          </div>
+          <div class="count-row">
+            <span class="count-label">달빛 심야 독서모임, 7/20(월) (10,000원 / 회)</span>
+            <div class="stepper">
+              <button type="button" data-target="deep" data-dir="-1">−</button>
+              <span id="count-deep">0</span>
+              <button type="button" data-target="deep" data-dir="1">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>참여 신청일 (선택)</label>
+          <textarea id="f-dates" placeholder="참여하실 날짜를 자유롭게 적어주세요. 예) 7/5(일), 7/12(일), 7/20(월)"></textarea>
+        </div>
+
+        <div class="field">
+          <label>7월의 책, 함께 구입하기</label>
+          <div class="book-select-list" id="book-select-list"></div>
+        </div>
+
+        <div class="field" style="margin-bottom:0;">
+          <label>밤밀온 연계 할인</label>
+          <div class="radio-row">
+            <label class="radio-chip" id="bammilon-chip">
+              <input type="checkbox" id="f-bammilon">
+              「밤밀온」도 신청 예정 (1개월권 기준 5,000원 할인)
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 오른쪽: 결제 요약 -->
+      <div>
+        <div class="summary-card" id="summary-card">
+          <h3>결제 금액</h3>
+          <div id="summary-lines"></div>
+          <div class="summary-total">
+            <span class="t-label">총 합계</span>
+            <span class="t-amt" id="total-amt">0원</span>
+          </div>
+
+          <div class="bank-box">
+            예금주 <b>경규환</b>
+            <div class="acc">카카오뱅크 7942-33-45474</div>
+            입금자명은 신청 이름과 동일하게 해주세요.
+          </div>
+
+          <label class="confirm-row">
+            <input type="checkbox" id="f-confirm">
+            위 금액을 계좌로 입금 완료했습니다. 입금 확인 후 담당자가 연락드립니다.
+          </label>
+
+          <button class="submit-btn" id="submit-btn" disabled>신청 보내기</button>
+
+          <div class="success-panel" id="success-panel">
+            <div class="moon-big">🌙</div>
+            <h3>신청이 접수됐습니다</h3>
+            <p id="success-summary"></p>
+            <p>입금 내역 확인 후 담당자가 연락드릴게요.</p>
+            <p>일정·세부 안내는 비북스 카카오톡 오픈채팅으로 드립니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  달빛 리딩 클럽 · 비북스 · 진행 0.1평 점주 썬북친구 (@sun__book79)<br>
   장소 안내는 추후 업데이트됩니다.
 </footer>
 
-<div id="successModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="successModalTitle">
-  <div class="modal-card">
-    <h3 id="successModalTitle">신청이 접수됐습니다 🌙</h3>
-    <p id="successModalSummary" class="text-sm leading-relaxed"></p>
-    <div id="successModalBenefit" class="modal-benefit hidden">
-      <strong>연계 추가혜택</strong><br>
-      1개월권 회원이시니 <strong>[밤밀온]</strong> 신청 시 5,000원 추가 할인됩니다.<br>
-      <span class="font-mono">20,000원 → 15,000원</span>
-    </div>
-    <p class="text-xs text-[var(--ink)]/60 mt-3 leading-relaxed">
-      입금 내역 확인 후 담당자가 연락드릴게요.
-    </p>
-    <div class="modal-actions">
-      <a href="july.html#bammilon" class="ember-btn w-full py-3 rounded-lg font-medium text-center">밤밀온 7월 모임 신청하기</a>
-      <button type="button" class="modal-close" id="successModalClose">닫기</button>
-    </div>
-  </div>
-</div>
-
 <script>
-  // ===== 설정: 기존 비북스 챌린지와 같은 Apps Script 웹앱 URL =====
-  // TODO: challenge-appscript-full.gs 배포 URL을 여기에 붙여넣으세요
-  const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwmKpptDy_rt4SUMf4LToEHDSwsIsPQNIVZNBec3rvHjneB6c8qHWe_En0Li13PKJ5zOQ/exec';
+const BOOKS = [
+  {id:'time',      title:'시간의 감촉',           author:'은희경',       publisher:'문학동네',   price:18800, tag:'designated', featured:true, note:'7월 지정도서 · 달빛 독서모임 발제 도서'},
+  {id:'summer1',   title:'첫 여름, 완주',          author:'김금희',       publisher:'무제',       price:17000, tag:'pick'},
+  {id:'volcano',   title:'여름은 오래 그곳에 남아', author:'마쓰이에 마사시', publisher:'비채',    price:14000, tag:'pick'},
+  {id:'formless',  title:'무정형의 삶',            author:'김민철',       publisher:'위즈덤하우스', price:20000, tag:'pick'},
+  {id:'leftsummer',title:'두고 온 여름',           author:'성해나',       publisher:'창비',       price:14000, tag:'pick'},
+  {id:'checkin',   title:'열두 번의 체크인',       author:'김미라',       publisher:'니케북스',   price:16800, tag:'pick'},
+  {id:'summer2',   title:'여름',                  author:'이디스 워튼',  publisher:'민음사',     price:12000, tag:'pick'},
+  {id:'justseason',title:'여름은 고작 계절',       author:'김서해',       publisher:'위즈덤하우스', price:17500, tag:'pick'}
+];
 
-  const form = document.getElementById('signupForm');
-  const confirmPanel = document.getElementById('confirmPanel');
-  const confirmSummary = document.getElementById('confirmSummary');
-  const submitBtn = form.querySelector('button[type="submit"]');
-  const nameInput = document.getElementById('name');
-  const depositorNameEl = document.getElementById('depositorName');
-  const paySeasonBlock = document.getElementById('paySeasonBlock');
-  const payDropinBlock = document.getElementById('payDropinBlock');
-  const dropinTypes = document.getElementById('dropinTypes');
-  const noteInput = document.getElementById('note');
-  const noteLabel = document.getElementById('noteLabel');
-  const noteHint = document.getElementById('noteHint');
-  const depositConfirm = document.getElementById('depositConfirm');
-  const planInputs = form.querySelectorAll('input[name="plan"]');
-  const successModal = document.getElementById('successModal');
-  const successModalSummary = document.getElementById('successModalSummary');
-  const successModalBenefit = document.getElementById('successModalBenefit');
-  const successModalClose = document.getElementById('successModalClose');
+function won(n){ return n.toLocaleString('ko-KR') + '원'; }
 
-  function openSuccessModal(summaryHtml, showBenefit) {
-    successModalSummary.innerHTML = summaryHtml;
-    successModalBenefit.classList.toggle('hidden', !showBenefit);
-    successModal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+// ---- render bookshelf (curation section) ----
+const shelf = document.getElementById('book-shelf');
+const topRow = document.createElement('div');
+topRow.className = 'shelf-row top';
+const bottomRow = document.createElement('div');
+bottomRow.className = 'shelf-row';
+
+BOOKS.forEach((b, i) => {
+  const card = document.createElement('div');
+  card.className = 'book-card' + (b.featured ? ' featured' : '');
+  card.innerHTML = `
+    <span class="book-tag ${b.tag}">${b.tag === 'designated' ? '7월 지정도서' : '7월 추천도서'}</span>
+    <div class="book-title">${b.title}</div>
+    <div class="book-meta">${b.author} · ${b.publisher}${b.note ? '<br>' + b.note : ''}</div>
+    <div class="book-price"><span class="label">정가</span><span class="amt">${won(b.price)}</span></div>
+  `;
+  if (b.featured) { topRow.appendChild(card); }
+  else { bottomRow.appendChild(card); }
+});
+shelf.appendChild(topRow);
+shelf.appendChild(bottomRow);
+
+// ---- render book select list (apply form) ----
+const listEl = document.getElementById('book-select-list');
+BOOKS.forEach(b => {
+  const row = document.createElement('label');
+  row.className = 'book-select';
+  row.dataset.price = b.price;
+  row.innerHTML = `
+    <input type="checkbox" data-id="${b.id}" data-price="${b.price}">
+    <span class="check-box">✓</span>
+    <span class="b-info">
+      <span class="b-title">${b.title}<span class="bs-tag ${b.tag}">${b.tag === 'designated' ? '지정' : '추천'}</span></span>
+      <span class="b-meta">${b.author} · ${b.publisher}</span>
+    </span>
+    <span class="b-price">${won(b.price)}</span>
+  `;
+  listEl.appendChild(row);
+  const input = row.querySelector('input');
+  input.addEventListener('change', () => {
+    row.classList.toggle('checked', input.checked);
+    updateSummary();
+  });
+});
+
+// ---- participation type toggle ----
+const ptypeChips = document.querySelectorAll('#participation-type .radio-chip');
+let ptype = 'session';
+ptypeChips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    ptypeChips.forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    chip.querySelector('input').checked = true;
+    ptype = chip.dataset.type;
+    document.getElementById('session-counts').style.display = (ptype === 'session') ? '' : 'none';
+    updateSummary();
+  });
+});
+
+// ---- steppers ----
+let counts = { free: 0, deep: 0 };
+document.querySelectorAll('.stepper button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.dataset.target;
+    const dir = parseInt(btn.dataset.dir, 10);
+    counts[target] = Math.max(0, counts[target] + dir);
+    document.getElementById('count-' + target).textContent = counts[target];
+    updateSummary();
+  });
+});
+
+// ---- bammilon chip ----
+const bammilonChip = document.getElementById('bammilon-chip');
+const bammilonInput = document.getElementById('f-bammilon');
+bammilonChip.addEventListener('click', (e) => {
+  if (e.target.tagName !== 'INPUT') { bammilonInput.checked = !bammilonInput.checked; }
+  bammilonChip.classList.toggle('active', bammilonInput.checked);
+  updateSummary();
+});
+
+// ---- summary ----
+function selectedBooks() {
+  return Array.from(document.querySelectorAll('#book-select-list input:checked')).map(inp => {
+    return BOOKS.find(b => b.id === inp.dataset.id);
+  });
+}
+
+function updateSummary() {
+  const lines = [];
+  let total = 0;
+
+  if (ptype === 'pass') {
+    let passPrice = 30000;
+    if (bammilonInput.checked) {
+      lines.push(['1개월권 특가', 30000]);
+      lines.push(['밤밀온 연계 할인', -5000]);
+      total += 25000;
+    } else {
+      lines.push(['1개월권 특가', 30000]);
+      total += 30000;
+    }
+  } else {
+    if (counts.free > 0) {
+      const amt = counts.free * 5000;
+      lines.push([`심야 자유 독서 × ${counts.free}회`, amt]);
+      total += amt;
+    }
+    if (counts.deep > 0) {
+      const amt = counts.deep * 10000;
+      lines.push([`달빛 심야 독서모임 × ${counts.deep}회`, amt]);
+      total += amt;
+    }
   }
 
-  function closeSuccessModal() {
-    successModal.classList.add('hidden');
-    document.body.style.overflow = '';
-  }
-
-  successModalClose.addEventListener('click', closeSuccessModal);
-  successModal.addEventListener('click', e => {
-    if (e.target === successModal) closeSuccessModal();
+  const books = selectedBooks();
+  books.forEach(b => {
+    lines.push([`도서 구입 · ${b.title}`, b.price]);
+    total += b.price;
   });
 
-  function updatePayAmountLabel() {
-    const plan = form.querySelector('input[name="plan"]:checked')?.value;
-    const isSeason = plan === 'season';
-    paySeasonBlock.classList.toggle('hidden', !isSeason);
-    payDropinBlock.classList.toggle('hidden', isSeason);
-    dropinTypes.classList.toggle('hidden', isSeason);
-    noteInput.required = !isSeason;
-    noteLabel.textContent = isSeason ? '남기실 말 (선택)' : '참여 신청일';
-    noteHint.textContent = isSeason
-      ? '추가로 전달하실 내용이 있으면 적어주세요.'
-      : '참여하실 날짜와 모임 종류를 자유롭게 적어주세요.';
-    noteInput.placeholder = isSeason
-      ? '예) 첫 참여는 7/5(일) 예정입니다'
-      : '예) 7/5(일) 심야 자유 독서, 7/12(일) 심야 자유 독서, 7/20(월) 달빛 심야 독서모임';
+  const linesEl = document.getElementById('summary-lines');
+  if (lines.length === 0) {
+    linesEl.innerHTML = `<div class="summary-line"><span>참여 회차 또는 도서를 선택해주세요</span></div>`;
+  } else {
+    linesEl.innerHTML = lines.map(([label, amt]) => `
+      <div class="summary-line"><span>${label}</span><b>${amt < 0 ? '−' : ''}${won(Math.abs(amt))}</b></div>
+    `).join('');
   }
+  document.getElementById('total-amt').textContent = won(Math.max(0, total));
+  return Math.max(0, total);
+}
 
-  function syncDepositorName() {
-    depositorNameEl.textContent = nameInput.value.trim() || '—';
-  }
+// ---- confirm & submit ----
+const confirmBox = document.getElementById('f-confirm');
+const submitBtn = document.getElementById('submit-btn');
+confirmBox.addEventListener('change', () => {
+  submitBtn.disabled = !confirmBox.checked;
+});
 
-  nameInput.addEventListener('input', syncDepositorName);
-  planInputs.forEach(input => input.addEventListener('change', updatePayAmountLabel));
-  updatePayAmountLabel();
-  syncDepositorName();
+submitBtn.addEventListener('click', () => {
+  const total = updateSummary();
+  const name = document.getElementById('f-name').value || '신청자';
+  const books = selectedBooks();
+  document.querySelector('.form-card').style.display = 'none';
+  document.getElementById('summary-card').querySelectorAll('.field, .bank-box, .confirm-row, .submit-btn, #summary-lines, .summary-total, h3').forEach(el => el.style.display = 'none');
+  const successPanel = document.getElementById('success-panel');
+  successPanel.style.display = 'block';
+  let bookLine = books.length ? `함께 구입하신 책: ${books.map(b => b.title).join(', ')}` : '';
+  document.getElementById('success-summary').textContent = `${name}님, 총 ${won(total)} 신청이 확인되었습니다. ${bookLine}`;
+});
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const name = nameInput.value.trim();
-    const phone = document.getElementById('phone').value.trim();
-    const plan = form.querySelector('input[name="plan"]:checked').value;
-    const note = noteInput.value.trim();
-
-    if (!name || !phone) {
-      alert('이름과 연락처를 입력해주세요.');
-      return;
-    }
-    if (plan === 'dropin' && !note) {
-      alert('참여 신청일을 입력해주세요.');
-      return;
-    }
-    if (!depositConfirm.checked) {
-      alert('참가비 입금 후 체크박스를 선택해주세요.');
-      return;
-    }
-
-    const planLabel = plan === 'season'
-      ? '1개월권 특가(7월한정) (30,000원)'
-      : '회차별 참여 (심야 자유 독서 5,000원 / 달빛 심야 독서모임 10,000원)';
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = '보내는 중...';
-
-    try {
-      // Apps Script 웹앱은 브라우저 fetch에 CORS 헤더를 내려주지 않으므로
-      // no-cors로 전송하고, 응답 내용은 읽지 않습니다 (요청이 실패하지 않으면 성공으로 간주).
-      await fetch(GAS_WEB_APP_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-          action: 'moonlightApply',
-          name, phone, plan, note
-        })
-      });
-
-      const summaryHtml =
-        `${name}님, <strong>${planLabel}</strong>으로 신청해주셨어요.` +
-        (note ? `<br>참여 신청: ${note}` : '');
-
-      confirmSummary.innerHTML = summaryHtml;
-      confirmPanel.classList.remove('hidden');
-      openSuccessModal(summaryHtml, plan === 'season');
-      form.reset();
-      depositConfirm.checked = false;
-      updatePayAmountLabel();
-      syncDepositorName();
-
-    } catch (err) {
-      alert('전송 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
-      console.error('신청 전송 오류:', err);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = '입금 확인 후 신청 보내기';
-    }
-  });
+updateSummary();
 </script>
-
 </body>
 </html>
