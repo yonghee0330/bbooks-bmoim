@@ -289,9 +289,7 @@
   }
   .stepper span{min-width:20px;text-align:center;font-weight:700;}
   .book-select-list{display:flex;flex-direction:column;gap:10px;}
-  .book-order-panel{display:none;margin-top:12px;}
-  .book-order-panel.on{display:flex;flex-direction:column;gap:10px;}
-  .book-order-hint{font-size:12.5px;color:var(--muted-dim);margin:0 0 4px;}
+  .book-order-hint{font-size:12.5px;color:var(--muted-dim);margin:0 0 10px;}
   .book-select{
     display:flex;align-items:center;gap:12px;
     border:1px solid var(--card-line);border-radius:10px;padding:12px 14px;
@@ -318,6 +316,9 @@
   }
   .summary-card h3{font-size:16px;margin-bottom:18px;}
   .summary-line{display:flex;justify-content:space-between;font-size:13.5px;color:var(--muted);padding:8px 0;border-bottom:1px dashed var(--card-line);}
+  .summary-line.subtotal{font-weight:700;color:var(--cream);border-bottom-color:var(--card-line);}
+  .summary-line.subtotal span{color:var(--muted);font-weight:600;}
+  .summary-line.book-line span{color:var(--cyan);}
   .summary-line b{color:var(--cream);font-weight:700;}
   .summary-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;padding-top:16px;border-top:1px solid var(--card-line);}
   .summary-total .t-label{font-size:14px;color:var(--muted);}
@@ -630,23 +631,15 @@
           </div>
         </div>
 
+        <div class="field" id="book-order-field">
+          <label>7월의 책, 함께 주문하기</label>
+          <p class="book-order-hint">참여 방식과 관계없이 도서만 주문하셔도 됩니다. 선택하면 오른쪽에 모임비·도서비 합계가 표시됩니다.</p>
+          <div class="book-select-list" id="book-select-list"></div>
+        </div>
+
         <div class="field">
           <label>참여 신청일 (선택)</label>
           <textarea id="f-dates" placeholder="참여하실 날짜를 자유롭게 적어주세요. 예) 7/5(일), 7/12(일), 7/20(월)"></textarea>
-        </div>
-
-        <div class="field" id="book-order-field">
-          <label>7월의 책, 함께 구입하기</label>
-          <div class="radio-row">
-            <label class="radio-chip" id="book-order-chip">
-              <input type="checkbox" id="f-book-order">
-              도서 주문하기
-            </label>
-          </div>
-          <div class="book-order-panel" id="book-order-panel">
-            <p class="book-order-hint">주문할 도서를 선택해주세요. 참가비와 합산하여 입금해주시면 됩니다.</p>
-            <div class="book-select-list" id="book-select-list"></div>
-          </div>
         </div>
 
         <div class="field" style="margin-bottom:0;">
@@ -713,9 +706,8 @@
 </div>
 
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ/exec';
+const API = 'https://script.google.com/macros/s/AKfycbwmKpptDy_rt4SUMf4LToEHDSwsIsPQNIVZNBec3rvHjneB6c8qHWe_En0Li13PKJ5zOQ/exec';
 const PAGE_MONTH = '7월';
-const MOIM_NAME = '달빛 리딩 클럽';
 
 const POSTERS = [
   { src: 'images/moonlight_july_01.jpg', alt: '달빛 리딩클럽 모집 안내' },
@@ -843,28 +835,6 @@ BOOKS.forEach(b => {
 shelf.appendChild(topRow);
 shelf.appendChild(bottomRow);
 
-// ---- book order toggle ----
-const bookOrderChip = document.getElementById('book-order-chip');
-const bookOrderInput = document.getElementById('f-book-order');
-const bookOrderPanel = document.getElementById('book-order-panel');
-
-function setBookOrderActive(on) {
-  bookOrderInput.checked = on;
-  bookOrderChip.classList.toggle('active', on);
-  bookOrderPanel.classList.toggle('on', on);
-  if (!on) {
-    document.querySelectorAll('#book-select-list input:checked').forEach(inp => {
-      inp.checked = false;
-      inp.closest('.book-select')?.classList.remove('checked');
-    });
-  }
-  updateSummary();
-}
-
-bookOrderChip.addEventListener('click', e => {
-  if (e.target.tagName !== 'INPUT') setBookOrderActive(!bookOrderInput.checked);
-});
-
 // ---- render book select list ----
 const listEl = document.getElementById('book-select-list');
 BOOKS.forEach(b => {
@@ -924,49 +894,59 @@ bammilonChip.addEventListener('click', e => {
 });
 
 function selectedBooks() {
-  if (!bookOrderInput.checked) return [];
   return Array.from(document.querySelectorAll('#book-select-list input:checked')).map(inp =>
     BOOKS.find(b => b.id === inp.dataset.id)
-  );
+  ).filter(Boolean);
 }
 
 function updateSummary() {
   const lines = [];
-  let total = 0;
+  let moimTotal = 0;
+  let bookTotal = 0;
 
   if (ptype === 'pass') {
     if (bammilonInput.checked) {
       lines.push(['1개월권 특가', 30000]);
       lines.push(['밤밀온 연계 할인', -5000]);
-      total += 25000;
+      moimTotal += 25000;
     } else {
       lines.push(['1개월권 특가', 30000]);
-      total += 30000;
+      moimTotal += 30000;
     }
   } else {
     if (counts.free > 0) {
       const amt = counts.free * 5000;
       lines.push([`심야 자유 독서 × ${counts.free}회`, amt]);
-      total += amt;
+      moimTotal += amt;
     }
     if (counts.deep > 0) {
       const amt = counts.deep * 10000;
       lines.push([`달리클럽 독서모임 × ${counts.deep}회`, amt]);
-      total += amt;
+      moimTotal += amt;
     }
   }
 
-  selectedBooks().forEach(b => {
-    lines.push([`도서 구입 · ${b.title}`, b.price]);
-    total += b.price;
+  const picked = selectedBooks();
+  picked.forEach(b => {
+    lines.push([`도서 · ${b.title}`, b.price, 'book']);
+    bookTotal += b.price;
   });
 
+  const displayLines = lines.map(([label, amt, kind]) => {
+    const cls = kind === 'book' ? 'summary-line book-line' : 'summary-line';
+    return `<div class="${cls}"><span>${label}</span><b>${amt < 0 ? '−' : ''}${won(Math.abs(amt))}</b></div>`;
+  });
+
+  if (moimTotal > 0 && bookTotal > 0) {
+    displayLines.push(`<div class="summary-line subtotal"><span>모임비 소계</span><b>${won(moimTotal)}</b></div>`);
+    displayLines.push(`<div class="summary-line subtotal"><span>도서비 소계</span><b>${won(bookTotal)}</b></div>`);
+  }
+
+  const total = moimTotal + bookTotal;
   const linesEl = document.getElementById('summary-lines');
-  linesEl.innerHTML = lines.length
-    ? lines.map(([label, amt]) =>
-        `<div class="summary-line"><span>${label}</span><b>${amt < 0 ? '−' : ''}${won(Math.abs(amt))}</b></div>`
-      ).join('')
-    : `<div class="summary-line"><span>참여 회차 또는 도서를 선택해주세요</span></div>`;
+  linesEl.innerHTML = displayLines.length
+    ? displayLines.join('')
+    : `<div class="summary-line"><span>참여 회차를 고르거나, 도서를 선택해주세요</span></div>`;
   document.getElementById('total-amt').textContent = won(Math.max(0, total));
   return Math.max(0, total);
 }
@@ -993,7 +973,7 @@ async function POST(data) {
     throw new Error('서버 응답을 읽을 수 없습니다. Apps Script 배포를 확인해주세요.');
   }
   if (out.error) throw new Error(out.error);
-  if (!r.ok && !out.ok) throw new Error('요청 실패');
+  if (!out.ok) throw new Error(out.error || '요청 실패');
   return out;
 }
 
@@ -1016,9 +996,11 @@ function buildNote() {
 }
 
 function buildBooksLabel() {
-  if (!bookOrderInput.checked) return '';
-  const books = selectedBooks();
-  return books.map(b => b.title).join(', ');
+  return selectedBooks().map(b => `《${b.title}》 ${won(b.price)}`).join(' / ');
+}
+
+function buildBooksOnly() {
+  return selectedBooks().length > 0 && !(ptype === 'pass' || counts.free > 0 || counts.deep > 0);
 }
 
 function showApplyError(msg) {
@@ -1030,21 +1012,18 @@ submitBtn.addEventListener('click', async () => {
   const name = document.getElementById('f-name').value.trim();
   const phone = document.getElementById('f-phone').value.trim();
   const total = updateSummary();
-  const session = buildSessionLabel();
   const note = buildNote();
   const books = buildBooksLabel();
+  const hasParticipation = ptype === 'pass' || counts.free > 0 || counts.deep > 0;
+  const hasBooks = selectedBooks().length > 0;
 
   applyAlert.classList.remove('show');
   if (!name || !phone) {
     showApplyError('이름과 연락처를 입력해주세요.');
     return;
   }
-  if (!session && !books && !note) {
+  if (!hasParticipation && !hasBooks && !note) {
     showApplyError('참여 회차, 참여 날짜 또는 도서를 선택해주세요.');
-    return;
-  }
-  if (bookOrderInput.checked && !books) {
-    showApplyError('도서 주문하기를 선택하셨다면 주문할 도서를 골라주세요.');
     return;
   }
   if (!confirmBox.checked) {
@@ -1056,14 +1035,18 @@ submitBtn.addEventListener('click', async () => {
   submitBtn.textContent = '신청 중...';
   try {
     await POST({
-      action: 'apply',
+      action: 'moonlightApply',
       month: PAGE_MONTH,
-      moimName: MOIM_NAME,
-      session: session || (books ? '도서주문' : '날짜만'),
       name,
       phone,
-      amount: total,
-      date: new Date().toLocaleString('ko-KR'),
+      plan: ptype === 'pass' ? 'season' : 'session',
+      freeCount: counts.free,
+      deepCount: counts.deep,
+      fee: total,
+      moimFee: total - selectedBooks().reduce((s, b) => s + b.price, 0),
+      bookFee: selectedBooks().reduce((s, b) => s + b.price, 0),
+      bammilon: ptype === 'pass' && bammilonInput.checked,
+      booksOnly: buildBooksOnly(),
       note,
       books
     });
