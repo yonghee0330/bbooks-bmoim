@@ -49,44 +49,86 @@
     background:rgba(10,13,36,0.82);backdrop-filter:blur(10px);
     border-bottom:1px solid var(--card-line);
   }
-  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1080px;margin:0 auto;}
-  .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;letter-spacing:0.02em;}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1080px;margin:0 auto;gap:12px;}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;letter-spacing:0.02em;text-decoration:none;}
   .brand .moon{color:var(--yellow);font-size:16px;}
+  .nav-links{display:flex;align-items:center;gap:10px;}
+  .nav-link{font-size:13px;color:var(--muted);text-decoration:none;font-weight:600;}
+  .nav-link:hover{color:var(--cream);}
   .nav-cta{
     font-size:13px;font-weight:700;background:var(--yellow);color:#141414;
     padding:9px 18px;border-radius:100px;text-decoration:none;
   }
 
+  /* ---------- poster slider (shared) ---------- */
+  .poster-slider-wrap{
+    position:relative;background:#0d1028;border-radius:var(--radius);
+    overflow:hidden;cursor:zoom-in;
+    border:1px solid var(--card-line);
+  }
+  .poster-slider-wrap.hero-slider{border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.45);}
+  .poster-slider-viewport{
+    width:100%;aspect-ratio:819/1024;overflow:hidden;position:relative;
+  }
+  .poster-slider{display:flex;height:100%;transition:transform .35s ease;}
+  .poster-slide{min-width:100%;height:100%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .poster-slide img{
+    width:100%;height:100%;object-fit:cover;object-position:center top;
+    pointer-events:none;
+  }
+  .poster-slider-nav{
+    position:absolute;bottom:0;left:0;right:0;
+    padding:28px 10px 10px;
+    background:linear-gradient(transparent,rgba(0,0,0,.55));
+    display:flex;justify-content:space-between;align-items:center;
+    pointer-events:none;
+  }
+  .poster-slider-nav .slider-dots,
+  .poster-slider-nav .slider-arrows{pointer-events:auto;}
+  .slider-dots{display:flex;gap:6px;}
+  .sdot{
+    width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.4);
+    cursor:pointer;transition:background .15s,transform .15s;
+  }
+  .sdot.active{background:#fff;transform:scale(1.15);}
+  .slider-arrows{display:flex;gap:6px;}
+  .sarr{
+    width:30px;height:30px;border-radius:50%;border:0;
+    background:rgba(255,255,255,.92);color:var(--navy-deep);
+    font-size:18px;line-height:1;cursor:pointer;font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .poster-slider-hint{
+    position:absolute;top:10px;right:10px;
+    font-size:10px;font-weight:600;color:rgba(255,255,255,.9);
+    background:rgba(0,0,0,.4);padding:3px 8px;border-radius:10px;
+    pointer-events:none;
+  }
+
   /* ---------- hero ---------- */
   .hero{
-    position:relative;overflow:hidden;
-    min-height:640px;display:flex;align-items:flex-end;
-    padding-top:80px;
+    padding:48px 0 56px;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 20%, rgba(79,216,232,.08), transparent),
+      radial-gradient(ellipse 60% 50% at 10% 80%, rgba(245,234,61,.06), transparent),
+      var(--navy-deep);
   }
-  .hero-bg{
-    position:absolute;inset:0;
-    background:url('./assets/hero-chair.jpg') center 30% / cover no-repeat;
+  .hero-grid{
+    display:grid;grid-template-columns:1fr 0.88fr;gap:40px;align-items:center;
   }
-  .hero-bg::after{
-    content:'';position:absolute;inset:0;
-    background:linear-gradient(180deg, rgba(10,13,36,0.55) 0%, rgba(10,13,36,0.72) 45%, var(--navy-deep) 96%),
-               linear-gradient(90deg, rgba(10,13,36,0.92) 0%, rgba(10,13,36,0.35) 55%);
-  }
-  .hero-inner{position:relative;z-index:2;padding:60px 24px 64px;width:100%;}
-  .hero-inner .wrap{padding:0;}
-  .hero h1{font-size:clamp(38px,6vw,64px);line-height:1.08;margin-bottom:18px;}
+  .hero h1{font-size:clamp(34px,5vw,54px);line-height:1.1;margin-bottom:18px;}
   .hero h1 .accent{color:var(--yellow);}
-  .hero p.lede{font-size:17px;color:var(--muted);max-width:480px;margin-bottom:28px;}
-  .hero-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px;}
+  .hero p.lede{font-size:16.5px;color:var(--muted);max-width:460px;margin-bottom:24px;}
+  .hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;}
   .pill{
     border:1px solid var(--card-line);background:rgba(255,255,255,0.04);
-    padding:8px 16px;border-radius:100px;font-size:13px;font-weight:600;color:var(--cream);
+    padding:7px 14px;border-radius:100px;font-size:12.5px;font-weight:600;color:var(--cream);
   }
   .pill b{color:var(--yellow);}
-  .hero-cta{display:flex;gap:12px;flex-wrap:wrap;}
+  .hero-cta{display:flex;gap:10px;flex-wrap:wrap;}
   .btn{
     display:inline-flex;align-items:center;gap:8px;
-    padding:14px 26px;border-radius:100px;font-weight:700;font-size:15px;
+    padding:13px 24px;border-radius:100px;font-weight:700;font-size:14.5px;
     text-decoration:none;border:1px solid transparent;cursor:pointer;
   }
   .btn-primary{background:var(--yellow);color:#141414;}
@@ -95,114 +137,126 @@
   .btn-outline:hover{border-color:var(--yellow);color:var(--yellow);}
 
   /* ---------- section shell ---------- */
-  section{padding:88px 0;}
-  .section-head{max-width:640px;margin-bottom:44px;}
-  .section-head h2{font-size:clamp(26px,4vw,36px);margin-bottom:14px;}
-  .section-head p{color:var(--muted);font-size:15.5px;}
+  section{padding:80px 0;}
+  .section-head{max-width:640px;margin-bottom:40px;}
+  .section-head h2{font-size:clamp(26px,4vw,36px);margin-bottom:12px;}
+  .section-head p{color:var(--muted);font-size:15px;}
 
-  /* ---------- curation (featured) ---------- */
-  .curation{
-    background:linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
-    border-top:1px solid var(--card-line);
-    border-bottom:1px solid var(--card-line);
-    position:relative;
-  }
-  .shelf-row{
-    display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
-  }
-  .shelf-row.top{margin-bottom:22px;}
-  .book-card{
-    position:relative;
-    background:var(--card);
-    border:1px solid var(--card-line);
-    border-radius:14px;
-    padding:20px 18px 18px;
-    display:flex;flex-direction:column;
-    min-height:210px;
-    transition:transform .18s ease, border-color .18s ease;
-  }
-  .book-card:hover{transform:translateY(-4px);border-color:rgba(245,234,61,0.4);}
-  .book-card::after{
-    content:'';position:absolute;left:14px;right:14px;bottom:0;height:6px;
-    background:linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 100%);
-    border-radius:0 0 14px 14px;
-  }
-  .book-tag{
-    display:inline-block;font-size:11px;font-weight:800;letter-spacing:0.04em;
-    padding:4px 10px;border-radius:100px;margin-bottom:12px;width:fit-content;
-  }
-  .book-tag.designated{background:var(--yellow-soft);color:var(--yellow);}
-  .book-tag.pick{background:var(--cyan-soft);color:var(--cyan);}
-  .book-title{font-size:16.5px;font-weight:800;line-height:1.32;margin-bottom:6px;}
-  .book-meta{font-size:13px;color:var(--muted-dim);margin-bottom:auto;}
-  .book-price{display:flex;align-items:baseline;justify-content:space-between;margin-top:14px;padding-top:14px;border-top:1px dashed var(--card-line);}
-  .book-price .label{font-size:12px;color:var(--muted-dim);}
-  .book-price .amt{font-size:17px;font-weight:800;}
-  .book-card.featured{
-    grid-column:span 2;
-    background:linear-gradient(135deg, rgba(245,234,61,0.09), var(--card) 55%);
-    border-color:rgba(245,234,61,0.35);
-    min-height:210px;
-  }
-  .book-card.featured .book-title{font-size:20px;}
-
-  .curation-note{
-    margin-top:26px;display:flex;align-items:center;gap:10px;
-    font-size:13.5px;color:var(--muted-dim);
-  }
-  .curation-note b{color:var(--cream);}
-
-  /* ---------- flow / timeline ---------- */
-  .flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  .flow-card{
+  /* ---------- program showcase ---------- */
+  .programs{background:var(--navy);border-top:1px solid var(--card-line);border-bottom:1px solid var(--card-line);}
+  .program-showcase{display:flex;flex-direction:column;gap:28px;}
+  .program-row{
+    display:grid;grid-template-columns:0.72fr 1fr;gap:24px;align-items:stretch;
     background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
-    padding:28px 26px;
+    overflow:hidden;
   }
-  .flow-time{font-size:13px;color:var(--yellow);font-weight:800;margin-bottom:10px;letter-spacing:0.03em;}
-  .flow-card h3{font-size:19px;margin-bottom:10px;}
-  .flow-card p{color:var(--muted);font-size:14.5px;}
-
-  /* ---------- programs ---------- */
-  .program-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-  .program-card{
-    background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
-    padding:32px 28px;position:relative;overflow:hidden;
+  .program-row.reverse{grid-template-columns:1fr 0.72fr;}
+  .program-row.reverse .program-poster{order:2;}
+  .program-row.reverse .program-body{order:1;}
+  .program-poster{position:relative;min-height:280px;cursor:zoom-in;}
+  .program-poster img{width:100%;height:100%;object-fit:cover;object-position:center;}
+  .program-poster::after{
+    content:'';position:absolute;inset:0;
+    background:linear-gradient(90deg,rgba(10,13,36,.15),transparent 40%);
+    pointer-events:none;
   }
-  .program-card.highlight{border-color:rgba(245,234,61,0.4);}
-  .program-freq{font-size:13px;color:var(--muted-dim);font-weight:700;margin-bottom:6px;}
-  .program-card h3{font-size:22px;margin-bottom:16px;}
-  .program-list{list-style:none;padding:0;margin:0 0 22px;}
+  .program-row.reverse .program-poster::after{
+    background:linear-gradient(270deg,rgba(10,13,36,.15),transparent 40%);
+  }
+  .program-body{padding:32px 30px;display:flex;flex-direction:column;justify-content:center;}
+  .program-freq{font-size:12.5px;color:var(--muted-dim);font-weight:700;margin-bottom:8px;letter-spacing:0.03em;}
+  .program-body h3{font-size:22px;margin-bottom:14px;}
+  .program-list{list-style:none;padding:0;margin:0 0 20px;}
   .program-list li{
-    font-size:14px;color:var(--muted);padding-left:16px;position:relative;margin-bottom:8px;
+    font-size:14px;color:var(--muted);padding-left:16px;position:relative;margin-bottom:7px;
   }
   .program-list li::before{content:'·';position:absolute;left:0;color:var(--yellow);font-weight:800;}
   .program-price{font-size:26px;font-weight:800;}
   .program-price span{font-size:14px;color:var(--muted-dim);font-weight:600;}
+  .program-badge{
+    display:inline-block;font-size:11px;font-weight:800;letter-spacing:0.04em;
+    padding:4px 10px;border-radius:100px;margin-bottom:12px;width:fit-content;
+  }
+  .program-badge.free{background:var(--cyan-soft);color:var(--cyan);}
+  .program-badge.deep{background:var(--yellow-soft);color:var(--yellow);}
+
+  /* ---------- flow ---------- */
+  .flow-grid{display:grid;grid-template-columns:1fr 0.55fr;gap:24px;align-items:stretch;}
+  .flow-cards{display:flex;flex-direction:column;gap:14px;}
+  .flow-card{
+    background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
+    padding:26px 24px;
+  }
+  .flow-time{font-size:13px;color:var(--yellow);font-weight:800;margin-bottom:10px;letter-spacing:0.03em;}
+  .flow-card h3{font-size:19px;margin-bottom:10px;}
+  .flow-card p{color:var(--muted);font-size:14.5px;}
+  .flow-poster{
+    border-radius:var(--radius);overflow:hidden;border:1px solid var(--card-line);
+    position:relative;cursor:zoom-in;min-height:320px;
+  }
+  .flow-poster img{width:100%;height:100%;object-fit:cover;object-position:center;}
+
+  /* ---------- curation ---------- */
+  .curation{
+    background:linear-gradient(180deg,var(--navy-deep) 0%,var(--navy) 100%);
+  }
+  .curation-layout{display:grid;grid-template-columns:0.48fr 1fr;gap:28px;align-items:start;}
+  .curation-poster{
+    position:sticky;top:90px;border-radius:var(--radius);overflow:hidden;
+    border:1px solid var(--card-line);cursor:zoom-in;
+  }
+  .curation-poster img{width:100%;display:block;}
+  .shelf-row{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .shelf-row.top{margin-bottom:14px;}
+  .book-card{
+    position:relative;background:var(--card);border:1px solid var(--card-line);
+    border-radius:14px;padding:18px 16px 16px;
+    display:flex;flex-direction:column;min-height:170px;
+    transition:transform .18s ease,border-color .18s ease;
+  }
+  .book-card:hover{transform:translateY(-3px);border-color:rgba(245,234,61,0.35);}
+  .book-tag{
+    display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:0.04em;
+    padding:3px 9px;border-radius:100px;margin-bottom:10px;width:fit-content;
+  }
+  .book-tag.designated{background:var(--yellow-soft);color:var(--yellow);}
+  .book-tag.pick{background:var(--cyan-soft);color:var(--cyan);}
+  .book-title{font-size:15px;font-weight:800;line-height:1.32;margin-bottom:5px;}
+  .book-meta{font-size:12.5px;color:var(--muted-dim);margin-bottom:auto;}
+  .book-price{display:flex;align-items:baseline;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px dashed var(--card-line);}
+  .book-price .label{font-size:11px;color:var(--muted-dim);}
+  .book-price .amt{font-size:15px;font-weight:800;}
+  .book-card.featured{
+    grid-column:span 2;
+    background:linear-gradient(135deg,rgba(245,234,61,0.09),var(--card) 55%);
+    border-color:rgba(245,234,61,0.3);
+  }
+  .book-card.featured .book-title{font-size:18px;}
+  .curation-note{
+    margin-top:20px;font-size:13px;color:var(--muted-dim);
+  }
+  .curation-note b{color:var(--cream);}
 
   /* ---------- pass promo ---------- */
-  .pass{
-    background:var(--black);
-    position:relative;overflow:hidden;
-  }
-  .pass-bg{position:absolute;inset:0;opacity:0.28;background:url('./assets/night-reading.jpg') center 20% / cover no-repeat;}
-  .pass-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,14,0.4), var(--black) 85%);}
-  .pass-inner{position:relative;z-index:2;}
+  .pass{background:var(--black);position:relative;overflow:hidden;}
+  .pass-layout{display:grid;grid-template-columns:0.55fr 1fr;gap:28px;align-items:center;}
+  .pass-poster{border-radius:var(--radius);overflow:hidden;border:1px solid rgba(245,234,61,0.2);cursor:zoom-in;}
+  .pass-poster img{width:100%;display:block;}
   .pass-card{
-    background:rgba(255,255,255,0.03);
-    border:1px solid rgba(245,234,61,0.3);
-    border-radius:24px;padding:44px 40px;
+    background:rgba(255,255,255,0.03);border:1px solid rgba(245,234,61,0.3);
+    border-radius:24px;padding:36px 32px;
   }
-  .pass-label{font-size:13px;color:var(--yellow);font-weight:800;letter-spacing:0.04em;margin-bottom:14px;}
-  .pass-price-row{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:8px;}
-  .pass-old{font-size:22px;color:var(--muted-dim);text-decoration:line-through;}
-  .pass-new{font-size:44px;font-weight:800;color:var(--yellow);}
-  .pass-desc{color:var(--muted);font-size:14.5px;margin-bottom:26px;}
-  .pass-benefits{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .pass-label{font-size:13px;color:var(--yellow);font-weight:800;letter-spacing:0.04em;margin-bottom:12px;}
+  .pass-price-row{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:8px;}
+  .pass-old{font-size:20px;color:var(--muted-dim);text-decoration:line-through;}
+  .pass-new{font-size:40px;font-weight:800;color:var(--yellow);}
+  .pass-desc{color:var(--muted);font-size:14px;margin-bottom:22px;}
+  .pass-benefits{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .benefit-box{
-    background:rgba(255,255,255,0.04);border:1px solid var(--card-line);border-radius:12px;padding:16px 18px;
-    font-size:13.5px;color:var(--muted);
+    background:rgba(255,255,255,0.04);border:1px solid var(--card-line);border-radius:12px;
+    padding:14px 16px;font-size:13px;color:var(--muted);
   }
-  .benefit-box b{color:var(--cream);display:block;margin-bottom:4px;font-size:14px;}
+  .benefit-box b{color:var(--cream);display:block;margin-bottom:4px;font-size:13.5px;}
 
   /* ---------- apply form ---------- */
   .apply{background:var(--navy);}
@@ -213,7 +267,7 @@
   }
   .field{margin-bottom:20px;}
   .field label{display:block;font-size:13.5px;font-weight:700;color:var(--cream);margin-bottom:8px;}
-  .field input[type=text], .field input[type=tel], .field textarea{
+  .field input[type=text],.field input[type=tel],.field textarea{
     width:100%;background:var(--navy-deep);border:1px solid var(--card-line);border-radius:10px;
     padding:12px 14px;color:var(--cream);font-size:14.5px;font-family:inherit;
   }
@@ -234,12 +288,11 @@
     background:var(--navy-deep);color:var(--cream);font-size:16px;cursor:pointer;
   }
   .stepper span{min-width:20px;text-align:center;font-weight:700;}
-
   .book-select-list{display:flex;flex-direction:column;gap:10px;}
   .book-select{
     display:flex;align-items:center;gap:12px;
     border:1px solid var(--card-line);border-radius:10px;padding:12px 14px;
-    cursor:pointer;transition:border-color .15s ease, background .15s ease;
+    cursor:pointer;transition:border-color .15s ease,background .15s ease;
   }
   .book-select:hover{border-color:rgba(245,234,61,0.35);}
   .book-select.checked{border-color:var(--yellow);background:var(--yellow-soft);}
@@ -256,8 +309,6 @@
   .bs-tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:100px;margin-left:6px;}
   .bs-tag.designated{background:var(--yellow-soft);color:var(--yellow);}
   .bs-tag.pick{background:var(--cyan-soft);color:var(--cyan);}
-
-  /* summary card */
   .summary-card{
     background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
     padding:28px;position:sticky;top:90px;
@@ -280,24 +331,66 @@
     background:var(--yellow);color:#141414;font-weight:800;font-size:15px;cursor:pointer;
   }
   .submit-btn:disabled{opacity:0.4;cursor:not-allowed;}
-
+  .apply-alert{
+    margin-top:12px;padding:12px 14px;border-radius:10px;font-size:13px;
+    background:rgba(255,100,100,.12);border:1px solid rgba(255,100,100,.3);color:#ffb4b4;
+    display:none;
+  }
+  .apply-alert.show{display:block;}
   .success-panel{display:none;text-align:center;padding:20px 4px;}
   .success-panel .moon-big{font-size:34px;margin-bottom:14px;}
   .success-panel h3{font-size:18px;margin-bottom:10px;}
   .success-panel p{color:var(--muted);font-size:13.5px;margin-bottom:4px;}
 
-  footer{padding:44px 0 60px;text-align:center;color:var(--muted-dim);font-size:13px;}
+  /* ---------- lightbox ---------- */
+  .lightbox{
+    display:none;position:fixed;inset:0;z-index:200;
+    background:rgba(0,0,0,.88);align-items:center;justify-content:center;padding:24px;
+  }
+  .lightbox.on{display:flex;}
+  .lightbox-inner{position:relative;max-width:min(520px,92vw);width:100%;}
+  .lightbox-inner img{width:100%;border-radius:12px;display:block;}
+  .lb-close{
+    position:absolute;top:-40px;right:0;background:none;border:0;
+    color:#fff;font-size:28px;cursor:pointer;line-height:1;
+  }
+  .lb-nav{
+    position:absolute;top:50%;transform:translateY(-50%);
+    width:36px;height:36px;border-radius:50%;border:0;
+    background:rgba(255,255,255,.9);color:var(--navy-deep);
+    font-size:20px;cursor:pointer;font-weight:700;
+  }
+  .lb-prev{left:-48px;}
+  .lb-next{right:-48px;}
+  .lb-caption{text-align:center;color:var(--muted);font-size:13px;margin-top:12px;}
 
-  @media (max-width:860px){
-    .shelf-row{grid-template-columns:repeat(2,1fr);}
-    .book-card.featured{grid-column:span 2;}
-    .flow-grid, .program-grid{grid-template-columns:1fr;}
+  footer{padding:44px 0 60px;text-align:center;color:var(--muted-dim);font-size:13px;}
+  footer a{color:var(--muted);text-decoration:none;}
+  footer a:hover{color:var(--yellow);}
+
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:28px;}
+    .hero-grid .poster-slider-wrap{max-width:360px;margin:0 auto;}
+    .program-row,.program-row.reverse{grid-template-columns:1fr;}
+    .program-row.reverse .program-poster,
+    .program-row.reverse .program-body{order:unset;}
+    .program-poster{min-height:220px;max-height:320px;}
+    .flow-grid{grid-template-columns:1fr;}
+    .flow-poster{min-height:240px;max-height:360px;}
+    .curation-layout{grid-template-columns:1fr;}
+    .curation-poster{position:static;max-width:360px;margin:0 auto 8px;}
+    .pass-layout{grid-template-columns:1fr;}
+    .pass-poster{max-width:360px;margin:0 auto;}
     .apply-grid{grid-template-columns:1fr;}
     .pass-benefits{grid-template-columns:1fr;}
     .summary-card{position:static;}
+    .lb-prev{left:4px;}
+    .lb-next{right:4px;}
   }
   @media (max-width:520px){
-    .shelf-row{grid-template-columns:1fr 1fr;}
+    .shelf-row{grid-template-columns:1fr;}
+    .book-card.featured{grid-column:span 1;}
+    .nav-link{display:none;}
   }
 </style>
 </head>
@@ -305,32 +398,130 @@
 
 <header>
   <div class="nav">
-    <div class="brand"><span class="moon">☾</span> B.BOOKS · 달빛 리딩클럽</div>
-    <a class="nav-cta" href="#apply">신청하기</a>
+    <a class="brand" href="july.html"><span class="moon">☾</span> B.BOOKS · 달빛 리딩클럽</a>
+    <div class="nav-links">
+      <a class="nav-link" href="july.html">7월 비북스</a>
+      <a class="nav-cta" href="#apply">신청하기</a>
+    </div>
   </div>
 </header>
 
+<!-- ===================== HERO + 포스터 슬라이더 ===================== -->
 <section class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-inner">
-    <div class="wrap">
-      <div class="eyebrow">moonlight reading club</div>
-      <h1>월·금·일 저녁,<br>비북스 불이 <span class="accent">늦게까지</span> 켜져 있습니다.</h1>
-      <p class="lede">각자의 속도로 책을 읽다가, 10시가 되면 원하는 사람들끼리 모여 오늘 읽은 한 페이지를 가볍게 나눕니다. 진행은 0.1평 점주 썬북친구(@sun__book79).</p>
-      <div class="hero-meta">
-        <span class="pill">매주 <b>월 · 금 · 일</b></span>
-        <span class="pill">8:00 PM – 11:00 PM</span>
-        <span class="pill">7월 지정도서 <b>《시간의 감촉》</b></span>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">moonlight reading club</div>
+        <h1>월·금·일 저녁,<br>비북스 불이 <span class="accent">늦게까지</span> 켜져 있습니다.</h1>
+        <p class="lede">각자의 속도로 책을 읽다가, 10시가 되면 원하는 사람들끼리 모여 오늘 읽은 한 페이지를 가볍게 나눕니다. 진행은 0.1평 점주 썬북친구(@sun__book79).</p>
+        <div class="hero-meta">
+          <span class="pill">매주 <b>월 · 금 · 일</b></span>
+          <span class="pill">8:00 PM – 11:00 PM</span>
+          <span class="pill">7월 지정도서 <b>《시간의 감촉》</b></span>
+        </div>
+        <div class="hero-cta">
+          <a href="#curation" class="btn btn-outline">7월의 책 먼저 보기</a>
+          <a href="#apply" class="btn btn-primary">신청하러 가기</a>
+        </div>
       </div>
-      <div class="hero-cta">
-        <a href="#curation" class="btn btn-outline">7월의 책 먼저 보기</a>
-        <a href="#apply" class="btn btn-primary">신청하러 가기</a>
+
+      <div class="poster-slider-wrap hero-slider" id="poster-slider-hero"
+           onclick="openLightbox('hero')"
+           data-posters='["images/moonlight_july_01.jpg","images/moonlight_july_02.jpg","images/moonlight_july_03.jpg","images/moonlight_july_04.jpg"]'
+           data-alt="달빛 리딩클럽">
+        <div class="poster-slider-viewport">
+          <div class="poster-slider" data-slider="hero">
+            <div class="poster-slide"><img src="images/moonlight_july_01.jpg" alt="달빛 리딩클럽 모집 안내"></div>
+            <div class="poster-slide"><img src="images/moonlight_july_02.jpg" alt="심야자유독서"></div>
+            <div class="poster-slide"><img src="images/moonlight_july_03.jpg" alt="달리클럽 독서모임 7/20"></div>
+            <div class="poster-slide"><img src="images/moonlight_july_04.jpg" alt="7월 지정·추천도서"></div>
+          </div>
+        </div>
+        <div class="poster-slider-nav">
+          <div class="slider-dots" data-dots="hero"></div>
+          <div class="slider-arrows">
+            <button type="button" class="sarr" aria-label="이전" onclick="event.stopPropagation();posterSlide('hero',-1)">‹</button>
+            <button type="button" class="sarr" aria-label="다음" onclick="event.stopPropagation();posterSlide('hero',1)">›</button>
+          </div>
+        </div>
+        <span class="poster-slider-hint">1 / 4</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ===================== 큐레이션 (상단 강조) ===================== -->
+<!-- ===================== 두 가지 모임 (포스터 연동) ===================== -->
+<section class="programs" id="programs">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Programs</div>
+      <h2>두 가지 모임</h2>
+      <p>매주 심야 자유독서와, 월 1회 지정도서 모임이 함께 진행됩니다.</p>
+    </div>
+    <div class="program-showcase">
+      <div class="program-row">
+        <div class="program-poster" onclick="openLightboxAt(1)" role="button" tabindex="0" aria-label="심야자유독서 포스터 크게 보기">
+          <img src="images/moonlight_july_02.jpg" alt="심야자유독서 포스터">
+        </div>
+        <div class="program-body">
+          <span class="program-badge free">매주 · 월 / 금 / 일</span>
+          <h3>심야 자유 독서</h3>
+          <ul class="program-list">
+            <li>8PM – 10PM, 자유롭게 머물며 독서</li>
+            <li>10PM부터 30분, 가벼운 책 소개 모임 (선택)</li>
+            <li>차 · 커피 · 과자 포함</li>
+          </ul>
+          <div class="program-price">5,000원 <span>/ 1회</span></div>
+        </div>
+      </div>
+      <div class="program-row reverse">
+        <div class="program-poster" onclick="openLightboxAt(2)" role="button" tabindex="0" aria-label="달리클럽 포스터 크게 보기">
+          <img src="images/moonlight_july_03.jpg" alt="달리클럽 독서모임 포스터">
+        </div>
+        <div class="program-body">
+          <span class="program-badge deep">월 1회 · 7월 20일(월)</span>
+          <h3>달리클럽 독서모임</h3>
+          <ul class="program-list">
+            <li>7월 지정도서 《시간의 감촉》(은희경) 읽고 참여</li>
+            <li>8PM – 10PM, 썬북친구님 발제로 깊이 있는 이야기</li>
+            <li>차 · 커피 · 과자 포함</li>
+          </ul>
+          <div class="program-price">10,000원 <span>/ 1회</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 오늘 저녁의 흐름 ===================== -->
+<section class="flow" id="flow">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Tonight</div>
+      <h2>오늘 저녁의 흐름</h2>
+      <p>매주 월요일 · 금요일 · 일요일, 8PM – 11PM</p>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-cards">
+        <div class="flow-card">
+          <div class="flow-time">8:00 — 10:00 PM</div>
+          <h3>혼자, 자유롭게</h3>
+          <p>매장에 머무는 동안 각자 가능한 만큼 책을 읽습니다. 오는 시간, 머무는 시간 모두 자유. 차·커피·과자와 함께 하루를 마무리하는 시간.</p>
+        </div>
+        <div class="flow-card">
+          <div class="flow-time">10:00 — 10:30 PM</div>
+          <h3>원하는 사람들끼리</h3>
+          <p>썬북친구님 진행으로 테이블에 모여, 오늘 읽은 책을 가볍게 소개합니다. 참여는 자유 — 그냥 책만 읽고 가셔도 좋습니다.</p>
+        </div>
+      </div>
+      <div class="flow-poster" onclick="openLightboxAt(1)" role="button" tabindex="0">
+        <img src="images/moonlight_july_02.jpg" alt="심야자유독서 — 비북스 서가 앞">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 큐레이션 (포스터 + 책 목록) ===================== -->
 <section class="curation" id="curation">
   <div class="wrap">
     <div class="section-head">
@@ -339,88 +530,46 @@
       <p>지정도서 1권과 함께 읽으면 좋을 추천도서 7권. 정가는 온라인 서점 기준이며, 신청서에서 원하는 책을 함께 구입할 수 있습니다.</p>
     </div>
 
-    <div id="book-shelf"></div>
-
-    <p class="curation-note">
-      <b>지정도서</b>는 달빛 심야 독서모임(7/20 월) 발제 도서, <b>추천도서</b>는 심야 자유독서 시간에 곁들이기 좋은 7월의 책입니다.
-    </p>
-  </div>
-</section>
-
-<!-- ===================== 오늘 저녁의 흐름 ===================== -->
-<section class="flow">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="eyebrow">Tonight</div>
-      <h2>오늘 저녁의 흐름</h2>
-      <p>매주 월요일 · 금요일 · 일요일, 8PM – 11PM</p>
-    </div>
-    <div class="flow-grid">
-      <div class="flow-card">
-        <div class="flow-time">8:00 — 10:00 PM</div>
-        <h3>혼자, 자유롭게</h3>
-        <p>매장에 머무는 동안 각자 가능한 만큼 책을 읽습니다. 오는 시간, 머무는 시간 모두 자유. 차·커피·과자와 함께 하루를 마무리하는 시간.</p>
+    <div class="curation-layout">
+      <div class="curation-poster" onclick="openLightboxAt(3)" role="button" tabindex="0" aria-label="7월 도서 포스터 크게 보기">
+        <img src="images/moonlight_july_04.jpg" alt="7월 지정·추천도서 포스터">
       </div>
-      <div class="flow-card">
-        <div class="flow-time">10:00 — 10:30 PM</div>
-        <h3>원하는 사람들끼리</h3>
-        <p>썬북친구님 진행으로 테이블에 모여, 오늘 읽은 책을 가볍게 소개합니다. 참여는 자유 — 그냥 책만 읽고 가셔도 좋습니다.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== 두 가지 모임 ===================== -->
-<section class="programs">
-  <div class="wrap">
-    <div class="section-head">
-      <div class="eyebrow">Programs</div>
-      <h2>두 가지 모임</h2>
-    </div>
-    <div class="program-grid">
-      <div class="program-card">
-        <div class="program-freq">매주 · 월 / 금 / 일</div>
-        <h3>심야 자유 독서</h3>
-        <ul class="program-list">
-          <li>8PM – 10PM, 자유롭게 머물며 독서</li>
-          <li>10PM부터 30분, 가벼운 책 소개 모임 (선택)</li>
-          <li>차 · 커피 · 과자 포함</li>
-        </ul>
-        <div class="program-price">5,000원 <span>/ 1회</span></div>
-      </div>
-      <div class="program-card highlight">
-        <div class="program-freq">월 1회 · 지정도서 · 7월 20일(월)</div>
-        <h3>달빛 심야 독서모임</h3>
-        <ul class="program-list">
-          <li>7월 지정도서 《시간의 감촉》(은희경) 읽고 참여</li>
-          <li>8PM – 10PM, 썬북친구님 발제로 깊이 있는 이야기</li>
-          <li>차 · 커피 · 과자 포함</li>
-        </ul>
-        <div class="program-price">10,000원 <span>/ 1회</span></div>
+      <div>
+        <div id="book-shelf"></div>
+        <p class="curation-note">
+          <b>지정도서</b>는 달리클럽 독서모임(7/20 월) 발제 도서, <b>추천도서</b>는 심야 자유독서 시간에 곁들이기 좋은 7월의 책입니다.
+        </p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ===================== 1개월권 ===================== -->
-<section class="pass">
-  <div class="pass-bg"></div>
-  <div class="wrap pass-inner">
+<section class="pass" id="pass">
+  <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">7월 한정</div>
       <h2>1개월권 특가</h2>
       <p>월·금·일 정기모임 + 지정도서 모임까지, 한 달이면 약 13회. 회차마다 내면 약 70,000원 — 1개월권이면 절반 이하입니다.</p>
     </div>
-    <div class="pass-card">
-      <div class="pass-label">1개월권 · 모든 정기모임 + 지정도서모임 무제한</div>
-      <div class="pass-price-row">
-        <span class="pass-old">70,000원</span>
-        <span class="pass-new">30,000원</span>
+    <div class="pass-layout">
+      <div class="pass-poster" onclick="openLightboxAt(0)" role="button" tabindex="0" aria-label="모집 포스터 크게 보기">
+        <img src="images/moonlight_july_01.jpg" alt="달빛 리딩클럽 7월 한정 1개월권">
       </div>
-      <p class="pass-desc">정가 약 70,000원 / 월 → 7월 한정 특가 30,000원</p>
-      <div class="pass-benefits">
-        <div class="benefit-box"><b>혜택 1</b>독서모임 2종 무제한 — 심야자유독서(매주 월·금·일) + 달리클럽 독서모임</div>
-        <div class="benefit-box"><b>혜택 2</b>「밤밀온」신청 시, 5,000원 할인 (20,000원 → 15,000원)</div>
+      <div class="pass-card">
+        <div class="pass-label">1개월권 · 모든 정기모임 + 지정도서모임 무제한</div>
+        <div class="pass-price-row">
+          <span class="pass-old">70,000원</span>
+          <span class="pass-new">30,000원</span>
+        </div>
+        <p class="pass-desc">정가 약 70,000원 / 월 → 7월 한정 특가 30,000원</p>
+        <div class="pass-benefits">
+          <div class="benefit-box"><b>혜택 1</b>독서모임 2종 무제한 — 심야자유독서(매주 월·금·일) + 달리클럽 독서모임</div>
+          <div class="benefit-box"><b>혜택 2</b>「밤밀온」신청 시, 5,000원 할인 (20,000원 → 15,000원)</div>
+        </div>
+        <div style="margin-top:22px;">
+          <a href="#apply" class="btn btn-primary">1개월권 신청하기</a>
+        </div>
       </div>
     </div>
   </div>
@@ -436,7 +585,6 @@
     </div>
 
     <div class="apply-grid">
-      <!-- 왼쪽: 입력 폼 -->
       <div class="form-card">
         <div class="field">
           <label>이름</label>
@@ -470,7 +618,7 @@
             </div>
           </div>
           <div class="count-row">
-            <span class="count-label">달빛 심야 독서모임, 7/20(월) (10,000원 / 회)</span>
+            <span class="count-label">달리클럽 독서모임, 7/20(월) (10,000원 / 회)</span>
             <div class="stepper">
               <button type="button" data-target="deep" data-dir="-1">−</button>
               <span id="count-deep">0</span>
@@ -500,7 +648,6 @@
         </div>
       </div>
 
-      <!-- 오른쪽: 결제 요약 -->
       <div>
         <div class="summary-card" id="summary-card">
           <h3>결제 금액</h3>
@@ -522,6 +669,7 @@
           </label>
 
           <button class="submit-btn" id="submit-btn" disabled>신청 보내기</button>
+          <div class="apply-alert" id="apply-alert"></div>
 
           <div class="success-panel" id="success-panel">
             <div class="moon-big">🌙</div>
@@ -537,13 +685,35 @@
 </section>
 
 <footer>
-  달빛 리딩 클럽 · 비북스 · 진행 0.1평 점주 썬북친구 (@sun__book79)<br>
-  장소 안내는 추후 업데이트됩니다.
+  달빛 리딩 클럽 · <a href="july.html">비북스 7월</a> · 진행 0.1평 점주 썬북친구 (@sun__book79)<br>
+  장소: 비북스 매장
 </footer>
 
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" onclick="if(event.target===this)closeLightbox()">
+  <div class="lightbox-inner">
+    <button type="button" class="lb-close" onclick="closeLightbox()" aria-label="닫기">×</button>
+    <button type="button" class="lb-nav lb-prev" onclick="lightboxSlide(-1)" aria-label="이전">‹</button>
+    <img id="lb-img" src="" alt="">
+    <button type="button" class="lb-nav lb-next" onclick="lightboxSlide(1)" aria-label="다음">›</button>
+    <div class="lb-caption" id="lb-caption"></div>
+  </div>
+</div>
+
 <script>
+const API = 'https://script.google.com/macros/s/AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ/exec';
+const PAGE_MONTH = '7월';
+const MOIM_NAME = '달빛 리딩 클럽';
+
+const POSTERS = [
+  { src: 'images/moonlight_july_01.jpg', alt: '달빛 리딩클럽 모집 안내' },
+  { src: 'images/moonlight_july_02.jpg', alt: '심야자유독서 5,000원/회' },
+  { src: 'images/moonlight_july_03.jpg', alt: '달리클럽 독서모임 7/20(월)' },
+  { src: 'images/moonlight_july_04.jpg', alt: '7월 지정·추천도서' }
+];
+
 const BOOKS = [
-  {id:'time',      title:'시간의 감촉',           author:'은희경',       publisher:'문학동네',   price:18800, tag:'designated', featured:true, note:'7월 지정도서 · 달빛 독서모임 발제 도서'},
+  {id:'time',      title:'시간의 감촉',           author:'은희경',       publisher:'문학동네',   price:18800, tag:'designated', featured:true, note:'7월 지정도서 · 달리클럽 발제 도서'},
   {id:'summer1',   title:'첫 여름, 완주',          author:'김금희',       publisher:'무제',       price:17000, tag:'pick'},
   {id:'volcano',   title:'여름은 오래 그곳에 남아', author:'마쓰이에 마사시', publisher:'비채',    price:14000, tag:'pick'},
   {id:'formless',  title:'무정형의 삶',            author:'김민철',       publisher:'위즈덤하우스', price:20000, tag:'pick'},
@@ -555,14 +725,98 @@ const BOOKS = [
 
 function won(n){ return n.toLocaleString('ko-KR') + '원'; }
 
-// ---- render bookshelf (curation section) ----
+// ---- poster slider ----
+const posterSliderState = {};
+let lbIndex = 0;
+
+function initPosterSliders() {
+  document.querySelectorAll('[data-slider]').forEach(track => {
+    const id = track.dataset.slider;
+    const slides = track.querySelectorAll('.poster-slide');
+    if (!slides.length) return;
+    posterSliderState[id] = { index: 0, total: slides.length };
+    const dotsEl = document.querySelector(`[data-dots="${id}"]`);
+    if (dotsEl) {
+      dotsEl.innerHTML = Array.from(slides).map((_, i) =>
+        `<div class="sdot${i === 0 ? ' active' : ''}" onclick="event.stopPropagation();posterGo('${id}',${i})"></div>`
+      ).join('');
+    }
+    updatePosterSlider(id);
+  });
+}
+
+function posterSlide(id, dir) {
+  const s = posterSliderState[id];
+  if (!s) return;
+  s.index = (s.index + dir + s.total) % s.total;
+  updatePosterSlider(id);
+}
+
+function posterGo(id, i) {
+  const s = posterSliderState[id];
+  if (!s) return;
+  s.index = i;
+  updatePosterSlider(id);
+}
+
+function updatePosterSlider(id) {
+  const s = posterSliderState[id];
+  if (!s) return;
+  const track = document.querySelector(`[data-slider="${id}"]`);
+  if (track) track.style.transform = `translateX(-${s.index * 100}%)`;
+  document.querySelectorAll(`[data-dots="${id}"] .sdot`).forEach((d, i) => {
+    d.classList.toggle('active', i === s.index);
+  });
+  const wrap = document.getElementById(`poster-slider-${id}`);
+  const hint = wrap?.querySelector('.poster-slider-hint');
+  if (hint) hint.textContent = `${s.index + 1} / ${s.total}`;
+}
+
+// ---- lightbox ----
+function openLightbox(id) {
+  const s = posterSliderState[id];
+  openLightboxAt(s ? s.index : 0);
+}
+
+function openLightboxAt(index) {
+  lbIndex = index;
+  updateLightbox();
+  document.getElementById('lightbox').classList.add('on');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('on');
+  document.body.style.overflow = '';
+}
+
+function lightboxSlide(dir) {
+  lbIndex = (lbIndex + dir + POSTERS.length) % POSTERS.length;
+  updateLightbox();
+}
+
+function updateLightbox() {
+  const p = POSTERS[lbIndex];
+  document.getElementById('lb-img').src = p.src;
+  document.getElementById('lb-img').alt = p.alt;
+  document.getElementById('lb-caption').textContent = `${lbIndex + 1} / ${POSTERS.length} · ${p.alt}`;
+}
+
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('on')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lightboxSlide(-1);
+  if (e.key === 'ArrowRight') lightboxSlide(1);
+});
+
+// ---- render bookshelf ----
 const shelf = document.getElementById('book-shelf');
 const topRow = document.createElement('div');
 topRow.className = 'shelf-row top';
 const bottomRow = document.createElement('div');
 bottomRow.className = 'shelf-row';
 
-BOOKS.forEach((b, i) => {
+BOOKS.forEach(b => {
   const card = document.createElement('div');
   card.className = 'book-card' + (b.featured ? ' featured' : '');
   card.innerHTML = `
@@ -571,13 +825,13 @@ BOOKS.forEach((b, i) => {
     <div class="book-meta">${b.author} · ${b.publisher}${b.note ? '<br>' + b.note : ''}</div>
     <div class="book-price"><span class="label">정가</span><span class="amt">${won(b.price)}</span></div>
   `;
-  if (b.featured) { topRow.appendChild(card); }
-  else { bottomRow.appendChild(card); }
+  if (b.featured) topRow.appendChild(card);
+  else bottomRow.appendChild(card);
 });
 shelf.appendChild(topRow);
 shelf.appendChild(bottomRow);
 
-// ---- render book select list (apply form) ----
+// ---- render book select list ----
 const listEl = document.getElementById('book-select-list');
 BOOKS.forEach(b => {
   const row = document.createElement('label');
@@ -629,17 +883,16 @@ document.querySelectorAll('.stepper button').forEach(btn => {
 // ---- bammilon chip ----
 const bammilonChip = document.getElementById('bammilon-chip');
 const bammilonInput = document.getElementById('f-bammilon');
-bammilonChip.addEventListener('click', (e) => {
-  if (e.target.tagName !== 'INPUT') { bammilonInput.checked = !bammilonInput.checked; }
+bammilonChip.addEventListener('click', e => {
+  if (e.target.tagName !== 'INPUT') bammilonInput.checked = !bammilonInput.checked;
   bammilonChip.classList.toggle('active', bammilonInput.checked);
   updateSummary();
 });
 
-// ---- summary ----
 function selectedBooks() {
-  return Array.from(document.querySelectorAll('#book-select-list input:checked')).map(inp => {
-    return BOOKS.find(b => b.id === inp.dataset.id);
-  });
+  return Array.from(document.querySelectorAll('#book-select-list input:checked')).map(inp =>
+    BOOKS.find(b => b.id === inp.dataset.id)
+  );
 }
 
 function updateSummary() {
@@ -647,7 +900,6 @@ function updateSummary() {
   let total = 0;
 
   if (ptype === 'pass') {
-    let passPrice = 30000;
     if (bammilonInput.checked) {
       lines.push(['1개월권 특가', 30000]);
       lines.push(['밤밀온 연계 할인', -5000]);
@@ -664,48 +916,132 @@ function updateSummary() {
     }
     if (counts.deep > 0) {
       const amt = counts.deep * 10000;
-      lines.push([`달빛 심야 독서모임 × ${counts.deep}회`, amt]);
+      lines.push([`달리클럽 독서모임 × ${counts.deep}회`, amt]);
       total += amt;
     }
   }
 
-  const books = selectedBooks();
-  books.forEach(b => {
+  selectedBooks().forEach(b => {
     lines.push([`도서 구입 · ${b.title}`, b.price]);
     total += b.price;
   });
 
   const linesEl = document.getElementById('summary-lines');
-  if (lines.length === 0) {
-    linesEl.innerHTML = `<div class="summary-line"><span>참여 회차 또는 도서를 선택해주세요</span></div>`;
-  } else {
-    linesEl.innerHTML = lines.map(([label, amt]) => `
-      <div class="summary-line"><span>${label}</span><b>${amt < 0 ? '−' : ''}${won(Math.abs(amt))}</b></div>
-    `).join('');
-  }
+  linesEl.innerHTML = lines.length
+    ? lines.map(([label, amt]) =>
+        `<div class="summary-line"><span>${label}</span><b>${amt < 0 ? '−' : ''}${won(Math.abs(amt))}</b></div>`
+      ).join('')
+    : `<div class="summary-line"><span>참여 회차 또는 도서를 선택해주세요</span></div>`;
   document.getElementById('total-amt').textContent = won(Math.max(0, total));
   return Math.max(0, total);
 }
 
-// ---- confirm & submit ----
 const confirmBox = document.getElementById('f-confirm');
 const submitBtn = document.getElementById('submit-btn');
+const applyAlert = document.getElementById('apply-alert');
 confirmBox.addEventListener('change', () => {
   submitBtn.disabled = !confirmBox.checked;
 });
 
-submitBtn.addEventListener('click', () => {
-  const total = updateSummary();
-  const name = document.getElementById('f-name').value || '신청자';
+async function POST(data) {
+  const r = await fetch(API, {
+    method: 'POST',
+    redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(data)
+  });
+  const text = await r.text();
+  let out;
+  try {
+    out = JSON.parse(text);
+  } catch {
+    throw new Error('서버 응답을 읽을 수 없습니다. Apps Script 배포를 확인해주세요.');
+  }
+  if (out.error) throw new Error(out.error);
+  if (!r.ok && !out.ok) throw new Error('요청 실패');
+  return out;
+}
+
+function buildSessionLabel() {
+  if (ptype === 'pass') {
+    return bammilonInput.checked ? '1개월권 + 밤밀온 할인' : '1개월권';
+  }
+  const parts = [];
+  if (counts.free > 0) parts.push(`심야자유독서×${counts.free}`);
+  if (counts.deep > 0) parts.push(`달리클럽×${counts.deep}`);
+  return parts.join(', ');
+}
+
+function buildNote() {
+  const dates = document.getElementById('f-dates').value.trim();
+  const parts = [];
+  if (ptype === 'pass' && bammilonInput.checked) parts.push('밤밀온 연계 할인');
+  if (dates) parts.push('참여일: ' + dates);
+  return parts.join(' · ');
+}
+
+function buildBooksLabel() {
   const books = selectedBooks();
-  document.querySelector('.form-card').style.display = 'none';
-  document.getElementById('summary-card').querySelectorAll('.field, .bank-box, .confirm-row, .submit-btn, #summary-lines, .summary-total, h3').forEach(el => el.style.display = 'none');
-  const successPanel = document.getElementById('success-panel');
-  successPanel.style.display = 'block';
-  let bookLine = books.length ? `함께 구입하신 책: ${books.map(b => b.title).join(', ')}` : '';
-  document.getElementById('success-summary').textContent = `${name}님, 총 ${won(total)} 신청이 확인되었습니다. ${bookLine}`;
+  return books.length ? books.map(b => b.title).join(', ') : '';
+}
+
+function showApplyError(msg) {
+  applyAlert.textContent = msg;
+  applyAlert.classList.add('show');
+}
+
+submitBtn.addEventListener('click', async () => {
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const total = updateSummary();
+  const session = buildSessionLabel();
+  const books = buildBooksLabel();
+
+  applyAlert.classList.remove('show');
+  if (!name || !phone) {
+    showApplyError('이름과 연락처를 입력해주세요.');
+    return;
+  }
+  if (!session && !books) {
+    showApplyError('참여 회차 또는 도서를 선택해주세요.');
+    return;
+  }
+  if (!confirmBox.checked) {
+    showApplyError('입금 확인에 체크해주세요.');
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = '신청 중...';
+  try {
+    await POST({
+      action: 'apply',
+      month: PAGE_MONTH,
+      moimName: MOIM_NAME,
+      session: session || '도서만',
+      name,
+      phone,
+      amount: total,
+      date: new Date().toLocaleString('ko-KR'),
+      note: buildNote(),
+      books: books || '도서 미신청'
+    });
+    document.querySelector('.form-card').style.display = 'none';
+    document.getElementById('summary-card').querySelectorAll('.bank-box,.confirm-row,.submit-btn,#summary-lines,.summary-total,h3,.apply-alert').forEach(el => {
+      el.style.display = 'none';
+    });
+    document.getElementById('success-panel').style.display = 'block';
+    const bookLine = books ? `함께 구입하신 책: ${books}` : '';
+    document.getElementById('success-summary').textContent =
+      `${name}님, 총 ${won(total)} 신청이 접수되었습니다. ${bookLine}`;
+  } catch (err) {
+    showApplyError(err.message || '신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    submitBtn.disabled = !confirmBox.checked;
+    submitBtn.textContent = '신청 보내기';
+  }
 });
 
+initPosterSliders();
 updateSummary();
 </script>
 </body>
