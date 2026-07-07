@@ -306,6 +306,12 @@
       text-decoration: line-through;
       opacity: .85;
     }
+    .cal-event.cal-closed {
+      background: #fef3c7;
+      color: #92400e;
+      font-weight: 700;
+      opacity: .9;
+    }
     .ev-voice { background: #fef3c7; color: #92400e; }
     .dot-event { background: #dc2626; }
     .ev-event { background: #ffe4e6; color: #9f1239; }
@@ -1831,6 +1837,37 @@
       color: #92400e;
       vertical-align: middle;
     }
+    .moim-stamp-closed {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 5;
+      transform: translate(-50%, -50%) rotate(-12deg);
+      width: clamp(108px, 30vw, 148px);
+      height: clamp(108px, 30vw, 148px);
+      border-radius: 50%;
+      border: 4px double #b91c1c;
+      box-shadow:
+        inset 0 0 0 3px rgba(185, 28, 28, 0.18),
+        0 4px 18px rgba(0, 0, 0, .18);
+      background: rgba(255, 252, 248, 0.72);
+      color: #b91c1c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      font-size: clamp(15px, 4.2vw, 20px);
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      line-height: 1.15;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0.94;
+    }
+    .moim-stamp-closed span {
+      display: block;
+    }
     .stab.stab-full {
       opacity: .55;
       text-decoration: line-through;
@@ -1970,46 +2007,16 @@
       position: absolute;
       inset: 0;
       z-index: 4;
-      background: rgba(8, 18, 38, 0.55);
+      background: rgba(8, 18, 38, 0.18);
       pointer-events: none;
     }
     .moim-card.moim-closed .moim-poster-img::after,
     .moim-card.moim-closed .poster-slider-wrap::after {
-      content: '모임 신청 마감';
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%) rotate(-8deg);
-      z-index: 5;
-      min-width: 72%;
-      max-width: 92%;
-      text-align: center;
-      background: rgba(146, 64, 14, 0.94);
-      color: #fff;
-      font-size: clamp(17px, 5.5vw, 28px);
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      line-height: 1.25;
-      padding: 14px 10px;
-      border: 3px solid #fff;
-      box-shadow: 0 10px 32px rgba(0, 0, 0, .35);
-      border-radius: 8px;
-      pointer-events: none;
-      white-space: nowrap;
+      content: none;
     }
     .moim-card.moim-closed .moim-poster-img:hover::after,
     .moim-card.moim-closed .poster-slider-wrap:hover::after {
-      content: '모임 신청 마감';
-      left: 50%;
-      top: 50%;
-      right: auto;
-      bottom: auto;
-      transform: translate(-50%, -50%) rotate(-8deg);
-      background: rgba(146, 64, 14, 0.94);
-      color: #fff;
-      font-size: clamp(17px, 5.5vw, 28px);
-      padding: 14px 10px;
-      border-radius: 8px;
+      content: none;
     }
 
     /* ── 시간 슬롯 ──────────────────────── */
@@ -3285,7 +3292,8 @@ const MOIMS = {
     sessions: [{ label: '7/29(수) 오전 11:00–1:00', value: '7월29일' }],
     capacity: 1,
     amount: 30000,
-    hasSession: false
+    hasSession: false,
+    forceSoldOut: true
   },
   sammybook: {
     name: '새미 북클럽',
@@ -3526,8 +3534,16 @@ function isSessionEnded(session) {
 }
 
 function isSessionClosed(m, session, counts) {
+  if (m.forceSoldOut) return true;
   if (m.applyClosed) return true;
   return isSessionEnded(session) || isSessionFull(m, session.value, counts);
+}
+
+function isMoimMarkedSoldOut(key, counts) {
+  const m = MOIMS[key];
+  if (!m || m.applyUrl) return false;
+  if (m.forceSoldOut) return true;
+  return isMoimCapacityFull(key, counts);
 }
 
 function isMoimFullySoldOut(key, counts) {
@@ -3568,6 +3584,7 @@ function isMoimFullyClosed(key, counts) {
 function isMoimApplyOpen(key, counts) {
   const m = MOIMS[key];
   if (!m) return false;
+  if (m.forceSoldOut) return false;
   counts = counts || latestMoimCounts;
   return m.sessions.some(s => !isSessionClosed(m, s, counts));
 }
@@ -3676,6 +3693,11 @@ async function loadMoimCounts() {
   updateCalendarMoimStatus(latestMoimCounts);
 }
 
+function refreshMoimCapacityUI() {
+  updateMoimCapacity(latestMoimCounts);
+  updateCalendarMoimStatus(latestMoimCounts);
+}
+
 function soldOut(btnId, label = '모집 완료') {
   const btn = q(`#${btnId}`);
   if (!btn) return;
@@ -3696,7 +3718,7 @@ function setSessionMetaBadge(meta, type) {
   if (!meta) return;
   meta.querySelectorAll('.moim-full-badge, .moim-ended-badge, .moim-closed-badge').forEach(el => el.remove());
   if (!type) return;
-  const labels = { full: '모집 완료', ended: '모임 종료', closed: '모임 신청 마감' };
+  const labels = { full: '모집 완료', ended: '모임 종료', closed: '신청 마감' };
   const classes = { full: 'moim-full-badge', ended: 'moim-ended-badge', closed: 'moim-closed-badge' };
   const badge = document.createElement('span');
   badge.className = classes[type];
@@ -3715,6 +3737,21 @@ function updateSessionTab(tab, ended, full) {
   if (ended) tab.textContent = `${tab.dataset.baseLabel} ·종료`;
   else if (full) tab.textContent = `${tab.dataset.baseLabel} ✓`;
   else tab.textContent = tab.dataset.baseLabel;
+}
+
+function ensureMoimClosedStamp(card) {
+  if (!card) return;
+  const poster = card.querySelector('.moim-poster-img, .poster-slider-wrap');
+  if (!poster || poster.querySelector('.moim-stamp-closed')) return;
+  const stamp = document.createElement('div');
+  stamp.className = 'moim-stamp-closed';
+  stamp.setAttribute('aria-hidden', 'true');
+  stamp.innerHTML = '<span>신청</span><span>마감</span>';
+  poster.appendChild(stamp);
+}
+
+function removeMoimClosedStamp(card) {
+  card?.querySelectorAll('.moim-stamp-closed').forEach(el => el.remove());
 }
 
 function updateMoimCapacity(counts) {
@@ -3737,19 +3774,21 @@ function updateMoimCapacity(counts) {
     }
 
     const allEnded = isMoimFullyEnded(key);
-    const capacityFull = isMoimCapacityFull(key, counts);
+    const capacityFull = isMoimMarkedSoldOut(key, counts);
     const applyOpen = isMoimApplyOpen(key, counts);
 
     card?.classList.remove('moim-sold-out', 'moim-ended', 'moim-closed');
+    removeMoimClosedStamp(card);
     if (allEnded) {
       soldOut(`apply-${key}`, '모임 종료');
       card?.classList.add('moim-ended');
-    } else if (m.applyClosed) {
-      soldOut(`apply-${key}`, '모임 신청 마감');
-      card?.classList.add('moim-closed');
     } else if (capacityFull) {
       soldOut(`apply-${key}`, '모집 완료');
       card?.classList.add('moim-sold-out');
+    } else if (m.applyClosed) {
+      soldOut(`apply-${key}`, '신청 마감');
+      card?.classList.add('moim-closed');
+      ensureMoimClosedStamp(card);
     } else if (!applyOpen) {
       soldOut(`apply-${key}`, '신청 마감');
     } else {
@@ -3760,8 +3799,8 @@ function updateMoimCapacity(counts) {
     const tabs = card ? card.querySelectorAll('.stab') : [];
     m.sessions.forEach((session, idx) => {
       const ended = isSessionEnded(session);
-      const full = isSessionFull(m, session.value, counts);
-      const badgeType = m.applyClosed ? 'closed' : (ended ? 'ended' : (full ? 'full' : null));
+      const full = m.forceSoldOut || isSessionFull(m, session.value, counts);
+      const badgeType = ended ? 'ended' : (full ? 'full' : (m.applyClosed ? 'closed' : null));
       setSessionMetaBadge(metas[idx], badgeType);
       updateSessionTab(tabs[idx], ended, full);
     });
@@ -3775,22 +3814,35 @@ function updateCalendarMoimStatus(counts) {
     const key = el.getAttribute('onclick')?.match(/scrollToMoim\('([^']+)'\)/)?.[1];
     const m = key ? MOIMS[key] : null;
     if (!m || m.applyUrl) {
-      el.classList.remove('cal-sold-out');
+      el.classList.remove('cal-sold-out', 'cal-closed');
       return;
+    }
+    if (!el.dataset.baseLabel) {
+      el.dataset.baseLabel = el.textContent
+        .replace(/\s*·\s*모집완료$/, '')
+        .replace(/\s*·\s*신청마감$/, '')
+        .trim();
     }
     const sessionValue = el.dataset.session
       || (m.sessions.length === 1 ? m.sessions[0].value : null);
-    let full = false;
-    if (sessionValue) {
-      full = isSessionFull(m, sessionValue, counts);
-    } else {
-      full = isMoimCapacityFull(key, counts);
+    const full = m.forceSoldOut
+      || (sessionValue
+        ? isSessionFull(m, sessionValue, counts)
+        : isMoimCapacityFull(key, counts));
+    if (full) {
+      el.classList.remove('cal-closed');
+      el.classList.add('cal-sold-out');
+      el.textContent = `${el.dataset.baseLabel} · 모집완료`;
+      return;
     }
-    el.classList.toggle('cal-sold-out', full);
-    if (!el.dataset.baseLabel) {
-      el.dataset.baseLabel = el.textContent.replace(/\s*·\s*모집완료$/, '').trim();
+    el.classList.remove('cal-sold-out');
+    if (m.applyClosed) {
+      el.classList.add('cal-closed');
+      el.textContent = `${el.dataset.baseLabel} · 신청마감`;
+      return;
     }
-    el.textContent = full ? `${el.dataset.baseLabel} · 모집완료` : el.dataset.baseLabel;
+    el.classList.remove('cal-closed');
+    el.textContent = el.dataset.baseLabel;
   });
 }
 
@@ -3800,7 +3852,7 @@ function buildAlmostFullMoimSlots(counts) {
     const meta = MOIM_CURATION_META[key];
     if (!meta) return;
     m.sessions.forEach(session => {
-      if (isSessionEnded(session) || m.applyClosed) return;
+      if (isSessionEnded(session) || m.applyClosed || m.forceSoldOut) return;
       const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
       const cur = getMoimSessionCount(counts, m.name, session.value);
       const remaining = cap - cur;
@@ -3846,7 +3898,7 @@ function buildCurationSlots(counts) {
     const meta = MOIM_CURATION_META[key];
     if (!meta) return;
     m.sessions.forEach(session => {
-      if (isSessionEnded(session) || m.applyClosed) return;
+      if (isSessionEnded(session) || m.applyClosed || m.forceSoldOut) return;
       const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
       const cur = getMoimSessionCount(counts, m.name, session.value);
       if (cap - cur <= 0) return;
@@ -4055,6 +4107,7 @@ function openApply(name, key) {
     window.location.href = m.applyUrl;
     return;
   }
+  if (m?.forceSoldOut) return;
   if (!isMoimApplyOpen(key, latestMoimCounts)) return;
   curMoimKey = key;
   q('#modalMoimName').textContent = m.name;
@@ -4071,8 +4124,8 @@ function openApply(name, key) {
     m.sessions.forEach(s => {
       const ended = isSessionEnded(s);
       const full = isSessionFull(m, s.value, latestMoimCounts);
-      const closed = m.applyClosed || ended || full;
-      const suffix = m.applyClosed ? ' (모임 신청 마감)' : (ended ? ' (모임 종료)' : (full ? ' (모집 완료)' : ''));
+      const closed = ended || full || m.applyClosed;
+      const suffix = full ? ' (모집 완료)' : (m.applyClosed ? ' (신청 마감)' : (ended ? ' (모임 종료)' : ''));
       sel.innerHTML += `<option value="${s.value}"${closed ? ' disabled' : ''}>${s.label}${suffix}</option>`;
     });
   } else {
@@ -4091,8 +4144,12 @@ async function submitApply() {
   if (!name || !phone) { flash('applyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
   if (m.hasSession && !session) { flash('applyAlert', '회차를 선택해주세요.', 'e'); return; }
   const pickedSession = m.sessions.find(s => s.value === session) || m.sessions[0];
+  if (m.forceSoldOut) {
+    flash('applyAlert', '모집이 완료되었습니다.', 'e');
+    return;
+  }
   if (m.applyClosed) {
-    flash('applyAlert', '모임 신청이 마감되었습니다.', 'e');
+    flash('applyAlert', '신청이 마감되었습니다.', 'e');
     return;
   }
   if (isSessionEnded(pickedSession)) {
@@ -5142,6 +5199,7 @@ window.addEventListener('DOMContentLoaded', () => {
   initEventOverview();
   initCalCarousel();
   updateMoimCuration({});
+  refreshMoimCapacityUI();
   loadCounts();
   q('#curationShuffleBtn')?.addEventListener('click', () => renderMoimCuration(curationPickIndex));
 });
