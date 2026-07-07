@@ -2801,7 +2801,7 @@
       </div>
     </div>
 
-    <div class="moim-card" id="letter">
+    <div class="moim-card moim-sold-out" id="letter">
       <div class="moim-poster-img" onclick="openLightbox('images/letter_july.png','한 사람을 위한 편지 포스터')">
         <img src="images/letter_july.png" alt="한 사람을 위한 편지 포스터">
       </div>
@@ -2822,14 +2822,14 @@
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>7월 29일 (수) 오전 11:00 – 1:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
-          <div class="meta-row"><span class="mi">👥</span>1명</div>
+          <div class="meta-row"><span class="mi">👥</span>1명 <span class="moim-full-badge">모집 완료</span></div>
         </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">30,000원</div>
             <div class="moim-cap">재료 준비 없음</div>
           </div>
-          <button class="btn-apply" id="apply-letter" onclick="openApply('한 사람을 위한 편지','letter')">신청하기</button>
+          <button class="btn-apply sold-out" id="apply-letter" disabled onclick="openApply('한 사람을 위한 편지','letter')">모집 완료</button>
         </div>
       </div>
     </div>
@@ -3217,6 +3217,8 @@
 </footer>
 
 <script>
+const q = sel => document.querySelector(sel);
+
 // ══ 설정 ═══════════════════════════════
 const API = 'https://script.google.com/macros/s/AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ/exec';
 const RENT_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent('대관신청');
@@ -3380,6 +3382,7 @@ let curVoiceKey = '';
 let curationPool = [];
 let curationPickIndex = -1;
 let latestMoimCounts = {};
+let latestEventCounts = {};
 
 const MOIM_CURATION_META = {
   pado: { cardId: 'pado', poster: 'images/pado_switch_on_july.jpg' },
@@ -3474,7 +3477,7 @@ function getMoimSessionCount(counts, name, sessionValue) {
   const sessionKey = `${name}_${sessionValue}`;
   if (counts[sessionKey] != null) return counts[sessionKey];
   const m = Object.values(MOIMS).find(x => x.name === name);
-  if (m && typeof m.capacity === 'object') return 0;
+  if (m?.capacity != null && typeof m.capacity === 'object') return 0;
   if (name === '슬기로운 영화 속 클래식') {
     return counts[`${name}_${sessionValue}`] ?? counts[`동서남북book_${sessionValue}`] ?? counts[name] ?? 0;
   }
@@ -3482,7 +3485,9 @@ function getMoimSessionCount(counts, name, sessionValue) {
 }
 
 function getSessionCapacity(m, sessionValue) {
-  return typeof m.capacity === 'object' ? m.capacity[sessionValue] : m.capacity;
+  const cap = m.capacity;
+  if (cap != null && typeof cap === 'object') return cap[sessionValue];
+  return cap;
 }
 
 function isSessionFull(m, sessionValue, counts) {
@@ -3853,7 +3858,8 @@ function buildAlmostFullMoimSlots(counts) {
     if (!meta) return;
     m.sessions.forEach(session => {
       if (isSessionEnded(session) || m.applyClosed || m.forceSoldOut) return;
-      const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
+      const cap = getSessionCapacity(m, session.value);
+      if (!cap) return;
       const cur = getMoimSessionCount(counts, m.name, session.value);
       const remaining = cap - cur;
       if (remaining <= 0) return;
@@ -3899,7 +3905,8 @@ function buildCurationSlots(counts) {
     if (!meta) return;
     m.sessions.forEach(session => {
       if (isSessionEnded(session) || m.applyClosed || m.forceSoldOut) return;
-      const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
+      const cap = getSessionCapacity(m, session.value);
+      if (!cap) return;
       const cur = getMoimSessionCount(counts, m.name, session.value);
       if (cap - cur <= 0) return;
       open.push({
@@ -5198,14 +5205,13 @@ window.addEventListener('DOMContentLoaded', () => {
   initMoimOverview();
   initEventOverview();
   initCalCarousel();
-  updateMoimCuration({});
   refreshMoimCapacityUI();
+  try { updateMoimCuration({}); } catch (e) { console.warn('큐레이션 로딩 실패:', e); }
   loadCounts();
   q('#curationShuffleBtn')?.addEventListener('click', () => renderMoimCuration(curationPickIndex));
 });
 
 // ══ 유틸 ════════════════════════════════
-const q = sel => document.querySelector(sel);
 function flash(id, msg, type) {
   const el = q(`#${id}`);
   el.innerHTML = `<div class="alert ${type==='e'?'ae':'ao'}">${msg}</div>`;
