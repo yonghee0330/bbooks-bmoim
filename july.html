@@ -246,6 +246,36 @@
       transition: background .15s, transform .15s;
     }
     .cal-dot.active { background: var(--ocean); transform: scale(1.15); }
+    .cal-sibling-month {
+      padding: 10px 16px 14px;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, #fff9f2 0%, var(--ocean-pale) 100%);
+      text-align: center;
+    }
+    .cal-sibling-month-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ocean-deep);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(26,158,196,0.25);
+      background: rgba(255,255,255,0.85);
+      transition: background .15s, border-color .15s, transform .15s;
+    }
+    .cal-sibling-month-link:hover {
+      background: #fff;
+      border-color: var(--ocean);
+      transform: translateY(-1px);
+    }
+    .cal-sibling-month.is-highlight .cal-sibling-month-link {
+      border-color: #fb923c;
+      color: #c2410c;
+      background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
+    }
     .sec-title-sub { font-size: 14px; font-weight: 500; color: var(--muted); }
     .cal-legend { display: flex; gap: 12px; font-size: 11px; color: rgba(255,255,255,.7); flex-wrap: wrap; }
     .cal-legend span { display: flex; align-items: center; gap: 4px; }
@@ -370,11 +400,13 @@
       .event-grid { grid-template-columns: 1fr; }
     }
 
-    .event-grid .event-card { height: 100%; }
+    .event-grid .event-card { height: auto; min-height: 100%; }
     .event-poster-stack {
       display: flex;
       flex-direction: column;
-      height: 100%;
+      height: auto;
+      min-height: 100%;
+      flex: 1;
     }
     .event-grid .event-poster-wrap,
     .event-grid .poster-slider-wrap {
@@ -2470,6 +2502,9 @@
       </div>
     </div>
     <div class="cal-dots" id="calDots" aria-label="캘린더 월 선택"></div>
+    <div class="cal-sibling-month" id="calSiblingMonth">
+      <a class="cal-sibling-month-link" href="august.html">☀️ 8월 비모임·대관·행사 페이지 보기 →</a>
+    </div>
   </div>
 
 
@@ -2497,7 +2532,7 @@
           <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep02_drive.jpg','b.voice EP.02 — DRIVE')">🔍</button>
           <img src="images/bvoice_ep02_drive.jpg" alt="b.voice EPISODE.02 — DRIVE 상영 및 정연 감독 GV">
         </div>
-        <button class="btn-event-apply type-bvoice" id="apply-bvoice1" onclick="openEventApply('bvoice1')">b.voice 신청하기</button>
+        <button type="button" class="btn-event-apply type-bvoice" id="apply-bvoice1" onclick="openEventApply('bvoice1')">b.voice 신청하기</button>
         </div>
       </article>
       <article class="event-card type-bvoice" id="bvoice2">
@@ -2506,7 +2541,7 @@
           <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep03_book.jpg','b.voice EP.03 — 소중한 ___ 에게')">🔍</button>
           <img src="images/bvoice_ep03_book.jpg" alt="b.voice EPISODE.03 — 소중한 ___ 에게, 이유진 작가 북토크">
         </div>
-        <button class="btn-event-apply type-bvoice" id="apply-bvoice2" onclick="openEventApply('bvoice2')">b.voice 신청하기</button>
+        <button type="button" class="btn-event-apply type-bvoice" id="apply-bvoice2" onclick="openEventApply('bvoice2')">b.voice 신청하기</button>
         </div>
       </article>
       <article class="event-card type-bammilon" id="bammilon">
@@ -2515,7 +2550,7 @@
           <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bam_mil_on_july.jpg','밤이 밀려온다 — 밤밀온')">🔍</button>
           <img src="images/bam_mil_on_july.jpg" alt="밤이 밀려온다 — A Midsummer Night's Bookstore 포스터">
         </div>
-        <button class="btn-event-apply type-bammilon" id="apply-bammilon" onclick="openEventApply('bammilon')">밤밀온 참가 신청</button>
+        <button type="button" class="btn-event-apply type-bammilon" id="apply-bammilon" onclick="openEventApply('bammilon')">밤밀온 참가 신청</button>
         </div>
       </article>
       <article class="event-card type-yes24" id="yes24kwon">
@@ -2542,7 +2577,7 @@
           <span class="poster-slider-hint">1 / 4</span>
         </div>
         <div class="yes24-apply-panel">
-        <button class="btn-event-apply type-yes24" id="apply-yes24kwon" onclick="openEventApply('yes24kwon')">b.talks 신청하기</button>
+        <button type="button" class="btn-event-apply type-yes24" id="apply-yes24kwon" onclick="openEventApply('yes24kwon')">b.talks 신청하기</button>
         <div class="event-info-foot type-yes24">
           <span class="event-info-badge">7월의 b.talks · 비북스 x 한겨레출판 x 예스24</span>
           <p class="event-info-name">《이름의 빈자리에》 권혁란 작가와의 만남</p>
@@ -3227,7 +3262,7 @@ const EVENT_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chev
 const RENT_CAL_MONTHS = ['7월', '8월', '9월'];
 const CAL_PANELS = [
   { year: 2026, month: 7, label: '2026년 7월', sub: '비모임 · 행사 · 대관', hasMoim: true },
-  { year: 2026, month: 8, label: '2026년 8월', sub: '대관 신청 가능', hasMoim: false },
+  { year: 2026, month: 8, label: '2026년 8월', sub: '대관 신청 · 8월 비모임 페이지', hasMoim: false },
   { year: 2026, month: 9, label: '2026년 9월', sub: '대관 신청 가능', hasMoim: false },
 ];
 let calPanelIndex = 0;
@@ -3694,12 +3729,13 @@ async function loadMoimCounts() {
     console.warn('모임 신청 현황 로딩 실패:', e);
   }
   updateMoimCapacity(latestMoimCounts);
-  updateMoimCuration(latestMoimCounts);
+  try { updateMoimCuration(latestMoimCounts); } catch (e) { console.warn('큐레이션 로딩 실패:', e); }
   updateCalendarMoimStatus(latestMoimCounts);
 }
 
 function refreshMoimCapacityUI() {
   updateMoimCapacity(latestMoimCounts);
+  updateEventCapacity(latestEventCounts);
   updateCalendarMoimStatus(latestMoimCounts);
 }
 
@@ -4046,6 +4082,9 @@ function updateCalCarouselUI() {
     dot.classList.toggle('active', i === calPanelIndex);
     dot.setAttribute('aria-current', i === calPanelIndex ? 'true' : 'false');
   });
+
+  const siblingMonth = q('#calSiblingMonth');
+  if (siblingMonth) siblingMonth.classList.toggle('is-highlight', panel.month === 8);
 }
 
 function goCalMonth(index) {
@@ -4202,75 +4241,109 @@ async function submitApply() {
 }
 
 // ══ 행사 신청 모달 ════════════════════════
-let eventFormTemplate = null;
+let eventFormTemplate = '';
+
+function initEventApplyModal() {
+  const formEl = q('#eventApplyForm');
+  if (formEl?.innerHTML?.includes('id="eName"')) {
+    eventFormTemplate = formEl.innerHTML;
+  }
+}
 
 function openEventApply(key) {
-  const ev = EVENTS[key];
-  if (!ev || ev.comingSoon || isEventClosed(key, latestEventCounts)) return;
-  if (ev.applyUrl) {
-    window.open(ev.applyUrl, '_blank', 'noopener');
-    return;
-  }
-  curEventKey = key;
-  const modal = q('#eventApplyModal');
-  modal.className = 'modal modal-event type-' + ev.type;
-  q('#eventModalBadge').textContent = ev.typeLabel || '행사';
-  q('#eventModalName').textContent = ev.name;
-  const dateParts = [];
-  if (ev.space) dateParts.push(ev.space);
-  dateParts.push(...ev.sessions.map(s => s.label));
-  if (ev.amount && ev.feeNote) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원 (${ev.feeNote})`);
-  else if (ev.amount) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원`);
-  if (ev.bookOrder) dateParts.push('도서 사전 주문 · 행사 후 저자 사인회 · 참가비 포함 3만원 이상 무료 배송');
-  q('#eventModalDate').textContent = dateParts.join(' · ');
-  const formEl = q('#eventApplyForm');
-  if (!eventFormTemplate) eventFormTemplate = formEl.innerHTML;
+  try {
+    const ev = EVENTS[key];
+    if (!ev) return;
+    if (ev.comingSoon) {
+      flash('eventApplyAlert', '준비 중인 행사입니다.', 'e');
+      return;
+    }
+    if (isEventClosed(key, latestEventCounts)) return;
+    if (ev.applyUrl) {
+      window.open(ev.applyUrl, '_blank', 'noopener');
+      return;
+    }
+    curEventKey = key;
+    const modal = q('#eventApplyModal');
+    if (!modal) {
+      console.error('eventApplyModal not found');
+      return;
+    }
+    modal.className = 'modal modal-event type-' + ev.type;
+    q('#eventModalBadge').textContent = ev.typeLabel || '행사';
+    q('#eventModalName').textContent = ev.name;
+    const dateParts = [];
+    if (ev.space) dateParts.push(ev.space);
+    dateParts.push(...ev.sessions.map(s => s.label));
+    if (ev.amount && ev.feeNote) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원 (${ev.feeNote})`);
+    else if (ev.amount) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원`);
+    if (ev.bookOrder) dateParts.push('도서 사전 주문 · 행사 후 저자 사인회 · 참가비 포함 3만원 이상 무료 배송');
+    q('#eventModalDate').textContent = dateParts.join(' · ');
+    const formEl = q('#eventApplyForm');
+    if (!formEl) return;
+    if (!eventFormTemplate) initEventApplyModal();
+    if (!eventFormTemplate) return;
 
-  if (ev.external) {
-    formEl.innerHTML = `
+    if (ev.external) {
+      formEl.innerHTML = `
       <div class="event-external-info">${ev.infoHtml || ''}</div>
       <div class="modal-foot" style="margin-top:16px">
-        <button class="btn btn-cancel" onclick="closeOv('eventApplyOv')">닫기</button>
+        <button type="button" class="btn btn-cancel" onclick="closeOv('eventApplyOv')">닫기</button>
       </div>`;
+      q('#eventApplyAlert').innerHTML = '';
+      openOv('eventApplyOv');
+      return;
+    }
+
+    formEl.innerHTML = eventFormTemplate;
     q('#eventApplyAlert').innerHTML = '';
+    const eNameEl = q('#eName');
+    const ePhoneEl = q('#ePhone');
+    if (eNameEl) eNameEl.value = '';
+    if (ePhoneEl) ePhoneEl.value = '';
+
+    if (ev.bookOrder) {
+      const fgRow = formEl.querySelector('.fg-row');
+      if (fgRow) fgRow.insertAdjacentHTML('afterend', buildYes24BookOrderHtml(ev));
+    }
+
+    const amountEl = q('#eventModalAmount');
+    const payBox = q('#eventPayBox');
+    if (!payBox || !amountEl) return;
+    if (ev.bookOrder) {
+      payBox.style.display = '';
+      payBox.classList.add('yes24-pay-box');
+      updateYes24ApplyTotal();
+    } else if (ev.amount) {
+      payBox.classList.remove('yes24-pay-box');
+      amountEl.textContent = ev.amount.toLocaleString() + '원';
+      payBox.style.display = '';
+      const payNote = q('#eventPayNote');
+      if (payNote) {
+        payNote.innerHTML = '<strong>모임통장: 카카오뱅크 7942-33-45474</strong> (예금주 경규환)<br>입금자명은 신청 시 이름과 동일하게 부탁드립니다.';
+      }
+    } else {
+      amountEl.textContent = '추후 안내';
+      payBox.style.display = '';
+      const payNote = q('#eventPayNote');
+      if (payNote) {
+        payNote.innerHTML = '참가비와 입금 안내는 행사 일정에 맞춰 별도로 안내드립니다.<br>신청 접수 후 담당자가 연락드릴게요.';
+      }
+    }
+
+    const btnLabel = ev.type === 'bammilon'
+      ? `밤밀온 참가 신청 (${ev.amount.toLocaleString()}원)`
+      : ev.type === 'yes24'
+        ? 'b.talks 신청하기'
+        : '행사 신청하기';
+    const submitBtn = q('#eventSubmitBtn');
+    if (submitBtn) submitBtn.textContent = btnLabel;
     openOv('eventApplyOv');
-    return;
+  } catch (err) {
+    console.error('openEventApply failed:', err);
+    flash('eventApplyAlert', '신청 창을 여는 중 오류가 발생했습니다. 새로고침 후 다시 시도해주세요.', 'e');
+    openOv('eventApplyOv');
   }
-
-  formEl.innerHTML = eventFormTemplate;
-  q('#eventApplyAlert').innerHTML = '';
-  q('#eName').value = '';
-  q('#ePhone').value = '';
-
-  if (ev.bookOrder) {
-    const fgRow = formEl.querySelector('.fg-row');
-    if (fgRow) fgRow.insertAdjacentHTML('afterend', buildYes24BookOrderHtml(ev));
-  }
-
-  const amountEl = q('#eventModalAmount');
-  const payBox = q('#eventPayBox');
-  if (ev.bookOrder) {
-    payBox.style.display = '';
-    payBox.classList.add('yes24-pay-box');
-    updateYes24ApplyTotal();
-  } else if (ev.amount) {
-    payBox.classList.remove('yes24-pay-box');
-    amountEl.textContent = ev.amount.toLocaleString() + '원';
-    payBox.style.display = '';
-    q('#eventPayNote').innerHTML = '<strong>모임통장: 카카오뱅크 7942-33-45474</strong> (예금주 경규환)<br>입금자명은 신청 시 이름과 동일하게 부탁드립니다.';
-  } else {
-    amountEl.textContent = '추후 안내';
-    payBox.style.display = '';
-    q('#eventPayNote').innerHTML = '참가비와 입금 안내는 행사 일정에 맞춰 별도로 안내드립니다.<br>신청 접수 후 담당자가 연락드릴게요.';
-  }
-
-  const btnLabel = ev.type === 'bammilon'
-    ? `밤밀온 참가 신청 (${ev.amount.toLocaleString()}원)`
-    : ev.type === 'yes24'
-      ? 'b.talks 신청하기'
-      : '행사 신청하기';
-  q('#eventSubmitBtn').textContent = btnLabel;
-  openOv('eventApplyOv');
 }
 
 function openVoiceApply(key) { openEventApply(key); }
@@ -5021,10 +5094,13 @@ async function POST(data) {
   try {
     out = JSON.parse(text);
   } catch {
-    throw new Error('서버 응답을 읽을 수 없습니다. Apps Script 배포를 확인해주세요.');
+    const snippet = String(text).replace(/\s+/g, ' ').slice(0, 120);
+    throw new Error(snippet.includes('페이지를 찾을 수 없') || snippet.includes('파일을 열 수 없')
+      ? '신청 서버 연결에 실패했습니다. Apps Script 배포 URL을 확인해주세요.'
+      : '서버 응답을 읽을 수 없습니다. 잠시 후 다시 시도해주세요.');
   }
   if (out.error) throw new Error(out.error);
-  if (!r.ok && !out.ok) throw new Error('요청 실패');
+  if (!out.ok) throw new Error('요청 실패');
   return out;
 }
 
@@ -5068,13 +5144,16 @@ function lbMove(dir) {
 }
 
 function closeLightbox() {
-  q('#lightbox').classList.remove('on');
+  const lb = q('#lightbox');
+  if (!lb) return;
+  lb.classList.remove('on');
   document.body.style.overflow = '';
   lbImages = [];
 }
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeLightbox();
-  if (!q('#lightbox').classList.contains('on')) return;
+  const lb = q('#lightbox');
+  if (!lb?.classList.contains('on')) return;
   if (e.key === 'ArrowLeft') lbMove(-1);
   if (e.key === 'ArrowRight') lbMove(1);
 });
@@ -5200,6 +5279,7 @@ function initMoimOverview() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  initEventApplyModal();
   initSlider();
   initMoimPosterSliders();
   initMoimOverview();
@@ -5221,8 +5301,8 @@ function setLoad(id, on, txt) {
   const b = q(`#${id}`); b.disabled = on;
   b.innerHTML = on ? `<span class="spin"></span>${txt}` : txt;
 }
-function openOv(id)  { q(`#${id}`).classList.add('on'); }
-function closeOv(id) { q(`#${id}`).classList.remove('on'); }
+function openOv(id)  { q(`#${id}`)?.classList.add('on'); }
+function closeOv(id) { q(`#${id}`)?.classList.remove('on'); }
 document.querySelectorAll('.ov').forEach(ov => {
   ov.addEventListener('click', e => { if (e.target===ov) ov.classList.remove('on'); });
 });
