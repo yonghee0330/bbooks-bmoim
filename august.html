@@ -623,6 +623,29 @@
       background: rgba(0, 0, 0, 0.22);
       border: 1px solid rgba(252, 211, 77, 0.2);
     }
+    .event-poster-wrap.bvoice-ep04 {
+      background: linear-gradient(165deg, #1a1a2e 0%, #312e81 38%, #7c3aed 72%, #f59e0b 100%);
+      cursor: default;
+    }
+    .bvoice-ep04 .ep-badge {
+      color: #fef3c7;
+      background: rgba(245, 158, 11, 0.32);
+      border: 1px solid rgba(252, 211, 77, 0.5);
+      border-radius: 999px;
+      padding: 5px 14px;
+      letter-spacing: .1em;
+      font-weight: 800;
+    }
+    .bvoice-ep04 .ep-host {
+      font-size: clamp(11px, 2.6vw, 13px);
+      color: rgba(254, 243, 199, 0.85);
+      margin-top: 8px;
+      font-weight: 600;
+    }
+    .bvoice-ep04 .ep-meta {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(252, 211, 77, 0.18);
+    }
     .bvoice-ep02 .ep-badge {
       color: #fff;
       background: #ea580c;
@@ -2469,7 +2492,7 @@
       <div class="cal-cell" onclick="openRent('2026-08-05')"><div class="cal-day">5</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-06')"><div class="cal-day">6</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-07')"><div class="cal-day">7</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-08-08')"><div class="cal-day">8</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-08-08')"><div class="cal-day">8</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24lee')">b.talks 16-18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-09')"><div class="cal-day">9</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-10')"><div class="cal-day">10</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-11')"><div class="cal-day">11</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2483,7 +2506,7 @@
       <div class="cal-cell" onclick="openRent('2026-08-19')"><div class="cal-day">19</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-21')"><div class="cal-day">21</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-08-22')"><div class="cal-day">22</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-08-22')"><div class="cal-day">22</div><div class="cal-event ev-voice" onclick="event.stopPropagation();scrollToEvent('bvoice4')">b.voice ep4 16-18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-23')"><div class="cal-day">23</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-24')"><div class="cal-day">24</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-25')"><div class="cal-day">25</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2525,26 +2548,64 @@
       </svg>
     </div>
     <div class="event-overview-top">
-      <p class="event-overview-summary"><strong><span id="eventTotalCount">1</span>개 행사</strong> · S.voice</p>
+      <p class="event-overview-summary"><strong><span id="eventTotalCount">3</span>개 행사</strong> · b.talks · S.voice · b.voice</p>
     </div>
 
     <div class="event-grid" id="eventGrid">
       <article class="event-card type-bvoice" id="svoice1">
         <div class="event-poster-stack">
-        <div class="event-poster-wrap type-bvoice event-poster-typo svoice-typo" aria-label="S.voice — 투덜그라피의 어쨌거나 같이 씹자">
-          <div class="event-poster-typo-inner">
-            <span class="ep-badge">S.voice · b.voice 스페셜</span>
-            <h3 class="ep-title long">투덜그라피의<br>어쨌거나 같이 씹자</h3>
-            <p class="ep-title-en">TOODLEGRAPHY</p>
-            <p class="ep-type">투덜거리며 글 쓰고, 함께 씹어보는 여름의 목소리</p>
-            <div class="ep-meta">
-              <span><em>일시</em> 8/2(일) 16:00–18:00</span>
-              <span><em>장소</em> 계단 좌석</span>
-              <span><em>정원</em> 20명 · 10,000원</span>
-            </div>
-          </div>
+        <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/svoice_august_poster.jpg','S.voice — 투덜그라피의 어쨌거나 같이 씹자')">
+          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/svoice_august_poster.jpg','S.voice — 투덜그라피의 어쨌거나 같이 씹자')">🔍</button>
+          <img src="images/svoice_august_poster.jpg" alt="S.voice — 투덜그라피의 어쨌거나 같이 씹자">
         </div>
         <button type="button" class="btn-event-apply type-bvoice" id="apply-svoice1" onclick="openEventApply('svoice1')">S.voice 신청하기</button>
+        </div>
+      </article>
+      <article class="event-card type-yes24" id="yes24lee">
+        <div class="event-poster-stack">
+        <div class="poster-slider-wrap" id="poster-slider-btalks-aug"
+             onclick="openPosterLightbox('btalks-aug')"
+             data-posters='["images/btalks_august_01.jpg","images/btalks_august_02.jpg","images/btalks_august_03.jpg","images/btalks_august_04.jpg"]'
+             data-alt="8월의 b.talks — 《선을 넘는 북클럽》 이수영 작가와의 만남">
+          <div class="poster-slider-viewport">
+            <div class="poster-slider" data-slider="btalks-aug">
+              <div class="poster-slide"><img src="images/btalks_august_01.jpg" alt="《선을 넘는 북클럽》 이수영 작가와의 만남"></div>
+              <div class="poster-slide"><img src="images/btalks_august_02.jpg" alt="《선을 넘는 북클럽》 서문 중에서"></div>
+              <div class="poster-slide"><img src="images/btalks_august_03.jpg" alt="8월의 b.talks 행사 안내"></div>
+              <div class="poster-slide"><img src="images/btalks_august_04.jpg" alt="비북스 x 에멘토 x 예스24"></div>
+            </div>
+          </div>
+          <div class="poster-slider-nav">
+            <div class="slider-dots" data-dots="btalks-aug"></div>
+            <div class="slider-arrows">
+              <button type="button" class="sarr" aria-label="이전 포스터" onclick="event.stopPropagation();posterSlide('btalks-aug',-1)">‹</button>
+              <button type="button" class="sarr" aria-label="다음 포스터" onclick="event.stopPropagation();posterSlide('btalks-aug',1)">›</button>
+            </div>
+          </div>
+          <span class="poster-slider-hint">1 / 4</span>
+        </div>
+        <div class="yes24-apply-panel">
+        <button type="button" class="btn-event-apply type-yes24" id="apply-yes24lee" onclick="openEventApply('yes24lee')">b.talks 신청하기</button>
+        <div class="event-info-foot type-yes24">
+          <span class="event-info-badge">8월의 b.talks · 비북스 x 에멘토 x 예스24</span>
+          <p class="event-info-name">《선을 넘는 북클럽》 이수영 작가와의 만남</p>
+          <p class="event-info-desc">10년 독서모임을 이끈 책방지기의 이야기. 함께 읽기가 어떻게 경계를 허물고 더 큰 세계로 나아가게 하는지, 이수영 작가와 나눕니다.</p>
+          <p class="event-info-meta">2026년 8월 8일(토) 오후 4시 · 비북스</p>
+          <p class="event-info-meta">참가비 10,000원 / 0.1평 점주 무료 (간단한 다과 제공)</p>
+          <p class="event-info-note">* 도서 사전 주문 가능 · 행사 후 저자 사인회</p>
+          <p class="event-info-note">* 참가비 포함 3만원 이상 무료 배송 · 미만 시 배송비 2,000원</p>
+          <p class="event-info-note">* 이번 8월의 b.talks는 예스24의 지원을 받아 진행합니다.</p>
+        </div>
+        </div>
+        </div>
+      </article>
+      <article class="event-card type-bvoice" id="bvoice4">
+        <div class="event-poster-stack">
+        <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep04_august_poster.jpg','b.voice EP.04 — 나의 소리를 찾아서')">
+          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep04_august_poster.jpg','b.voice EP.04 — 나의 소리를 찾아서')">🔍</button>
+          <img src="images/bvoice_ep04_august_poster.jpg" alt="b.voice EP.04 — 나의 소리를 찾아서 · 진행 안나">
+        </div>
+        <button type="button" class="btn-event-apply type-bvoice" id="apply-bvoice4" onclick="openEventApply('bvoice4')">b.voice 신청하기</button>
         </div>
       </article>
     </div>
@@ -2945,10 +3006,47 @@ const EVENTS = {
     typeLabel: 'S.voice',
     name: '투덜그라피의 어쨌거나 같이 씹자',
     subtitle: 'b.voice 스페셜',
+    poster: 'images/svoice_august_poster.jpg',
     sessions: [{ label: '8/2(일) 16:00–18:00', value: '8월2일_svoice', _endMs: new Date(2026, 7, 2, 18, 0, 0).getTime() }],
     capacity: 20,
     amount: 10000,
     space: '비북스 계단 좌석'
+  },
+  bvoice4: {
+    type: 'bvoice',
+    typeLabel: 'b.voice',
+    name: '나의 소리를 찾아서',
+    subtitle: 'b.voice EP.04 · 안나',
+    poster: 'images/bvoice_ep04_august_poster.jpg',
+    sessions: [{ label: '8/22(토) 16:00–18:00', value: '8월22일_bvoice', _endMs: new Date(2026, 7, 22, 18, 0, 0).getTime() }],
+    capacity: 15,
+    amount: 10000,
+    space: '비북스 계단 좌석'
+  },
+  yes24lee: {
+    type: 'yes24',
+    typeLabel: '8월의 b.talks · 비북스 x 에멘토 x 예스24',
+    name: '《선을 넘는 북클럽》 이수영 작가와의 만남',
+    subtitle: '아무것도 아니지만 무엇이든 될 수 있는',
+    poster: 'images/btalks_august_01.jpg',
+    posters: [
+      'images/btalks_august_01.jpg',
+      'images/btalks_august_02.jpg',
+      'images/btalks_august_03.jpg',
+      'images/btalks_august_04.jpg'
+    ],
+    sessions: [{ label: '2026년 8월 8일(토) 오후 4시', value: '8월8일_예스24', _endMs: new Date(2026, 7, 8, 18, 0, 0).getTime() }],
+    capacity: 30,
+    amount: 10000,
+    space: '비북스',
+    feeNote: '0.1평 점주 무료 · 간단한 다과 제공',
+    freeShippingMin: 30000,
+    deliveryFee: 2000,
+    bookOrder: true,
+    books: [
+      { id: 'seoneomneun', title: '선을 넘는 북클럽', price: 17000, url: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=395448233' },
+      { id: 'maumeun', title: '마음은 어디에', price: 18000, url: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=341933617' }
+    ]
   }
 };
 
@@ -3790,7 +3888,7 @@ function openEventApply(key) {
   dateParts.push(...ev.sessions.map(s => s.label));
   if (ev.amount && ev.feeNote) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원 (${ev.feeNote})`);
   else if (ev.amount) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원`);
-  if (ev.bookOrder) dateParts.push('도서 사전 주문 · 행사 후 저자 사인회 · 참가비 포함 3만원 이상 무료 배송');
+  if (ev.bookOrder) dateParts.push('도서 사전 주문 · 행사 후 저자 사인회 · 3만원 이상 무료배송 · 미만 +2,000원');
   q('#eventModalDate').textContent = dateParts.join(' · ');
   const formEl = q('#eventApplyForm');
   if (!eventFormTemplate) eventFormTemplate = formEl.innerHTML;
@@ -3858,7 +3956,7 @@ function buildYes24BookOrderHtml(ev) {
     </label>
     <div class="book-order-section">
       <label class="book-order-label">도서 사전 주문 (선택)</label>
-      <p class="book-order-hint">행사 후 저자 사인회가 있습니다. 사전 주문 도서는 참가비와 합산하여 선결제해 주세요. 택배는 참가비 포함 3만원 이상 시 무료 배송입니다.</p>
+      <p class="book-order-hint">행사 후 저자 사인회가 있습니다. 사전 주문 도서는 참가비와 합산하여 선결제해 주세요. 택배는 참가비 포함 3만원 이상 무료 배송, 미만 시 배송비 2,000원이 추가됩니다.</p>
       <div class="book-order-list" id="yes24BookList">
         ${ev.books.map(b => `
           <label class="book-order-item">
@@ -3874,7 +3972,7 @@ function buildYes24BookOrderHtml(ev) {
           <label class="yes24-delivery-item">
             <input type="radio" name="yes24delivery" value="delivery" onchange="updateYes24ApplyTotal()">
             <span>택배로 받기
-              <span class="yes24-delivery-sub">참가비 포함 3만원 이상 무료 배송</span>
+              <span class="yes24-delivery-sub">3만원 이상 무료 · 미만 +${(ev.deliveryFee || 2000).toLocaleString()}원</span>
             </span>
           </label>
           <label class="yes24-delivery-item">
@@ -3913,6 +4011,13 @@ function getYes24DeliveryLabel(value) {
   return '';
 }
 
+function getYes24ShippingFee(ev, delivery, subtotal) {
+  if (delivery !== 'delivery') return 0;
+  const freeMin = ev?.freeShippingMin || 30000;
+  if (subtotal >= freeMin) return 0;
+  return ev?.deliveryFee || 2000;
+}
+
 function updateYes24ApplyTotal() {
   const ev = EVENTS[curEventKey];
   if (!ev?.bookOrder) return;
@@ -3921,10 +4026,12 @@ function updateYes24ApplyTotal() {
   const freeMin = ev.freeShippingMin || 30000;
   const selected = getYes24SelectedBooks();
   const bookTotal = selected.reduce((sum, b) => sum + b.price, 0);
-  const total = base + bookTotal;
   const delivery = getYes24Delivery();
   const wantsDelivery = delivery === 'delivery';
-  const freeShip = wantsDelivery && total >= freeMin;
+  const subtotal = base + bookTotal;
+  const shippingFee = getYes24ShippingFee(ev, delivery, subtotal);
+  const total = subtotal + shippingFee;
+  const freeShip = wantsDelivery && shippingFee === 0;
 
   const deliveryWrap = q('#yes24DeliveryWrap');
   if (deliveryWrap) deliveryWrap.style.display = bookTotal > 0 ? '' : 'none';
@@ -3942,7 +4049,7 @@ function updateYes24ApplyTotal() {
     } else if (bookTotal > 0 && wantsDelivery) {
       shipHtml = freeShip
         ? `<div class="yes24-shipping-badge">✓ 참가비 포함 ${freeMin.toLocaleString()}원 이상 — 무료 배송</div>`
-        : `<div class="yes24-shipping-hint">참가비 포함 ${freeMin.toLocaleString()}원 이상 주문 시 무료 배송 (${(freeMin - total).toLocaleString()}원 더 담으면 무료)</div>`;
+        : `<div class="yes24-shipping-hint">참가비 포함 ${freeMin.toLocaleString()}원 미만 — 배송비 ${shippingFee.toLocaleString()}원 (${(freeMin - subtotal).toLocaleString()}원 더 담으면 무료)</div>`;
     } else if (bookTotal > 0) {
       shipHtml = `<div class="yes24-shipping-hint">수령 방법을 선택해 주세요</div>`;
     }
@@ -3950,6 +4057,7 @@ function updateYes24ApplyTotal() {
       <div class="yes24-amount-breakdown">
         <div class="yes24-amount-row"><span>${feeLabel}</span><span>${feeValue}</span></div>
         ${bookTotal > 0 ? `<div class="yes24-amount-row"><span>도서비 (정가)</span><span>${bookTotal.toLocaleString()}원</span></div>` : ''}
+        ${shippingFee > 0 ? `<div class="yes24-amount-row"><span>배송비</span><span>${shippingFee.toLocaleString()}원</span></div>` : ''}
         ${delivery ? `<div class="yes24-amount-row"><span>수령</span><span>${getYes24DeliveryLabel(delivery)}</span></div>` : ''}
         <div class="yes24-amount-row total"><span>합계</span><span>${total === 0 ? '무료' : total.toLocaleString() + '원'}</span></div>
         ${shipHtml}
@@ -3964,7 +4072,7 @@ function updateYes24ApplyTotal() {
     } else if (bookTotal > 0 && wantsDelivery) {
       shipLine = freeShip
         ? `<br>수령: 택배로 받기 · 참가비 포함 합계 ${freeMin.toLocaleString()}원 이상 — <strong>무료 배송</strong>`
-        : `<br>수령: 택배로 받기 · 참가비 포함 ${freeMin.toLocaleString()}원 이상 주문 시 무료 배송`;
+        : `<br>수령: 택배로 받기 · 배송비 ${shippingFee.toLocaleString()}원 포함`;
     }
     if (total === 0) {
       payNote.innerHTML = isHost
@@ -4011,9 +4119,13 @@ async function submitEventApply() {
       ? selected.map(b => `${b.title} (정가 ${b.price.toLocaleString()}원)`).join(', ')
       : '도서 미신청';
     amount += selected.reduce((sum, b) => sum + b.price, 0);
+    const subtotal = amount;
+    const shippingFee = getYes24ShippingFee(ev, delivery, subtotal);
+    amount += shippingFee;
     deliveryLabel = getYes24DeliveryLabel(delivery);
     if (isHost) noteParts.push('0.1평 점주 (참가비 무료)');
     if (deliveryLabel) noteParts.push(`수령: ${deliveryLabel}`);
+    if (shippingFee > 0) noteParts.push(`배송비 ${shippingFee.toLocaleString()}원`);
   }
 
   setLoad('eventSubmitBtn', true, '신청 중...');
@@ -4070,7 +4182,9 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-08-01', space: '계단 좌석', start: '10:30', end: '11:30', tag: '그림책 읽어주는 이모' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
-  { date: '2026-08-02', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'S.voice' }
+  { date: '2026-08-02', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'S.voice' },
+  { date: '2026-08-08', space: '비북스', start: '16:00', end: '18:00', tag: 'b.talks' },
+  { date: '2026-08-22', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.voice EP.04' }
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
