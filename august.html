@@ -397,11 +397,12 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
     }
-    @media (min-width: 880px) {
-      .event-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .event-grid #yes24lee {
+      grid-column: 1 / -1;
     }
     @media (max-width: 430px) {
       .event-grid { grid-template-columns: 1fr; }
+      .event-grid #yes24lee { grid-column: auto; }
     }
 
     .event-grid .event-card { height: auto; min-height: 100%; }
@@ -469,7 +470,9 @@
       display: block;
     }
     .event-poster-wrap.type-bvoice { background: #1a1a2e; cursor: zoom-in; }
-    .event-poster-wrap.type-bvoice img {
+    .event-poster-wrap.type-svoice { background: #f5f0e8; cursor: zoom-in; }
+    .event-poster-wrap.type-bvoice img,
+    .event-poster-wrap.type-svoice img {
       object-fit: contain;
       object-position: center top;
     }
@@ -2548,17 +2551,26 @@
       </svg>
     </div>
     <div class="event-overview-top">
-      <p class="event-overview-summary"><strong><span id="eventTotalCount">3</span>개 행사</strong> · b.talks · S.voice · b.voice</p>
+      <p class="event-overview-summary"><strong><span id="eventTotalCount">3</span>개 행사</strong> · S.voice · b.voice · b.talks</p>
     </div>
 
     <div class="event-grid" id="eventGrid">
       <article class="event-card type-bvoice" id="svoice1">
         <div class="event-poster-stack">
-        <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/svoice_august_poster.jpg','S.voice — 투덜그라피의 어쨌거나 같이 씹자')">
+        <div class="event-poster-wrap type-svoice" onclick="openLightbox('images/svoice_august_poster.jpg','S.voice — 투덜그라피의 어쨌거나 같이 씹자')">
           <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/svoice_august_poster.jpg','S.voice — 투덜그라피의 어쨌거나 같이 씹자')">🔍</button>
           <img src="images/svoice_august_poster.jpg" alt="S.voice — 투덜그라피의 어쨌거나 같이 씹자">
         </div>
         <button type="button" class="btn-event-apply type-bvoice" id="apply-svoice1" onclick="openEventApply('svoice1')">S.voice 신청하기</button>
+        </div>
+      </article>
+      <article class="event-card type-bvoice" id="bvoice4">
+        <div class="event-poster-stack">
+        <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep04_august_poster.jpg','b.voice EP.04 — 나의 소리를 찾아서')">
+          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep04_august_poster.jpg','b.voice EP.04 — 나의 소리를 찾아서')">🔍</button>
+          <img src="images/bvoice_ep04_august_poster.jpg" alt="b.voice EP.04 — 나의 소리를 찾아서 · 진행 안나">
+        </div>
+        <button type="button" class="btn-event-apply type-bvoice" id="apply-bvoice4" onclick="openEventApply('bvoice4')">b.voice 신청하기</button>
         </div>
       </article>
       <article class="event-card type-yes24" id="yes24lee">
@@ -2597,15 +2609,6 @@
           <p class="event-info-note">* 이번 8월의 b.talks는 예스24의 지원을 받아 진행합니다.</p>
         </div>
         </div>
-        </div>
-      </article>
-      <article class="event-card type-bvoice" id="bvoice4">
-        <div class="event-poster-stack">
-        <div class="event-poster-wrap type-bvoice" onclick="openLightbox('images/bvoice_ep04_august_poster.jpg','b.voice EP.04 — 나의 소리를 찾아서')">
-          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep04_august_poster.jpg','b.voice EP.04 — 나의 소리를 찾아서')">🔍</button>
-          <img src="images/bvoice_ep04_august_poster.jpg" alt="b.voice EP.04 — 나의 소리를 찾아서 · 진행 안나">
-        </div>
-        <button type="button" class="btn-event-apply type-bvoice" id="apply-bvoice4" onclick="openEventApply('bvoice4')">b.voice 신청하기</button>
         </div>
       </article>
     </div>
