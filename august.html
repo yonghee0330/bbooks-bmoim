@@ -350,6 +350,7 @@
     .dot-event { background: #dc2626; }
     .ev-event { background: #ffe4e6; color: #9f1239; }
     .ev-bvoice { background: #fef3c7; color: #92400e; }
+    .ev-bgrow { background: #fce7f3; color: #9d174d; }
     .ev-away {
       background: #e2e8f0;
       color: #475569;
@@ -397,12 +398,8 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
     }
-    .event-grid #yes24lee {
-      grid-column: 1 / -1;
-    }
     @media (max-width: 430px) {
       .event-grid { grid-template-columns: 1fr; }
-      .event-grid #yes24lee { grid-column: auto; }
     }
 
     .event-grid .event-card { height: auto; min-height: 100%; }
@@ -448,6 +445,7 @@
     .event-card.type-bammilon { border-color: #7c3aed; }
     .event-card.type-yes24 { border-color: #5b7a9a; background: #f4f7fb; }
     .event-card.type-btalk { border-color: #fb923c; background: #fff7ed; }
+    .event-card.type-bgrow { border-color: #f9a8d4; background: #fdf2f8; }
     .event-card.type-external { border-color: #94a3b8; background: #f8fafc; }
     .event-card-head { display: none; }
     .event-card-body { display: none; }
@@ -471,8 +469,10 @@
     }
     .event-poster-wrap.type-bvoice { background: #1a1a2e; cursor: zoom-in; }
     .event-poster-wrap.type-svoice { background: #f5f0e8; cursor: zoom-in; }
+    .event-poster-wrap.type-bgrow { background: #fdf2f8; cursor: zoom-in; }
     .event-poster-wrap.type-bvoice img,
-    .event-poster-wrap.type-svoice img {
+    .event-poster-wrap.type-svoice img,
+    .event-poster-wrap.type-bgrow img {
       object-fit: contain;
       object-position: center top;
     }
@@ -806,6 +806,11 @@
       color: #fff;
       box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
     }
+    .btn-event-apply.type-bgrow {
+      background: linear-gradient(135deg, #db2777, #ec4899);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(219, 39, 119, 0.3);
+    }
     .yes24-apply-panel {
       padding: 14px 14px 16px;
       background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
@@ -860,6 +865,7 @@
     .modal-event.type-btalk .event-modal-badge { background: #ffedd5; color: #9a3412; border: 1px solid #fdba74; }
     .modal-event.type-bammilon .event-modal-badge { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
     .modal-event.type-yes24 .event-modal-badge { background: #dbeafe; color: #1f3352; border: 1px solid #8ec4dc; }
+    .modal-event.type-bgrow .event-modal-badge { background: #fce7f3; color: #9d174d; border: 1px solid #f9a8d4; }
     .modal-event.type-external .event-modal-badge { background: #e2e8f0; color: #475569; border: 1px solid #cbd5e1; }
     .event-external-info {
       font-size: 13px;
@@ -2516,7 +2522,7 @@
       <div class="cal-cell" onclick="openRent('2026-08-26')"><div class="cal-day">26</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-28')"><div class="cal-day">28</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-08-29')"><div class="cal-day">29</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-08-29')"><div class="cal-day">29</div><div class="cal-event ev-bgrow" onclick="event.stopPropagation();scrollToEvent('bgrow1')">b.grow ep1 11-1230</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-30')"><div class="cal-day">30</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-31')"><div class="cal-day">31</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell empty"></div>
@@ -2551,7 +2557,7 @@
       </svg>
     </div>
     <div class="event-overview-top">
-      <p class="event-overview-summary"><strong><span id="eventTotalCount">3</span>개 행사</strong> · S.voice · b.voice · b.talks</p>
+      <p class="event-overview-summary"><strong><span id="eventTotalCount">4</span>개 행사</strong> · S.voice · b.voice · b.talks · b.grow</p>
     </div>
 
     <div class="event-grid" id="eventGrid">
@@ -2596,19 +2602,16 @@
           </div>
           <span class="poster-slider-hint">1 / 4</span>
         </div>
-        <div class="yes24-apply-panel">
         <button type="button" class="btn-event-apply type-yes24" id="apply-yes24lee" onclick="openEventApply('yes24lee')">b.talks 신청하기</button>
-        <div class="event-info-foot type-yes24">
-          <span class="event-info-badge">8월의 b.talks · 비북스 x 메멘토 x 예스24</span>
-          <p class="event-info-name">《선을 넘는 북클럽》 이수영 작가와의 만남</p>
-          <p class="event-info-desc">10년 독서모임을 이끈 책방지기의 이야기. 함께 읽기가 어떻게 경계를 허물고 더 큰 세계로 나아가게 하는지, 이수영 작가와 나눕니다.</p>
-          <p class="event-info-meta">2026년 8월 8일(토) 오후 4시 · 비북스</p>
-          <p class="event-info-meta">참가비 10,000원 / 0.1평 점주 무료 (간단한 다과 제공)</p>
-          <p class="event-info-note">* 도서 사전 주문 가능 · 행사 후 저자 사인회</p>
-          <p class="event-info-note">* 참가비 포함 3만원 이상 무료 배송 · 미만 시 배송비 2,000원</p>
-          <p class="event-info-note">* 이번 8월의 b.talks는 예스24의 지원을 받아 진행합니다.</p>
         </div>
+      </article>
+      <article class="event-card type-bgrow" id="bgrow1">
+        <div class="event-poster-stack">
+        <div class="event-poster-wrap type-bgrow" onclick="openLightbox('images/bgrow_ep01_august_poster.png','b.grow EP.01 — 생리를 긍정하는 마음')">
+          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bgrow_ep01_august_poster.png','b.grow EP.01 — 생리를 긍정하는 마음')">🔍</button>
+          <img src="images/bgrow_ep01_august_poster.png" alt="b.grow EP.01 — 하선영 동화 작가와 함께하는 생리를 긍정하는 마음 · 《생리는 처음이야》">
         </div>
+        <button type="button" class="btn-event-apply type-bgrow" id="apply-bgrow1" onclick="openEventApply('bgrow1')">b.grow 신청하기</button>
         </div>
       </article>
     </div>
@@ -3050,6 +3053,28 @@ const EVENTS = {
       { id: 'seoneomneun', title: '선을 넘는 북클럽', price: 17000, url: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=395448233' },
       { id: 'maumeun', title: '마음은 어디에', price: 18000, url: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=341933617' }
     ]
+  },
+  bgrow1: {
+    type: 'bgrow',
+    typeLabel: 'b.grow EP.01',
+    name: '하선영 동화 작가와 함께하는 \'생리를 긍정하는 마음\'',
+    subtitle: '동화 《생리는 처음이야》',
+    poster: 'images/bgrow_ep01_august_poster.png',
+    sessions: [{ label: '8/29(토) 11:00–12:30', value: '8월29일_bgrow', _endMs: new Date(2026, 7, 29, 12, 30, 0).getTime() }],
+    capacity: 20,
+    amount: 0,
+    feeNote: '무료',
+    space: '비북스',
+    scheduleNote: '강연 50분 + 질의응답',
+    audience: '10살 내외의 여학생과 양육자, 생리 교육에 관심 있는 누구나',
+    bookOrder: true,
+    bookOrderLabel: '행사 도서 구입 (선택)',
+    bookOrderHint: '참가비는 무료입니다. 행사와 함께 동화 《생리는 처음이야》 구입을 권해드립니다. 사전 신청 시 행사 당일 현장에서 수령할 수 있습니다.',
+    pickupOnly: true,
+    noHostCheck: true,
+    books: [
+      { id: 'saengri', title: '생리는 처음이야', price: 13000, url: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=306575847' }
+    ]
   }
 };
 
@@ -3132,6 +3157,7 @@ function updateEventCapacity(counts) {
           : ev.type === 'yes24' ? 'b.talks 신청하기'
           : ev.type === 'btalk' ? '북토크 신청하기'
           : ev.type === 'bvoice' ? `${ev.typeLabel || 'b.voice'} 신청하기`
+          : ev.type === 'bgrow' ? `${ev.typeLabel || 'b.grow'} 신청하기`
           : '행사 신청하기');
       if (ev.capacity != null && ev.filledCount != null) {
         const remaining = ev.capacity - ev.filledCount;
@@ -3889,9 +3915,16 @@ function openEventApply(key) {
   const dateParts = [];
   if (ev.space) dateParts.push(ev.space);
   dateParts.push(...ev.sessions.map(s => s.label));
-  if (ev.amount && ev.feeNote) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원 (${ev.feeNote})`);
+  if (ev.amount === 0 && ev.feeNote) dateParts.push(`참가비 ${ev.feeNote}`);
+  else if (ev.amount && ev.feeNote) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원 (${ev.feeNote})`);
   else if (ev.amount) dateParts.push(`참가비 ${ev.amount.toLocaleString()}원`);
-  if (ev.bookOrder) dateParts.push('도서 사전 주문 · 행사 후 저자 사인회 · 3만원 이상 무료배송 · 미만 +2,000원');
+  if (ev.bookOrder) {
+    if (ev.pickupOnly) dateParts.push('행사 도서 구입 권유 (선택 · 현장 수령)');
+    else dateParts.push('도서 사전 주문 · 행사 후 저자 사인회 · 3만원 이상 무료배송 · 미만 +2,000원');
+  }
+  if (ev.scheduleNote) dateParts.push(ev.scheduleNote);
+  if (ev.audience) dateParts.push(`대상: ${ev.audience}`);
+  if (ev.capacity) dateParts.push(`인원 ${ev.capacity}명`);
   q('#eventModalDate').textContent = dateParts.join(' · ');
   const formEl = q('#eventApplyForm');
   if (!eventFormTemplate) eventFormTemplate = formEl.innerHTML;
@@ -3942,6 +3975,8 @@ function openEventApply(key) {
         ? '북토크 신청하기'
         : ev.type === 'bvoice'
           ? `${ev.typeLabel || 'b.voice'} 신청하기`
+          : ev.type === 'bgrow'
+            ? `${ev.typeLabel || 'b.grow'} 신청하기`
           : '행사 신청하기';
   q('#eventSubmitBtn').textContent = btnLabel;
   openOv('eventApplyOv');
@@ -3950,25 +3985,14 @@ function openEventApply(key) {
 function openVoiceApply(key) { openEventApply(key); }
 
 function buildYes24BookOrderHtml(ev) {
-  return `
+  const hostBlock = ev.noHostCheck ? '' : `
     <label class="yes24-host-check">
       <input type="checkbox" id="yes24HostCheck" onchange="updateYes24ApplyTotal()">
       <span>점주입니다
         <span class="yes24-host-sub">0.1평 점주 · 참가비 무료 (도서 주문 시 도서비만 입금)</span>
       </span>
-    </label>
-    <div class="book-order-section">
-      <label class="book-order-label">도서 사전 주문 (선택)</label>
-      <p class="book-order-hint">행사 후 저자 사인회가 있습니다. 사전 주문 도서는 참가비와 합산하여 선결제해 주세요. 택배는 참가비 포함 3만원 이상 무료 배송, 미만 시 배송비 2,000원이 추가됩니다.</p>
-      <div class="book-order-list" id="yes24BookList">
-        ${ev.books.map(b => `
-          <label class="book-order-item">
-            <input type="checkbox" name="yes24book" value="${b.id}" data-price="${b.price}" onchange="updateYes24ApplyTotal()">
-            <span class="book-order-title">${b.title}</span>
-            <span class="book-order-price">정가 ${b.price.toLocaleString()}원</span>
-          </label>
-        `).join('')}
-      </div>
+    </label>`;
+  const deliveryBlock = ev.pickupOnly ? '' : `
       <div class="yes24-delivery" id="yes24DeliveryWrap" style="display:none">
         <label class="book-order-label">수령 방법 *</label>
         <div class="yes24-delivery-list">
@@ -3985,7 +4009,24 @@ function buildYes24BookOrderHtml(ev) {
             </span>
           </label>
         </div>
+      </div>`;
+  const label = ev.bookOrderLabel || '도서 사전 주문 (선택)';
+  const hint = ev.bookOrderHint || '행사 후 저자 사인회가 있습니다. 사전 주문 도서는 참가비와 합산하여 선결제해 주세요. 택배는 참가비 포함 3만원 이상 무료 배송, 미만 시 배송비 2,000원이 추가됩니다.';
+  return `
+    ${hostBlock}
+    <div class="book-order-section">
+      <label class="book-order-label">${label}</label>
+      <p class="book-order-hint">${hint}</p>
+      <div class="book-order-list" id="yes24BookList">
+        ${ev.books.map(b => `
+          <label class="book-order-item">
+            <input type="checkbox" name="yes24book" value="${b.id}" data-price="${b.price}" onchange="updateYes24ApplyTotal()">
+            <span class="book-order-title">${b.title}</span>
+            <span class="book-order-price">정가 ${b.price.toLocaleString()}원</span>
+          </label>
+        `).join('')}
       </div>
+      ${deliveryBlock}
     </div>`;
 }
 
@@ -4029,7 +4070,9 @@ function updateYes24ApplyTotal() {
   const freeMin = ev.freeShippingMin || 30000;
   const selected = getYes24SelectedBooks();
   const bookTotal = selected.reduce((sum, b) => sum + b.price, 0);
-  const delivery = getYes24Delivery();
+  const delivery = ev.pickupOnly
+    ? (bookTotal > 0 ? 'pickup' : '')
+    : getYes24Delivery();
   const wantsDelivery = delivery === 'delivery';
   const subtotal = base + bookTotal;
   const shippingFee = getYes24ShippingFee(ev, delivery, subtotal);
@@ -4037,18 +4080,18 @@ function updateYes24ApplyTotal() {
   const freeShip = wantsDelivery && shippingFee === 0;
 
   const deliveryWrap = q('#yes24DeliveryWrap');
-  if (deliveryWrap) deliveryWrap.style.display = bookTotal > 0 ? '' : 'none';
+  if (deliveryWrap) deliveryWrap.style.display = (!ev.pickupOnly && bookTotal > 0) ? '' : 'none';
   if (bookTotal === 0) {
     q('#yes24DeliveryWrap')?.querySelectorAll('input[name="yes24delivery"]').forEach(inp => { inp.checked = false; });
   }
 
   const amountEl = q('#eventModalAmount');
   if (amountEl) {
-    const feeLabel = isHost ? '참가비 (점주 무료)' : '참가비';
-    const feeValue = isHost ? '무료' : `${base.toLocaleString()}원`;
+    const feeLabel = '참가비';
+    const feeValue = (isHost || base === 0) ? '무료' : `${base.toLocaleString()}원`;
     let shipHtml = '';
     if (bookTotal > 0 && delivery === 'pickup') {
-      shipHtml = `<div class="yes24-shipping-badge">현장 수령 · 선결제</div>`;
+      shipHtml = `<div class="yes24-shipping-badge">${ev.pickupOnly ? '행사 당일 현장 수령 · 선결제' : '현장 수령 · 선결제'}</div>`;
     } else if (bookTotal > 0 && wantsDelivery) {
       shipHtml = freeShip
         ? `<div class="yes24-shipping-badge">✓ 참가비 포함 ${freeMin.toLocaleString()}원 이상 — 무료 배송</div>`
@@ -4078,14 +4121,16 @@ function updateYes24ApplyTotal() {
         : `<br>수령: 택배로 받기 · 배송비 ${shippingFee.toLocaleString()}원 포함`;
     }
     if (total === 0) {
-      payNote.innerHTML = isHost
-        ? '0.1평 점주 참가비 무료 · 입금할 금액이 없습니다.'
+      payNote.innerHTML = (ev.amount === 0 || isHost)
+        ? '참가비 무료 · 입금할 금액이 없습니다.'
         : '입금할 금액이 없습니다.';
     } else if (bookTotal > 0) {
-      const hostLine = isHost ? '점주 참가비 무료 · ' : '';
+      const hostLine = isHost ? '참가비 무료 · ' : (ev.amount === 0 ? '참가비 무료 · ' : '');
       payNote.innerHTML = `${hostLine}선택 도서: ${selected.map(b => b.title).join(', ')}${shipLine}<br>${bankLine}<br>합계 금액을 입금해주세요. 입금자명 = 신청 이름`;
     } else {
-      payNote.innerHTML = `도서 없이 참가만 신청 시 참가비 ${base.toLocaleString()}원<br>${bankLine}<br>입금자명은 신청 시 이름과 동일하게 부탁드립니다.`;
+      payNote.innerHTML = ev.amount === 0
+        ? '참가비 무료 · 도서 없이 참가만 신청하셔도 됩니다.'
+        : `도서 없이 참가만 신청 시 참가비 ${base.toLocaleString()}원<br>${bankLine}<br>입금자명은 신청 시 이름과 동일하게 부탁드립니다.`;
     }
   }
 }
@@ -4106,14 +4151,16 @@ async function submitEventApply() {
     return;
   }
 
-  const isHost = ev.bookOrder && isYes24Host();
+  const isHost = ev.bookOrder && !ev.noHostCheck && isYes24Host();
   let amount = isHost ? 0 : (ev.amount || 0);
   let booksLabel = '';
   let noteParts = [];
   let deliveryLabel = '';
   if (ev.bookOrder) {
     const selected = getYes24SelectedBooks();
-    const delivery = getYes24Delivery();
+    const delivery = ev.pickupOnly
+      ? (selected.length ? 'pickup' : '')
+      : getYes24Delivery();
     if (selected.length && !delivery) {
       flash('eventApplyAlert', '도서 수령 방법을 선택해주세요.', 'e');
       return;
@@ -4147,10 +4194,10 @@ async function submitEventApply() {
       note,
       date: new Date().toLocaleString('ko-KR')
     });
-    const feeMsg = isHost ? '참가비 무료 (점주)' : `참가비 ${(ev.amount || 0).toLocaleString()}원`;
+    const feeMsg = (ev.amount === 0 || isHost) ? '참가비 무료' : `참가비 ${(ev.amount || 0).toLocaleString()}원`;
     const deliveryMsg = deliveryLabel ? `<br>수령: ${deliveryLabel}` : '';
     const booksMsg = ev.bookOrder && booksLabel !== '도서 미신청'
-      ? `<br>${feeMsg}<br>도서: ${booksLabel}${deliveryMsg}<br>합계 ${amount.toLocaleString()}원`
+      ? `<br>${feeMsg}<br>도서: ${booksLabel}${deliveryMsg}<br>합계 ${amount === 0 ? '무료' : amount.toLocaleString() + '원'}`
       : (ev.bookOrder ? `<br>${feeMsg}` : '');
     q('#eventApplyForm').innerHTML = `
       <div style="text-align:center;padding:20px 0">
@@ -4187,7 +4234,8 @@ const SCHEDULED_MOIM_BLOCKS = [
 const SCHEDULED_EVENT_BLOCKS = [
   { date: '2026-08-02', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'S.voice' },
   { date: '2026-08-08', space: '비북스', start: '16:00', end: '18:00', tag: 'b.talks' },
-  { date: '2026-08-22', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.voice EP.04' }
+  { date: '2026-08-22', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.voice EP.04' },
+  { date: '2026-08-29', space: '비북스', start: '11:00', end: '12:30', tag: 'b.grow EP.01' }
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
