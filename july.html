@@ -1580,6 +1580,13 @@
     .moim-host-line { font-size: 12px; color: var(--navy); font-weight: 600; margin-bottom: 8px; }
     .moim-regular { display: inline-block; font-size: 11px; font-weight: 700; color: var(--ocean-deep); background: var(--ocean-pale); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; margin-bottom: 12px; }
     .moim-meta { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+    .moim-sessions-bundle { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .moim-session-block {
+      display: flex; flex-direction: column; gap: 5px;
+      background: var(--ocean-pale); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px; margin-bottom: 0;
+    }
+    .session-block-title { font-size: 11px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
     .meta-row { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: var(--text); }
     .meta-row .mi { color: var(--muted); width: 14px; flex-shrink: 0; text-align: center; font-size: 13px; }
     .moim-foot {
@@ -2405,7 +2412,7 @@
       </div>
       <div class="cal-cell sat" onclick="openRent('2026-07-11')">
         <div class="cal-day">11</div>
-        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollect')">문장수집가 14-16</div>
+        <div class="cal-event ev-moim" data-session="7월11일_문장수집" onclick="event.stopPropagation();scrollToMoim('sentcollect')">문장수집가 14-16</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pado')">Let's talk! 1530-18</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
@@ -2465,7 +2472,7 @@
       </div>
       <div class="cal-cell sat" onclick="openRent('2026-07-25')">
         <div class="cal-day">25</div>
-        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollect')">문장수집가 14-16</div>
+        <div class="cal-event ev-moim" data-session="7월25일_문장수집" onclick="event.stopPropagation();scrollToMoim('sentcollect')">문장수집가 14-16</div>
         <div class="cal-event ev-bvoice" onclick="event.stopPropagation();scrollToEvent('bvoice2')">b.voice ep3 13-15</div>
         <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('bammilon')">밤밀온 23-06</div>
         <div class="cal-rent-btn">[대관]</div>
@@ -2665,25 +2672,25 @@
       <div class="moim-body">
         <div class="moim-name">글쓰기 모임 &lt;문장수집가들&gt;</div>
         <p class="moim-host-line">The fleur de sel (더플뢰르드셀)</p>
-        <div class="moim-desc">매회 10~30개의 질문과 함께하는 문장 짓기 · 질문 하나에 문장 하나</div>
-        <div class="session-tabs">
-          <button class="stab active" onclick="selectSession(this,'sent1')">① 1회</button>
-          <button class="stab" onclick="selectSession(this,'sent2')">② 2회</button>
-        </div>
-        <div class="moim-meta" id="sent1-meta">
-          <div class="meta-row"><span class="mi">📅</span>7월 11일 (토) 14:00 – 16:00</div>
-          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
-          <div class="meta-row"><span class="mi">👥</span>10명 이내</div>
-        </div>
-        <div class="moim-meta" id="sent2-meta" style="display:none">
-          <div class="meta-row"><span class="mi">📅</span>7월 25일 (토) 14:00 – 16:00</div>
-          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
-          <div class="meta-row"><span class="mi">👥</span>10명 이내</div>
+        <div class="moim-desc">매회 10~30개의 질문과 함께하는 문장 짓기 · 질문 하나에 문장 하나<br><strong>월 회비 50,000원 (2회분 · ①② 통합 신청)</strong></div>
+        <div class="moim-sessions-bundle">
+          <div class="moim-meta moim-session-block" id="sent1-meta">
+            <div class="session-block-title">① 1회차</div>
+            <div class="meta-row"><span class="mi">📅</span>7월 11일 (토) 14:00 – 16:00</div>
+            <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+            <div class="meta-row"><span class="mi">👥</span>10명 이내</div>
+          </div>
+          <div class="moim-meta moim-session-block" id="sent2-meta">
+            <div class="session-block-title">② 2회차</div>
+            <div class="meta-row"><span class="mi">📅</span>7월 25일 (토) 14:00 – 16:00</div>
+            <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+            <div class="meta-row"><span class="mi">👥</span>10명 이내</div>
+          </div>
         </div>
         <div class="moim-foot">
           <div>
-            <div class="moim-price">50,000원</div>
-            <div class="moim-cap">월 2회 · 1·2회 통합 신청</div>
+            <div class="moim-price">월 회비 50,000원</div>
+            <div class="moim-cap">2회분 (7/11·7/25 통합 신청)</div>
           </div>
           <button class="btn-apply" id="apply-sentcollect" onclick="openApply('글쓰기 모임 <문장수집가들>','sentcollect')">신청하기</button>
         </div>
@@ -3281,9 +3288,14 @@ const MOIMS = {
   },
   sentcollect: {
     name: '글쓰기 모임 <문장수집가들>',
-    sessions: [{ label: '① 7/11(토) 14:00–16:00 · ② 7/25(토) 14:00–16:00', value: '7월_문장수집' }],
+    sessions: [
+      { label: '① 7/11(토) 14:00–16:00', value: '7월11일_문장수집' },
+      { label: '② 7/25(토) 14:00–16:00', value: '7월25일_문장수집' }
+    ],
+    bundleApply: true,
     capacity: 10,
     amount: 50000,
+    amountLabel: '월 회비 (2회분)',
     hasSession: false
   },
   wedlibrary: {
@@ -3626,7 +3638,16 @@ function isMoimApplyOpen(key, counts) {
   if (!m) return false;
   if (m.forceSoldOut) return false;
   counts = counts || latestMoimCounts;
+  if (m.bundleApply) {
+    const lead = m.sessions[0];
+    return lead && !isSessionClosed(m, lead, counts);
+  }
   return m.sessions.some(s => !isSessionClosed(m, s, counts));
+}
+
+function getSessionsToApply(m, session) {
+  if (m.bundleApply) return m.sessions;
+  return [m.sessions.find(s => s.value === session) || m.sessions[0]];
 }
 
 function isEventFullySoldOut(key, counts) {
@@ -4157,8 +4178,12 @@ function openApply(name, key) {
   if (!isMoimApplyOpen(key, latestMoimCounts)) return;
   curMoimKey = key;
   q('#modalMoimName').textContent = m.name;
-  q('#modalMoimDate').textContent = m.sessions.map(s => s.label).join(' / ');
-  q('#modalAmount').textContent = m.amount.toLocaleString() + '원';
+  q('#modalMoimDate').textContent = m.bundleApply
+    ? `${m.sessions.map(s => s.label).join(' · ')} (①② 통합 신청)`
+    : m.sessions.map(s => s.label).join(' / ');
+  q('#modalAmount').textContent = m.amountLabel
+    ? `${m.amountLabel} ${m.amount.toLocaleString()}원`
+    : m.amount.toLocaleString() + '원';
   q('#applyAlert').innerHTML = '';
   q('#aName').value = ''; q('#aPhone').value = '';
 
@@ -4176,7 +4201,8 @@ function openApply(name, key) {
     });
   } else {
     sw.style.display = 'none';
-    if (isSessionClosed(m, m.sessions[0], latestMoimCounts)) return;
+    const gateSession = m.sessions[0];
+    if (isSessionClosed(m, gateSession, latestMoimCounts)) return;
   }
   openOv('applyOv');
 }
@@ -4189,7 +4215,8 @@ async function submitApply() {
 
   if (!name || !phone) { flash('applyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
   if (m.hasSession && !session) { flash('applyAlert', '회차를 선택해주세요.', 'e'); return; }
-  const pickedSession = m.sessions.find(s => s.value === session) || m.sessions[0];
+  const sessionsToApply = getSessionsToApply(m, session);
+  const pickedSession = sessionsToApply[0];
   if (m.forceSoldOut) {
     flash('applyAlert', '모집이 완료되었습니다.', 'e');
     return;
@@ -4202,30 +4229,38 @@ async function submitApply() {
     flash('applyAlert', '모임이 종료되어 신청할 수 없습니다.', 'e');
     return;
   }
-  if (isSessionFull(m, session, latestMoimCounts)) {
-    flash('applyAlert', '선택한 회차는 모집이 완료되었습니다.', 'e');
+  if (sessionsToApply.some(s => isSessionFull(m, s.value, latestMoimCounts))) {
+    flash('applyAlert', m.bundleApply ? '모집이 완료되었습니다.' : '선택한 회차는 모집이 완료되었습니다.', 'e');
     return;
   }
 
   setLoad('submitBtn', true, '신청 중...');
   try {
-    await POST({
-      action: 'apply',
-      month: PAGE_MONTH,
-      moimName: m.name,
-      session,
-      name,
-      phone,
-      amount: m.amount,
-      date: new Date().toLocaleString('ko-KR')
-    });
+    for (let i = 0; i < sessionsToApply.length; i++) {
+      const s = sessionsToApply[i];
+      await POST({
+        action: 'apply',
+        month: PAGE_MONTH,
+        moimName: m.name,
+        session: s.value,
+        name,
+        phone,
+        amount: i === 0 ? m.amount : '',
+        note: m.bundleApply && i > 0 ? '①② 통합신청' : '',
+        date: new Date().toLocaleString('ko-KR')
+      });
+    }
+    const sessionNote = m.bundleApply
+      ? `<div style="font-size:12px;color:var(--muted);margin-top:8px">${m.sessions.map(s => s.label).join(' · ')}<br>①② 회차 모두 신청되었습니다.</div>`
+      : '';
     q('#applyForm').innerHTML = `
       <div style="text-align:center;padding:20px 0">
         <div style="font-size:40px;margin-bottom:12px">✅</div>
         <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px">신청 완료!</div>
+        ${sessionNote}
         <div class="pay-box" style="text-align:left">
           <div style="font-size:12px;color:var(--ocean-deep);margin-bottom:4px">입금해주세요</div>
-          <div class="pay-amount">${m.amount.toLocaleString()}원</div>
+          <div class="pay-amount">${m.amountLabel ? `${m.amountLabel} ` : ''}${m.amount.toLocaleString()}원</div>
           <div style="font-size:12px;margin-top:6px">
             <strong>모임통장: 카카오뱅크 7942-33-45474</strong><br>(예금주 경규환)<br>
             입금자명: <strong>${name}</strong>
