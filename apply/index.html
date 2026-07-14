@@ -210,6 +210,20 @@
 
     .hint { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
 
+    .period-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ocean-deep);
+      background: linear-gradient(135deg, var(--ocean-pale) 0%, #fff 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      line-height: 1.5;
+    }
+
     .radio-group { display: flex; gap: 12px; flex-wrap: wrap; }
     .radio-option { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; }
     .radio-option input { width: 16px; height: 16px; accent-color: var(--ocean-deep); cursor: pointer; }
@@ -323,9 +337,9 @@
     <circle cx="45" cy="105" r="2.5" fill="rgba(255,255,255,0.5)"/>
   </svg>
 
-  <div class="hero-badge">🏄 7월 모임 개설 신청</div>
+  <div class="hero-badge">🏄 7·8월 모임 개설 신청</div>
   <h1>비북스에서 당신의 모임을<br/>펼쳐보세요</h1>
-  <p class="hero-sub">이번 여름, 파도 타듯 가볍게 시작해 보세요</p>
+  <p class="hero-sub">7월·8월 통합 모집 — 두 달 중 희망 일정으로 신청해 주세요</p>
 </div>
 
 <div class="container">
@@ -343,12 +357,9 @@
       <div class="card-title">기본 정보</div>
 
       <div class="field">
-        <label class="req">신청 월</label>
-        <div class="radio-group">
-          <label class="radio-option">
-            <input type="radio" name="month" value="7월" checked /> <span>☀️ 7월</span>
-          </label>
-        </div>
+        <label>모집 기간</label>
+        <p class="period-banner">☀️ 7월 · 🌻 8월 통합 모집</p>
+        <p class="hint">월별로 나누지 않고 7·8월 개설 모임을 한 번에 신청합니다.</p>
       </div>
 
       <div class="field">
@@ -393,7 +404,7 @@
           </div>
           <div class="session-row">
             <div class="session-num">2회차</div>
-            <input type="text" id="session2" placeholder="선택" />
+            <input type="text" id="session2" placeholder="예) 8/9 (토) 14:00–16:00" />
           </div>
           <div class="session-row">
             <div class="session-num">3회차</div>
@@ -404,6 +415,7 @@
             <input type="text" id="session4" placeholder="선택" />
           </div>
         </div>
+        <p class="hint">7월·8월 중 희망 일정을 적어주세요. 여러 회차면 순서대로 입력해 주세요.</p>
       </div>
     </div>
 
@@ -459,7 +471,7 @@
 
   <div id="success-msg">
     <h2>🏄 신청이 접수되었습니다!</h2>
-    <p>비북스 담당자가 확인 후 연락드릴게요.<br/>이제 파도 기다리며 설렘만 하시면 됩니다 🌊<br/>문의: 비북스 인스타그램 DM</p>
+    <p>7·8월 모임 개설 신청이 접수되었습니다.<br/>비북스 담당자가 확인 후 연락드릴게요.<br/>이제 파도 기다리며 설렘만 하시면 됩니다 🌊<br/>문의: 비북스 인스타그램 DM</p>
   </div>
 </div>
 
@@ -467,11 +479,14 @@
 
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2WEJpCaLlmZwM7F5ysNV0Qcj2xaGB3k1GAwxnCaLt5OwLp6fMauAXRa3XSHjNE7V6/exec';
+  const RECRUIT_PERIOD = {
+    label: '7·8월',
+    months: ['7월', '8월']
+  };
 
   document.getElementById('form').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const month        = document.querySelector('input[name="month"]:checked');
     const space        = document.querySelector('input[name="space"]:checked');
     const hasMaterials = document.querySelector('input[name="hasMaterials"]:checked');
     const meetingName  = document.getElementById('meetingName').value.trim();
@@ -498,7 +513,8 @@
     document.getElementById('error-msg').style.display = 'none';
 
     const params = new URLSearchParams({
-      month:        month.value,
+      month:        RECRUIT_PERIOD.label,
+      recruitMonths: RECRUIT_PERIOD.months.join(','),
       meetingName,
       description,
       hostName,
