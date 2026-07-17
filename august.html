@@ -2524,7 +2524,7 @@
       <div class="cal-cell" onclick="openRent('2026-08-28')"><div class="cal-day">28</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-08-29')"><div class="cal-day">29</div><div class="cal-event ev-bgrow" onclick="event.stopPropagation();scrollToEvent('bgrow1')">b.grow ep1 11-1230</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-30')"><div class="cal-day">30</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-31')"><div class="cal-day">31</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-31')"><div class="cal-day">31</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('nihongo')">일본어 1300-1430</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
@@ -2662,6 +2662,33 @@
             <div class="moim-cap">재료 준비 있음</div>
           </div>
           <button class="btn-apply" id="apply-storyaunt" onclick="openApply('그림책 읽어주는 이모','storyaunt')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="nihongo">
+      <div class="moim-poster-img" onclick="openLightbox('images/nihongo_august_poster.jpg','いっしょに日本語 勉強しませんか? 포스터')">
+        <img src="images/nihongo_august_poster.jpg" alt="いっしょに日本語 勉強しませんか? — 비북스 서든리 매니저 일본어 모임">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">いっしょに日本語 勉強しませんか?</div>
+        <p class="moim-host-line">비북스 서든리 매니저</p>
+        <div class="moim-desc">
+          일본 여행에서 스스로 말하고 싶은 분들을 위한 실전 일본어 모임이에요.<br>
+          레스토랑에서 찬물 달라고 하기, 편의점 화장실 급할 때, 돈키호테에서 동전파스 찾기, 맥도날드에서 감자튀김 시키고 케첩 더 달라고 하기까지 — 여행에서 바로 쓰는 일본어를 함께 익혀봐요.<br><br>
+          도쿄 하라주쿠에서 5년 살았던 서든리 매니저와 함께 《시바시바 공부하는 일본어 쏫》으로 초·중급 사이의 실용 여행 일본어를 배워요.
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>8월 31일 (월) 13:00 – 14:30</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>7명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-nihongo" onclick="openApply('いっしょに日本語 勉強しませんか?','nihongo')">신청하기</button>
         </div>
       </div>
     </div>
@@ -3003,6 +3030,13 @@ const MOIMS = {
     capacity: 7,
     amount: 10000,
     hasSession: false
+  },
+  nihongo: {
+    name: 'いっしょに日本語 勉強しませんか?',
+    sessions: [{ label: '8/31(월) 13:00–14:30', value: '8월31일', _endMs: new Date(2026, 7, 31, 14, 30, 0).getTime() }],
+    capacity: 7,
+    amount: 10000,
+    hasSession: false
   }
 };
 
@@ -3087,7 +3121,8 @@ let latestMoimCounts = {};
 let latestEventCounts = {};
 
 const MOIM_CURATION_META = {
-  storyaunt: { cardId: 'storyaunt', poster: 'images/story_aunt_august.jpg' }
+  storyaunt: { cardId: 'storyaunt', poster: 'images/story_aunt_august.jpg' },
+  nihongo: { cardId: 'nihongo', poster: 'images/nihongo_august_poster.jpg' }
 };
 
 const MOIM_DEFAULT_SESSION = {};
