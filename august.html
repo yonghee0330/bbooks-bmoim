@@ -1556,6 +1556,8 @@
     /* 타이포 포스터 — 이미지 없을 때 */
     .moim-poster {
       min-height: 200px;
+      aspect-ratio: 819 / 1024;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1563,6 +1565,7 @@
       padding: 24px;
       position: relative;
       overflow: hidden;
+      box-sizing: border-box;
     }
     .moim-poster.p1 { background: linear-gradient(135deg, #0A1F44 0%, #1a3558 100%); }
     .moim-poster.p2 { background: linear-gradient(135deg, #2e3b1e 0%, #4a6741 100%); }
@@ -1602,8 +1605,74 @@
       opacity: 0.95;
     }
     .ocean-tea-poster .poster-tea-illust {
-      width: min(100px, 28vw);
-      margin-bottom: 8px;
+      width: min(88px, 24vw);
+      margin-bottom: 6px;
+      z-index: 1;
+    }
+    #chaeksup .ocean-tea-poster {
+      padding: 20px 18px 22px;
+      justify-content: flex-start;
+      gap: 0;
+    }
+    #chaeksup .ocean-tea-poster .poster-badge {
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,.7);
+      margin-bottom: 6px;
+    }
+    #chaeksup .ocean-tea-poster .poster-title {
+      font-size: clamp(28px, 6.5vw, 36px);
+      line-height: 1.25;
+      margin-top: 2px;
+    }
+    #chaeksup .ocean-tea-poster .poster-sub {
+      font-size: clamp(14px, 3.2vw, 17px);
+      color: rgba(255,255,255,.82);
+      margin-top: 8px;
+      font-weight: 500;
+    }
+    #chaeksup .ocean-tea-poster .poster-host {
+      font-size: clamp(13px, 2.8vw, 15px);
+      color: rgba(255,255,255,.72);
+      margin-top: 10px;
+      text-align: center;
+      line-height: 1.45;
+    }
+    #chaeksup .ocean-tea-poster .poster-sessions {
+      margin-top: 16px;
+      width: 100%;
+      max-width: 92%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      z-index: 1;
+      box-sizing: border-box;
+    }
+    #chaeksup .ocean-tea-poster .poster-session-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: clamp(13px, 2.9vw, 15px);
+      color: rgba(255,255,255,.95);
+      font-weight: 600;
+      line-height: 1.35;
+      padding: 5px 0;
+    }
+    #chaeksup .ocean-tea-poster .poster-session-row + .poster-session-row {
+      border-top: 1px solid rgba(255,255,255,.18);
+    }
+    #chaeksup .ocean-tea-poster .poster-session-row span:last-child {
+      font-weight: 500;
+      color: rgba(255,255,255,.88);
+      white-space: nowrap;
+    }
+    #chaeksup .ocean-tea-poster .poster-fee {
+      margin-top: 14px;
+      font-size: clamp(14px, 3.2vw, 16px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.02em;
       z-index: 1;
     }
     .moim-poster.ocean-moonlight-poster {
@@ -1707,6 +1776,13 @@
     .moim-host-line { font-size: 12px; color: var(--navy); font-weight: 600; margin-bottom: 8px; }
     .moim-regular { display: inline-block; font-size: 11px; font-weight: 700; color: var(--ocean-deep); background: var(--ocean-pale); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; margin-bottom: 12px; }
     .moim-meta { display: flex; flex-direction: column; gap: 5px; margin-bottom: 16px; }
+    .moim-sessions-bundle { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+    .moim-session-block {
+      display: flex; flex-direction: column; gap: 5px;
+      background: var(--ocean-pale); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px; margin-bottom: 0;
+    }
+    .session-block-title { font-size: 11px; font-weight: 700; color: var(--navy); margin-bottom: 2px; }
     .meta-row { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: var(--text); }
     .meta-row .mi { color: var(--muted); width: 14px; flex-shrink: 0; text-align: center; font-size: 13px; }
     .moim-foot {
@@ -2036,6 +2112,7 @@
       color: #64748b;
     }
     .moim-card.moim-sold-out .moim-poster-img::before,
+    .moim-card.moim-sold-out .moim-poster::before,
     .moim-card.moim-sold-out .poster-slider-wrap::before {
       content: '';
       position: absolute;
@@ -2045,6 +2122,7 @@
       pointer-events: none;
     }
     .moim-card.moim-sold-out .moim-poster-img::after,
+    .moim-card.moim-sold-out .moim-poster::after,
     .moim-card.moim-sold-out .poster-slider-wrap::after {
       content: '모집 완료';
       position: absolute;
@@ -2067,6 +2145,7 @@
       white-space: nowrap;
     }
     .moim-card.moim-sold-out .moim-poster-img:hover::after,
+    .moim-card.moim-sold-out .moim-poster:hover::after,
     .moim-card.moim-sold-out .poster-slider-wrap:hover::after {
       content: '모집 완료';
       left: 50%;
@@ -2112,6 +2191,7 @@
       white-space: nowrap;
     }
     .moim-card.moim-ended .moim-poster-img::before,
+    .moim-card.moim-ended .moim-poster::before,
     .moim-card.moim-ended .poster-slider-wrap::before,
     .voice-event.moim-ended .voice-event-poster::before {
       content: '';
@@ -2122,6 +2202,7 @@
       pointer-events: none;
     }
     .moim-card.moim-ended .moim-poster-img::after,
+    .moim-card.moim-ended .moim-poster::after,
     .moim-card.moim-ended .poster-slider-wrap::after,
     .voice-event.moim-ended .voice-event-poster::after {
       content: '모임 종료';
@@ -2145,6 +2226,7 @@
       white-space: nowrap;
     }
     .moim-card.moim-ended .moim-poster-img:hover::after,
+    .moim-card.moim-ended .moim-poster:hover::after,
     .moim-card.moim-ended .poster-slider-wrap:hover::after {
       content: '모임 종료';
       left: 50%;
@@ -2161,6 +2243,7 @@
       border-radius: 6px;
     }
     .moim-card.moim-closed .moim-poster-img::before,
+    .moim-card.moim-closed .moim-poster::before,
     .moim-card.moim-closed .poster-slider-wrap::before {
       content: '';
       position: absolute;
@@ -2170,6 +2253,7 @@
       pointer-events: none;
     }
     .moim-card.moim-closed .moim-poster-img::after,
+    .moim-card.moim-closed .moim-poster::after,
     .moim-card.moim-closed .poster-slider-wrap::after {
       content: none;
     }
@@ -2498,34 +2582,34 @@
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
-      <div class="cal-cell sat" onclick="openRent('2026-08-01')"><div class="cal-day">1</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('storyaunt')">그림책이모 1030-1130</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-08-01')"><div class="cal-day">1</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('storyaunt')">그림책이모 1030-1130</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="8월1일_문장수집토">문장수집가토 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-02')"><div class="cal-day">2</div><div class="cal-event ev-voice" onclick="event.stopPropagation();scrollToEvent('svoice1')">S.voice 16-18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-03')"><div class="cal-day">3</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-04')"><div class="cal-day">4</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-05')"><div class="cal-day">5</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-06')"><div class="cal-day">6</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-07')"><div class="cal-day">7</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-08-08')"><div class="cal-day">8</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24lee')">b.talks 16-18</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-07')"><div class="cal-day">7</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="8월7일_문장수집금">문장수집가금 13-15</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-08-08')"><div class="cal-day">8</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="8월8일_문장수집토">문장수집가토 14-16</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24lee')">b.talks 16-18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-09')"><div class="cal-day">9</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('adlerbtalk1')">북토크 13-15</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-10')"><div class="cal-day">10</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-11')"><div class="cal-day">11</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-11')"><div class="cal-day">11</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월11일_책숲다회">책숲다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-12')"><div class="cal-day">12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-13')"><div class="cal-day">13</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-14')"><div class="cal-day">14</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-08-15')"><div class="cal-day">15</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-14')"><div class="cal-day">14</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="8월14일_문장수집금">문장수집가금 13-15</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-08-15')"><div class="cal-day">15</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="8월15일_문장수집토">문장수집가토 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-16')"><div class="cal-day">16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-17')"><div class="cal-day">17</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-18')"><div class="cal-day">18</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-18')"><div class="cal-day">18</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월18일_책숲다회">책숲다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-19')"><div class="cal-day">19</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-21')"><div class="cal-day">21</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-08-22')"><div class="cal-day">22</div><div class="cal-event ev-voice" onclick="event.stopPropagation();scrollToEvent('bvoice4')">b.voice ep4 16-18</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sun" onclick="openRent('2026-08-23')"><div class="cal-day">23</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-21')"><div class="cal-day">21</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="8월21일_문장수집금">문장수집가금 13-15</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-08-22')"><div class="cal-day">22</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="8월22일_문장수집토">문장수집가토 14-16</div><div class="cal-event ev-voice" onclick="event.stopPropagation();scrollToEvent('bvoice4')">b.voice ep4 16-18</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-08-23')"><div class="cal-day">23</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pilsa')" data-session="8월23일_필사">필사책꾸 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-24')"><div class="cal-day">24</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-25')"><div class="cal-day">25</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-25')"><div class="cal-day">25</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월25일_책숲다회">책숲다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-26')"><div class="cal-day">26</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-28')"><div class="cal-day">28</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-28')"><div class="cal-day">28</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="8월28일_문장수집금">문장수집가금 13-15</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-08-29')"><div class="cal-day">29</div><div class="cal-event ev-bgrow" onclick="event.stopPropagation();scrollToEvent('bgrow1')">b.grow ep1 11-1230</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-30')"><div class="cal-day">30</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-31')"><div class="cal-day">31</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('nihongo')">니혼고 1300-1430</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2703,6 +2787,200 @@
             <div class="moim-cap">재료 준비 없음 · 교재 별도 신청 가능</div>
           </div>
           <button class="btn-apply" id="apply-nihongo" onclick="openApply('[초급중급 그 사이] 같이, 일본어 공부하실래요?','nihongo')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="sentcollectsat">
+      <div class="moim-poster-img" onclick="openLightbox('images/sentcollect_august_sat.jpg','글쓰기 모임 문장수집가들 토요반 포스터')">
+        <img src="images/sentcollect_august_sat.jpg" alt="글쓰기 모임 문장수집가들 — 8월 토요반">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">글쓰기 모임 &lt;문장수집가들&gt; · 토요반</div>
+        <p class="moim-host-line">더플뢰르드셀 (The fleur de sel)</p>
+        <div class="moim-desc">
+          문장 수집가들은 질문 앞에 잠시 머무르며 자신만의 문장을 지어내는 작은 기록 모임입니다. 한 달 동안 함께 질문을 만나고, 천천히 생각하며, 오래 남을 한 문장을 발견합니다.<br><br>
+          많은 문장을 쓰기보다, 조금 더 깊은 문장을 남기고 싶은 사람. 기록을 좋아하고, 서로의 생각과 영감을 나누는 시간을 사랑하는 사람. 더플뢰르드셀과 함께 천천히 문장을 모아갈 8명의 문장 수집가를 기다립니다.<br><br>
+          *매회 음료 및 다과 제공<br>
+          *문장수집가들 키트 제공<br>
+          <strong>월 회비 100,000원 (4회분 · ①②③④ 통합 신청)</strong>
+        </div>
+        <div class="moim-sessions-bundle">
+          <div class="moim-meta moim-session-block">
+            <div class="session-block-title">① 1회차</div>
+            <div class="meta-row"><span class="mi">📅</span>8월 1일 (토) 14:00 – 16:00</div>
+            <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+            <div class="meta-row"><span class="mi">👥</span>8명</div>
+          </div>
+          <div class="moim-meta moim-session-block">
+            <div class="session-block-title">② 2회차</div>
+            <div class="meta-row"><span class="mi">📅</span>8월 8일 (토) 14:00 – 16:00</div>
+            <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+            <div class="meta-row"><span class="mi">👥</span>8명</div>
+          </div>
+          <div class="moim-meta moim-session-block">
+            <div class="session-block-title">③ 3회차</div>
+            <div class="meta-row"><span class="mi">📅</span>8월 15일 (토) 14:00 – 16:00</div>
+            <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+            <div class="meta-row"><span class="mi">👥</span>8명</div>
+          </div>
+          <div class="moim-meta moim-session-block">
+            <div class="session-block-title">④ 4회차</div>
+            <div class="meta-row"><span class="mi">📅</span>8월 22일 (토) 14:00 – 16:00</div>
+            <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+            <div class="meta-row"><span class="mi">👥</span>8명</div>
+          </div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">월 회비 100,000원</div>
+            <div class="moim-cap">4회분 · 재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-sentcollectsat" onclick="openApply('글쓰기 모임 <문장수집가들> · 토요반','sentcollectsat')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="sentcollectfri">
+      <div class="moim-poster-img" onclick="openLightbox('images/sentcollect_august_fri.jpg','글쓰기 모임 문장수집가들 금요반 포스터')">
+        <img src="images/sentcollect_august_fri.jpg" alt="글쓰기 모임 문장수집가들 — 8월 금요반">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">글쓰기 모임 &lt;문장수집가들&gt; · 금요반</div>
+        <p class="moim-host-line">더플뢰르드셀 (The fleur de sel)</p>
+        <div class="moim-desc">
+          문장 수집가들은 질문 앞에 잠시 머무르며 자신만의 문장을 지어내는 작은 기록 모임입니다. 한 달 동안 함께 질문을 만나고, 천천히 생각하며, 오래 남을 한 문장을 발견합니다.<br><br>
+          많은 문장을 쓰기보다, 조금 더 깊은 문장을 남기고 싶은 사람. 기록을 좋아하고, 서로의 생각과 영감을 나누는 시간을 사랑하는 사람. 더플뢰르드셀과 함께 천천히 문장을 모아갈 8명의 문장 수집가를 기다립니다.<br><br>
+          <strong>월 회비 100,000원 (4회분 · ①②③④ 통합 신청)</strong>
+        </div>
+        <div class="moim-sessions-bundle">
+          <div class="moim-meta moim-session-block">
+            <div class="session-block-title">① 1회차</div>
+            <div class="meta-row"><span class="mi">📅</span>8월 7일 (금) 13:00 – 15:00</div>
+            <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+            <div class="meta-row"><span class="mi">👥</span>8명</div>
+          </div>
+          <div class="moim-meta moim-session-block">
+            <div class="session-block-title">② 2회차</div>
+            <div class="meta-row"><span class="mi">📅</span>8월 14일 (금) 13:00 – 15:00</div>
+            <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+            <div class="meta-row"><span class="mi">👥</span>8명</div>
+          </div>
+          <div class="moim-meta moim-session-block">
+            <div class="session-block-title">③ 3회차</div>
+            <div class="meta-row"><span class="mi">📅</span>8월 21일 (금) 13:00 – 15:00</div>
+            <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+            <div class="meta-row"><span class="mi">👥</span>8명</div>
+          </div>
+          <div class="moim-meta moim-session-block">
+            <div class="session-block-title">④ 4회차</div>
+            <div class="meta-row"><span class="mi">📅</span>8월 28일 (금) 13:00 – 15:00</div>
+            <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+            <div class="meta-row"><span class="mi">👥</span>8명</div>
+          </div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">월 회비 100,000원</div>
+            <div class="moim-cap">4회분 · 재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-sentcollectfri" onclick="openApply('글쓰기 모임 <문장수집가들> · 금요반','sentcollectfri')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="chaeksup">
+      <div class="moim-poster ocean-tea-poster" aria-hidden="true">
+        <div class="poster-badge">8월</div>
+        <svg class="poster-tea-illust" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+          <ellipse cx="40" cy="58" rx="22" ry="6" fill="rgba(255,255,255,0.18)"/>
+          <path d="M22 34h32c2 0 4 2 4 4v12c0 8-8 14-16 14s-16-6-16-14V38c0-2 2-4 4-4z" fill="rgba(255,255,255,0.92)"/>
+          <path d="M58 40h6c3 0 5 2 5 5s-2 5-5 5h-6" stroke="rgba(255,255,255,0.85)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M34 28c0-6 4-10 6-12M42 26c0-5 3-8 5-10M48 28c0-4 2-7 4-9" stroke="rgba(255,255,255,0.55)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="poster-title">책숲다회</div>
+        <div class="poster-sub">세계 티브랜드를 만나다</div>
+        <div class="poster-host">지선화(다온) · 매장 테이블</div>
+        <div class="poster-sessions">
+          <div class="poster-session-row"><span>① 8/11 (화)</span><span>10:00–12:00</span></div>
+          <div class="poster-session-row"><span>② 8/18 (화)</span><span>10:00–12:00</span></div>
+          <div class="poster-session-row"><span>③ 8/25 (화)</span><span>10:00–12:00</span></div>
+        </div>
+        <div class="poster-fee">회차당 20,000원</div>
+        <div class="poster-deco">🍵</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">책숲다회</div>
+        <p class="moim-host-line">지선화(다온)</p>
+        <div class="moim-desc">
+          세계 티브랜드의 차를 알아보는 자리입니다.<br>
+          회차마다 주인공 브랜드가 변경됩니다.
+        </div>
+        <div class="session-tabs">
+          <button class="stab active" onclick="selectSession(this,'chaek1')">① 8/11</button>
+          <button class="stab" onclick="selectSession(this,'chaek2')">② 8/18</button>
+          <button class="stab" onclick="selectSession(this,'chaek3')">③ 8/25</button>
+        </div>
+        <div class="moim-meta" id="chaek1-meta">
+          <div class="meta-row"><span class="mi">📅</span>8월 11일 (화) 10:00 – 12:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-meta" id="chaek2-meta" style="display:none">
+          <div class="meta-row"><span class="mi">📅</span>8월 18일 (화) 10:00 – 12:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-meta" id="chaek3-meta" style="display:none">
+          <div class="meta-row"><span class="mi">📅</span>8월 25일 (화) 10:00 – 12:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">20,000원 <span style="font-size:12px;font-weight:500">/ 회차</span></div>
+            <div class="moim-cap">재료 준비 있음 · 회차별 개별 신청</div>
+          </div>
+          <button class="btn-apply" id="apply-chaeksup" onclick="openApply('책숲다회','chaeksup')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="pilsa">
+      <div class="poster-slider-wrap" id="poster-slider-pilsa-aug"
+           onclick="openPosterLightbox('pilsa-aug')"
+           data-posters='["images/pilsa_diary_august.jpg","images/pilsa_diary_august_1.jpg"]'
+           data-alt="필사적인 다이어리 • 필사&책꾸">
+        <div class="poster-slider-viewport">
+          <div class="poster-slider" data-slider="pilsa-aug">
+            <div class="poster-slide"><img src="images/pilsa_diary_august.jpg" alt="필사적인 다이어리 — 8/23(일) 14:00–16:00"></div>
+            <div class="poster-slide"><img src="images/pilsa_diary_august_1.jpg" alt="필사 &amp; 책꾸 모임"></div>
+          </div>
+        </div>
+        <div class="poster-slider-nav">
+          <div class="slider-dots" data-dots="pilsa-aug"></div>
+          <div class="slider-arrows">
+            <button type="button" class="sarr" aria-label="이전 포스터" onclick="event.stopPropagation();posterSlide('pilsa-aug',-1)">‹</button>
+            <button type="button" class="sarr" aria-label="다음 포스터" onclick="event.stopPropagation();posterSlide('pilsa-aug',1)">›</button>
+          </div>
+        </div>
+        <span class="poster-slider-hint">1 / 2</span>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">필사적인 다이어리 • 필사&amp;책꾸</div>
+        <p class="moim-host-line">책방 파도</p>
+        <div class="moim-desc">기억하고 싶은 문장을 필사하고, 나만의 감성으로 꾸미며 즐겁게 기록하는 모임입니다.</div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>8월 23일 (일) 14:00 – 16:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>5명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음 · 음료·다과 포함</div>
+          </div>
+          <button class="btn-apply" id="apply-pilsa" onclick="openApply('필사적인 다이어리 • 필사&책꾸','pilsa')">신청하기</button>
         </div>
       </div>
     </div>
@@ -3059,6 +3337,52 @@ const MOIMS = {
     books: [
       { id: 'shibashiba', title: '시바시바 공부하는 일본어 쏯', price: 19000, url: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=337249603' }
     ]
+  },
+  sentcollectsat: {
+    name: '글쓰기 모임 <문장수집가들> · 토요반',
+    sessions: [
+      { label: '① 8/1(토) 14:00–16:00', value: '8월1일_문장수집토', _endMs: new Date(2026, 7, 1, 16, 0, 0).getTime() },
+      { label: '② 8/8(토) 14:00–16:00', value: '8월8일_문장수집토', _endMs: new Date(2026, 7, 8, 16, 0, 0).getTime() },
+      { label: '③ 8/15(토) 14:00–16:00', value: '8월15일_문장수집토', _endMs: new Date(2026, 7, 15, 16, 0, 0).getTime() },
+      { label: '④ 8/22(토) 14:00–16:00', value: '8월22일_문장수집토', _endMs: new Date(2026, 7, 22, 16, 0, 0).getTime() }
+    ],
+    bundleApply: true,
+    capacity: 8,
+    amount: 100000,
+    amountLabel: '월 회비 (4회분)',
+    hasSession: false
+  },
+  sentcollectfri: {
+    name: '글쓰기 모임 <문장수집가들> · 금요반',
+    sessions: [
+      { label: '① 8/7(금) 13:00–15:00', value: '8월7일_문장수집금', _endMs: new Date(2026, 7, 7, 15, 0, 0).getTime() },
+      { label: '② 8/14(금) 13:00–15:00', value: '8월14일_문장수집금', _endMs: new Date(2026, 7, 14, 15, 0, 0).getTime() },
+      { label: '③ 8/21(금) 13:00–15:00', value: '8월21일_문장수집금', _endMs: new Date(2026, 7, 21, 15, 0, 0).getTime() },
+      { label: '④ 8/28(금) 13:00–15:00', value: '8월28일_문장수집금', _endMs: new Date(2026, 7, 28, 15, 0, 0).getTime() }
+    ],
+    bundleApply: true,
+    capacity: 8,
+    amount: 100000,
+    amountLabel: '월 회비 (4회분)',
+    hasSession: false
+  },
+  chaeksup: {
+    name: '책숲다회',
+    sessions: [
+      { label: '① 8/11(화) 10:00–12:00', value: '8월11일_책숲다회', _endMs: new Date(2026, 7, 11, 12, 0, 0).getTime() },
+      { label: '② 8/18(화) 10:00–12:00', value: '8월18일_책숲다회', _endMs: new Date(2026, 7, 18, 12, 0, 0).getTime() },
+      { label: '③ 8/25(화) 10:00–12:00', value: '8월25일_책숲다회', _endMs: new Date(2026, 7, 25, 12, 0, 0).getTime() }
+    ],
+    capacity: { '8월11일_책숲다회': 6, '8월18일_책숲다회': 6, '8월25일_책숲다회': 6 },
+    amount: 20000,
+    hasSession: true
+  },
+  pilsa: {
+    name: '필사적인 다이어리 • 필사&책꾸',
+    sessions: [{ label: '8/23(일) 14:00–16:00', value: '8월23일_필사', _endMs: new Date(2026, 7, 23, 16, 0, 0).getTime() }],
+    capacity: 5,
+    amount: 10000,
+    hasSession: false
   }
 };
 
@@ -3156,7 +3480,11 @@ let latestEventCounts = {};
 
 const MOIM_CURATION_META = {
   storyaunt: { cardId: 'storyaunt', poster: 'images/story_aunt_august.jpg' },
-  nihongo: { cardId: 'nihongo', poster: 'images/nihongo_august_poster.jpg' }
+  nihongo: { cardId: 'nihongo', poster: 'images/nihongo_august_poster.jpg' },
+  sentcollectsat: { cardId: 'sentcollectsat', poster: 'images/sentcollect_august_sat.jpg' },
+  sentcollectfri: { cardId: 'sentcollectfri', poster: 'images/sentcollect_august_fri.jpg' },
+  chaeksup: { cardId: 'chaeksup', poster: null },
+  pilsa: { cardId: 'pilsa', poster: 'images/pilsa_diary_august.jpg' }
 };
 
 const MOIM_DEFAULT_SESSION = {};
@@ -3356,7 +3684,16 @@ function isMoimApplyOpen(key, counts) {
   if (!m) return false;
   if (m.forceSoldOut) return false;
   counts = counts || latestMoimCounts;
+  if (m.bundleApply) {
+    const lead = m.sessions[0];
+    return lead && !isSessionClosed(m, lead, counts);
+  }
   return m.sessions.some(s => !isSessionClosed(m, s, counts));
+}
+
+function getSessionsToApply(m, session) {
+  if (m.bundleApply) return m.sessions;
+  return [m.sessions.find(s => s.value === session) || m.sessions[0]];
 }
 
 function isEventFullySoldOut(key, counts) {
@@ -3511,7 +3848,7 @@ function updateSessionTab(tab, ended, full) {
 
 function ensureMoimClosedStamp(card) {
   if (!card) return;
-  const poster = card.querySelector('.moim-poster-img, .poster-slider-wrap');
+  const poster = card.querySelector('.moim-poster-img, .moim-poster, .poster-slider-wrap');
   if (!poster || poster.querySelector('.moim-stamp-closed')) return;
   const stamp = document.createElement('div');
   stamp.className = 'moim-stamp-closed';
@@ -3620,7 +3957,7 @@ function buildAlmostFullMoimSlots(counts) {
   const slots = [];
   Object.entries(MOIMS).forEach(([key, m]) => {
     const meta = MOIM_CURATION_META[key];
-    if (!meta) return;
+    if (!meta?.poster) return;
     m.sessions.forEach(session => {
       if (isSessionEnded(session) || m.applyClosed || m.forceSoldOut) return;
       const cap = getSessionCapacity(m, session.value);
@@ -3667,7 +4004,7 @@ function buildCurationSlots(counts) {
   const open = [];
   Object.entries(MOIMS).forEach(([key, m]) => {
     const meta = MOIM_CURATION_META[key];
-    if (!meta) return;
+    if (!meta?.poster) return;
     m.sessions.forEach(session => {
       if (isSessionEnded(session) || m.applyClosed || m.forceSoldOut) return;
       const cap = getSessionCapacity(m, session.value);
@@ -3892,7 +4229,9 @@ function openApply(name, key) {
   curMoimKey = key;
   curEventKey = '';
   q('#modalMoimName').textContent = m.name;
-  q('#modalMoimDate').textContent = m.sessions.map(s => s.label).join(' / ');
+  q('#modalMoimDate').textContent = m.bundleApply
+    ? `${m.sessions.map(s => s.label).join(' · ')} (①②③④ 통합 신청)`
+    : m.sessions.map(s => s.label).join(' / ');
   q('#applyAlert').innerHTML = '';
 
   const formEl = q('#applyForm');
@@ -3923,7 +4262,9 @@ function openApply(name, key) {
     if (fgRow) fgRow.insertAdjacentHTML('afterend', buildYes24BookOrderHtml(m));
     updateYes24ApplyTotal();
   } else {
-    q('#modalAmount').textContent = m.amount.toLocaleString() + '원';
+    q('#modalAmount').textContent = m.amountLabel
+      ? `${m.amountLabel} ${m.amount.toLocaleString()}원`
+      : m.amount.toLocaleString() + '원';
   }
 
   openOv('applyOv');
@@ -3937,7 +4278,8 @@ async function submitApply() {
 
   if (!name || !phone) { flash('applyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
   if (m.hasSession && !session) { flash('applyAlert', '회차를 선택해주세요.', 'e'); return; }
-  const pickedSession = m.sessions.find(s => s.value === session) || m.sessions[0];
+  const sessionsToApply = getSessionsToApply(m, session);
+  const pickedSession = sessionsToApply[0];
   if (m.forceSoldOut) {
     flash('applyAlert', '모집이 완료되었습니다.', 'e');
     return;
@@ -3950,8 +4292,8 @@ async function submitApply() {
     flash('applyAlert', '모임이 종료되어 신청할 수 없습니다.', 'e');
     return;
   }
-  if (isSessionFull(m, session, latestMoimCounts)) {
-    flash('applyAlert', '선택한 회차는 모집이 완료되었습니다.', 'e');
+  if (sessionsToApply.some(s => isSessionFull(m, s.value, latestMoimCounts))) {
+    flash('applyAlert', m.bundleApply ? '모집이 완료되었습니다.' : '선택한 회차는 모집이 완료되었습니다.', 'e');
     return;
   }
 
@@ -3969,20 +4311,30 @@ async function submitApply() {
       if (selected.length) noteParts.push('수령: 매장 수령 (선결제)');
     }
 
-    await POST({
-      action: 'apply',
-      month: PAGE_MONTH,
-      moimName: m.name,
-      session,
-      name,
-      phone,
-      amount,
-      note: noteParts.join(' · '),
-      books: booksLabel,
-      date: new Date().toLocaleString('ko-KR')
-    });
+    for (let i = 0; i < sessionsToApply.length; i++) {
+      const s = sessionsToApply[i];
+      const baseNote = noteParts.join(' · ');
+      const note = m.bundleApply && i > 0
+        ? [baseNote, '①②③④ 통합신청'].filter(Boolean).join(' · ')
+        : baseNote;
+      await POST({
+        action: 'apply',
+        month: PAGE_MONTH,
+        moimName: m.name,
+        session: s.value,
+        name,
+        phone,
+        amount: i === 0 ? amount : '',
+        note,
+        books: i === 0 ? booksLabel : '',
+        date: new Date().toLocaleString('ko-KR')
+      });
+    }
     const booksMsg = m.bookOrder && booksLabel !== '도서 미신청'
       ? `<br>도서: ${booksLabel}<br>합계 ${amount.toLocaleString()}원`
+      : '';
+    const sessionNote = m.bundleApply
+      ? `<br>${m.sessions.map(s => s.label).join(' · ')} (①②③④ 통합 신청)`
       : '';
     q('#applyForm').innerHTML = `
       <div style="text-align:center;padding:20px 0">
@@ -3990,10 +4342,10 @@ async function submitApply() {
         <div style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px">신청 완료!</div>
         <div class="pay-box" style="text-align:left">
           <div style="font-size:12px;color:var(--ocean-deep);margin-bottom:4px">입금해주세요</div>
-          <div class="pay-amount">${amount.toLocaleString()}원</div>
+          <div class="pay-amount">${m.amountLabel ? `${m.amountLabel} ` : ''}${amount.toLocaleString()}원</div>
           <div style="font-size:12px;margin-top:6px">
             <strong>모임통장: 카카오뱅크 7942-33-45474</strong><br>(예금주 경규환)<br>
-            입금자명: <strong>${name}</strong>${booksMsg}
+            입금자명: <strong>${name}</strong>${sessionNote}${booksMsg}
           </div>
         </div>
         <button class="btn-apply" style="width:100%;margin-top:8px" onclick="closeOv('applyOv')">닫기</button>
@@ -4341,11 +4693,25 @@ const TT_END_MIN = 22 * 60;
 
 // 비모임 고정 일정 (공간별 실제 시간 기준, 겹치면 차단)
 const SCHEDULED_MOIM_BLOCKS = [
-  { date: '2026-08-01', space: '계단 좌석', start: '10:30', end: '11:30', tag: '그림책 읽어주는 이모' }
+  { date: '2026-08-01', space: '계단 좌석', start: '10:30', end: '11:30', tag: '그림책 읽어주는 이모' },
+  { date: '2026-08-01', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
+  { date: '2026-08-07', space: '세미나실', start: '13:00', end: '15:00', tag: '문장수집가들 금요반' },
+  { date: '2026-08-08', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
+  { date: '2026-08-14', space: '세미나실', start: '13:00', end: '15:00', tag: '문장수집가들 금요반' },
+  { date: '2026-08-15', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
+  { date: '2026-08-21', space: '세미나실', start: '13:00', end: '15:00', tag: '문장수집가들 금요반' },
+  { date: '2026-08-22', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
+  { date: '2026-08-28', space: '세미나실', start: '13:00', end: '15:00', tag: '문장수집가들 금요반' },
+  { date: '2026-08-11', space: '매장 테이블', start: '10:00', end: '12:00', tag: '책숲다회' },
+  { date: '2026-08-18', space: '매장 테이블', start: '10:00', end: '12:00', tag: '책숲다회' },
+  { date: '2026-08-25', space: '매장 테이블', start: '10:00', end: '12:00', tag: '책숲다회' },
+  { date: '2026-08-23', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사&책꾸' },
+  { date: '2026-08-31', space: '세미나실', start: '13:00', end: '14:30', tag: '일본어 모임' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
   { date: '2026-08-02', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'S.voice' },
   { date: '2026-08-08', space: '비북스', start: '16:00', end: '18:00', tag: 'b.talks' },
+  { date: '2026-08-09', space: '비북스', start: '13:00', end: '15:00', tag: '아들러 북토크' },
   { date: '2026-08-22', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.voice EP.04' },
   { date: '2026-08-29', space: '비북스', start: '11:00', end: '12:30', tag: 'b.grow EP.01' }
 ];
