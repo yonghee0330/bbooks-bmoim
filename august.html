@@ -684,6 +684,10 @@
       object-fit: contain;
       object-position: center top;
     }
+    .event-poster-wrap.type-btalk img {
+      object-fit: contain;
+      object-position: center top;
+    }
     .event-poster-wrap.type-bammilon {
       background: #0f172a;
       cursor: zoom-in;
@@ -2502,7 +2506,7 @@
       <div class="cal-cell" onclick="openRent('2026-08-06')"><div class="cal-day">6</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-07')"><div class="cal-day">7</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-08-08')"><div class="cal-day">8</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24lee')">b.talks 16-18</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sun" onclick="openRent('2026-08-09')"><div class="cal-day">9</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-08-09')"><div class="cal-day">9</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('adlerbtalk1')">북토크 13-15</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-10')"><div class="cal-day">10</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-11')"><div class="cal-day">11</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-12')"><div class="cal-day">12</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2557,7 +2561,7 @@
       </svg>
     </div>
     <div class="event-overview-top">
-      <p class="event-overview-summary"><strong><span id="eventTotalCount">4</span>개 행사</strong> · S.voice · b.voice · b.talks · b.grow</p>
+      <p class="event-overview-summary"><strong><span id="eventTotalCount">4</span>개 행사</strong> · S.voice · b.voice · b.talks · 북토크 · b.grow</p>
     </div>
 
     <div class="event-grid" id="eventGrid">
@@ -2603,6 +2607,17 @@
           <span class="poster-slider-hint">1 / 4</span>
         </div>
         <button type="button" class="btn-event-apply type-yes24" id="apply-yes24lee" onclick="openEventApply('yes24lee')">b.talks 신청하기</button>
+        </div>
+      </article>
+      <article class="event-card type-btalk" id="adlerbtalk1">
+        <div class="event-poster-stack">
+        <div class="event-poster-wrap type-btalk"
+             onclick="openLightbox('images/btalk_adler_august_poster.png','[아들러 심리학이 선물한 8가지 행복] 북토크 포스터')">
+          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기"
+                  onclick="event.stopPropagation();openLightbox('images/btalk_adler_august_poster.png','[아들러 심리학이 선물한 8가지 행복] 북토크 포스터')">🔍</button>
+          <img src="images/btalk_adler_august_poster.png" alt="[아들러 심리학이 선물한 8가지 행복] 북토크 포스터">
+        </div>
+        <button type="button" class="btn-event-apply type-btalk" id="apply-adlerbtalk1" onclick="openEventApply('adlerbtalk1')">북토크 신청하기</button>
         </div>
       </article>
       <article class="event-card type-bgrow" id="bgrow1">
@@ -3094,6 +3109,18 @@ const EVENTS = {
       { id: 'seoneomneun', title: '선을 넘는 북클럽', price: 17000, url: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=395448233' },
       { id: 'maumeun', title: '마음은 어디에', price: 18000, url: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=341933617' }
     ]
+  },
+  adlerbtalk1: {
+    type: 'btalk',
+    typeLabel: '북토크',
+    name: '[아들러 심리학이 선물한 8가지 행복] 북토크',
+    subtitle: 'Alfred Adler’s Psychology of 8가지 행복',
+    poster: 'images/btalk_adler_august_poster.png',
+    sessions: [{ label: '8/9(일) 13:00–15:00', value: '8월9일_adlerbtalk1', _endMs: new Date(2026, 7, 9, 15, 0, 0).getTime() }],
+    amount: 10000,
+    feeNote: '음료포함',
+    space: '비북스 (b.books) @b.books2026',
+    scheduleNote: "특별한 시간: 0.1평 서점 '아심 적중'"
   },
   bgrow1: {
     type: 'bgrow',
