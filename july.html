@@ -2672,7 +2672,7 @@
       <div class="moim-body">
         <div class="moim-name">글쓰기 모임 &lt;문장수집가들&gt;</div>
         <p class="moim-host-line">The fleur de sel (더플뢰르드셀)</p>
-        <div class="moim-desc">매회 10~30개의 질문과 함께하는 문장 짓기 · 질문 하나에 문장 하나<br><strong>월 회비 50,000원 (2회분 · ①② 통합 신청)</strong></div>
+        <div class="moim-desc">매회 10~30개의 질문과 함께하는 문장 짓기 · 질문 하나에 문장 하나<br><strong>① 1회차 종료 · ② 2회차 부분 신청 25,000원</strong></div>
         <div class="moim-sessions-bundle">
           <div class="moim-meta moim-session-block" id="sent1-meta">
             <div class="session-block-title">① 1회차</div>
@@ -2681,7 +2681,7 @@
             <div class="meta-row"><span class="mi">👥</span>10명 이내</div>
           </div>
           <div class="moim-meta moim-session-block" id="sent2-meta">
-            <div class="session-block-title">② 2회차</div>
+            <div class="session-block-title">② 2회차 · 부분 신청 가능</div>
             <div class="meta-row"><span class="mi">📅</span>7월 25일 (토) 14:00 – 16:00</div>
             <div class="meta-row"><span class="mi">📌</span>세미나실</div>
             <div class="meta-row"><span class="mi">👥</span>10명 이내</div>
@@ -2689,10 +2689,10 @@
         </div>
         <div class="moim-foot">
           <div>
-            <div class="moim-price">월 회비 50,000원</div>
-            <div class="moim-cap">2회분 (7/11·7/25 통합 신청)</div>
+            <div class="moim-price">25,000원</div>
+            <div class="moim-cap">2회차 부분 신청</div>
           </div>
-          <button class="btn-apply" id="apply-sentcollect" onclick="openApply('글쓰기 모임 <문장수집가들>','sentcollect')">신청하기</button>
+          <button class="btn-apply" id="apply-sentcollect" onclick="openApply('글쓰기 모임 <문장수집가들>','sentcollect')">2회차 신청하기</button>
         </div>
       </div>
     </div>
@@ -3289,13 +3289,17 @@ const MOIMS = {
   sentcollect: {
     name: '글쓰기 모임 <문장수집가들>',
     sessions: [
-      { label: '① 7/11(토) 14:00–16:00', value: '7월11일_문장수집' },
-      { label: '② 7/25(토) 14:00–16:00', value: '7월25일_문장수집' }
+      { label: '① 7/11(토) 14:00–16:00', value: '7월11일_문장수집', _endMs: new Date(2026, 6, 11, 16, 0, 0).getTime() },
+      { label: '② 7/25(토) 14:00–16:00', value: '7월25일_문장수집', _endMs: new Date(2026, 6, 25, 16, 0, 0).getTime() }
     ],
     bundleApply: true,
+    partialApply: true,
     capacity: 10,
     amount: 50000,
     amountLabel: '월 회비 (2회분)',
+    partialAmount: 25000,
+    partialAmountLabel: '2회차 부분 신청',
+    applyBtnLabel: '2회차 신청하기',
     hasSession: false
   },
   wedlibrary: {
@@ -3638,16 +3642,51 @@ function isMoimApplyOpen(key, counts) {
   if (!m) return false;
   if (m.forceSoldOut) return false;
   counts = counts || latestMoimCounts;
-  if (m.bundleApply) {
+  if (m.bundleApply && !m.partialApply) {
     const lead = m.sessions[0];
     return lead && !isSessionClosed(m, lead, counts);
   }
   return m.sessions.some(s => !isSessionClosed(m, s, counts));
 }
 
+function getOpenSessions(m, counts) {
+  counts = counts || latestMoimCounts;
+  return m.sessions.filter(s => !isSessionClosed(m, s, counts));
+}
+
+function isPartialBundleApply(m, counts) {
+  if (!m.bundleApply || !m.partialApply) return false;
+  const open = getOpenSessions(m, counts);
+  return open.length > 0 && open.length < m.sessions.length;
+}
+
 function getSessionsToApply(m, session) {
-  if (m.bundleApply) return m.sessions;
+  if (m.bundleApply) {
+    if (m.partialApply) {
+      const open = getOpenSessions(m);
+      if (open.length && open.length < m.sessions.length) return open;
+    }
+    return m.sessions;
+  }
   return [m.sessions.find(s => s.value === session) || m.sessions[0]];
+}
+
+function getApplyAmountInfo(m, sessionsToApply) {
+  const isPartial = m.bundleApply && m.partialApply
+    && sessionsToApply.length > 0
+    && sessionsToApply.length < m.sessions.length;
+  if (isPartial) {
+    return {
+      amount: m.partialAmount != null ? m.partialAmount : m.amount,
+      label: m.partialAmountLabel || '부분 신청',
+      partial: true
+    };
+  }
+  return {
+    amount: m.amount,
+    label: m.amountLabel || '',
+    partial: false
+  };
 }
 
 function isEventFullySoldOut(key, counts) {
@@ -3854,7 +3893,7 @@ function updateMoimCapacity(counts) {
     } else if (!applyOpen) {
       soldOut(`apply-${key}`, '신청 마감');
     } else {
-      resetApplyBtn(`apply-${key}`);
+      resetApplyBtn(`apply-${key}`, m.applyBtnLabel || '신청하기');
     }
 
     const metas = card ? card.querySelectorAll('.moim-meta') : [];
@@ -4177,13 +4216,19 @@ function openApply(name, key) {
   if (m?.forceSoldOut) return;
   if (!isMoimApplyOpen(key, latestMoimCounts)) return;
   curMoimKey = key;
+  const sessionsToApply = getSessionsToApply(m, m.sessions[0]?.value);
+  const amountInfo = getApplyAmountInfo(m, sessionsToApply);
   q('#modalMoimName').textContent = m.name;
-  q('#modalMoimDate').textContent = m.bundleApply
-    ? `${m.sessions.map(s => s.label).join(' · ')} (①② 통합 신청)`
-    : m.sessions.map(s => s.label).join(' / ');
-  q('#modalAmount').textContent = m.amountLabel
-    ? `${m.amountLabel} ${m.amount.toLocaleString()}원`
-    : m.amount.toLocaleString() + '원';
+  if (amountInfo.partial) {
+    q('#modalMoimDate').textContent = `${sessionsToApply.map(s => s.label).join(' · ')} (부분 신청)`;
+  } else if (m.bundleApply) {
+    q('#modalMoimDate').textContent = `${m.sessions.map(s => s.label).join(' · ')} (①② 통합 신청)`;
+  } else {
+    q('#modalMoimDate').textContent = m.sessions.map(s => s.label).join(' / ');
+  }
+  q('#modalAmount').textContent = amountInfo.label
+    ? `${amountInfo.label} ${amountInfo.amount.toLocaleString()}원`
+    : amountInfo.amount.toLocaleString() + '원';
   q('#applyAlert').innerHTML = '';
   q('#aName').value = ''; q('#aPhone').value = '';
 
@@ -4201,7 +4246,7 @@ function openApply(name, key) {
     });
   } else {
     sw.style.display = 'none';
-    const gateSession = m.sessions[0];
+    const gateSession = sessionsToApply[0] || m.sessions.find(s => !isSessionEnded(s)) || m.sessions[0];
     if (isSessionClosed(m, gateSession, latestMoimCounts)) return;
   }
   openOv('applyOv');
@@ -4217,6 +4262,7 @@ async function submitApply() {
   if (m.hasSession && !session) { flash('applyAlert', '회차를 선택해주세요.', 'e'); return; }
   const sessionsToApply = getSessionsToApply(m, session);
   const pickedSession = sessionsToApply[0];
+  const amountInfo = getApplyAmountInfo(m, sessionsToApply);
   if (m.forceSoldOut) {
     flash('applyAlert', '모집이 완료되었습니다.', 'e');
     return;
@@ -4225,12 +4271,12 @@ async function submitApply() {
     flash('applyAlert', '신청이 마감되었습니다.', 'e');
     return;
   }
-  if (isSessionEnded(pickedSession)) {
+  if (!sessionsToApply.length || isSessionEnded(pickedSession)) {
     flash('applyAlert', '모임이 종료되어 신청할 수 없습니다.', 'e');
     return;
   }
   if (sessionsToApply.some(s => isSessionFull(m, s.value, latestMoimCounts))) {
-    flash('applyAlert', m.bundleApply ? '모집이 완료되었습니다.' : '선택한 회차는 모집이 완료되었습니다.', 'e');
+    flash('applyAlert', m.bundleApply && !amountInfo.partial ? '모집이 완료되었습니다.' : '선택한 회차는 모집이 완료되었습니다.', 'e');
     return;
   }
 
@@ -4245,14 +4291,18 @@ async function submitApply() {
         session: s.value,
         name,
         phone,
-        amount: i === 0 ? m.amount : '',
-        note: m.bundleApply && i > 0 ? '①② 통합신청' : '',
+        amount: i === 0 ? amountInfo.amount : '',
+        note: amountInfo.partial
+          ? (i === 0 ? '2회차 부분신청' : '')
+          : (m.bundleApply && i > 0 ? '①② 통합신청' : ''),
         date: new Date().toLocaleString('ko-KR')
       });
     }
-    const sessionNote = m.bundleApply
-      ? `<div style="font-size:12px;color:var(--muted);margin-top:8px">${m.sessions.map(s => s.label).join(' · ')}<br>①② 회차 모두 신청되었습니다.</div>`
-      : '';
+    const sessionNote = amountInfo.partial
+      ? `<div style="font-size:12px;color:var(--muted);margin-top:8px">${sessionsToApply.map(s => s.label).join(' · ')}<br>부분 신청으로 접수되었습니다.</div>`
+      : (m.bundleApply
+        ? `<div style="font-size:12px;color:var(--muted);margin-top:8px">${m.sessions.map(s => s.label).join(' · ')}<br>①② 회차 모두 신청되었습니다.</div>`
+        : '');
     q('#applyForm').innerHTML = `
       <div style="text-align:center;padding:20px 0">
         <div style="font-size:40px;margin-bottom:12px">✅</div>
@@ -4260,7 +4310,7 @@ async function submitApply() {
         ${sessionNote}
         <div class="pay-box" style="text-align:left">
           <div style="font-size:12px;color:var(--ocean-deep);margin-bottom:4px">입금해주세요</div>
-          <div class="pay-amount">${m.amountLabel ? `${m.amountLabel} ` : ''}${m.amount.toLocaleString()}원</div>
+          <div class="pay-amount">${amountInfo.label ? `${amountInfo.label} ` : ''}${amountInfo.amount.toLocaleString()}원</div>
           <div style="font-size:12px;margin-top:6px">
             <strong>모임통장: 카카오뱅크 7942-33-45474</strong><br>(예금주 경규환)<br>
             입금자명: <strong>${name}</strong>
