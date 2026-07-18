@@ -1583,11 +1583,75 @@
     }
     .moim-poster.ocean-pilsa-poster { background: linear-gradient(155deg, #4c1d95 0%, #7c3aed 45%, #c4b5fd 100%); }
     .ocean-pilsa-poster .poster-pilsa-illust {
-      width: 58%;
-      max-width: 132px;
+      width: min(72px, 22vw);
       margin: 0 auto 8px;
       display: block;
       opacity: 0.95;
+      z-index: 1;
+    }
+    #pilsa .ocean-pilsa-poster {
+      padding: 20px 18px 22px;
+      justify-content: flex-start;
+      gap: 0;
+    }
+    #pilsa .ocean-pilsa-poster .poster-badge {
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,.7);
+      margin-bottom: 6px;
+    }
+    #pilsa .ocean-pilsa-poster .poster-title {
+      font-size: clamp(24px, 5.5vw, 32px);
+      line-height: 1.25;
+      margin-top: 2px;
+    }
+    #pilsa .ocean-pilsa-poster .poster-sub {
+      font-size: clamp(15px, 3.4vw, 18px);
+      color: rgba(255,255,255,.88);
+      margin-top: 8px;
+      font-weight: 600;
+    }
+    #pilsa .ocean-pilsa-poster .poster-host {
+      font-size: clamp(13px, 2.8vw, 15px);
+      color: rgba(255,255,255,.72);
+      margin-top: 10px;
+      text-align: center;
+      line-height: 1.45;
+    }
+    #pilsa .ocean-pilsa-poster .poster-sessions {
+      margin-top: 16px;
+      width: 100%;
+      max-width: 92%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      z-index: 1;
+      box-sizing: border-box;
+    }
+    #pilsa .ocean-pilsa-poster .poster-session-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: clamp(13px, 2.9vw, 15px);
+      color: rgba(255,255,255,.95);
+      font-weight: 600;
+      line-height: 1.35;
+      padding: 5px 0;
+    }
+    #pilsa .ocean-pilsa-poster .poster-session-row span:last-child {
+      font-weight: 500;
+      color: rgba(255,255,255,.88);
+      white-space: nowrap;
+    }
+    #pilsa .ocean-pilsa-poster .poster-fee {
+      margin-top: 14px;
+      font-size: clamp(14px, 3.2vw, 16px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.02em;
+      z-index: 1;
+      text-align: center;
     }
     .moim-poster.ocean-minbook-poster { background: linear-gradient(155deg, #7c2d12 0%, #ea580c 42%, #fdba74 100%); }
     .ocean-minbook-poster .poster-minbook-illust {
@@ -2947,24 +3011,22 @@
     </div>
 
     <div class="moim-card" id="pilsa">
-      <div class="poster-slider-wrap" id="poster-slider-pilsa-aug"
-           onclick="openPosterLightbox('pilsa-aug')"
-           data-posters='["images/pilsa_diary_august.jpg","images/pilsa_diary_august_1.jpg"]'
-           data-alt="필사적인 다이어리 • 필사&책꾸">
-        <div class="poster-slider-viewport">
-          <div class="poster-slider" data-slider="pilsa-aug">
-            <div class="poster-slide"><img src="images/pilsa_diary_august.jpg" alt="필사적인 다이어리 — 8/23(일) 14:00–16:00"></div>
-            <div class="poster-slide"><img src="images/pilsa_diary_august_1.jpg" alt="필사 &amp; 책꾸 모임"></div>
-          </div>
+      <div class="moim-poster ocean-pilsa-poster" aria-hidden="true">
+        <div class="poster-badge">8월</div>
+        <svg class="poster-pilsa-illust" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+          <rect x="18" y="14" width="44" height="54" rx="4" fill="rgba(255,255,255,0.92)"/>
+          <path d="M26 28h28M26 36h28M26 44h20" stroke="rgba(76,29,149,0.45)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M48 52c4-8 10-10 14-8" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="58" cy="58" r="3" fill="rgba(255,255,255,0.85)"/>
+        </svg>
+        <div class="poster-title">필사적인 다이어리</div>
+        <div class="poster-sub">필사 &amp; 책꾸</div>
+        <div class="poster-host">책방 파도 · 매장 테이블</div>
+        <div class="poster-sessions">
+          <div class="poster-session-row"><span>8/23 (일)</span><span>14:00–16:00</span></div>
         </div>
-        <div class="poster-slider-nav">
-          <div class="slider-dots" data-dots="pilsa-aug"></div>
-          <div class="slider-arrows">
-            <button type="button" class="sarr" aria-label="이전 포스터" onclick="event.stopPropagation();posterSlide('pilsa-aug',-1)">‹</button>
-            <button type="button" class="sarr" aria-label="다음 포스터" onclick="event.stopPropagation();posterSlide('pilsa-aug',1)">›</button>
-          </div>
-        </div>
-        <span class="poster-slider-hint">1 / 2</span>
+        <div class="poster-fee">10,000원 · 음료·다과 포함</div>
+        <div class="poster-deco">✎</div>
       </div>
       <div class="moim-body">
         <div class="moim-name">필사적인 다이어리 • 필사&amp;책꾸</div>
@@ -3484,7 +3546,7 @@ const MOIM_CURATION_META = {
   sentcollectsat: { cardId: 'sentcollectsat', poster: 'images/sentcollect_august_sat.jpg' },
   sentcollectfri: { cardId: 'sentcollectfri', poster: 'images/sentcollect_august_fri.jpg' },
   chaeksup: { cardId: 'chaeksup', poster: null },
-  pilsa: { cardId: 'pilsa', poster: 'images/pilsa_diary_august.jpg' }
+  pilsa: { cardId: 'pilsa', poster: null }
 };
 
 const MOIM_DEFAULT_SESSION = {};
