@@ -2466,13 +2466,13 @@
       </div>
       <div class="cal-cell" onclick="openRent('2026-07-24')">
         <div class="cal-day">24</div>
+        <div class="cal-event ev-moim" data-session="7월24일_문장수집" onclick="event.stopPropagation();scrollToMoim('sentcollect')">문장수집가 15-17</div>
         <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('bammilon')">밤밀온 23-06</div>
         <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('moonlight')">달빛 20-23</div>
         <div class="cal-rent-btn">[대관]</div>
       </div>
       <div class="cal-cell sat" onclick="openRent('2026-07-25')">
         <div class="cal-day">25</div>
-        <div class="cal-event ev-moim" data-session="7월25일_문장수집" onclick="event.stopPropagation();scrollToMoim('sentcollect')">문장수집가 14-16</div>
         <div class="cal-event ev-bvoice" onclick="event.stopPropagation();scrollToEvent('bvoice2')">b.voice ep3 13-15</div>
         <div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('bammilon')">밤밀온 23-06</div>
         <div class="cal-rent-btn">[대관]</div>
@@ -2682,7 +2682,7 @@
           </div>
           <div class="moim-meta moim-session-block" id="sent2-meta">
             <div class="session-block-title">② 2회차 · 부분 신청 가능</div>
-            <div class="meta-row"><span class="mi">📅</span>7월 25일 (토) 14:00 – 16:00</div>
+            <div class="meta-row"><span class="mi">📅</span>7월 24일 (금) 15:00 – 17:00</div>
             <div class="meta-row"><span class="mi">📌</span>세미나실</div>
             <div class="meta-row"><span class="mi">👥</span>10명 이내</div>
           </div>
@@ -3290,7 +3290,7 @@ const MOIMS = {
     name: '글쓰기 모임 <문장수집가들>',
     sessions: [
       { label: '① 7/11(토) 14:00–16:00', value: '7월11일_문장수집', _endMs: new Date(2026, 6, 11, 16, 0, 0).getTime() },
-      { label: '② 7/25(토) 14:00–16:00', value: '7월25일_문장수집', _endMs: new Date(2026, 6, 25, 16, 0, 0).getTime() }
+      { label: '② 7/24(금) 15:00–17:00', value: '7월24일_문장수집', _endMs: new Date(2026, 6, 24, 17, 0, 0).getTime() }
     ],
     bundleApply: true,
     partialApply: true,
@@ -4660,7 +4660,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-07-18', space: '매장 테이블', start: '15:00', end: '17:00', tag: '미니북' },
   { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료' },
   { date: '2026-07-26', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사 다이어리' },
-  { date: '2026-07-25', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가' },
+  { date: '2026-07-24', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가' },
   { date: '2026-07-23', space: '매장 테이블', start: '10:30', end: '11:30', tag: '새미 북클럽' },
   { date: '2026-07-29', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-07-03', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩' },
