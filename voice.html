@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>b.voice | 비북스 — 점주들의 목소리</title>
+<meta name="description" content="b.voice — 0.1평 점주들의 목소리를 듣는 공간. 회차별 아카이브와 현장 영상."/>
+<meta property="og:title" content="b.voice | 비북스"/>
+<meta property="og:description" content="점주들의 목소리를 듣는 공간. 회차별 아카이브와 현장 영상."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  /* b.voice 고유 팔레트: 앰버/브라운 계열 (기존 --voice 토큰 계승) */
+  --voice:#92400e;
+  --voice-accent:#d97706;
+  --voice-light:#f59e0b;
+  --voice-pale:#fef3c7;
+  --voice-bg:#fef9f0;
+  --ink:#1c1917;
+  --ink-2:#292524;
+  --text:#3b2f22;
+  --muted:#8a7a6a;
+  --border:#eadfce;
+  --white:#fff;
+  --radius:14px;
+  --maxw:960px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{overflow-x:hidden;scroll-behavior:smooth}
+body{
+  font-family:'Noto Sans KR',sans-serif;
+  background:var(--voice-bg);color:var(--text);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;max-width:100%;
+  background-image:radial-gradient(ellipse 70% 45% at 50% -8%,rgba(245,158,11,.14) 0%,transparent 60%);
+}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer;border:none}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+
+/* ── 헤더 ── */
+header{background:var(--ink);padding:16px 20px;position:sticky;top:0;z-index:50}
+.hd{max-width:var(--maxw);margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:600;color:#fff;text-decoration:none;line-height:1.2}
+.logo .dot{color:var(--voice-light)}
+.logo small{display:block;font-family:'Noto Sans KR',sans-serif;font-size:10px;font-weight:300;color:rgba(255,255,255,.55);margin-top:2px;letter-spacing:.06em}
+.hd-nav{display:flex;gap:14px}
+.hd-nav a{font-size:12px;color:rgba(255,255,255,.65);text-decoration:none}
+.hd-nav a:hover{color:var(--voice-light)}
+
+/* ── 히어로 ── */
+.hero{background:linear-gradient(165deg,var(--ink) 0%,#3b2a17 55%,#5c3d16 100%);color:#fff;padding:56px 20px 64px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:5px;
+  background:repeating-linear-gradient(90deg,transparent,transparent 16px,rgba(245,158,11,.35) 16px,rgba(245,158,11,.35) 32px)}
+.hero-badge{display:inline-block;font-size:11px;letter-spacing:.18em;color:var(--voice-light);border:1px solid rgba(245,158,11,.45);border-radius:999px;padding:5px 14px;margin-bottom:18px}
+.hero h1{font-family:'Noto Serif KR',serif;font-size:38px;font-weight:700;letter-spacing:-.02em;margin-bottom:14px}
+.hero h1 .dot{color:var(--voice-light)}
+.hero p{font-size:14px;line-height:1.85;color:rgba(255,255,255,.75);max-width:520px;margin:0 auto}
+.hero-cta{display:flex;gap:10px;justify-content:center;margin-top:26px;flex-wrap:wrap}
+.btn{border-radius:10px;padding:12px 22px;font-size:13px;font-weight:700;text-decoration:none;display:inline-block;transition:.15s}
+.btn-primary{background:var(--voice-light);color:#3b2a17}
+.btn-primary:hover{background:#fbbf24}
+.btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn-ghost:hover{border-color:var(--voice-light);color:var(--voice-light)}
+
+/* ── 섹션 공통 ── */
+section{padding:52px 0}
+.sec-label{font-size:11px;letter-spacing:.16em;color:var(--voice-accent);font-weight:700;margin-bottom:8px}
+.sec-title{font-family:'Noto Serif KR',serif;font-size:24px;font-weight:700;color:var(--voice);margin-bottom:8px}
+.sec-desc{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:26px}
+
+/* ── 컨셉 3열 ── */
+.concept-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.concept-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:22px 18px}
+.concept-card .ico{font-size:24px;margin-bottom:10px}
+.concept-card h3{font-size:14px;font-weight:700;color:var(--voice);margin-bottom:6px}
+.concept-card p{font-size:12px;line-height:1.7;color:var(--muted)}
+
+/* ── 현재 회차(featured) ── */
+.featured{background:var(--white);border:1px solid var(--border);border-radius:18px;overflow:hidden;display:grid;grid-template-columns:300px 1fr}
+.featured-poster{position:relative;background:var(--ink);min-height:100%}
+.featured-poster img{width:100%;height:100%;object-fit:cover}
+.featured-poster .ep-tag{position:absolute;top:12px;left:12px;background:var(--voice-light);color:#3b2a17;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px}
+.featured-body{padding:26px 24px}
+.featured-body .ep-no{font-size:11px;letter-spacing:.14em;color:var(--voice-accent);font-weight:700}
+.featured-body h3{font-family:'Noto Serif KR',serif;font-size:21px;color:var(--voice);margin:6px 0 4px}
+.featured-body .host{font-size:12px;color:var(--voice-accent);margin-bottom:12px}
+.featured-body .lead{font-size:13px;line-height:1.8;color:var(--text);margin-bottom:16px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.fact{background:var(--voice-pale);border:1px solid #fcd34d;border-radius:8px;padding:6px 10px;font-size:11px;color:var(--voice)}
+.fact strong{display:block;font-size:12px;margin-top:2px}
+.btn-apply{width:100%;background:var(--voice);color:#fff;border-radius:10px;padding:14px;font-size:14px;font-weight:700}
+.btn-apply:hover{opacity:.9}
+.btn-apply:disabled,.btn-apply.sold-out{background:#a8a29e;cursor:not-allowed}
+
+/* ── 아카이브 (회차 리스트) ── */
+.ep-filter{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.ep-filter button{background:var(--white);border:1px solid var(--border);border-radius:999px;padding:7px 16px;font-size:12px;color:var(--muted)}
+.ep-filter button.on{background:var(--voice);border-color:var(--voice);color:#fff;font-weight:700}
+.ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.ep-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;transition:.18s}
+.ep-card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(146,64,14,.1)}
+.ep-thumb{position:relative;aspect-ratio:16/10;background:var(--ink);cursor:pointer;overflow:hidden}
+.ep-thumb img{width:100%;height:100%;object-fit:cover;opacity:.85;transition:.25s}
+.ep-card:hover .ep-thumb img{opacity:1;transform:scale(1.04)}
+.play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.play-btn span{width:52px;height:52px;border-radius:50%;background:rgba(245,158,11,.92);color:#3b2a17;display:flex;align-items:center;justify-content:center;font-size:19px;padding-left:4px;box-shadow:0 4px 16px rgba(0,0,0,.35)}
+.ep-thumb .ep-num{position:absolute;top:10px;left:10px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;letter-spacing:.1em;padding:3px 8px;border-radius:5px}
+.ep-thumb .no-video{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.55);color:rgba(255,255,255,.8);font-size:10px;padding:3px 8px;border-radius:5px}
+.ep-body{padding:16px 16px 18px;flex:1;display:flex;flex-direction:column}
+.ep-date{font-size:11px;color:var(--voice-accent);font-weight:700;margin-bottom:5px}
+.ep-body h4{font-size:15px;font-weight:700;color:var(--voice);line-height:1.4;margin-bottom:5px}
+.ep-body .guest{font-size:12px;color:var(--muted);margin-bottom:9px}
+.ep-body .sum{font-size:12px;line-height:1.7;color:var(--text);flex:1}
+.ep-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}
+.tag{font-size:10px;background:var(--voice-pale);color:var(--voice);border-radius:5px;padding:3px 7px}
+.ep-links{display:flex;gap:8px;margin-top:12px}
+.ep-links button{flex:1;background:var(--voice-bg);border:1px solid var(--border);border-radius:8px;padding:8px;font-size:11px;color:var(--voice);font-weight:500}
+.ep-links button:hover{background:var(--voice-pale)}
+
+/* ── 목소리 인용 ── */
+.quote-strip{background:var(--ink);padding:48px 0;color:#fff}
+.quote-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.quote-card{border-left:2px solid var(--voice-light);padding:4px 0 4px 16px}
+.quote-card p{font-family:'Noto Serif KR',serif;font-size:14px;line-height:1.9;color:rgba(255,255,255,.9);margin-bottom:8px}
+.quote-card cite{font-size:11px;color:var(--voice-light);font-style:normal}
+
+/* ── 참여 안내 ── */
+.join-box{background:var(--white);border:1px dashed var(--voice-accent);border-radius:var(--radius);padding:26px 22px;text-align:center}
+.join-box h3{font-family:'Noto Serif KR',serif;font-size:19px;color:var(--voice);margin-bottom:8px}
+.join-box p{font-size:13px;line-height:1.8;color:var(--muted);margin-bottom:18px}
+
+/* ── 모달 공통 ── */
+.ov{position:fixed;inset:0;background:rgba(28,25,23,.82);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.ov.on{display:flex}
+.modal{background:var(--white);border-radius:16px;max-width:460px;width:100%;max-height:88vh;overflow-y:auto;padding:26px 22px;position:relative}
+.modal-close{position:absolute;top:12px;right:14px;background:none;font-size:22px;color:var(--muted);line-height:1}
+.modal-badge{display:inline-block;background:var(--voice-pale);border:1px solid #fcd34d;color:var(--voice);font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;margin-bottom:10px}
+.modal h3{font-family:'Noto Serif KR',serif;font-size:19px;color:var(--voice);margin-bottom:6px}
+.modal .modal-sub{font-size:12px;color:var(--muted);margin-bottom:18px;line-height:1.7}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:11px 12px;font-size:13px;font-family:inherit;background:#fffdf9;color:var(--text)}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--voice-accent)}
+.field textarea{resize:vertical;min-height:70px}
+.alert{display:none;font-size:12px;border-radius:8px;padding:9px 11px;margin-bottom:12px}
+.alert.e{display:block;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.alert.s{display:block;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+
+/* 영상 모달 */
+.video-modal{background:var(--ink);max-width:900px;padding:0;border-radius:14px;overflow:hidden}
+.video-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000}
+.video-frame iframe,.video-frame video{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-meta{padding:18px 20px 22px}
+.video-meta .ep-num{font-size:11px;letter-spacing:.14em;color:var(--voice-light);font-weight:700}
+.video-meta h3{font-family:'Noto Serif KR',serif;font-size:19px;color:#fff;margin:5px 0 6px}
+.video-meta p{font-size:12px;line-height:1.8;color:rgba(255,255,255,.65)}
+.video-close{position:absolute;top:10px;right:12px;z-index:5;background:rgba(0,0,0,.55);color:#fff;font-size:20px;width:32px;height:32px;border-radius:50%}
+
+/* ── 푸터 ── */
+footer{background:var(--ink);color:rgba(255,255,255,.55);padding:34px 20px;text-align:center;font-size:12px;line-height:1.9}
+footer a{color:var(--voice-light);text-decoration:none}
+
+/* ── 반응형 ── */
+@media (max-width:760px){
+  .hero h1{font-size:28px}
+  .concept-grid{grid-template-columns:1fr}
+  .featured{grid-template-columns:1fr}
+  .featured-poster{aspect-ratio:3/4;min-height:auto}
+  .sec-title{font-size:20px}
+  .hd-nav{gap:10px}
+  .hd-nav a{font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <a class="logo" href="index.html">비북스 b<span class="dot">.</span>voice<small>BBOOKS · VOICE OF OWNERS</small></a>
+    <nav class="hd-nav">
+      <a href="#archive">아카이브</a>
+      <a href="#upcoming">다가오는 회차</a>
+      <a href="july.html">전체 모임</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ══ 히어로 ══ -->
+<div class="hero">
+  <div class="hero-badge">B.VOICE</div>
+  <h1>점주들의 목소리<span class="dot">.</span></h1>
+  <p>0.1평 서가의 주인들이 각자의 이야기를 꺼내는 자리.<br>매 회차의 목소리를 기록하고, 현장의 영상을 다시 재생합니다.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="#upcoming">다가오는 회차 신청</a>
+    <a class="btn btn-ghost" href="#archive">지난 회차 보기</a>
+  </div>
+</div>
+
+<!-- ══ 컨셉 ══ -->
+<section class="wrap">
+  <div class="sec-label">CONCEPT</div>
+  <h2 class="sec-title">b.voice는 이런 공간입니다</h2>
+  <p class="sec-desc">한 사람의 서가에는 한 사람의 세계가 있습니다. b.voice는 그 세계를 직접 말로 듣는 자리입니다.</p>
+  <div class="concept-grid">
+    <div class="concept-card">
+      <div class="ico">🎙️</div>
+      <h3>목소리를 듣습니다</h3>
+      <p>0.1평 점주, 작가, 감독 — 각자의 자리에서 만들어온 이야기를 직접 듣습니다.</p>
+    </div>
+    <div class="concept-card">
+      <div class="ico">🎞️</div>
+      <h3>현장을 남깁니다</h3>
+      <p>상영, GV, 북토크의 현장을 영상으로 기록해 회차별로 다시 볼 수 있게 합니다.</p>
+    </div>
+    <div class="concept-card">
+      <div class="ico">📚</div>
+      <h3>회차로 쌓입니다</h3>
+      <p>EPISODE 단위로 아카이빙되어, 비북스의 목소리가 한 권의 기록이 됩니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 다가오는 회차 ══ -->
+<section class="wrap" id="upcoming">
+  <div class="sec-label">UPCOMING</div>
+  <h2 class="sec-title">다가오는 회차</h2>
+  <p class="sec-desc">현재 신청 가능한 b.voice 회차입니다.</p>
+  <div id="upcomingWrap"></div>
+</section>
+
+<!-- ══ 아카이브 ══ -->
+<section class="wrap" id="archive">
+  <div class="sec-label">ARCHIVE</div>
+  <h2 class="sec-title">회차 아카이브</h2>
+  <p class="sec-desc">지난 회차의 기록입니다. 썸네일을 누르면 현장 영상이 재생됩니다.</p>
+  <div class="ep-filter" id="epFilter"></div>
+  <div class="ep-grid" id="epGrid"></div>
+</section>
+
+<!-- ══ 목소리 인용 ══ -->
+<div class="quote-strip">
+  <div class="wrap">
+    <div class="sec-label">VOICES</div>
+    <h2 class="sec-title" style="color:#fff;margin-bottom:24px">그날의 문장들</h2>
+    <div class="quote-grid" id="quoteGrid"></div>
+  </div>
+</div>
+
+<!-- ══ 참여 안내 ══ -->
+<section class="wrap">
+  <div class="join-box">
+    <h3>목소리를 들려주시겠어요?</h3>
+    <p>b.voice의 다음 회차 게스트를 상시 모집합니다.<br>0.1평 점주, 작가, 창작자 누구든 환영합니다.</p>
+    <button class="btn btn-primary" style="border:none" onclick="openProposal()">게스트 제안하기</button>
+  </div>
+</section>
+
+<footer>
+  비북스 b.voice<br>
+  <a href="july.html">전체 모임 보기</a> · <a href="https://instagram.com/bbooks.official" target="_blank" rel="noopener">@bbooks</a>
+</footer>
+
+<!-- ══ 신청 모달 ══ -->
+<div class="ov" id="applyOv" onclick="if(event.target===this)closeOv('applyOv')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeOv('applyOv')">×</button>
+    <div class="modal-badge">b.voice</div>
+    <h3 id="applyTitle">회차 신청</h3>
+    <p class="modal-sub" id="applySub"></p>
+    <div class="alert" id="applyAlert"></div>
+    <form id="applyForm" onsubmit="event.preventDefault();submitApply()">
+      <div class="field">
+        <label>회차</label>
+        <select id="applySession"></select>
+      </div>
+      <div class="field">
+        <label>이름</label>
+        <input id="applyName" type="text" placeholder="실명을 입력해주세요" autocomplete="name"/>
+      </div>
+      <div class="field">
+        <label>연락처</label>
+        <input id="applyPhone" type="tel" placeholder="010-0000-0000" autocomplete="tel"/>
+      </div>
+      <div class="field">
+        <label>남기실 말 (선택)</label>
+        <textarea id="applyNote" placeholder="게스트에게 묻고 싶은 것이 있다면 적어주세요"></textarea>
+      </div>
+      <button type="submit" class="btn-apply" id="applySubmitBtn">신청하기</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══ 게스트 제안 모달 ══ -->
+<div class="ov" id="proposalOv" onclick="if(event.target===this)closeOv('proposalOv')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeOv('proposalOv')">×</button>
+    <div class="modal-badge">b.voice · GUEST</div>
+    <h3>게스트 제안하기</h3>
+    <p class="modal-sub">들려주고 싶은 이야기를 간단히 적어주세요. 확인 후 연락드립니다.</p>
+    <div class="alert" id="propAlert"></div>
+    <form id="propForm" onsubmit="event.preventDefault();submitProposal()">
+      <div class="field"><label>이름</label><input id="propName" type="text" placeholder="이름 또는 활동명"/></div>
+      <div class="field"><label>연락처</label><input id="propPhone" type="tel" placeholder="010-0000-0000"/></div>
+      <div class="field"><label>어떤 이야기를 들려주고 싶으신가요?</label><textarea id="propTopic" placeholder="주제, 형식(상영/북토크/대담 등), 소개를 자유롭게 적어주세요"></textarea></div>
+      <button type="submit" class="btn-apply" id="propSubmitBtn">제안 보내기</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══ 영상 모달 ══ -->
+<div class="ov" id="videoOv" onclick="if(event.target===this)closeVideo()">
+  <div class="modal video-modal">
+    <button class="video-close" onclick="closeVideo()">×</button>
+    <div class="video-frame" id="videoFrame"></div>
+    <div class="video-meta">
+      <div class="ep-num" id="videoEp"></div>
+      <h3 id="videoTitle"></h3>
+      <p id="videoDesc"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   b.voice — 데이터 & 로직
+   july.html과 동일한 Apps Script 엔드포인트 사용
+   ══════════════════════════════════════════ */
+
+const API = 'https://script.google.com/macros/s/AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ/exec';
+
+/* ── 회차 데이터 ─────────────────────────
+   video 형식:
+     { kind:'youtube', id:'VIDEO_ID' }
+     { kind:'vimeo',   id:'123456789' }
+     { kind:'file',    src:'videos/ep02.mp4' }
+     null → 영상 없음(준비중) 표시
+   status: 'upcoming' | 'done'
+   ───────────────────────────────────────── */
+const EPISODES = [
+  {
+    id:'ep03',
+    no:'EPISODE.03',
+    status:'upcoming',
+    title:'소중한 ________ 에게',
+    guest:'이유진 서가 · 이유진 작가',
+    dateLabel:'2026. 7. 25 (토) 13:00–15:00',
+    sessionValue:'7월25일_bvoice',
+    endMs:new Date(2026,6,25,15,0,0).getTime(),
+    place:'비북스 계단 좌석',
+    capacity:15,
+    amount:10000,
+    poster:'images/bvoice_ep03_book.jpg',
+    thumb:'images/bvoice_ep03_book.jpg',
+    summary:'누구에게도 부치지 못한 편지에 대하여. 이유진 작가와 함께 쓰고 읽는 시간.',
+    tags:['북토크','에세이','글쓰기'],
+    video:null
+  },
+  {
+    id:'ep02',
+    no:'EPISODE.02',
+    status:'done',
+    title:'영화 〈드라이브〉 상영 및 정연 감독 GV',
+    guest:'스튜디오 이상한 나라의 원더랜드 · 정연 감독',
+    dateLabel:'2026. 7. 19 (일) 16:00–18:00',
+    sessionValue:'7월19일_bvoice',
+    endMs:new Date(2026,6,19,18,0,0).getTime(),
+    place:'비북스 계단 좌석',
+    capacity:15,
+    amount:10000,
+    poster:'images/bvoice_ep02_drive.jpg',
+    thumb:'images/bvoice_ep02_drive.jpg',
+    summary:'독립 단편 〈드라이브〉 상영 후 정연 감독과의 관객과의 대화. 만드는 사람의 자리에서 본 이야기.',
+    tags:['상영','GV','독립영화'],
+    video:{ kind:'youtube', id:'' }   // ← 유튜브 영상 ID 입력
+  },
+  {
+    id:'ep01',
+    no:'EPISODE.01',
+    status:'done',
+    title:'첫 번째 목소리',
+    guest:'0.1평 점주 3인',
+    dateLabel:'2026. 6 (예시)',
+    place:'비북스 매장',
+    poster:'',
+    thumb:'',
+    summary:'b.voice의 시작. 서가를 연 이유에 대해 세 사람이 말했습니다.',
+    tags:['대담','점주'],
+    video:null
+  }
+];
+
+/* ── 인용 문장 ── */
+const QUOTES = [
+  { text:'서가 하나를 열었을 뿐인데, 사람들이 제 취향을 읽고 갑니다.', who:'EP.01 · 0.1평 점주' },
+  { text:'만드는 동안에는 아무도 안 보지만, 끝나면 모두가 봅니다.', who:'EP.02 · 정연 감독' },
+  { text:'부치지 못한 편지도 결국 누군가에게 도착합니다.', who:'EP.03 · 이유진 작가' }
+];
+
+/* ══ 유틸 ══ */
+const q = s => document.querySelector(s);
+const now = () => Date.now();
+const esc = s => String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function openOv(id){ q('#'+id).classList.add('on'); document.body.style.overflow='hidden'; }
+function closeOv(id){ q('#'+id).classList.remove('on'); document.body.style.overflow=''; }
+
+function flash(id,msg,type){
+  const el=q('#'+id); el.className='alert '+type; el.textContent=msg;
+  if(type==='s') setTimeout(()=>{el.className='alert';},4000);
+}
+function setLoad(id,on,txt){
+  const b=q('#'+id); b.disabled=on; b.textContent=txt;
+}
+
+/* Apps Script는 CORS preflight를 못 받으므로 text/plain으로 전송 */
+async function POST(payload){
+  const res = await fetch(API,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify(payload)
+  });
+  return res.text();
+}
+
+/* ══ 렌더: 다가오는 회차 ══ */
+function renderUpcoming(){
+  const list = EPISODES.filter(e => e.status==='upcoming' && (!e.endMs || e.endMs > now()));
+  const box = q('#upcomingWrap');
+  if(!list.length){
+    box.innerHTML = `<div class="join-box"><h3>준비 중입니다</h3><p>다음 회차가 확정되면 이곳과 인스타그램으로 안내드립니다.</p></div>`;
+    return;
+  }
+  box.innerHTML = list.map(e => `
+    <div class="featured">
+      <div class="featured-poster">
+        <span class="ep-tag">${esc(e.no)}</span>
+        ${e.poster ? `<img src="${esc(e.poster)}" alt="${esc(e.title)}"/>` : ''}
+      </div>
+      <div class="featured-body">
+        <div class="ep-no">${esc(e.no)} · 신청 접수중</div>
+        <h3>${esc(e.title)}</h3>
+        <div class="host">${esc(e.guest)}</div>
+        <p class="lead">${esc(e.summary)}</p>
+        <div class="facts">
+          <div class="fact">일시<strong>${esc(e.dateLabel)}</strong></div>
+          <div class="fact">장소<strong>${esc(e.place)}</strong></div>
+          ${e.capacity?`<div class="fact">정원<strong>${e.capacity}명</strong></div>`:''}
+          ${e.amount!=null?`<div class="fact">참가비<strong>${e.amount.toLocaleString()}원</strong></div>`:''}
+        </div>
+        <button class="btn-apply" onclick="openApply('${e.id}')">b.voice 신청하기</button>
+      </div>
+    </div>`).join('');
+}
+
+/* ══ 렌더: 아카이브 ══ */
+let epFilterMode = 'all';
+function renderFilter(){
+  const modes=[['all','전체'],['video','영상 있음'],['done','지난 회차'],['upcoming','예정']];
+  q('#epFilter').innerHTML = modes.map(([k,l])=>
+    `<button class="${epFilterMode===k?'on':''}" onclick="setFilter('${k}')">${l}</button>`).join('');
+}
+function setFilter(m){ epFilterMode=m; renderFilter(); renderArchive(); }
+
+function renderArchive(){
+  let list = EPISODES.slice();
+  if(epFilterMode==='video')    list = list.filter(e=>hasVideo(e));
+  if(epFilterMode==='done')     list = list.filter(e=>e.status==='done');
+  if(epFilterMode==='upcoming') list = list.filter(e=>e.status==='upcoming');
+
+  q('#epGrid').innerHTML = list.map(e=>{
+    const v = hasVideo(e);
+    return `
+    <article class="ep-card">
+      <div class="ep-thumb" ${v?`onclick="openVideo('${e.id}')"`:''}>
+        <span class="ep-num">${esc(e.no)}</span>
+        ${e.thumb?`<img src="${esc(e.thumb)}" alt="${esc(e.title)}"/>`:''}
+        ${v?`<div class="play-btn"><span>▶</span></div>`:`<span class="no-video">영상 준비중</span>`}
+      </div>
+      <div class="ep-body">
+        <div class="ep-date">${esc(e.dateLabel||'')}</div>
+        <h4>${esc(e.title)}</h4>
+        <div class="guest">${esc(e.guest)}</div>
+        <p class="sum">${esc(e.summary)}</p>
+        <div class="ep-tags">${(e.tags||[]).map(t=>`<span class="tag">#${esc(t)}</span>`).join('')}</div>
+        <div class="ep-links">
+          ${v?`<button onclick="openVideo('${e.id}')">▶ 영상 보기</button>`:''}
+          ${e.status==='upcoming'?`<button onclick="openApply('${e.id}')">신청하기</button>`:''}
+        </div>
+      </div>
+    </article>`;
+  }).join('') || `<p class="sec-desc">해당하는 회차가 없습니다.</p>`;
+}
+
+function hasVideo(e){
+  if(!e.video) return false;
+  if(e.video.kind==='file') return !!e.video.src;
+  return !!e.video.id;
+}
+
+/* ══ 영상 재생 ══ */
+function videoEmbed(v){
+  if(v.kind==='youtube') return `<iframe src="https://www.youtube.com/embed/${v.id}?autoplay=1&rel=0" allow="autoplay; fullscreen; encrypted-media" allowfullscreen></iframe>`;
+  if(v.kind==='vimeo')   return `<iframe src="https://player.vimeo.com/video/${v.id}?autoplay=1" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+  if(v.kind==='file')    return `<video src="${v.src}" controls autoplay playsinline></video>`;
+  return '';
+}
+function openVideo(id){
+  const e = EPISODES.find(x=>x.id===id);
+  if(!e || !hasVideo(e)) return;
+  q('#videoFrame').innerHTML = videoEmbed(e.video);
+  q('#videoEp').textContent = e.no;
+  q('#videoTitle').textContent = e.title;
+  q('#videoDesc').textContent = `${e.guest} · ${e.dateLabel||''}`;
+  openOv('videoOv');
+}
+function closeVideo(){
+  q('#videoFrame').innerHTML = '';   // 재생 중지
+  closeOv('videoOv');
+}
+
+/* ══ 신청 ══ */
+let currentEp = null;
+function openApply(id){
+  const e = EPISODES.find(x=>x.id===id);
+  if(!e) return;
+  currentEp = e;
+  q('#applyTitle').textContent = e.title;
+  q('#applySub').textContent = `${e.guest} · ${e.dateLabel} · ${e.place}` + (e.amount!=null?` · 참가비 ${e.amount.toLocaleString()}원`:'');
+  q('#applySession').innerHTML = `<option value="${esc(e.sessionValue||e.dateLabel)}">${esc(e.dateLabel)}</option>`;
+  q('#applyAlert').className='alert';
+  openOv('applyOv');
+}
+
+async function submitApply(){
+  const name  = q('#applyName').value.trim();
+  const phone = q('#applyPhone').value.trim();
+  const note  = q('#applyNote').value.trim();
+  if(!name)  return flash('applyAlert','이름을 입력해주세요.','e');
+  if(!/^01[016-9]-?\d{3,4}-?\d{4}$/.test(phone.replace(/\s/g,'')))
+    return flash('applyAlert','올바른 휴대폰 번호를 입력해주세요.','e');
+
+  setLoad('applySubmitBtn',true,'신청 중...');
+  try{
+    // july.html의 eventApply 스키마와 동일하게 전송 → 기존 시트/알리고 로직 재사용
+    await POST({
+      action:'eventApply',
+      month:'7',
+      eventType:'b.voice',
+      eventName:currentEp.title,
+      session:q('#applySession').value,
+      name, phone,
+      amount:currentEp.amount || 0,
+      books:'',
+      note:[currentEp.no, note].filter(Boolean).join(' · '),
+      date:new Date().toLocaleString('ko-KR')
+    });
+    q('#applyForm').innerHTML = `
+      <div style="text-align:center;padding:22px 0">
+        <div style="font-size:40px;margin-bottom:12px">✅</div>
+        <div style="font-size:16px;font-weight:700;color:var(--voice);margin-bottom:8px">신청 완료!</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px">
+          ${esc(currentEp.title)}<br>확인 문자를 보내드릴게요.</p>
+        <button type="button" class="btn-apply" onclick="location.reload()">닫기</button>
+      </div>`;
+  }catch(err){
+    flash('applyAlert','신청 중 오류가 발생했습니다. 인스타그램 DM으로 문의해주세요.','e');
+    setLoad('applySubmitBtn',false,'신청하기');
+  }
+}
+
+/* ══ 게스트 제안 ══ */
+function openProposal(){ q('#propAlert').className='alert'; openOv('proposalOv'); }
+async function submitProposal(){
+  const name=q('#propName').value.trim();
+  const phone=q('#propPhone').value.trim();
+  const topic=q('#propTopic').value.trim();
+  if(!name)  return flash('propAlert','이름을 입력해주세요.','e');
+  if(!phone) return flash('propAlert','연락처를 입력해주세요.','e');
+  if(!topic) return flash('propAlert','들려주실 이야기를 적어주세요.','e');
+
+  setLoad('propSubmitBtn',true,'전송 중...');
+  try{
+    await POST({
+      action:'voiceProposal',
+      month:'7',
+      eventType:'b.voice 게스트제안',
+      name, phone, note:topic,
+      date:new Date().toLocaleString('ko-KR')
+    });
+    q('#propForm').innerHTML = `
+      <div style="text-align:center;padding:22px 0">
+        <div style="font-size:40px;margin-bottom:12px">🎙️</div>
+        <div style="font-size:16px;font-weight:700;color:var(--voice);margin-bottom:8px">제안 감사합니다!</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:16px">내용을 확인한 뒤 연락드릴게요.</p>
+        <button type="button" class="btn-apply" onclick="location.reload()">닫기</button>
+      </div>`;
+  }catch(err){
+    flash('propAlert','전송 중 오류가 발생했습니다. DM으로 문의해주세요.','e');
+    setLoad('propSubmitBtn',false,'제안 보내기');
+  }
+}
+
+/* ══ 인용 ══ */
+function renderQuotes(){
+  q('#quoteGrid').innerHTML = QUOTES.map(x=>
+    `<div class="quote-card"><p>“${esc(x.text)}”</p><cite>— ${esc(x.who)}</cite></div>`).join('');
+}
+
+/* ══ ESC 닫기 ══ */
+document.addEventListener('keydown',e=>{
+  if(e.key!=='Escape') return;
+  if(q('#videoOv').classList.contains('on')) return closeVideo();
+  document.querySelectorAll('.ov.on').forEach(o=>closeOv(o.id));
+});
+
+/* ══ init ══ */
+renderUpcoming();
+renderFilter();
+renderArchive();
+renderQuotes();
+</script>
+</body>
+</html>
