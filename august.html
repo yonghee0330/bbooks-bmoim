@@ -1653,6 +1653,96 @@
       z-index: 1;
       text-align: center;
     }
+    .moim-poster.ocean-music-poster {
+      background: linear-gradient(155deg, #0c3d3a 0%, #1a6b66 48%, #7ec8c0 100%);
+    }
+    .ocean-music-poster .poster-music-illust {
+      width: min(64px, 20vw);
+      margin: 0 auto 8px;
+      display: block;
+      opacity: 0.95;
+      z-index: 1;
+    }
+    #dongseotue .ocean-music-poster,
+    #dongseowed .ocean-music-poster {
+      padding: 18px 16px 20px;
+      justify-content: flex-start;
+      gap: 0;
+    }
+    #dongseotue .ocean-music-poster .poster-badge,
+    #dongseowed .ocean-music-poster .poster-badge {
+      font-size: 13px;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,.7);
+      margin-bottom: 4px;
+    }
+    #dongseotue .ocean-music-poster .poster-title,
+    #dongseowed .ocean-music-poster .poster-title {
+      font-size: clamp(22px, 5vw, 28px);
+      line-height: 1.3;
+      margin-top: 2px;
+    }
+    #dongseotue .ocean-music-poster .poster-sub,
+    #dongseowed .ocean-music-poster .poster-sub {
+      font-size: clamp(12px, 2.8vw, 14px);
+      color: rgba(255,255,255,.85);
+      margin-top: 8px;
+      font-weight: 500;
+      text-align: center;
+      line-height: 1.4;
+      max-width: 94%;
+    }
+    #dongseotue .ocean-music-poster .poster-host,
+    #dongseowed .ocean-music-poster .poster-host {
+      font-size: clamp(12px, 2.6vw, 14px);
+      color: rgba(255,255,255,.72);
+      margin-top: 8px;
+      text-align: center;
+      line-height: 1.45;
+    }
+    #dongseotue .ocean-music-poster .poster-sessions,
+    #dongseowed .ocean-music-poster .poster-sessions {
+      margin-top: 12px;
+      width: 100%;
+      max-width: 94%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.22);
+      z-index: 1;
+      box-sizing: border-box;
+    }
+    #dongseotue .ocean-music-poster .poster-session-row,
+    #dongseowed .ocean-music-poster .poster-session-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: clamp(12px, 2.7vw, 14px);
+      color: rgba(255,255,255,.95);
+      font-weight: 600;
+      line-height: 1.35;
+      padding: 4px 0;
+    }
+    #dongseotue .ocean-music-poster .poster-session-row + .poster-session-row,
+    #dongseowed .ocean-music-poster .poster-session-row + .poster-session-row {
+      border-top: 1px solid rgba(255,255,255,.18);
+    }
+    #dongseotue .ocean-music-poster .poster-session-row span:last-child,
+    #dongseowed .ocean-music-poster .poster-session-row span:last-child {
+      font-weight: 500;
+      color: rgba(255,255,255,.88);
+      white-space: nowrap;
+    }
+    #dongseotue .ocean-music-poster .poster-fee,
+    #dongseowed .ocean-music-poster .poster-fee {
+      margin-top: 12px;
+      font-size: clamp(13px, 3vw, 15px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.02em;
+      z-index: 1;
+      text-align: center;
+    }
     .moim-poster.ocean-minbook-poster { background: linear-gradient(155deg, #7c2d12 0%, #ea580c 42%, #fdba74 100%); }
     .ocean-minbook-poster .poster-minbook-illust {
       width: 58%;
@@ -2656,22 +2746,22 @@
       <div class="cal-cell sat" onclick="openRent('2026-08-08')"><div class="cal-day">8</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="8월8일_문장수집토">문장수집가토 14-16</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24lee')">b.talks 16-18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-09')"><div class="cal-day">9</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('adlerbtalk1')">북토크 13-15</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-10')"><div class="cal-day">10</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-11')"><div class="cal-day">11</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월11일_책숲다회">책숲다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-12')"><div class="cal-day">12</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-11')"><div class="cal-day">11</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월11일_책숲다회">책숲다회 10-12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseotue')" data-session="8월11일_음악생활화">음악생활화 11-13</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-12')"><div class="cal-day">12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseowed')" data-session="8월12일_음악생활수">음악생활수 11-13</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-13')"><div class="cal-day">13</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-14')"><div class="cal-day">14</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="8월14일_문장수집금">문장수집가금 13-15</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-08-15')"><div class="cal-day">15</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="8월15일_문장수집토">문장수집가토 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-16')"><div class="cal-day">16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-17')"><div class="cal-day">17</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-18')"><div class="cal-day">18</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월18일_책숲다회">책숲다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-19')"><div class="cal-day">19</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-18')"><div class="cal-day">18</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월18일_책숲다회">책숲다회 10-12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseotue')" data-session="8월18일_음악생활화">음악생활화 11-13</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-19')"><div class="cal-day">19</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseowed')" data-session="8월19일_음악생활수">음악생활수 11-13</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-21')"><div class="cal-day">21</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="8월21일_문장수집금">문장수집가금 13-15</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-08-22')"><div class="cal-day">22</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="8월22일_문장수집토">문장수집가토 14-16</div><div class="cal-event ev-voice" onclick="event.stopPropagation();scrollToEvent('bvoice4')">b.voice ep4 16-18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-23')"><div class="cal-day">23</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pilsa')" data-session="8월23일_필사">필사책꾸 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-24')"><div class="cal-day">24</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-25')"><div class="cal-day">25</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월25일_책숲다회">책숲다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-26')"><div class="cal-day">26</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-25')"><div class="cal-day">25</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월25일_책숲다회">책숲다회 10-12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseotue')" data-session="8월25일_음악생활화">음악생활화 11-13</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-26')"><div class="cal-day">26</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseowed')" data-session="8월26일_음악생활수">음악생활수 11-13</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-28')"><div class="cal-day">28</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="8월28일_문장수집금">문장수집가금 13-15</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-08-29')"><div class="cal-day">29</div><div class="cal-event ev-bgrow" onclick="event.stopPropagation();scrollToEvent('bgrow1')">b.grow ep1 11-1230</div><div class="cal-rent-btn">[대관]</div></div>
@@ -3006,6 +3096,116 @@
             <div class="moim-cap">재료 준비 있음 · 회차별 개별 신청</div>
           </div>
           <button class="btn-apply" id="apply-chaeksup" onclick="openApply('책숲다회','chaeksup')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="dongseotue">
+      <div class="moim-poster ocean-music-poster" aria-hidden="true">
+        <div class="poster-badge">8월 · 화요반</div>
+        <svg class="poster-music-illust" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M24 46a8 8 0 1 1-2-5.3V14l24-6v32.7a8 8 0 1 1-2-5.3V16.5L24 21.2V46z" fill="rgba(255,255,255,0.92)"/>
+        </svg>
+        <div class="poster-title">슬기로운 음악생활</div>
+        <div class="poster-sub">폭염, 폭삭 소름돋는 클래식음악</div>
+        <div class="poster-host">너라면 · 매장 테이블</div>
+        <div class="poster-sessions">
+          <div class="poster-session-row"><span>① 8/11 (화)</span><span>11:00–13:00</span></div>
+          <div class="poster-session-row"><span>② 8/18 (화)</span><span>11:00–13:00</span></div>
+          <div class="poster-session-row"><span>③ 8/25 (화)</span><span>11:00–13:00</span></div>
+        </div>
+        <div class="poster-fee">회차당 5,000원</div>
+        <div class="poster-deco">♪</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">슬기로운 음악생활 · 화요반</div>
+        <p class="moim-host-line">너라면 · 동서남북book</p>
+        <div class="moim-desc">
+          동서남북 어디서나 음악으로 하나가 되는 클래식 음악감상 모임입니다. 피아노를 전공한 음악인 출신 북큐레이터 동서남북 점주가 소개하는 &lt;슬기로운 음악생활&gt;.<br><br>
+          <strong>8월의 주제</strong><br>
+          [폭염, 폭삭 소름돋는 클래식음악]<br><br>
+          총 3회에 걸쳐 모임 20분 전 점주의 게릴라콘서트가 있을 예정입니다.
+        </div>
+        <div class="session-tabs">
+          <button class="stab active" onclick="selectSession(this,'musicTue1')">① 8/11</button>
+          <button class="stab" onclick="selectSession(this,'musicTue2')">② 8/18</button>
+          <button class="stab" onclick="selectSession(this,'musicTue3')">③ 8/25</button>
+        </div>
+        <div class="moim-meta" id="musicTue1-meta">
+          <div class="meta-row"><span class="mi">📅</span>8월 11일 (화) 11:00 – 13:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>4명</div>
+        </div>
+        <div class="moim-meta" id="musicTue2-meta" style="display:none">
+          <div class="meta-row"><span class="mi">📅</span>8월 18일 (화) 11:00 – 13:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>4명</div>
+        </div>
+        <div class="moim-meta" id="musicTue3-meta" style="display:none">
+          <div class="meta-row"><span class="mi">📅</span>8월 25일 (화) 11:00 – 13:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>4명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">5,000원 <span style="font-size:12px;font-weight:500">/ 회차</span></div>
+            <div class="moim-cap">재료 준비 없음 · 회차별 개별 신청</div>
+          </div>
+          <button class="btn-apply" id="apply-dongseotue" onclick="openApply('슬기로운 음악생활 · 화요반','dongseotue')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="dongseowed">
+      <div class="moim-poster ocean-music-poster" aria-hidden="true">
+        <div class="poster-badge">8월 · 수요반</div>
+        <svg class="poster-music-illust" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M24 46a8 8 0 1 1-2-5.3V14l24-6v32.7a8 8 0 1 1-2-5.3V16.5L24 21.2V46z" fill="rgba(255,255,255,0.92)"/>
+        </svg>
+        <div class="poster-title">슬기로운 음악생활</div>
+        <div class="poster-sub">한여름, 클래식으로 감정을 기록하다</div>
+        <div class="poster-host">너라면 · 매장 테이블</div>
+        <div class="poster-sessions">
+          <div class="poster-session-row"><span>① 8/12 (수)</span><span>11:00–13:00</span></div>
+          <div class="poster-session-row"><span>② 8/19 (수)</span><span>11:00–13:00</span></div>
+          <div class="poster-session-row"><span>③ 8/26 (수)</span><span>11:00–13:00</span></div>
+        </div>
+        <div class="poster-fee">회차당 5,000원</div>
+        <div class="poster-deco">♪</div>
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">슬기로운 음악생활 · 수요반</div>
+        <p class="moim-host-line">너라면 · 동서남북book</p>
+        <div class="moim-desc">
+          8월의 한여름, 한증막 더위에 몸과 마음이 혼미해질 때! 이러고 있을 수는 없죠. 바로 지금 비모임에 참여하여 클래식 음악 감상과 더불어 나의 감정을 표현하며 기록하는 시간을 가져보면 어떨까요?<br><br>
+          총 3회에 걸쳐 진행되는 8월 한 달, 클래식 피아노를 전공한 만 40년차 동서남북 점주가 소개하는 품격있는 클래식 음악의 세계로 여러분을 정중히 초대합니다.
+        </div>
+        <div class="session-tabs">
+          <button class="stab active" onclick="selectSession(this,'musicWed1')">① 8/12</button>
+          <button class="stab" onclick="selectSession(this,'musicWed2')">② 8/19</button>
+          <button class="stab" onclick="selectSession(this,'musicWed3')">③ 8/26</button>
+        </div>
+        <div class="moim-meta" id="musicWed1-meta">
+          <div class="meta-row"><span class="mi">📅</span>8월 12일 (수) 11:00 – 13:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>3명</div>
+        </div>
+        <div class="moim-meta" id="musicWed2-meta" style="display:none">
+          <div class="meta-row"><span class="mi">📅</span>8월 19일 (수) 11:00 – 13:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>3명</div>
+        </div>
+        <div class="moim-meta" id="musicWed3-meta" style="display:none">
+          <div class="meta-row"><span class="mi">📅</span>8월 26일 (수) 11:00 – 13:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>3명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">5,000원 <span style="font-size:12px;font-weight:500">/ 회차</span></div>
+            <div class="moim-cap">재료 준비 없음 · 회차별 개별 신청</div>
+          </div>
+          <button class="btn-apply" id="apply-dongseowed" onclick="openApply('슬기로운 음악생활 · 수요반','dongseowed')">신청하기</button>
         </div>
       </div>
     </div>
@@ -3439,6 +3639,28 @@ const MOIMS = {
     amount: 20000,
     hasSession: true
   },
+  dongseotue: {
+    name: '슬기로운 음악생활 · 화요반',
+    sessions: [
+      { label: '① 8/11(화) 11:00–13:00', value: '8월11일_음악생활화', _endMs: new Date(2026, 7, 11, 13, 0, 0).getTime() },
+      { label: '② 8/18(화) 11:00–13:00', value: '8월18일_음악생활화', _endMs: new Date(2026, 7, 18, 13, 0, 0).getTime() },
+      { label: '③ 8/25(화) 11:00–13:00', value: '8월25일_음악생활화', _endMs: new Date(2026, 7, 25, 13, 0, 0).getTime() }
+    ],
+    capacity: { '8월11일_음악생활화': 4, '8월18일_음악생활화': 4, '8월25일_음악생활화': 4 },
+    amount: 5000,
+    hasSession: true
+  },
+  dongseowed: {
+    name: '슬기로운 음악생활 · 수요반',
+    sessions: [
+      { label: '① 8/12(수) 11:00–13:00', value: '8월12일_음악생활수', _endMs: new Date(2026, 7, 12, 13, 0, 0).getTime() },
+      { label: '② 8/19(수) 11:00–13:00', value: '8월19일_음악생활수', _endMs: new Date(2026, 7, 19, 13, 0, 0).getTime() },
+      { label: '③ 8/26(수) 11:00–13:00', value: '8월26일_음악생활수', _endMs: new Date(2026, 7, 26, 13, 0, 0).getTime() }
+    ],
+    capacity: { '8월12일_음악생활수': 3, '8월19일_음악생활수': 3, '8월26일_음악생활수': 3 },
+    amount: 5000,
+    hasSession: true
+  },
   pilsa: {
     name: '필사적인 다이어리 • 필사&책꾸',
     sessions: [{ label: '8/23(일) 14:00–16:00', value: '8월23일_필사', _endMs: new Date(2026, 7, 23, 16, 0, 0).getTime() }],
@@ -3546,6 +3768,8 @@ const MOIM_CURATION_META = {
   sentcollectsat: { cardId: 'sentcollectsat', poster: 'images/sentcollect_august_sat.jpg' },
   sentcollectfri: { cardId: 'sentcollectfri', poster: 'images/sentcollect_august_fri.jpg' },
   chaeksup: { cardId: 'chaeksup', poster: null },
+  dongseotue: { cardId: 'dongseotue', poster: null },
+  dongseowed: { cardId: 'dongseowed', poster: null },
   pilsa: { cardId: 'pilsa', poster: null }
 };
 
@@ -3633,7 +3857,9 @@ function getMoimSessionCount(counts, name, sessionValue) {
   if (counts[sessionKey] != null) return counts[sessionKey];
   const m = Object.values(MOIMS).find(x => x.name === name);
   if (m?.capacity != null && typeof m.capacity === 'object') return 0;
-  if (name === '슬기로운 영화 속 클래식') {
+  if (name === '슬기로운 영화 속 클래식'
+    || name === '슬기로운 음악생활 · 화요반'
+    || name === '슬기로운 음악생활 · 수요반') {
     return counts[`${name}_${sessionValue}`] ?? counts[`동서남북book_${sessionValue}`] ?? counts[name] ?? 0;
   }
   return counts[`${name}_${sessionValue}`] ?? counts[name] ?? 0;
@@ -3823,7 +4049,9 @@ function addMoimCount(counts, moimName, sessionValue) {
   if (!moimName) return;
   if (sessionValue) {
     counts[`${moimName}_${sessionValue}`] = (counts[`${moimName}_${sessionValue}`] || 0) + 1;
-    if (moimName === '슬기로운 영화 속 클래식') {
+    if (moimName === '슬기로운 영화 속 클래식'
+      || moimName === '슬기로운 음악생활 · 화요반'
+      || moimName === '슬기로운 음악생활 · 수요반') {
       counts[`동서남북book_${sessionValue}`] = counts[`${moimName}_${sessionValue}`];
     }
   }
@@ -4765,8 +4993,14 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-08-22', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
   { date: '2026-08-28', space: '세미나실', start: '13:00', end: '15:00', tag: '문장수집가들 금요반' },
   { date: '2026-08-11', space: '매장 테이블', start: '10:00', end: '12:00', tag: '책숲다회' },
+  { date: '2026-08-11', space: '매장 테이블', start: '10:40', end: '13:00', tag: '슬기로운 음악생활 화요반' },
+  { date: '2026-08-12', space: '매장 테이블', start: '11:00', end: '13:00', tag: '슬기로운 음악생활 수요반' },
   { date: '2026-08-18', space: '매장 테이블', start: '10:00', end: '12:00', tag: '책숲다회' },
+  { date: '2026-08-18', space: '매장 테이블', start: '10:40', end: '13:00', tag: '슬기로운 음악생활 화요반' },
+  { date: '2026-08-19', space: '매장 테이블', start: '11:00', end: '13:00', tag: '슬기로운 음악생활 수요반' },
   { date: '2026-08-25', space: '매장 테이블', start: '10:00', end: '12:00', tag: '책숲다회' },
+  { date: '2026-08-25', space: '매장 테이블', start: '10:40', end: '13:00', tag: '슬기로운 음악생활 화요반' },
+  { date: '2026-08-26', space: '매장 테이블', start: '11:00', end: '13:00', tag: '슬기로운 음악생활 수요반' },
   { date: '2026-08-23', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사&책꾸' },
   { date: '2026-08-31', space: '세미나실', start: '13:00', end: '14:30', tag: '일본어 모임' }
 ];
