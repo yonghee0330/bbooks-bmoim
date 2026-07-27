@@ -2723,7 +2723,7 @@
       <div class="cal-cell" onclick="openRent('2026-08-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-21')"><div class="cal-day">21</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="8월21일_문장수집금">문장수집가금 15-17</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('movietalk')" data-session="8월21일_영화한편">영화한편 19-2030</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-08-22')"><div class="cal-day">22</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="8월22일_문장수집토">문장수집가토 14-16</div><div class="cal-event ev-voice" onclick="event.stopPropagation();scrollToEvent('bvoice4')">b.voice ep4 16-18</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sun" onclick="openRent('2026-08-23')"><div class="cal-day">23</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pilsa')" data-session="8월23일_필사">필사다꾸 14-16</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-08-23')"><div class="cal-day">23</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pilsa')" data-session="8월23일_필사">필사다꾸 14-16</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sunnyclassic')" data-session="8월23일_써니고전">써니고전 16-18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-24')"><div class="cal-day">24</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-25')"><div class="cal-day">25</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월25일_책숲다회">화요다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-26')"><div class="cal-day">26</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseowed')" data-session="8월26일_음악생활수">음악생활수 11-13</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('letter')">편지모임 11-13</div><div class="cal-rent-btn">[대관]</div></div>
@@ -3199,6 +3199,34 @@
         </div>
       </div>
     </div>
+
+    <div class="moim-card" id="sunnyclassic">
+      <div class="moim-poster-img" onclick="openLightbox('images/sunny_classic_august.jpg','써니와 함께 고전 읽기 포스터')">
+        <img src="images/sunny_classic_august.jpg" alt="써니와 함께 고전 읽기 — 『위대한 개츠비』 · 8/23(일) 16:00–18:00">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">써니와 함께 고전 읽기</div>
+        <p class="moim-host-line">B-19 선이와 병수</p>
+        <div class="moim-desc">
+          고전 혼자 읽기 힘드셨죠? 써니와 함께 읽어요.<br>
+          당신은 무엇으로 마음을 채우시나요?<br>
+          고전을 읽고 삶의 이야기를 나누며 서로의 마음을 채우는 시간을 가져보아요.
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>8월 23일 (일) 16:00 – 18:00</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+          <div class="meta-row"><span class="mi">📚</span>F. 스콧 피츠제럴드 &lt;위대한 개츠비&gt;</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-sunnyclassic" onclick="openApply('써니와 함께 고전 읽기','sunnyclassic')">신청하기</button>
+        </div>
+      </div>
+    </div>
     </div>
 
   <div class="refund">
@@ -3633,6 +3661,13 @@ const MOIMS = {
     capacity: 5,
     amount: 10000,
     hasSession: false
+  },
+  sunnyclassic: {
+    name: '써니와 함께 고전 읽기',
+    sessions: [{ label: '8/23(일) 16:00–18:00', value: '8월23일_써니고전', _endMs: new Date(2026, 7, 23, 18, 0, 0).getTime() }],
+    capacity: 6,
+    amount: 10000,
+    hasSession: false
   }
 };
 
@@ -3738,7 +3773,8 @@ const MOIM_CURATION_META = {
   wedlibrary: { cardId: 'wedlibrary', poster: 'images/wedlibrary_august.jpg' },
   letter: { cardId: 'letter', poster: 'images/letter_august.png' },
   movietalk: { cardId: 'movietalk', poster: 'images/movie_talk_august.jpg' },
-  pilsa: { cardId: 'pilsa', poster: 'images/pilsa_diary_august_01.jpg' }
+  pilsa: { cardId: 'pilsa', poster: 'images/pilsa_diary_august_01.jpg' },
+  sunnyclassic: { cardId: 'sunnyclassic', poster: 'images/sunny_classic_august.jpg' }
 };
 
 const MOIM_DEFAULT_SESSION = {};
@@ -4969,6 +5005,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-08-26', space: '매장 테이블', start: '11:00', end: '13:00', tag: '슬기로운 음악생활 수요반' },
   { date: '2026-08-26', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-08-23', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사&다꾸' },
+  { date: '2026-08-23', space: '매장 테이블', start: '16:00', end: '18:00', tag: '써니와 함께 고전 읽기' },
   { date: '2026-08-31', space: '세미나실', start: '13:00', end: '14:30', tag: '일본어 모임' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
