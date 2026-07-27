@@ -411,14 +411,19 @@
     .event-grid .event-poster-wrap,
     .event-grid .poster-slider-wrap {
       flex: none;
-      aspect-ratio: 4 / 5;
+      width: 100%;
+      aspect-ratio: 819 / 1024;
       border-bottom: 1px solid var(--border);
     }
     .event-grid .poster-slider-wrap {
       background: #1f3352;
       overflow: hidden;
+      position: relative;
     }
     .event-grid .poster-slider-viewport {
+      position: absolute;
+      inset: 0;
+      width: 100%;
       height: 100%;
       aspect-ratio: auto;
     }
@@ -1494,35 +1499,46 @@
       position: relative;
       background: #e8eef5;
       cursor: zoom-in;
+      width: 100%;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
     }
     .poster-slider-viewport {
       width: 100%;
       aspect-ratio: 819 / 1024;
       overflow: hidden;
       position: relative;
+      touch-action: pan-y;
     }
     .poster-slider {
       display: flex;
+      width: 100%;
       height: 100%;
       transition: transform .35s ease;
+      will-change: transform;
     }
     .poster-slide {
+      flex: 0 0 100%;
+      width: 100%;
       min-width: 100%;
+      max-width: 100%;
       height: 100%;
-      flex-shrink: 0;
+      box-sizing: border-box;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .poster-slide img {
+      width: 100%;
+      height: 100%;
       max-width: 100%;
       max-height: 100%;
-      width: auto;
-      height: auto;
       object-fit: contain;
       object-position: center;
       display: block;
       pointer-events: none;
+      -webkit-user-drag: none;
     }
     .poster-slider-nav {
       position: absolute;
@@ -1533,15 +1549,24 @@
       justify-content: space-between;
       align-items: center;
       pointer-events: none;
+      z-index: 2;
     }
     .poster-slider-nav .slider-dots,
     .poster-slider-nav .slider-arrows { pointer-events: auto; }
-    .poster-slider-nav .sdot { background: rgba(255,255,255,.45); }
+    .poster-slider-nav .sdot {
+      background: rgba(255,255,255,.45);
+      width: 8px;
+      height: 8px;
+    }
     .poster-slider-nav .sdot.active { background: #fff; }
     .poster-slider-nav .sarr {
-      background: rgba(255,255,255,.9);
+      background: rgba(255,255,255,.95);
       border-color: transparent;
       color: var(--navy);
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+      flex-shrink: 0;
     }
     .poster-slider-hint {
       position: absolute; top: 10px; right: 10px;
@@ -1551,6 +1576,22 @@
       padding: 3px 8px;
       border-radius: 10px;
       pointer-events: none;
+      z-index: 2;
+    }
+    @media (max-width: 640px) {
+      .poster-slider-nav {
+        padding: 32px 12px 12px;
+      }
+      .poster-slider-nav .sarr {
+        width: 44px;
+        height: 44px;
+        font-size: 22px;
+      }
+      .poster-slider-nav .sdot {
+        width: 10px;
+        height: 10px;
+      }
+      .poster-slider-nav .slider-dots { gap: 8px; }
     }
 
     /* 타이포 포스터 — 이미지 없을 때 */
@@ -2730,7 +2771,7 @@
       <article class="event-card type-yes24" id="yes24lee">
         <div class="event-poster-stack">
         <div class="poster-slider-wrap" id="poster-slider-btalks-aug"
-             onclick="openPosterLightbox('btalks-aug')"
+             onclick="openPosterLightboxIfTap(event,'btalks-aug')"
              data-posters='["images/btalks_august_01.jpg","images/btalks_august_02.jpg","images/btalks_august_03.jpg","images/btalks_august_04.jpg"]'
              data-alt="8월의 b.talks — 《선을 넘는 북클럽》 이수영 작가와의 만남">
           <div class="poster-slider-viewport">
@@ -5434,11 +5475,61 @@ function initMoimPosterSliders() {
     const dotsEl = document.querySelector(`[data-dots="${id}"]`);
     if (dotsEl) {
       dotsEl.innerHTML = Array.from(slides).map((_, i) =>
-        `<div class="sdot${i === 0 ? ' active' : ''}" onclick="posterGo('${id}', ${i})"></div>`
+        `<div class="sdot${i === 0 ? ' active' : ''}" onclick="event.stopPropagation();posterGo('${id}', ${i})"></div>`
       ).join('');
     }
+    bindPosterSliderGesture(id);
     updatePosterSlider(id);
   });
+  window.addEventListener('resize', () => {
+    Object.keys(posterSliderState).forEach(updatePosterSlider);
+  });
+}
+
+function bindPosterSliderGesture(id) {
+  const wrap = document.getElementById(`poster-slider-${id}`);
+  if (!wrap || wrap.dataset.gestureBound === '1') return;
+  wrap.dataset.gestureBound = '1';
+  const viewport = wrap.querySelector('.poster-slider-viewport') || wrap;
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+  let swiped = false;
+
+  viewport.addEventListener('touchstart', e => {
+    const t = e.changedTouches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+    tracking = true;
+    swiped = false;
+  }, { passive: true });
+
+  viewport.addEventListener('touchmove', e => {
+    if (!tracking) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+    if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) swiped = true;
+  }, { passive: true });
+
+  viewport.addEventListener('touchend', e => {
+    if (!tracking) return;
+    tracking = false;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - startX;
+    if (Math.abs(dx) > 40) {
+      posterSlide(id, dx < 0 ? 1 : -1);
+      wrap.dataset.justSwiped = '1';
+      setTimeout(() => { delete wrap.dataset.justSwiped; }, 350);
+    }
+  }, { passive: true });
+}
+
+function openPosterLightboxIfTap(event, sliderId) {
+  const wrap = event.currentTarget;
+  if (wrap?.dataset?.justSwiped) return;
+  if (event.target.closest('.poster-slider-nav, .sarr, .sdot')) return;
+  openPosterLightbox(sliderId);
 }
 
 function posterSlide(id, dir) {
@@ -5459,7 +5550,13 @@ function updatePosterSlider(id) {
   const s = posterSliderState[id];
   const track = document.querySelector(`[data-slider="${id}"]`);
   if (!track || !s) return;
-  track.style.transform = `translateX(-${s.index * 100}%)`;
+  const viewport = track.parentElement;
+  const w = viewport ? viewport.clientWidth : 0;
+  if (w > 0) {
+    track.style.transform = `translateX(-${s.index * w}px)`;
+  } else {
+    track.style.transform = `translateX(-${s.index * 100}%)`;
+  }
   document.querySelectorAll(`[data-dots="${id}"] .sdot`).forEach((d, i) => {
     d.classList.toggle('active', i === s.index);
   });
