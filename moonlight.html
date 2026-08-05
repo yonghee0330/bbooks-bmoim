@@ -356,9 +356,9 @@
 
 <header>
   <div class="nav">
-    <a class="brand" href="july.html"><span class="moon">☾</span> B.BOOKS · 월요일의 달빛 리딩클럽</a>
+    <a class="brand" href="august.html"><span class="moon">☾</span> B.BOOKS · 월요일의 달빛 리딩클럽</a>
     <div class="nav-links">
-      <a class="nav-link" href="july.html">비북스 모임</a>
+      <a class="nav-link" href="august.html">비북스 모임</a>
       <a class="nav-cta" href="#apply">신청하기</a>
     </div>
   </div>
@@ -375,7 +375,7 @@
         <div class="hero-meta">
           <span class="pill">8월 <b>10일 · 24일</b> (월)</span>
           <span class="pill">8:00 PM – 10:00 PM</span>
-          <span class="pill">회당 <b>10,000원</b> · 음료 포함</span>
+          <span class="pill">회당 <b>10,000원</b> · 간단한 다과 제공</span>
         </div>
         <div class="hero-cta">
           <a href="#curation" class="btn btn-outline">이달의 책 먼저 보기</a>
@@ -440,7 +440,7 @@
         <div class="flow-time">7:40 — 8:00 PM</div>
         <div class="flow-dur">20분</div>
         <h3>퇴근하고, 도착</h3>
-        <p>저녁을 먹고 오셔도 좋습니다. 자리 잡고 음료 한 잔 받아 오늘 읽을 책을 펼칩니다.</p>
+        <p>저녁을 먹고 오셔도 좋습니다. 자리 잡고 간단한 다과와 함께 오늘 읽을 책을 펼칩니다.</p>
       </div>
       <div class="flow-card">
         <div class="flow-time">8:00 — 9:30 PM</div>
@@ -472,9 +472,9 @@
     <div class="fee-card">
       <div class="fee-label">월요일의 달빛 리딩클럽 · 1회 참가비</div>
       <div class="fee-price">10,000원<small>/ 1회</small></div>
-      <p class="fee-desc">음료 1잔이 포함되어 있고, 참가하실 때마다 5,000원 도서쿠폰을 드립니다.</p>
+      <p class="fee-desc">간단한 다과가 제공되고, 참가하실 때마다 5,000원 도서쿠폰을 드립니다.</p>
       <div class="fee-benefits">
-        <div class="benefit-box"><b>음료 포함</b>따뜻한 차 또는 커피 1잔. 90분 읽는 동안 곁에 두세요.</div>
+        <div class="benefit-box"><b>간단한 다과 제공</b>따뜻한 차·커피와 가벼운 다과. 90분 읽는 동안 곁에 두세요.</div>
         <div class="benefit-box coupon"><b>도서쿠폰 5,000원</b>참가 1회당 1장. 비북스에서 책 구입 시 바로 사용하실 수 있습니다.</div>
       </div>
       <div style="margin-top:22px;">
@@ -583,7 +583,7 @@
 </section>
 
 <footer>
-  월요일의 달빛 리딩클럽 · <a href="july.html">비북스 모임</a> · 진행 0.1평 점주 썬북친구 (@sun__book79)<br>
+  월요일의 달빛 리딩클럽 · <a href="august.html">비북스 모임</a> · 진행 0.1평 점주 썬북친구 (@sun__book79)<br>
   장소: 비북스 매장 · 월요일 8:00 PM – 10:00 PM
 </footer>
 
@@ -605,7 +605,7 @@ const CONFIG = {
     { date: '8/24', day: 24, label: '2회차', badge: '' }
   ],
 
-  PRICE: 10000,        // 회당 참가비 (음료 포함)
+  PRICE: 10000,        // 회당 참가비 (간단한 다과 제공)
   COUPON: 5000,        // 회당 제공 도서쿠폰
   TIME: '8:00 PM – 10:00 PM'
 };
@@ -629,7 +629,7 @@ function won(n){ return n.toLocaleString('ko-KR') + '원'; }
 document.getElementById('cal-month-label').textContent = CONFIG.MONTH;
 document.getElementById('curation-title').textContent = `${CONFIG.MONTH}의 월요일, 함께 읽을 책`;
 document.getElementById('date-field-hint').textContent =
-  `회당 ${won(CONFIG.PRICE)} · 음료 포함 · 참가 1회당 ${won(CONFIG.COUPON)} 도서쿠폰 제공`;
+  `회당 ${won(CONFIG.PRICE)} · 간단한 다과 제공 · 참가 1회당 ${won(CONFIG.COUPON)} 도서쿠폰 제공`;
 document.getElementById('cal-legend').innerHTML = CONFIG.SESSIONS.map(s =>
   `<span><i class="dot"></i>${s.date}(월) ${s.label} · ${CONFIG.TIME}</span>`
 ).join('');
