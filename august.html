@@ -2791,7 +2791,7 @@
       <div class="cal-cell" onclick="openRent('2026-08-07')"><div class="cal-day">7</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="8월7일_문장수집금">문장수집가금 15-17</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-08-08')"><div class="cal-day">8</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="8월8일_문장수집토">문장수집가토 14-16</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24lee')">b.talks 16-18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-09')"><div class="cal-day">9</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('adlerbtalk1')">북토크 13-15</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-10')"><div class="cal-day">10</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-10')"><div class="cal-day">10</div><div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='moonlight.html'">달빛리딩 20-22</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-11')"><div class="cal-day">11</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월11일_책숲다회">화요다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-12')"><div class="cal-day">12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseowed')" data-session="8월12일_음악생활수">음악생활수 11-13</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-13')"><div class="cal-day">13</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2805,7 +2805,7 @@
       <div class="cal-cell" onclick="openRent('2026-08-21')"><div class="cal-day">21</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="8월21일_문장수집금">문장수집가금 15-17</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('movietalk')" data-session="8월21일_영화한편">영화한편 19-2030</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-08-22')"><div class="cal-day">22</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="8월22일_문장수집토">문장수집가토 14-16</div><div class="cal-event ev-voice" onclick="event.stopPropagation();scrollToEvent('bvoice4')">b.voice ep4 16-18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-08-23')"><div class="cal-day">23</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('pilsa')" data-session="8월23일_필사">필사다꾸 14-16</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sunnyclassic')" data-session="8월23일_써니고전">써니고전 16-18</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-08-24')"><div class="cal-day">24</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-08-24')"><div class="cal-day">24</div><div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='moonlight.html'">달빛리딩 20-22</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-25')"><div class="cal-day">25</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('chaeksup')" data-session="8월25일_책숲다회">화요다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-26')"><div class="cal-day">26</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('letter')">편지모임 11-13</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseowed')" data-session="8월26일_음악생활수">음악생활수 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-08-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
@@ -5202,6 +5202,8 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-08-26', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-08-23', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사&다꾸' },
   { date: '2026-08-23', space: '매장 테이블', start: '16:00', end: '18:00', tag: '써니와 함께 고전 읽기' },
+  { date: '2026-08-10', space: '매장 테이블', start: '20:00', end: '22:00', tag: '달빛 리딩 클럽' },
+  { date: '2026-08-24', space: '매장 테이블', start: '20:00', end: '22:00', tag: '달빛 리딩 클럽' },
   { date: '2026-08-31', space: '세미나실', start: '13:00', end: '14:30', tag: '일본어 모임' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
