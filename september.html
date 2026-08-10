@@ -2822,7 +2822,7 @@
       <div class="cal-cell" onclick="openRent('2026-09-02')"><div class="cal-day">2</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-03')"><div class="cal-day">3</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-04')"><div class="cal-day">4</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-09-05')"><div class="cal-day">5</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('storyaunt')">그림책이모 1030-12</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-09-05')"><div class="cal-day">5</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-09-06')"><div class="cal-day">6</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-07')"><div class="cal-day">7</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-08')"><div class="cal-day">8</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2836,7 +2836,7 @@
       <div class="cal-cell" onclick="openRent('2026-09-16')"><div class="cal-day">16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-17')"><div class="cal-day">17</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-18')"><div class="cal-day">18</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-09-19')"><div class="cal-day">19</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-09-19')"><div class="cal-day">19</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('storyaunt')">그림책이모 1030-12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-09-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-21')"><div class="cal-day">21</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-22')"><div class="cal-day">22</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2909,7 +2909,7 @@
     <div class="moim-grid">
     <div class="moim-card" id="storyaunt">
       <div class="moim-poster-img" onclick="openLightbox('images/story_aunt_september.jpg','그림책 읽어주는 이모 포스터')">
-        <img src="images/story_aunt_september.jpg" alt="그림책 읽어주는 이모 — STORY TIME · 9/5(토)">
+        <img src="images/story_aunt_september.jpg" alt="그림책 읽어주는 이모 — STORY TIME · 9/19(토)">
       </div>
       <div class="moim-body">
         <div class="moim-name">그림책 읽어주는 이모</div>
@@ -2920,8 +2920,8 @@
           《화를 참지 못하는 페르갈》, 《곰씨의 의자》, 《The Colour Monster》와 함께하는 STORY TIME.
         </div>
         <div class="moim-meta">
-          <div class="meta-row"><span class="mi">📅</span>9월 5일 (토) 오전 10:30 – 12:00</div>
-          <div class="meta-row"><span class="mi">📌</span>비북스 (원미구청 앞)</div>
+          <div class="meta-row"><span class="mi">📅</span>9월 19일 (토) 오전 10:30 – 12:00</div>
+          <div class="meta-row"><span class="mi">📌</span>계단 좌석</div>
           <div class="meta-row"><span class="mi">👥</span>유치원생~초등 저학년 · 10명</div>
         </div>
         <div class="moim-foot">
@@ -3297,7 +3297,7 @@ const PAGE_MONTH = '9월';
 const MOIMS = {
   storyaunt: {
     name: '그림책 읽어주는 이모',
-    sessions: [{ label: '9/5(토) 10:30–12:00', value: '9월5일', _endMs: new Date(2026, 8, 5, 12, 0, 0).getTime() }],
+    sessions: [{ label: '9/19(토) 10:30–12:00', value: '9월19일', _endMs: new Date(2026, 8, 19, 12, 0, 0).getTime() }],
     capacity: 10,
     amount: 10000,
     hasSession: false
@@ -4567,7 +4567,7 @@ const TT_END_MIN = 22 * 60;
 
 // 비모임 고정 일정 (공간별 실제 시간 기준, 겹치면 차단)
 const SCHEDULED_MOIM_BLOCKS = [
-  { date: '2026-09-05', space: '계단 좌석', start: '10:30', end: '12:00', tag: '그림책 읽어주는 이모' },
+  { date: '2026-09-19', space: '계단 좌석', start: '10:30', end: '12:00', tag: '그림책 읽어주는 이모' },
   { date: '2026-09-30', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
