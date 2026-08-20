@@ -1,0 +1,15 @@
+---
+description: Commit and deploy site changes to GitHub Pages after completing work
+alwaysApply: true
+---
+
+# Auto-deploy (bbooks-bmoim)
+
+After finishing user-requested site updates (HTML, images, apply pages, etc.):
+
+1. **Commit** the relevant changes (exclude `node_modules/`, `.DS_Store`, secrets, credentials).
+2. **Push** to `origin main` so GitHub Pages at https://moim.bbooks.co.kr updates.
+3. If local is behind remote, **merge** (or rebase) `origin/main` first; prefer the latest intentional local content for pages just edited.
+4. Tell the user the deploy URL(s) briefly when done.
+
+Do this without waiting for a separate "배포해줘" unless the user says not to deploy.

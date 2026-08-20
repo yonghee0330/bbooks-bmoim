@@ -8,386 +8,448 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --text: #202124;
-      --muted: #5f6368;
-      --border: #dfe1e5;
-      --blue: #1a73e8;
-      --blue-hover: #1765cc;
-      --bg: #fff;
-      --surface: #f8f9fa;
-      --cancel: #d93025;
+      --navy: #0a1f44;
+      --accent: #4a8cff;
+      --text: #1a1a2e;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --bg: #f4f7fb;
+      --white: #fff;
+      --cancel: #dc2626;
+      --cancel-bg: #fef2f2;
+      --ok: #16a34a;
+      --ok-bg: #f0fdf4;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Noto Sans KR', sans-serif;
       background: var(--bg);
       color: var(--text);
-      min-height: 100dvh;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
-    .page {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 48px 20px 80px;
-    }
-    .gate {
-      min-height: calc(100dvh - 128px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
+    header {
+      background: var(--navy);
+      padding: 16px 24px;
     }
     .logo {
       font-family: 'Noto Serif KR', serif;
-      font-size: 44px;
-      font-weight: 600;
-      letter-spacing: -.02em;
-      margin-bottom: 28px;
-    }
-    .logo span { color: var(--blue); }
-    .gate-lead {
-      font-size: 14px;
-      color: var(--muted);
-      margin-bottom: 28px;
-      line-height: 1.6;
-    }
-    .code-form {
-      width: min(100%, 584px);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .code-box {
-      display: flex;
-      align-items: center;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 6px 8px 6px 20px;
-      box-shadow: 0 1px 6px rgba(32, 33, 36, .08);
-      transition: box-shadow .2s, border-color .2s;
-    }
-    .code-box:focus-within {
-      border-color: transparent;
-      box-shadow: 0 1px 6px rgba(32, 33, 36, .16), 0 0 0 1px #dadce0;
-    }
-    .code-box input {
-      flex: 1;
-      border: none;
-      outline: none;
-      font-size: 16px;
-      padding: 10px 0;
-      background: transparent;
-      min-width: 0;
-    }
-    .code-box button {
-      border: none;
-      border-radius: 18px;
-      background: var(--surface);
-      color: var(--muted);
-      font-size: 13px;
+      font-size: 18px;
       font-weight: 700;
-      padding: 10px 18px;
+      color: white;
+      text-decoration: none;
+    }
+    .logo span { color: var(--accent); }
+    .hero {
+      background: linear-gradient(160deg, var(--navy) 0%, #1e3a6e 100%);
+      color: white;
+      text-align: center;
+      padding: 40px 20px 36px;
+    }
+    .hero h1 {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(22px, 5vw, 28px);
+      margin-bottom: 8px;
+    }
+    .hero p { font-size: 14px; color: rgba(255,255,255,.72); line-height: 1.6; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 28px 16px 56px; }
+    .search-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px 20px;
+      box-shadow: 0 4px 24px rgba(10,31,68,.06);
+      margin-top: -28px;
+      position: relative;
+      z-index: 1;
+    }
+    .search-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 10px;
+      letter-spacing: .04em;
+    }
+    .search-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .search-row input[type="text"] {
+      flex: 1 1 180px;
+      min-width: 0;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-size: 16px;
+      font-family: inherit;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .search-row input[type="text"]:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .search-row select {
+      padding: 14px 12px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      background: white;
+    }
+    .btn-go {
+      padding: 14px 22px;
+      background: var(--navy);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
       cursor: pointer;
+      font-family: inherit;
+      white-space: nowrap;
     }
-    .code-box button.primary {
-      background: var(--blue);
-      color: #fff;
+    .btn-go:hover { background: #152d5c; }
+    .btn-go:disabled { opacity: .55; cursor: default; }
+    .hint {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.55;
     }
-    .code-box button.primary:hover { background: var(--blue-hover); }
-    .code-box button:disabled { opacity: .55; cursor: default; }
-    .gate-msg {
-      min-height: 20px;
+    .alert {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
       font-size: 13px;
-      color: var(--cancel);
-      margin-top: 4px;
+      line-height: 1.5;
     }
-    .gate-msg.ok { color: var(--muted); }
-    .dash { display: none; }
-    .dash.on { display: block; }
-    .dash-head {
+    .alert.error { background: var(--cancel-bg); color: #991b1b; border: 1px solid #fecaca; }
+    .alert.info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .result { display: none; margin-top: 24px; }
+    .result.on { display: block; }
+    .result-head {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .dash-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    .dash-sub { font-size: 13px; color: var(--muted); }
-    .btn-text {
-      border: none;
-      background: none;
-      color: var(--blue);
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-      padding: 4px 0;
-    }
-    .summary {
-      display: flex;
-      gap: 10px;
+      margin-bottom: 16px;
       flex-wrap: wrap;
-      margin-bottom: 24px;
     }
-    .summary-item {
-      background: var(--surface);
+    .result-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .result-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .btn-refresh {
+      padding: 8px 14px;
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 14px;
-      min-width: 120px;
-    }
-    .summary-item strong {
-      display: block;
-      font-size: 22px;
-      margin-bottom: 2px;
-    }
-    .summary-item span {
+      border-radius: 8px;
+      background: white;
       font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
       color: var(--muted);
     }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .stat {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .stat-num.cancel { color: var(--cancel); }
+    .stat-num.ok { color: var(--ok); }
+    .stat-label { font-size: 11px; color: var(--muted); margin-top: 6px; }
     .moim-block {
+      background: white;
       border: 1px solid var(--border);
       border-radius: 14px;
       overflow: hidden;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
     .moim-block-head {
+      background: #f8fafc;
       padding: 14px 16px;
-      background: var(--surface);
       border-bottom: 1px solid var(--border);
     }
-    .moim-block-head h3 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .moim-block-head p {
-      font-size: 12px;
-      color: var(--muted);
-    }
-    .session-label {
-      padding: 10px 16px 6px;
+    .moim-block-name { font-size: 15px; font-weight: 700; }
+    .moim-block-meta { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .session-block { border-bottom: 1px solid var(--border); }
+    .session-block:last-child { border-bottom: none; }
+    .session-head {
+      padding: 10px 16px;
       font-size: 12px;
       font-weight: 700;
-      color: var(--muted);
+      color: var(--accent);
+      background: #f0f6ff;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    .applicant {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4px 12px;
+      padding: 12px 16px;
+      border-bottom: 1px solid #f1f5f9;
       font-size: 13px;
     }
-    th, td {
-      padding: 10px 12px;
-      text-align: left;
-      border-top: 1px solid #f1f3f4;
-      vertical-align: top;
-    }
-    th {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--muted);
-      background: #fff;
-    }
-    tr.cancelled td {
-      color: #9aa0a6;
-      text-decoration: line-through;
-    }
-    tr.cancelled td:last-child {
+    .applicant:last-child { border-bottom: none; }
+    .applicant.cancelled { background: var(--cancel-bg); opacity: .85; }
+    .applicant-name { font-weight: 700; }
+    .applicant-phone {
+      font-variant-numeric: tabular-nums;
+      color: var(--navy);
       text-decoration: none;
-      color: var(--cancel);
-      font-weight: 600;
     }
+    a.applicant-phone:hover { text-decoration: underline; }
+    .applicant-meta { grid-column: 1 / -1; font-size: 11px; color: var(--muted); }
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      align-self: start;
+    }
+    .badge.cancel { background: #fee2e2; color: #991b1b; }
+    .badge.ok { background: #dcfce7; color: #166534; }
+    .badge.wait { background: #fef3c7; color: #92400e; }
     .empty {
-      padding: 28px 16px;
+      padding: 32px 20px;
       text-align: center;
       color: var(--muted);
       font-size: 14px;
     }
-    .foot {
-      margin-top: 40px;
+    footer {
       text-align: center;
+      padding: 24px;
       font-size: 12px;
       color: var(--muted);
     }
-    @media (max-width: 640px) {
-      .logo { font-size: 36px; }
-      .page { padding-top: 32px; }
-      .dash-head { flex-direction: column; }
-      table { font-size: 12px; }
-      th:nth-child(1), td:nth-child(1) { display: none; }
+    footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 480px) {
+      .stats { grid-template-columns: 1fr; }
+      .search-row { flex-direction: column; }
+      .search-row select, .btn-go { width: 100%; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <section class="gate" id="gate">
-      <div class="logo">b<span>.</span>moim</div>
-      <p class="gate-lead">점주 전용 코드를 입력하면<br>개설 모임의 신청 현황을 확인할 수 있습니다.</p>
-      <form class="code-form" id="codeForm">
-        <div class="code-box">
-          <input type="password" id="codeInput" autocomplete="off" placeholder="점주 코드" maxlength="32" required>
-          <button type="submit" class="primary" id="codeBtn">확인</button>
-        </div>
-        <div class="gate-msg" id="gateMsg"></div>
-      </form>
-    </section>
 
-    <section class="dash" id="dash">
-      <div class="dash-head">
-        <div>
-          <div class="dash-title" id="dashTitle">신청 현황</div>
-          <div class="dash-sub" id="dashSub"></div>
-        </div>
-        <button type="button" class="btn-text" id="logoutBtn">다른 코드 입력</button>
-      </div>
-      <div class="summary" id="summary"></div>
-      <div id="moimList"></div>
-    </section>
+<header>
+  <a class="logo" href="https://moim.bbooks.co.kr/june.html">b<span>.</span>moim</a>
+</header>
 
-    <p class="foot">비북스 b.moim · 점주 전용 페이지</p>
+<div class="hero">
+  <h1>비모임 신청 현황</h1>
+  <p>점주 전용 · 발급받은 코드로<br>내 모임 신청자 명단을 확인합니다</p>
+</div>
+
+<div class="wrap">
+  <div class="search-box">
+    <div class="search-label">점주 코드</div>
+    <div class="search-row">
+      <input type="text" id="codeInput" placeholder="코드 입력" autocomplete="off" maxlength="32" spellcheck="false">
+      <select id="monthSelect" aria-label="월 선택">
+        <option value="6월" selected>6월</option>
+      </select>
+      <button type="button" class="btn-go" id="submitBtn" onclick="loadStatus()">확인</button>
+    </div>
+    <p class="hint">비북스에서 받은 점주 코드를 입력하세요. 코드는 타인에게 공유하지 마세요.</p>
+    <div id="searchAlert"></div>
   </div>
 
+  <div class="result" id="result">
+    <div class="result-head">
+      <div>
+        <div class="result-title" id="hostTitle"></div>
+        <div class="result-sub" id="hostSub"></div>
+      </div>
+      <button type="button" class="btn-refresh" onclick="loadStatus()">↻ 새로고침</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-label">전체 신청</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num ok" id="statActive">0</div>
+        <div class="stat-label">유효 신청</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num cancel" id="statCancelled">0</div>
+        <div class="stat-label">취소</div>
+      </div>
+    </div>
+
+    <div id="moimList"></div>
+  </div>
+</div>
+
+<footer>
+  <a href="september.html">← 9월 모임 페이지</a><br>
+  © 2026 · 비북스 b.moim
+</footer>
+
 <script>
-const API = 'https://script.google.com/macros/s/AKfycbwfZYQ9FtaMWm6ZqyPhd1tByTzrQV352jtQZYT0-lplGlR0WOKCW_V928gLmRptuPik4g/exec';
-const MONTH = '6월';
-const STORAGE_KEY = 'bmoim_host_code_v1';
+const API = 'https://script.google.com/macros/s/AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ/exec';
+const STORAGE_KEY = 'bmoim_host_code';
 
-const gate = document.getElementById('gate');
-const dash = document.getElementById('dash');
-const codeForm = document.getElementById('codeForm');
-const codeInput = document.getElementById('codeInput');
-const codeBtn = document.getElementById('codeBtn');
-const gateMsg = document.getElementById('gateMsg');
-const dashTitle = document.getElementById('dashTitle');
-const dashSub = document.getElementById('dashSub');
-const summary = document.getElementById('summary');
-const moimList = document.getElementById('moimList');
+const q = sel => document.querySelector(sel);
 
-function setGateMsg(text, ok) {
-  gateMsg.textContent = text || '';
-  gateMsg.classList.toggle('ok', !!ok);
+function showAlert(msg, type) {
+  q('#searchAlert').innerHTML = msg
+    ? `<div class="alert ${type || 'error'}">${msg}</div>`
+    : '';
 }
 
-function formatPhone(phone) {
-  const digits = String(phone || '').replace(/\D/g, '');
-  if (digits.length === 11) return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
-  if (digits.length === 10) return `${digits.slice(0, 3)}-${digits.slice(3, 6)}-${digits.slice(6)}`;
-  return phone || '';
+function formatPhoneDisplay(phone) {
+  const s = String(phone || '').trim();
+  if (!s) return '—';
+  if (s.includes('-')) return s;
+  const d = s.replace(/\D/g, '');
+  if (d.length === 11) return `${d.slice(0,3)}-${d.slice(3,7)}-${d.slice(7)}`;
+  if (d.length === 10) return `${d.slice(0,3)}-${d.slice(3,6)}-${d.slice(6)}`;
+  return s;
 }
 
-function formatAmount(amount) {
-  return Number(amount || 0).toLocaleString('ko-KR') + '원';
+function phoneHref(phone) {
+  const d = String(phone || '').replace(/\D/g, '');
+  return d ? `tel:${d}` : null;
 }
 
-function showGate() {
-  sessionStorage.removeItem(STORAGE_KEY);
-  dash.classList.remove('on');
-  gate.style.display = 'flex';
-  codeInput.value = '';
-  codeInput.focus();
-  setGateMsg('');
+function statusBadge(applicant) {
+  if (applicant.cancelled) return '<span class="badge cancel">취소</span>';
+  const note = String(applicant.note || '');
+  if (note.includes('입금확인')) return '<span class="badge ok">입금확인</span>';
+  return '<span class="badge wait">미확인</span>';
 }
 
-function showDash(data) {
-  gate.style.display = 'none';
-  dash.classList.add('on');
-  dashTitle.textContent = data.hostName ? `${data.hostName} 님의 신청 현황` : '신청 현황';
-  dashSub.textContent = `${data.month || MONTH} · ${data.moims.length}개 모임`;
-
-  summary.innerHTML = `
-    <div class="summary-item"><strong>${data.totalActive}</strong><span>유효 신청</span></div>
-    <div class="summary-item"><strong>${data.totalCancelled}</strong><span>취소</span></div>
-    <div class="summary-item"><strong>${data.totalAll}</strong><span>전체 접수</span></div>
-  `;
-
-  if (!data.moims.length) {
-    moimList.innerHTML = '<div class="empty">표시할 신청 내역이 없습니다.</div>';
-    return;
+function renderApplicants(applicants) {
+  if (!applicants.length) {
+    return '<div class="empty">아직 신청자가 없습니다.</div>';
   }
-
-  moimList.innerHTML = data.moims.map(moim => {
-    const sessions = moim.sessions.map(session => {
-      if (!session.applications.length) {
-        return `<div class="session-label">${session.label}</div><div class="empty">신청자 없음</div>`;
-      }
-      const rows = session.applications.map(app => `
-        <tr class="${app.cancelled ? 'cancelled' : ''}">
-          <td>${app.appliedAt || ''}</td>
-          <td>${app.name || ''}</td>
-          <td>${formatPhone(app.phone)}</td>
-          <td>${formatAmount(app.amount)}</td>
-          <td>${app.note || ''}</td>
-        </tr>
-      `).join('');
-      return `
-        <div class="session-label">${session.label} · ${session.activeCount}명</div>
-        <table>
-          <thead>
-            <tr><th>신청일시</th><th>이름</th><th>연락처</th><th>참가비</th><th>비고</th></tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-      `;
-    }).join('');
-
-    return `
-      <article class="moim-block">
-        <div class="moim-block-head">
-          <h3>${moim.name}</h3>
-          <p>유효 신청 ${moim.activeCount}명</p>
-        </div>
-        ${sessions}
-      </article>
-    `;
+  return applicants.map(a => {
+    const href = phoneHref(a.phone);
+    const phoneHtml = href
+      ? `<a class="applicant-phone" href="${href}">${formatPhoneDisplay(a.phone)}</a>`
+      : `<span class="applicant-phone">${formatPhoneDisplay(a.phone)}</span>`;
+    const note = a.note ? `<div class="applicant-meta">비고: ${escapeHtml(a.note)}</div>` : '';
+    const applied = a.appliedAt ? `<div class="applicant-meta">신청: ${escapeHtml(a.appliedAt)}</div>` : '';
+    return `<div class="applicant${a.cancelled ? ' cancelled' : ''}">
+      <div class="applicant-name">${escapeHtml(a.name || '—')}</div>
+      ${statusBadge(a)}
+      ${phoneHtml}
+      <div class="applicant-meta">${Number(a.amount || 0).toLocaleString()}원</div>
+      ${applied}${note}
+    </div>`;
   }).join('');
 }
 
-async function loadStatus(code) {
-  setGateMsg('');
-  codeBtn.disabled = true;
-  codeBtn.textContent = '확인 중...';
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function renderResult(data) {
+  q('#hostTitle').textContent = `${data.hostName} 점주님`;
+  q('#hostSub').textContent = `${data.month} · ${data.moimNames.join(', ')}`;
+
+  const stats = data.stats || {};
+  q('#statTotal').textContent = stats.total ?? 0;
+  q('#statActive').textContent = stats.active ?? 0;
+  q('#statCancelled').textContent = stats.cancelled ?? 0;
+
+  const groups = data.groups || [];
+  if (!groups.length) {
+    q('#moimList').innerHTML = '<div class="empty">표시할 신청 내역이 없습니다.</div>';
+    return;
+  }
+
+  q('#moimList').innerHTML = groups.map(g => {
+    const sessions = (g.sessions || []).map(s => `
+      <div class="session-block">
+        <div class="session-head">${escapeHtml(s.session || '회차 미지정')} · ${s.count}명</div>
+        ${renderApplicants(s.applicants || [])}
+      </div>
+    `).join('');
+    return `
+      <div class="moim-block">
+        <div class="moim-block-head">
+          <div class="moim-block-name">${escapeHtml(g.moimName)}</div>
+          <div class="moim-block-meta">유효 ${g.activeCount}명 / 전체 ${g.totalCount}명</div>
+        </div>
+        ${sessions}
+      </div>`;
+  }).join('');
+}
+
+async function loadStatus() {
+  const code = q('#codeInput').value.trim();
+  const month = q('#monthSelect').value;
+  if (!code) {
+    showAlert('점주 코드를 입력해주세요.', 'error');
+    return;
+  }
+
+  showAlert('');
+  const btn = q('#submitBtn');
+  btn.disabled = true;
+  btn.textContent = '조회 중…';
 
   try {
-    const url = `${API}?action=hostStatus&code=${encodeURIComponent(code)}&month=${encodeURIComponent(MONTH)}`;
+    const url = `${API}?action=hostStatus&code=${encodeURIComponent(code)}&month=${encodeURIComponent(month)}`;
     const res = await fetch(url, { redirect: 'follow' });
     const data = await res.json();
 
     if (data.error) {
-      setGateMsg(data.error);
+      q('#result').classList.remove('on');
+      const hint = data.error.includes('unknown action') || data.error.includes('not defined')
+        ? '<br><br>관리자 안내: Apps Script에 <code>hostStatus</code> API가 아직 연결되지 않았습니다. <code>apps-script/host-status.gs</code>를 배포해주세요.'
+        : '';
+      showAlert(escapeHtml(data.error) + hint, 'error');
       return;
     }
 
-    sessionStorage.setItem(STORAGE_KEY, code);
-    showDash(data);
+    localStorage.setItem(STORAGE_KEY, code);
+    renderResult(data);
+    q('#result').classList.add('on');
   } catch (e) {
-    setGateMsg('현황을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.');
+    q('#result').classList.remove('on');
+    showAlert('조회 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.', 'error');
+    console.warn(e);
   } finally {
-    codeBtn.disabled = false;
-    codeBtn.textContent = '확인';
+    btn.disabled = false;
+    btn.textContent = '확인';
   }
 }
 
-codeForm.addEventListener('submit', e => {
-  e.preventDefault();
-  const code = codeInput.value.trim();
-  if (!code) {
-    setGateMsg('코드를 입력해주세요.');
-    return;
-  }
-  loadStatus(code);
+q('#codeInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') loadStatus();
 });
 
-document.getElementById('logoutBtn').addEventListener('click', showGate);
-
-const saved = sessionStorage.getItem(STORAGE_KEY);
-if (saved) loadStatus(saved);
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) q('#codeInput').value = saved;
+});
 </script>
 </body>
 </html>

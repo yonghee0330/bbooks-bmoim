@@ -7,23 +7,48 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --navy: #0A1F44;
-      --navy-light: #1a3565;
-      --blue: #4a8cff;
-      --blue-pale: #eaf1ff;
-      --cream: #faf8f4;
-      --border: #e4e1d8;
-      --text: #1a1a2e;
-      --text-muted: #6b6b7e;
+      --ocean-deep: #0a5f7a;
+      --ocean: #1a9ec4;
+      --ocean-light: #5ecde8;
+      --ocean-pale: #e3f6fc;
+      --coral: #ff7b54;
+      --coral-light: #ffb89a;
+      --sand: #fff9f2;
+      --sand-dark: #f0e6d8;
+      --border: #c8e8f0;
+      --text: #1a3a4a;
+      --text-muted: #5a7a8a;
       --radius: 12px;
       --radius-sm: 8px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Noto Sans KR', sans-serif; background: var(--cream); color: var(--text); }
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--sand);
+      color: var(--text);
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(94,205,232,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 90% 80%, rgba(255,123,84,0.06) 0%, transparent 50%);
+    }
 
     header {
-      background: var(--navy);
+      background: linear-gradient(135deg, var(--ocean-deep) 0%, #0d7a9e 100%);
       padding: 20px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 18px,
+        rgba(255,255,255,0.12) 18px,
+        rgba(255,255,255,0.12) 36px
+      );
     }
     .logo {
       font-family: 'Noto Serif KR', serif;
@@ -31,47 +56,92 @@
       font-size: 18px;
       font-weight: 600;
       text-decoration: none;
+      position: relative;
+      z-index: 1;
     }
     .logo span {
       display: block;
       font-family: 'Noto Sans KR', sans-serif;
       font-size: 11px;
       font-weight: 300;
-      color: rgba(255,255,255,0.6);
+      color: rgba(255,255,255,0.7);
       margin-top: 2px;
       letter-spacing: 0.05em;
     }
 
     .hero {
-      background: var(--navy);
-      padding: 48px 24px 64px;
+      background: linear-gradient(160deg, #0d7a9e 0%, var(--ocean) 45%, var(--ocean-light) 100%);
+      padding: 40px 24px 72px;
       text-align: center;
       position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 60%, rgba(255,255,255,0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 30%, rgba(255,200,150,0.12) 0%, transparent 35%);
+      pointer-events: none;
     }
     .hero::after {
       content: '';
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      height: 28px;
-      background: var(--cream);
-      border-radius: 28px 28px 0 0;
+      height: 32px;
+      background: var(--sand);
+      border-radius: 32px 32px 0 0;
+    }
+    .hero-illust {
+      width: min(220px, 55vw);
+      margin: 0 auto 20px;
+      position: relative;
+      z-index: 1;
+      animation: bob 3.5s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-6px) rotate(1deg); }
     }
     .hero-badge {
       display: inline-block;
       font-size: 11px;
       font-weight: 500;
-      color: var(--blue);
-      border: 1px solid rgba(74,140,255,0.35);
+      color: #fff;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.35);
       padding: 4px 14px;
       border-radius: 20px;
       letter-spacing: 0.1em;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(4px);
     }
     .hero h1 {
       font-family: 'Noto Serif KR', serif;
       font-size: clamp(22px, 5vw, 30px);
       color: #fff;
       line-height: 1.5;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-sub {
+      margin-top: 10px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      position: relative;
+      z-index: 1;
+      line-height: 1.6;
+    }
+    .wave-deco {
+      position: absolute;
+      bottom: 28px;
+      left: 0; right: 0;
+      height: 40px;
+      z-index: 0;
+      opacity: 0.35;
     }
 
     .container {
@@ -86,16 +156,27 @@
       border-radius: var(--radius);
       padding: 24px;
       margin-bottom: 14px;
+      box-shadow: 0 2px 12px rgba(26,158,196,0.06);
+      position: relative;
     }
     .card-title {
       font-size: 11px;
       font-weight: 700;
-      color: var(--navy);
+      color: var(--ocean-deep);
       letter-spacing: 0.1em;
       text-transform: uppercase;
       margin-bottom: 18px;
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border);
+    }
+    .card-witty {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 48px;
+      height: 48px;
+      opacity: 0.55;
+      pointer-events: none;
     }
     .field { margin-bottom: 16px; }
     .field:last-child { margin-bottom: 0; }
@@ -122,24 +203,166 @@
     }
     input:focus, textarea:focus, select:focus {
       outline: none;
-      border-color: var(--blue);
-      box-shadow: 0 0 0 3px rgba(74,140,255,0.1);
+      border-color: var(--ocean);
+      box-shadow: 0 0 0 3px rgba(26,158,196,0.15);
     }
     textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
 
     .hint { font-size: 12px; color: var(--text-muted); margin-top: 5px; }
 
+    .period-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ocean-deep);
+      background: linear-gradient(135deg, var(--ocean-pale) 0%, #fff 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      line-height: 1.5;
+    }
+
     .radio-group { display: flex; gap: 12px; flex-wrap: wrap; }
     .radio-option { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px; }
-    .radio-option input { width: 16px; height: 16px; accent-color: var(--navy); cursor: pointer; }
+    .radio-option input { width: 16px; height: 16px; accent-color: var(--ocean-deep); cursor: pointer; }
 
-    .session-grid { display: flex; flex-direction: column; gap: 8px; }
-    .session-row { display: flex; gap: 8px; align-items: center; }
+    .session-grid { display: flex; flex-direction: column; gap: 12px; }
+    .session-row {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+      background: var(--ocean-pale);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+    .session-row-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
     .session-num {
-      font-size: 12px; font-weight: 500; color: var(--text-muted);
-      background: var(--cream); border: 1px solid var(--border);
-      border-radius: var(--radius-sm); padding: 10px 12px;
-      white-space: nowrap; flex-shrink: 0;
+      font-size: 12px; font-weight: 600; color: var(--ocean-deep);
+      white-space: nowrap;
+    }
+    .session-date-wrap label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .session-status {
+      font-size: 12px;
+      line-height: 1.45;
+      min-height: 1.2em;
+      flex: 1;
+      text-align: right;
+    }
+    .session-status.ok { color: #0f766e; }
+    .session-status.bad { color: #b91c1c; font-weight: 500; }
+    .session-status.muted { color: var(--text-muted); }
+    .session-row.has-conflict {
+      border-color: #f7c1c1;
+      background: #fff5f5;
+    }
+    .session-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+    .timetable {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+      gap: 6px;
+    }
+    .tcell {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 7px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      transition: all .15s;
+      font-family: inherit;
+      color: var(--text);
+      text-align: left;
+    }
+    .tcell:hover:not(:disabled) { border-color: var(--ocean); color: var(--ocean-deep); }
+    .tcell:disabled,
+    .tcell.disabled { background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0; cursor: not-allowed; }
+    .tcell.moim { background: var(--ocean-pale); color: var(--ocean-deep); border-color: var(--ocean-light); cursor: not-allowed; }
+    .tcell.event { background: #f5f3ff; color: #5b21b6; border-color: #c4b5fd; cursor: not-allowed; }
+    .tcell.rent { background: #fffbeb; color: #92400e; border-color: #fcd34d; cursor: not-allowed; }
+    .tcell.in-range { background: rgba(26,158,196,.12); border-color: rgba(26,158,196,.35); }
+    .tcell.sel-start,
+    .tcell.sel-end { background: var(--ocean-deep); color: #fff; border-color: var(--ocean-deep); }
+    .tcell .time { font-weight: 700; font-size: 11px; }
+    .tcell .tag { font-size: 9px; font-weight: 700; opacity: .9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 48px; }
+    .slot-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .slot-legend span::before {
+      content: '';
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      margin-right: 4px;
+      vertical-align: -1px;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+    .slot-legend .lg-free::before { background: #fff; }
+    .slot-legend .lg-moim::before { background: var(--ocean-pale); border-color: var(--ocean-light); }
+    .slot-legend .lg-rent::before { background: #fffbeb; border-color: #fcd34d; }
+    .slot-legend .lg-pick::before { background: var(--ocean-deep); }
+    .schedule-panel {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .schedule-panel[hidden] { display: none; }
+    .schedule-panel-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ocean-deep);
+      margin-bottom: 8px;
+    }
+    .schedule-panel-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      max-height: 180px;
+      overflow: auto;
+    }
+    .schedule-panel-list li {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.4;
+      padding: 6px 8px;
+      border-radius: 6px;
+      background: var(--sand);
+    }
+    .schedule-panel-list li.kind-moim { border-left: 3px solid var(--ocean); }
+    .schedule-panel-list li.kind-event { border-left: 3px solid #7c3aed; }
+    .schedule-panel-list li.kind-rent { border-left: 3px solid #d97706; }
+    .schedule-panel-empty { font-size: 12px; color: var(--text-muted); }
+    .schedule-load {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 8px;
     }
 
     .suffix-wrap { position: relative; }
@@ -152,25 +375,30 @@
 
     .submit-btn {
       width: 100%; padding: 16px;
-      background: var(--navy); color: #fff;
+      background: linear-gradient(135deg, var(--coral) 0%, #ff9a6c 100%);
+      color: #fff;
       border: none; border-radius: var(--radius);
       font-family: 'Noto Sans KR', sans-serif;
       font-size: 15px; font-weight: 700;
       cursor: pointer; letter-spacing: 0.03em;
-      transition: background 0.15s;
+      transition: transform 0.15s, box-shadow 0.15s;
       margin-top: 8px;
+      box-shadow: 0 4px 16px rgba(255,123,84,0.3);
     }
-    .submit-btn:hover { background: var(--navy-light); }
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255,123,84,0.4);
+    }
     .submit-btn:disabled { background: #bbb; cursor: not-allowed; }
 
     #success-msg {
       display: none;
-      background: #eaf3de; border: 1px solid #c0dd97;
+      background: var(--ocean-pale); border: 1px solid var(--border);
       border-radius: var(--radius); padding: 32px 24px;
       text-align: center;
     }
-    #success-msg h2 { font-size: 20px; color: #3b6d11; margin-bottom: 8px; }
-    #success-msg p { font-size: 14px; color: #639922; line-height: 1.7; }
+    #success-msg h2 { font-size: 20px; color: var(--ocean-deep); margin-bottom: 8px; }
+    #success-msg p { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
 
     #error-msg {
       display: none;
@@ -182,10 +410,12 @@
     footer {
       text-align: center; font-size: 12px; color: var(--text-muted);
       padding: 24px; border-top: 1px solid var(--border);
+      background: var(--sand-dark);
     }
 
     @media (max-width: 480px) {
       .card { padding: 18px 16px; }
+      .card-witty { width: 36px; height: 36px; top: 12px; right: 12px; }
     }
   </style>
 </head>
@@ -199,8 +429,45 @@
 </header>
 
 <div class="hero">
-  <div class="hero-badge">모임 개설 신청</div>
+  <svg class="wave-deco" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,20 Q50,5 100,20 T200,20 T300,20 T400,20 L400,40 L0,40 Z" fill="rgba(255,255,255,0.3)"/>
+    <path d="M0,28 Q60,14 120,28 T240,28 T360,28 L400,28 L400,40 L0,40 Z" fill="rgba(255,255,255,0.15)"/>
+  </svg>
+
+  <!-- 서핑 + 책 일러스트 -->
+  <svg class="hero-illust" viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- 태양 -->
+    <circle cx="185" cy="28" r="18" fill="#FFE08A" opacity="0.9"/>
+    <circle cx="185" cy="28" r="22" fill="none" stroke="#FFE08A" stroke-width="1.5" opacity="0.4"/>
+    <!-- 파도 -->
+    <path d="M0,110 C30,95 50,120 80,105 C110,90 130,115 160,100 C180,92 200,108 220,98 L220,140 L0,140 Z" fill="rgba(255,255,255,0.25)"/>
+    <path d="M0,118 C40,108 70,125 110,112 C150,99 180,120 220,110 L220,140 L0,140 Z" fill="rgba(255,255,255,0.4)"/>
+    <!-- 서핑보드 -->
+    <path d="M55,88 Q90,78 125,88 Q130,90 125,94 Q90,104 55,94 Q50,92 55,88 Z" fill="#FF7B54" stroke="#fff" stroke-width="1.5"/>
+    <!-- 서퍼 몸 -->
+    <ellipse cx="88" cy="76" rx="8" ry="10" fill="#FFD4B8"/>
+    <!-- 머리 -->
+    <circle cx="88" cy="62" r="7" fill="#FFD4B8"/>
+    <!-- 팔 (밸런스) -->
+    <path d="M78,72 Q65,65 60,58" stroke="#FFD4B8" stroke-width="3" stroke-linecap="round"/>
+    <path d="M98,72 Q115,62 120,52" stroke="#FFD4B8" stroke-width="3" stroke-linecap="round"/>
+    <!-- 다리 -->
+    <path d="M82,84 Q75,95 70,100" stroke="#4A90A4" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M94,84 Q100,95 105,100" stroke="#4A90A4" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- 책 (위트 포인트!) -->
+    <rect x="112" y="46" width="14" height="18" rx="2" fill="#fff" stroke="#0a5f7a" stroke-width="1.2" transform="rotate(-15 119 55)"/>
+    <line x1="115" y1="51" x2="123" y2="49" stroke="#0a5f7a" stroke-width="0.8" transform="rotate(-15 119 55)"/>
+    <line x1="115" y1="55" x2="123" y2="53" stroke="#0a5f7a" stroke-width="0.8" transform="rotate(-15 119 55)"/>
+    <line x1="115" y1="59" x2="123" y2="57" stroke="#0a5f7a" stroke-width="0.8" transform="rotate(-15 119 55)"/>
+    <!-- 물보라 -->
+    <circle cx="130" cy="100" r="3" fill="rgba(255,255,255,0.6)"/>
+    <circle cx="140" cy="108" r="2" fill="rgba(255,255,255,0.4)"/>
+    <circle cx="45" cy="105" r="2.5" fill="rgba(255,255,255,0.5)"/>
+  </svg>
+
+  <div class="hero-badge">🍂 8·9월 모임 개설 신청</div>
   <h1>비북스에서 당신의 모임을<br/>펼쳐보세요</h1>
+  <p class="hero-sub">8월 또는 9월 중 개설할 월을 고른 뒤 일정을 신청해 주세요</p>
 </div>
 
 <div class="container">
@@ -208,15 +475,26 @@
 
     <!-- 기본 정보 -->
     <div class="card">
+      <svg class="card-witty" viewBox="0 0 48 48" aria-hidden="true">
+        <circle cx="38" cy="12" r="7" fill="#FFE08A" opacity="0.7"/>
+        <path d="M24,44 L24,22" stroke="#8B6914" stroke-width="2" stroke-linecap="round"/>
+        <path d="M24,26 Q14,20 10,14" stroke="#2BBFB0" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M24,22 Q34,16 38,10" stroke="#2BBFB0" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M24,30 Q16,28 12,32" stroke="#2BBFB0" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
       <div class="card-title">기본 정보</div>
 
       <div class="field">
-        <label class="req">신청 월</label>
+        <label class="req">개설 월</label>
         <div class="radio-group">
           <label class="radio-option">
-            <input type="radio" name="month" value="6월" checked /> <span>6월</span>
+            <input type="radio" name="recruitMonth" value="8월" /> <span>☀️ 8월</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="recruitMonth" value="9월" /> <span>🍂 9월</span>
           </label>
         </div>
+        <p class="hint">모임이 진행될 월을 선택해 주세요. 구글 시트에 월별로 구분되어 수집됩니다.</p>
       </div>
 
       <div class="field">
@@ -247,31 +525,82 @@
             <input type="radio" name="space" value="세미나실" /> <span>📌 세미나실</span>
           </label>
           <label class="radio-option">
-            <input type="radio" name="space" value="매장테이블" /> <span>☕ 매장테이블</span>
+            <input type="radio" name="space" value="매장 테이블" /> <span>☕ 매장 테이블</span>
           </label>
         </div>
+        <p class="hint">등록된 비모임·행사·대관과 같은 공간·시간이 겹치면 신청할 수 없습니다.</p>
       </div>
 
       <div class="field">
         <label class="req">희망 날짜·시간</label>
-        <div class="session-grid">
-          <div class="session-row">
-            <div class="session-num">1회차</div>
-            <input type="text" id="session1" placeholder="예) 6/12 (목) 14:00–16:00" />
+        <p class="slot-legend">
+          <span class="lg-free">가능</span>
+          <span class="lg-moim">비모임·행사</span>
+          <span class="lg-rent">대관</span>
+          <span class="lg-pick">선택</span>
+        </p>
+        <div class="session-grid" id="sessionGrid">
+          <div class="session-row" data-session="1">
+            <div class="session-row-head">
+              <div class="session-num">1회차</div>
+              <div class="session-status muted" data-status>날짜를 고른 뒤, 시작·끝 시간대를 눌러 주세요</div>
+            </div>
+            <div class="session-date-wrap">
+              <label>날짜</label>
+              <input type="date" class="s-date" min="2026-08-01" max="2026-09-30" required />
+            </div>
+            <p class="session-hint">빈 칸을 두 번 눌러 시작~종료 구간을 선택합니다. 색이 있는 칸은 이미 잡혀 있어요.</p>
+            <div class="timetable" data-slots></div>
+            <input type="hidden" class="s-start" value="" />
+            <input type="hidden" class="s-end" value="" />
           </div>
-          <div class="session-row">
-            <div class="session-num">2회차</div>
-            <input type="text" id="session2" placeholder="선택" />
+          <div class="session-row" data-session="2">
+            <div class="session-row-head">
+              <div class="session-num">2회차</div>
+              <div class="session-status muted" data-status>선택</div>
+            </div>
+            <div class="session-date-wrap">
+              <label>날짜</label>
+              <input type="date" class="s-date" min="2026-08-01" max="2026-09-30" />
+            </div>
+            <div class="timetable" data-slots></div>
+            <input type="hidden" class="s-start" value="" />
+            <input type="hidden" class="s-end" value="" />
           </div>
-          <div class="session-row">
-            <div class="session-num">3회차</div>
-            <input type="text" id="session3" placeholder="선택" />
+          <div class="session-row" data-session="3">
+            <div class="session-row-head">
+              <div class="session-num">3회차</div>
+              <div class="session-status muted" data-status>선택</div>
+            </div>
+            <div class="session-date-wrap">
+              <label>날짜</label>
+              <input type="date" class="s-date" min="2026-08-01" max="2026-09-30" />
+            </div>
+            <div class="timetable" data-slots></div>
+            <input type="hidden" class="s-start" value="" />
+            <input type="hidden" class="s-end" value="" />
           </div>
-          <div class="session-row">
-            <div class="session-num">4회차</div>
-            <input type="text" id="session4" placeholder="선택" />
+          <div class="session-row" data-session="4">
+            <div class="session-row-head">
+              <div class="session-num">4회차</div>
+              <div class="session-status muted" data-status>선택</div>
+            </div>
+            <div class="session-date-wrap">
+              <label>날짜</label>
+              <input type="date" class="s-date" min="2026-08-01" max="2026-09-30" />
+            </div>
+            <div class="timetable" data-slots></div>
+            <input type="hidden" class="s-start" value="" />
+            <input type="hidden" class="s-end" value="" />
           </div>
         </div>
+        <div class="schedule-panel" id="schedulePanel" hidden>
+          <div class="schedule-panel-title">📋 선택한 날짜 · 공간 예약 현황</div>
+          <ul class="schedule-panel-list" id="schedulePanelList"></ul>
+          <p class="schedule-panel-empty" id="schedulePanelEmpty" hidden>이 날·공간에는 등록된 일정이 없습니다.</p>
+        </div>
+        <p class="schedule-load" id="scheduleLoadMsg">대관 일정을 불러오는 중…</p>
+        <p class="hint">8월·9월 중 희망 일정을 골라 주세요. 비어 있는 시간대만 선택할 수 있습니다.</p>
       </div>
     </div>
 
@@ -320,41 +649,615 @@
       </div>
     </div>
 
-    <button type="submit" class="submit-btn" id="submitBtn">신청서 제출하기 →</button>
+    <button type="submit" class="submit-btn" id="submitBtn">파도 타고 신청하기 🏄 →</button>
     <div id="error-msg">제출 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</div>
 
   </form>
 
   <div id="success-msg">
-    <h2>✅ 신청이 접수되었습니다!</h2>
-    <p>비북스 담당자가 확인 후 연락드릴게요.<br/>문의: 비북스 인스타그램 DM</p>
+    <h2>🏄 신청이 접수되었습니다!</h2>
+    <p>모임 개설 신청이 접수되었습니다.<br/>비북스 담당자가 확인 후 연락드릴게요.<br/>이제 파도 기다리며 설렘만 하시면 됩니다 🌊<br/>문의: 비북스 인스타그램 DM</p>
   </div>
 </div>
 
 <footer>© 2026 · 비북스 b.moim · 느슨하고 단단하게 함께 자라가는 모임</footer>
 
+<script src="../js/regular-moims.js"></script>
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2WEJpCaLlmZwM7F5ysNV0Qcj2xaGB3k1GAwxnCaLt5OwLp6fMauAXRa3XSHjNE7V6/exec';
+  const MONTH_RANGES = {
+    '8월': { min: '2026-08-01', max: '2026-08-31', prefix: '2026-08' },
+    '9월': { min: '2026-09-01', max: '2026-09-30', prefix: '2026-09' }
+  };
+  const SHEET_ID = '186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM';
+  const RENT_SHEET_GVIZ = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent('대관신청')}`;
+  const RENT_MONTHS = ['8월', '9월', '10월', '11월'];
+  const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+  const TT_STEP = 30;
+  const TT_START = 8 * 60;
+  const TT_END = 22 * 60;
+
+  // 사이트에 등록된 8·9월 비모임·행사 (공간·시간 기준)
+  const SCHEDULED_BLOCKS = [
+    // 7월 모임
+    { date: '2026-07-11', space: '매장 테이블', start: '15:30', end: '18:00', tag: "Let's talk!", kind: 'moim' },
+    { date: '2026-07-11', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가', kind: 'moim' },
+    { date: '2026-07-15', space: '매장 테이블', start: '10:30', end: '12:00', tag: '수요일의 서재 ①', kind: 'moim' },
+    { date: '2026-07-15', space: '매장 테이블', start: '18:30', end: '20:00', tag: '수요일의 서재 ②', kind: 'moim' },
+    { date: '2026-07-17', space: '세미나실', start: '19:00', end: '20:30', tag: '영화 한편', kind: 'moim' },
+    { date: '2026-07-18', space: '매장 테이블', start: '15:00', end: '17:00', tag: '미니북', kind: 'moim' },
+    { date: '2026-07-19', space: '세미나실', start: '11:00', end: '13:00', tag: '커스텀 티음료', kind: 'moim' },
+    { date: '2026-07-23', space: '매장 테이블', start: '10:30', end: '11:30', tag: '새미 북클럽', kind: 'moim' },
+    { date: '2026-07-24', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가', kind: 'moim' },
+    { date: '2026-07-26', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사 다이어리', kind: 'moim' },
+    { date: '2026-07-29', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지', kind: 'moim' },
+    { date: '2026-07-03', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-05', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-06', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-10', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-12', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-13', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-17', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-19', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-20', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-24', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-26', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-27', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    { date: '2026-07-31', space: '매장 테이블', start: '20:00', end: '23:00', tag: '달빛 리딩', kind: 'moim' },
+    // 7월 행사
+    { date: '2026-07-19', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.voice EP.02', kind: 'event' },
+    { date: '2026-07-24', space: '세미나실', start: '08:00', end: '22:00', tag: '밤밀온', kind: 'event' },
+    { date: '2026-07-24', space: '매장 테이블', start: '08:00', end: '22:00', tag: '밤밀온', kind: 'event' },
+    { date: '2026-07-25', space: '계단 좌석', start: '13:00', end: '15:00', tag: 'b.voice EP.03', kind: 'event' },
+    { date: '2026-07-25', space: '세미나실', start: '08:00', end: '22:00', tag: '밤밀온', kind: 'event' },
+    { date: '2026-07-25', space: '매장 테이블', start: '08:00', end: '22:00', tag: '밤밀온', kind: 'event' },
+    { date: '2026-07-26', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.talks', kind: 'event' },
+    // 8월 모임
+    { date: '2026-08-01', space: '계단 좌석', start: '10:30', end: '11:30', tag: '그림책 읽어주는 이모', kind: 'moim' },
+    { date: '2026-08-07', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반', kind: 'moim' },
+    { date: '2026-08-08', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반', kind: 'moim' },
+    { date: '2026-08-10', space: '매장 테이블', start: '20:00', end: '22:00', tag: '달빛 리딩 클럽', kind: 'moim' },
+    { date: '2026-08-11', space: '매장 테이블', start: '10:00', end: '12:00', tag: '화요 다회', kind: 'moim' },
+    { date: '2026-08-12', space: '매장 테이블', start: '11:00', end: '13:00', tag: '슬기로운 음악생활 수요반', kind: 'moim' },
+    { date: '2026-08-14', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반', kind: 'moim' },
+    { date: '2026-08-15', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반', kind: 'moim' },
+    { date: '2026-08-18', space: '매장 테이블', start: '10:00', end: '12:00', tag: '화요 다회', kind: 'moim' },
+    { date: '2026-08-19', space: '세미나실', start: '10:30', end: '12:00', tag: '수요일의 서재 ①', kind: 'moim' },
+    { date: '2026-08-19', space: '매장 테이블', start: '14:00', end: '16:00', tag: '슬기로운 음악생활 수요반', kind: 'moim' },
+    { date: '2026-08-19', space: '세미나실', start: '19:00', end: '20:30', tag: '수요일의 서재 ②', kind: 'moim' },
+    { date: '2026-08-21', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반', kind: 'moim' },
+    { date: '2026-08-21', space: '매장 테이블', start: '19:00', end: '20:30', tag: '영화 한편, 이야기 한잔', kind: 'moim' },
+    { date: '2026-08-22', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반', kind: 'moim' },
+    { date: '2026-08-23', space: '매장 테이블', start: '14:00', end: '16:00', tag: '필사&다꾸', kind: 'moim' },
+    { date: '2026-08-23', space: '매장 테이블', start: '16:00', end: '18:00', tag: '써니와 함께 고전 읽기', kind: 'moim' },
+    { date: '2026-08-24', space: '매장 테이블', start: '20:00', end: '22:00', tag: '달빛 리딩 클럽', kind: 'moim' },
+    { date: '2026-08-25', space: '매장 테이블', start: '10:00', end: '12:00', tag: '화요 다회', kind: 'moim' },
+    { date: '2026-08-26', space: '매장 테이블', start: '14:00', end: '16:00', tag: '슬기로운 음악생활 수요반', kind: 'moim' },
+    { date: '2026-08-26', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지', kind: 'moim' },
+    { date: '2026-08-28', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반', kind: 'moim' },
+    { date: '2026-08-29', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반', kind: 'moim' },
+    { date: '2026-08-31', space: '세미나실', start: '13:00', end: '14:30', tag: '일본어 모임', kind: 'moim' },
+    // 8월 행사
+    { date: '2026-08-30', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.voice EP.06', kind: 'event' },
+    { date: '2026-08-08', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.talks', kind: 'event' },
+    { date: '2026-08-09', space: '비북스', start: '13:00', end: '15:00', tag: 'b.voice EP.04', kind: 'event' },
+    { date: '2026-08-22', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.voice EP.05', kind: 'event' },
+    { date: '2026-08-29', space: '비북스', start: '11:00', end: '12:30', tag: 'b.grow EP.01', kind: 'event' },
+    // 9월 모임
+    { date: '2026-09-04', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반', kind: 'moim' },
+    { date: '2026-09-05', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반', kind: 'moim' },
+    { date: '2026-09-11', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반', kind: 'moim' },
+    { date: '2026-09-12', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반', kind: 'moim' },
+    { date: '2026-09-18', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반', kind: 'moim' },
+    { date: '2026-09-19', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반', kind: 'moim' },
+    { date: '2026-09-19', space: '계단 좌석', start: '10:30', end: '12:00', tag: '그림책 읽어주는 이모', kind: 'moim' },
+    { date: '2026-10-02', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반', kind: 'moim' },
+    { date: '2026-10-03', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반', kind: 'moim' }
+  ];
+
+  // 모퉁이 우표점 · 한 사람을 위한 편지: 매월 마지막 주 수요일 고정 (9월~)
+  if (typeof letterBlocksFromTo === 'function') {
+    const existingLetter = new Set(
+      SCHEDULED_BLOCKS.filter(b => b.tag === '한 사람을 위한 편지').map(b => b.date)
+    );
+    letterBlocksFromTo(2026, 9, 2027, 12).forEach(b => {
+      if (!existingLetter.has(b.date)) SCHEDULED_BLOCKS.push(b);
+    });
+  }
+
+  let rentSlotsByDate = {};
+  let rentLoaded = false;
+
+  function pad2(n) { return String(n).padStart(2, '0'); }
+  function minutesToHHMM(min) {
+    return `${pad2(Math.floor(min / 60))}:${pad2(min % 60)}`;
+  }
+  function parseHHMM(hhmm) {
+    const m = String(hhmm || '').trim().match(/^(\d{1,2}):(\d{2})$/);
+    if (!m) return null;
+    return parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+  }
+  function normalizeDash(s) {
+    return String(s || '').replace(/~/g, '–').replace(/-/g, '–');
+  }
+  function normalizeSpace(spaceStr) {
+    const s = String(spaceStr || '').trim();
+    if (!s) return '';
+    if (s.includes('전체')) return '전체 대관';
+    if (s === '비북스') return '비북스';
+    if (s.includes('계단') || s.includes('매장홀')) return '계단 좌석';
+    if (s.includes('세미나')) return '세미나실';
+    if (s.includes('테이블') || (s.includes('매장') && !s.includes('홀'))) return '매장 테이블';
+    return s;
+  }
+  function normalizeRentDate(dateStr) {
+    if (!dateStr) return null;
+    const s = String(dateStr).trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+    const iso = s.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (iso) return `${iso[1]}-${iso[2].padStart(2, '0')}-${iso[3].padStart(2, '0')}`;
+    const kr = s.match(/(7|8|9|10)\s*월\s*(\d{1,2})\s*일/);
+    if (kr) return `2026-${kr[1].padStart(2, '0')}-${String(parseInt(kr[2], 10)).padStart(2, '0')}`;
+    return null;
+  }
+  function parseTimeRange(rangeStr) {
+    if (!rangeStr) return null;
+    const s = normalizeDash(String(rangeStr).trim());
+    const m = s.match(/(\d{1,2}:\d{2})\s*[~–\-]\s*(\d{1,2}:\d{2})/);
+    if (!m) return null;
+    const startMin = parseHHMM(m[1]);
+    const endMin = parseHHMM(m[2]);
+    if (startMin == null || endMin == null) return null;
+    return { startMin, endMin };
+  }
+  function rangesOverlap(a0, a1, b0, b1) {
+    return a0 < b1 && b0 < a1;
+  }
+  function getConflictSpaces(space) {
+    if (!space) return [];
+    const out = new Set([space, '전체 대관', '비북스']);
+    if (space === '계단 좌석') out.add('매장 테이블');
+    if (space === '매장 테이블') out.add('계단 좌석');
+    return [...out];
+  }
+  function blockAffectsSpace(blockSpace, requestedSpace) {
+    if (!requestedSpace) return true;
+    const norm = normalizeSpace(blockSpace) || blockSpace;
+    if (norm === requestedSpace) return true;
+    if (norm === '비북스' || norm === '전체 대관') return true;
+    if (requestedSpace === '계단 좌석' && norm === '매장 테이블') return true;
+    if (requestedSpace === '매장 테이블' && norm === '계단 좌석') return true;
+    return false;
+  }
+
+  function getBlockedRanges(date, space) {
+    if (!date || !space) return [];
+    const ranges = [];
+    SCHEDULED_BLOCKS
+      .filter(b => b.date === date && blockAffectsSpace(b.space, space))
+      .forEach(b => {
+        const startMin = parseHHMM(b.start);
+        const endMin = parseHHMM(b.end);
+        if (startMin == null || endMin == null) return;
+        ranges.push({
+          startMin, endMin,
+          tag: b.tag,
+          kind: b.kind || 'moim',
+          label: `${b.kind === 'event' ? '행사' : '비모임'} · ${b.space} ${b.start}–${b.end} (${b.tag})`
+        });
+      });
+
+    const bySpace = rentSlotsByDate[date] || {};
+    const seen = new Set();
+    getConflictSpaces(space).forEach(sp => {
+      (bySpace[sp] || []).forEach(timeStr => {
+        const r = parseTimeRange(timeStr);
+        if (!r) return;
+        const key = `${sp}|${r.startMin}|${r.endMin}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+        ranges.push({
+          ...r,
+          tag: '대관',
+          kind: 'rent',
+          label: `대관 · ${sp === '_any' ? '공간미정' : sp} ${normalizeDash(timeStr)}`
+        });
+      });
+    });
+    (bySpace._any || []).forEach(timeStr => {
+      const r = parseTimeRange(timeStr);
+      if (!r) return;
+      ranges.push({
+        ...r,
+        tag: '대관',
+        kind: 'rent',
+        label: `대관 · ${normalizeDash(timeStr)}`
+      });
+    });
+    return ranges;
+  }
+
+  function findConflicts(date, space, startMin, endMin) {
+    return getBlockedRanges(date, space).filter(r => rangesOverlap(startMin, endMin, r.startMin, r.endMin));
+  }
+
+  function parseGviz(text) {
+    const match = String(text).match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);/);
+    if (!match) return null;
+    try { return JSON.parse(match[1]); } catch { return null; }
+  }
+
+  function buildRentSlots(data) {
+    rentSlotsByDate = {};
+    (data?.table?.rows || []).forEach(row => {
+      const cells = row.c || [];
+      const month = cells[1]?.v;
+      if (!RENT_MONTHS.includes(month)) return;
+      const note = String(cells[9]?.v || '');
+      if (note.includes('취소')) return;
+      const space = normalizeSpace(cells[2]?.v || '') || '_any';
+      const dateStr = normalizeRentDate(cells[3]?.f || cells[3]?.v || '');
+      const time = cells[4]?.v || '';
+      if (!dateStr || !time) return;
+      if (!rentSlotsByDate[dateStr]) rentSlotsByDate[dateStr] = {};
+      if (!rentSlotsByDate[dateStr][space]) rentSlotsByDate[dateStr][space] = [];
+      const norm = normalizeDash(time);
+      if (!rentSlotsByDate[dateStr][space].includes(norm)) {
+        rentSlotsByDate[dateStr][space].push(norm);
+      }
+    });
+  }
+
+  async function loadRentSchedule() {
+    const msg = document.getElementById('scheduleLoadMsg');
+    try {
+      const res = await fetch(RENT_SHEET_GVIZ, { redirect: 'follow' });
+      const data = parseGviz(await res.text());
+      if (data) buildRentSlots(data);
+      rentLoaded = true;
+      if (msg) msg.textContent = '대관 일정을 반영했습니다. 날짜를 고르면 빈 시간대를 클릭해 선택하세요.';
+    } catch (e) {
+      console.warn(e);
+      rentLoaded = true;
+      if (msg) msg.textContent = '대관 일정을 불러오지 못했습니다. 등록된 비모임·행사 일정만으로 확인합니다.';
+    }
+    refreshAllSessions();
+  }
+
+  // 회차별 선택 상태: { startMin, endMin }  (endMin exclusive when complete)
+  const sessionPick = {};
+
+  function getSelectedMonth() {
+    const el = document.querySelector('input[name="recruitMonth"]:checked');
+    return el ? el.value : '';
+  }
+
+  function applyMonthDateLimits() {
+    const month = getSelectedMonth();
+    const range = MONTH_RANGES[month];
+    document.querySelectorAll('.s-date').forEach(input => {
+      if (range) {
+        input.min = range.min;
+        input.max = range.max;
+        if (input.value && (input.value < range.min || input.value > range.max)) {
+          const row = input.closest('.session-row');
+          input.value = '';
+          if (row) clearPick(row.dataset.session);
+        }
+      } else {
+        input.min = '2026-07-01';
+        input.max = '2026-08-31';
+      }
+    });
+    refreshAllSessions();
+  }
+
+  function getSelectedSpace() {
+    const el = document.querySelector('input[name="space"]:checked');
+    return el ? el.value : '';
+  }
+
+  function formatSessionLabel(dateStr, start, end) {
+    const [y, mo, d] = dateStr.split('-').map(Number);
+    const wd = WEEKDAYS[new Date(y, mo - 1, d).getDay()];
+    return `${mo}/${d} (${wd}) ${start}–${end}`;
+  }
+
+  function shortTag(tag) {
+    const t = String(tag || '');
+    return t.length > 6 ? t.slice(0, 6) + '…' : t;
+  }
+
+  function getCellKind(date, space, cellMin) {
+    const hit = getBlockedRanges(date, space).find(r => cellMin >= r.startMin && cellMin < r.endMin);
+    if (!hit) return null;
+    return { kind: hit.kind, tag: hit.tag };
+  }
+
+  function isRangeFree(date, space, startMin, endMin) {
+    if (!date || !space || startMin == null || endMin == null || endMin <= startMin) return false;
+    for (let t = startMin; t < endMin; t += TT_STEP) {
+      if (getCellKind(date, space, t)) return false;
+    }
+    return true;
+  }
+
+  function clearPick(id) {
+    sessionPick[id] = { startMin: null, endMin: null };
+    const row = document.querySelector(`.session-row[data-session="${id}"]`);
+    if (!row) return;
+    row.querySelector('.s-start').value = '';
+    row.querySelector('.s-end').value = '';
+  }
+
+  function setPickComplete(id, startMin, endMin) {
+    sessionPick[id] = { startMin, endMin };
+    const row = document.querySelector(`.session-row[data-session="${id}"]`);
+    row.querySelector('.s-start').value = minutesToHHMM(startMin);
+    row.querySelector('.s-end').value = minutesToHHMM(endMin);
+  }
+
+  function renderSessionSlots(row) {
+    const id = row.dataset.session;
+    const wrap = row.querySelector('[data-slots]');
+    const date = row.querySelector('.s-date').value;
+    const space = getSelectedSpace();
+    const pick = sessionPick[id] || { startMin: null, endMin: null };
+
+    if (!space) {
+      wrap.innerHTML = '<div style="font-size:12px;color:var(--text-muted);grid-column:1/-1">먼저 희망 공간을 선택해 주세요</div>';
+      return;
+    }
+    if (!date) {
+      wrap.innerHTML = '<div style="font-size:12px;color:var(--text-muted);grid-column:1/-1">날짜를 먼저 선택해 주세요</div>';
+      return;
+    }
+
+    // 선택 구간이 막히면 초기화
+    if (pick.startMin != null && pick.endMin != null && !isRangeFree(date, space, pick.startMin, pick.endMin)) {
+      clearPick(id);
+    }
+
+    const cells = [];
+    for (let t = TT_START; t < TT_END; t += TT_STEP) cells.push(t);
+    const cur = sessionPick[id] || { startMin: null, endMin: null };
+
+    wrap.innerHTML = cells.map(t => {
+      const kind = getCellKind(date, space, t);
+      const blocked = Boolean(kind);
+      const inRange = cur.startMin != null && cur.endMin != null && t >= cur.startMin && t < cur.endMin;
+      const isStart = cur.startMin != null && t === cur.startMin;
+      const isEnd = cur.endMin != null && (t + TT_STEP) === cur.endMin;
+      const pendingStart = cur.startMin != null && cur.endMin == null && t === cur.startMin;
+      const cls = [
+        'tcell',
+        blocked ? 'disabled' : '',
+        kind?.kind === 'moim' ? 'moim' : '',
+        kind?.kind === 'event' ? 'event' : '',
+        kind?.kind === 'rent' ? 'rent' : '',
+        inRange || pendingStart ? 'in-range' : '',
+        isStart || pendingStart ? 'sel-start' : '',
+        isEnd ? 'sel-end' : ''
+      ].filter(Boolean).join(' ');
+      const tag = kind?.tag ? `<span class="tag">${shortTag(kind.tag)}</span>` : '';
+      const title = kind?.tag ? ` title="${kind.tag}"` : '';
+      return `<button type="button" class="${cls}" data-min="${t}"${blocked ? ' disabled' : ''}${title}><span class="time">${minutesToHHMM(t)}</span>${tag}</button>`;
+    }).join('');
+  }
+
+  function onSlotClick(row, cellMin) {
+    const id = row.dataset.session;
+    const date = row.querySelector('.s-date').value;
+    const space = getSelectedSpace();
+    if (!date || !space) return;
+    if (getCellKind(date, space, cellMin)) return;
+
+    const pick = sessionPick[id] || { startMin: null, endMin: null };
+
+    if (pick.startMin == null || pick.endMin != null) {
+      // 새 선택 시작
+      sessionPick[id] = { startMin: cellMin, endMin: null };
+      row.querySelector('.s-start').value = '';
+      row.querySelector('.s-end').value = '';
+      setSessionStatus(row, 'muted', `시작 ${minutesToHHMM(cellMin)} · 끝 시간대를 눌러 주세요`);
+      renderSessionSlots(row);
+      return;
+    }
+
+    const s = Math.min(pick.startMin, cellMin);
+    const e = Math.max(pick.startMin + TT_STEP, cellMin + TT_STEP);
+    if (!isRangeFree(date, space, s, e)) {
+      clearPick(id);
+      setSessionStatus(row, 'bad', '선택한 구간에 기존 일정이 포함되어 있어요. 다시 골라 주세요.');
+      renderSessionSlots(row);
+      return;
+    }
+    setPickComplete(id, s, e);
+    validateSessionRow(row);
+    renderSessionSlots(row);
+  }
+
+  function setSessionStatus(row, type, text) {
+    const el = row.querySelector('[data-status]');
+    el.className = `session-status ${type}`;
+    el.textContent = text;
+    row.classList.toggle('has-conflict', type === 'bad');
+  }
+
+  function readSessionRow(row) {
+    const date = row.querySelector('.s-date').value;
+    const start = row.querySelector('.s-start').value;
+    const end = row.querySelector('.s-end').value;
+    if (!date && !start && !end) return null;
+    return { date, start, end, startMin: parseHHMM(start), endMin: parseHHMM(end) };
+  }
+
+  function validateSessionRow(row, { silent } = {}) {
+    const space = getSelectedSpace();
+    const data = readSessionRow(row);
+    const idx = row.dataset.session;
+    const pick = sessionPick[idx] || {};
+
+    if (!data || (!data.date && !data.start && !data.end)) {
+      if (pick.startMin != null && pick.endMin == null) {
+        setSessionStatus(row, 'muted', `시작 ${minutesToHHMM(pick.startMin)} · 끝 시간대를 눌러 주세요`);
+        return { ok: false, reason: 'pending' };
+      }
+      setSessionStatus(row, 'muted', idx === '1' ? '날짜를 고른 뒤, 시작·끝 시간대를 눌러 주세요' : '선택');
+      return { ok: idx !== '1', empty: true };
+    }
+    if (!space) {
+      setSessionStatus(row, 'muted', '먼저 희망 공간을 선택해 주세요');
+      return { ok: false, reason: 'space' };
+    }
+    if (!data.date || !data.start || !data.end) {
+      setSessionStatus(row, 'muted', '날짜와 시간대를 모두 선택해 주세요');
+      return { ok: false, reason: 'incomplete' };
+    }
+    if (data.startMin == null || data.endMin == null || data.endMin <= data.startMin) {
+      setSessionStatus(row, 'bad', '종료 시간은 시작 이후여야 합니다');
+      return { ok: false, reason: 'order' };
+    }
+
+    const conflicts = findConflicts(data.date, space, data.startMin, data.endMin);
+    if (conflicts.length) {
+      const tip = conflicts.slice(0, 2).map(c => c.label).join(' / ');
+      setSessionStatus(row, 'bad', `겹침: ${tip}`);
+      return { ok: false, reason: 'conflict', conflicts };
+    }
+
+    const selfConflicts = [];
+    document.querySelectorAll('.session-row').forEach(other => {
+      if (other === row) return;
+      const o = readSessionRow(other);
+      if (!o || !o.date || o.startMin == null || o.endMin == null) return;
+      if (o.date === data.date && rangesOverlap(data.startMin, data.endMin, o.startMin, o.endMin)) {
+        selfConflicts.push(`${other.dataset.session}회차`);
+      }
+    });
+    if (selfConflicts.length) {
+      setSessionStatus(row, 'bad', `같은 신청 내 ${selfConflicts.join(', ')}와 시간이 겹칩니다`);
+      return { ok: false, reason: 'self' };
+    }
+
+    setSessionStatus(row, 'ok', `가능 · ${formatSessionLabel(data.date, data.start, data.end)}`);
+    if (!silent) updateSchedulePanel(data.date, space);
+    return { ok: true, label: formatSessionLabel(data.date, data.start, data.end) };
+  }
+
+  function refreshAllSessions() {
+    document.querySelectorAll('.session-row').forEach(row => {
+      renderSessionSlots(row);
+      validateSessionRow(row, { silent: true });
+    });
+    const focus = [...document.querySelectorAll('.session-row')]
+      .map(readSessionRow)
+      .find(s => s && s.date);
+    const space = getSelectedSpace();
+    if (focus?.date && space) updateSchedulePanel(focus.date, space);
+    else document.getElementById('schedulePanel').hidden = true;
+  }
+
+  function updateSchedulePanel(date, space) {
+    const panel = document.getElementById('schedulePanel');
+    const list = document.getElementById('schedulePanelList');
+    const empty = document.getElementById('schedulePanelEmpty');
+    const ranges = getBlockedRanges(date, space)
+      .slice()
+      .sort((a, b) => a.startMin - b.startMin);
+    panel.hidden = false;
+    if (!ranges.length) {
+      list.innerHTML = '';
+      empty.hidden = false;
+      return;
+    }
+    empty.hidden = true;
+    list.innerHTML = ranges.map(r =>
+      `<li class="kind-${r.kind}">${r.label}</li>`
+    ).join('');
+  }
+
+  document.querySelectorAll('.session-row').forEach(row => {
+    sessionPick[row.dataset.session] = { startMin: null, endMin: null };
+  });
+
+  document.querySelectorAll('input[name="recruitMonth"]').forEach(el => {
+    el.addEventListener('change', applyMonthDateLimits);
+  });
+
+  document.querySelectorAll('input[name="space"]').forEach(el => {
+    el.addEventListener('change', () => {
+      document.querySelectorAll('.session-row').forEach(row => clearPick(row.dataset.session));
+      refreshAllSessions();
+    });
+  });
+
+  document.getElementById('sessionGrid').addEventListener('change', e => {
+    if (!e.target.classList.contains('s-date')) return;
+    const row = e.target.closest('.session-row');
+    clearPick(row.dataset.session);
+    renderSessionSlots(row);
+    validateSessionRow(row);
+    const space = getSelectedSpace();
+    if (e.target.value && space) updateSchedulePanel(e.target.value, space);
+  });
+
+  document.getElementById('sessionGrid').addEventListener('click', e => {
+    const btn = e.target.closest('.tcell');
+    if (!btn || btn.disabled) return;
+    const row = btn.closest('.session-row');
+    onSlotClick(row, parseInt(btn.dataset.min, 10));
+  });
+
+  refreshAllSessions();
+  loadRentSchedule();
 
   document.getElementById('form').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const month        = document.querySelector('input[name="month"]:checked');
     const space        = document.querySelector('input[name="space"]:checked');
+    const recruitMonth = document.querySelector('input[name="recruitMonth"]:checked');
     const hasMaterials = document.querySelector('input[name="hasMaterials"]:checked');
     const meetingName  = document.getElementById('meetingName').value.trim();
     const description  = document.getElementById('description').value.trim();
     const hostName     = document.getElementById('hostName').value.trim();
-    const session1     = document.getElementById('session1').value.trim();
     const capacity     = document.getElementById('capacity').value.trim();
     const fee          = document.getElementById('fee').value.trim();
     const contact      = document.getElementById('contact').value.trim();
 
+    if (!recruitMonth) { alert('개설 월(8월/9월)을 선택해 주세요.'); return; }
     if (!meetingName)  { alert('모임명을 입력해 주세요.'); return; }
     if (!description)  { alert('모임 소개를 입력해 주세요.'); return; }
     if (!hostName)     { alert('호스트 이름을 입력해 주세요.'); return; }
     if (!space)        { alert('희망 공간을 선택해 주세요.'); return; }
-    if (!session1)     { alert('1회차 날짜·시간을 입력해 주세요.'); return; }
+
+    const monthRange = MONTH_RANGES[recruitMonth.value];
+    let hasConflict = false;
+    let sessionLabels = [];
+    document.querySelectorAll('.session-row').forEach((row, i) => {
+      const result = validateSessionRow(row, { silent: true });
+      if (i === 0 && (result.empty || !result.ok)) {
+        hasConflict = true;
+      } else if (!result.empty && !result.ok) {
+        hasConflict = true;
+      } else if (result.ok && result.label) {
+        const date = row.querySelector('.s-date').value;
+        if (date && (date < monthRange.min || date > monthRange.max)) {
+          hasConflict = true;
+          setSessionStatus(row, 'bad', `선택한 개설 월(${recruitMonth.value}) 안의 날짜만 가능합니다`);
+        } else {
+          sessionLabels.push(result.label);
+        }
+      }
+    });
+    if (!sessionLabels.length) {
+      alert('1회차 날짜와 시간대를 선택해 주세요.');
+      return;
+    }
+    if (hasConflict) {
+      alert('다른 일정과 겹치거나, 개설 월과 다른 날짜가 있습니다. 다시 확인해 주세요.');
+      return;
+    }
     if (!capacity)     { alert('모임 정원을 입력해 주세요.'); return; }
     if (!fee || Number(fee) < 5000) { alert('참가비는 최소 5,000원 이상으로 설정해 주세요.'); return; }
     if (!hasMaterials) { alert('재료 준비 여부를 선택해 주세요.'); return; }
@@ -366,15 +1269,16 @@
     document.getElementById('error-msg').style.display = 'none';
 
     const params = new URLSearchParams({
-      month:        month.value,
+      month:        recruitMonth.value,
+      recruitMonths: recruitMonth.value,
       meetingName,
       description,
       hostName,
       space:        space.value,
-      session1,
-      session2:     document.getElementById('session2').value.trim(),
-      session3:     document.getElementById('session3').value.trim(),
-      session4:     document.getElementById('session4').value.trim(),
+      session1:     sessionLabels[0] || '',
+      session2:     sessionLabels[1] || '',
+      session3:     sessionLabels[2] || '',
+      session4:     sessionLabels[3] || '',
       capacity,
       fee,
       hasMaterials: hasMaterials.value,
@@ -395,7 +1299,7 @@
     }).catch(function() {
       document.getElementById('error-msg').style.display = 'block';
       btn.disabled = false;
-      btn.textContent = '신청서 제출하기 →';
+      btn.textContent = '파도 타고 신청하기 🏄 →';
     });
   });
 </script>

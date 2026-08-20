@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>월요일의 달빛 리딩클럽 | 비북스 — 퇴근 후 월요일 저녁 독서모임</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --navy: #12163a;
+    --navy-deep: #0a0d24;
+    --black: #0a0a0e;
+    --card: #171b40;
+    --card-line: rgba(255,255,255,0.08);
+    --yellow: #f5ea3d;
+    --yellow-soft: rgba(245,234,61,0.12);
+    --cyan: #4fd8e8;
+    --cyan-soft: rgba(79,216,232,0.12);
+    --cream: #f6f4ec;
+    --muted: #a3a8c8;
+    --muted-dim: #6c7096;
+    --radius: 18px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Pretendard', -apple-system, sans-serif;
+    background:var(--navy-deep);
+    color:var(--cream);
+    line-height:1.6;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:13px;letter-spacing:0.14em;font-weight:700;
+    color:var(--yellow);text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{content:'';width:16px;height:1px;background:var(--yellow);display:inline-block;}
+  h1,h2,h3{font-weight:800;margin:0;letter-spacing:-0.02em;}
+  p{margin:0;}
+
+  /* ---------- header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(10,13,36,0.82);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--card-line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1080px;margin:0 auto;gap:12px;}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;letter-spacing:0.02em;text-decoration:none;}
+  .brand .moon{color:var(--yellow);font-size:16px;}
+  .nav-links{display:flex;align-items:center;gap:10px;}
+  .nav-link{font-size:13px;color:var(--muted);text-decoration:none;font-weight:600;}
+  .nav-link:hover{color:var(--cream);}
+  .nav-cta{
+    font-size:13px;font-weight:700;background:var(--yellow);color:#141414;
+    padding:9px 18px;border-radius:100px;text-decoration:none;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:56px 0 60px;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 20%, rgba(79,216,232,.08), transparent),
+      radial-gradient(ellipse 60% 50% at 10% 80%, rgba(245,234,61,.06), transparent),
+      var(--navy-deep);
+  }
+  .hero-grid{display:grid;grid-template-columns:1fr 0.82fr;gap:44px;align-items:center;}
+  .hero h1{font-size:clamp(34px,5vw,52px);line-height:1.12;margin-bottom:18px;}
+  .hero h1 .accent{color:var(--yellow);}
+  .hero p.lede{font-size:16.5px;color:var(--muted);max-width:480px;margin-bottom:26px;}
+  .hero-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px;}
+  .pill{
+    border:1px solid var(--card-line);background:rgba(255,255,255,0.04);
+    padding:7px 14px;border-radius:100px;font-size:12.5px;font-weight:600;color:var(--cream);
+  }
+  .pill b{color:var(--yellow);}
+  .hero-cta{display:flex;gap:10px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 24px;border-radius:100px;font-weight:700;font-size:14.5px;
+    text-decoration:none;border:1px solid transparent;cursor:pointer;
+  }
+  .btn-primary{background:var(--yellow);color:#141414;}
+  .btn-primary:hover{background:#fff17a;}
+  .btn-outline{border-color:rgba(255,255,255,0.28);color:var(--cream);background:transparent;}
+  .btn-outline:hover{border-color:var(--yellow);color:var(--yellow);}
+
+  /* ---------- 시그니처: 이번 달 월요일 캘린더 ---------- */
+  .monday-cal{
+    background:var(--card);border:1px solid var(--card-line);border-radius:20px;
+    padding:28px 26px;box-shadow:0 24px 60px rgba(0,0,0,.45);
+  }
+  .monday-cal .cal-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:18px;}
+  .monday-cal .cal-month{font-size:15px;font-weight:800;letter-spacing:0.06em;}
+  .monday-cal .cal-month span{color:var(--yellow);}
+  .monday-cal .cal-note{font-size:11.5px;color:var(--muted-dim);font-weight:600;}
+  .cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:11px;color:var(--muted-dim);text-align:center;font-weight:700;margin-bottom:8px;}
+  .cal-days .mon{color:var(--yellow);}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+  .cal-cell{
+    aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+    font-size:12.5px;color:var(--muted-dim);border-radius:10px;
+  }
+  .cal-cell.is-open{
+    background:var(--yellow-soft);color:var(--yellow);font-weight:800;
+    border:1px solid rgba(245,234,61,0.4);
+    box-shadow:0 0 14px rgba(245,234,61,0.15);
+  }
+  .cal-cell.is-past{opacity:0.35;}
+  .cal-legend{display:flex;flex-direction:column;gap:6px;margin-top:16px;font-size:12px;color:var(--muted);}
+  .cal-legend span{display:inline-flex;align-items:center;gap:8px;}
+  .cal-legend .dot{width:9px;height:9px;border-radius:3px;background:var(--yellow);display:inline-block;flex-shrink:0;}
+
+  /* ---------- section shell ---------- */
+  section{padding:80px 0;}
+  .section-head{max-width:660px;margin-bottom:40px;}
+  .section-head h2{font-size:clamp(26px,4vw,36px);margin-bottom:12px;}
+  .section-head p{color:var(--muted);font-size:15px;}
+
+  /* ---------- why monday ---------- */
+  .why{background:var(--navy);border-top:1px solid var(--card-line);border-bottom:1px solid var(--card-line);}
+  .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .why-card{
+    background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
+    padding:28px 24px;
+  }
+  .why-card .w-num{font-size:12px;font-weight:800;color:var(--yellow);letter-spacing:0.08em;margin-bottom:12px;}
+  .why-card h3{font-size:18px;margin-bottom:10px;}
+  .why-card p{font-size:14px;color:var(--muted);}
+
+  /* ---------- flow ---------- */
+  .flow-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .flow-card{
+    background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
+    padding:26px 24px;
+  }
+  .flow-card.highlight{border-color:rgba(245,234,61,0.32);background:linear-gradient(160deg,rgba(245,234,61,0.07),var(--card) 60%);}
+  .flow-time{font-size:13px;color:var(--yellow);font-weight:800;margin-bottom:6px;letter-spacing:0.03em;}
+  .flow-dur{font-size:11.5px;color:var(--muted-dim);font-weight:700;margin-bottom:10px;}
+  .flow-card h3{font-size:18px;margin-bottom:10px;}
+  .flow-card p{color:var(--muted);font-size:14px;}
+  .flow-extra{
+    margin-top:20px;font-size:13.5px;color:var(--muted-dim);
+    border-left:2px solid var(--yellow);padding-left:14px;
+  }
+  .flow-extra b{color:var(--cream);}
+
+  /* ---------- 회비 ---------- */
+  .fee{background:var(--black);}
+  .fee-card{
+    background:rgba(255,255,255,0.03);border:1px solid rgba(245,234,61,0.3);
+    border-radius:24px;padding:38px 34px;max-width:720px;
+  }
+  .fee-label{font-size:13px;color:var(--yellow);font-weight:800;letter-spacing:0.04em;margin-bottom:12px;}
+  .fee-price{font-size:44px;font-weight:800;color:var(--yellow);line-height:1.1;margin-bottom:6px;}
+  .fee-price small{font-size:16px;color:var(--muted-dim);font-weight:700;margin-left:6px;}
+  .fee-desc{color:var(--muted);font-size:14px;margin-bottom:24px;}
+  .fee-benefits{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .benefit-box{
+    background:rgba(255,255,255,0.04);border:1px solid var(--card-line);border-radius:12px;
+    padding:16px 18px;font-size:13px;color:var(--muted);
+  }
+  .benefit-box b{color:var(--cream);display:block;margin-bottom:5px;font-size:13.5px;}
+  .benefit-box.coupon{border-color:rgba(79,216,232,0.35);background:var(--cyan-soft);}
+  .benefit-box.coupon b{color:var(--cyan);}
+
+  /* ---------- curation ---------- */
+  .curation{background:linear-gradient(180deg,var(--navy-deep) 0%,var(--navy) 100%);}
+  .shelf-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .shelf-row.top{margin-bottom:14px;grid-template-columns:1fr;}
+  .book-card{
+    position:relative;background:var(--card);border:1px solid var(--card-line);
+    border-radius:14px;padding:18px 16px 16px;
+    display:flex;flex-direction:column;min-height:170px;
+    transition:transform .18s ease,border-color .18s ease;
+  }
+  .book-card:hover{transform:translateY(-3px);border-color:rgba(245,234,61,0.35);}
+  .book-tag{
+    display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:0.04em;
+    padding:3px 9px;border-radius:100px;margin-bottom:10px;width:fit-content;
+  }
+  .book-tag.designated{background:var(--yellow-soft);color:var(--yellow);}
+  .book-tag.pick{background:var(--cyan-soft);color:var(--cyan);}
+  .book-title{font-size:15px;font-weight:800;line-height:1.32;margin-bottom:5px;}
+  .book-meta{font-size:12.5px;color:var(--muted-dim);margin-bottom:auto;}
+  .book-price{display:flex;align-items:baseline;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px dashed var(--card-line);}
+  .book-price .label{font-size:11px;color:var(--muted-dim);}
+  .book-price .amt{font-size:15px;font-weight:800;}
+  .book-card.featured{
+    background:linear-gradient(135deg,rgba(245,234,61,0.09),var(--card) 55%);
+    border-color:rgba(245,234,61,0.3);
+    flex-direction:row;align-items:center;gap:20px;min-height:0;padding:22px 24px;
+  }
+  .book-card.featured .f-body{flex:1;}
+  .book-card.featured .book-title{font-size:19px;}
+  .book-card.featured .book-price{margin-top:0;padding-top:0;border:0;flex-direction:column;align-items:flex-end;gap:2px;}
+  .curation-note{margin-top:20px;font-size:13px;color:var(--muted-dim);}
+  .curation-note b{color:var(--cream);}
+
+  /* ---------- apply form ---------- */
+  .apply{background:var(--navy);}
+  .apply-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:28px;align-items:start;}
+  .form-card{
+    background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
+    padding:32px;
+  }
+  .field{margin-bottom:22px;}
+  .field label{display:block;font-size:13.5px;font-weight:700;color:var(--cream);margin-bottom:8px;}
+  .field input[type=text],.field input[type=tel],.field textarea{
+    width:100%;background:var(--navy-deep);border:1px solid var(--card-line);border-radius:10px;
+    padding:12px 14px;color:var(--cream);font-size:14.5px;font-family:inherit;
+  }
+  .field textarea{resize:vertical;min-height:70px;}
+  .field-hint{font-size:12px;color:var(--muted-dim);margin:8px 0 0;}
+
+  /* 날짜 선택 카드 */
+  .date-select-list{display:flex;flex-direction:column;gap:10px;}
+  .date-select{
+    display:flex;align-items:center;gap:12px;
+    border:1px solid var(--card-line);border-radius:10px;padding:14px;
+    cursor:pointer;transition:border-color .15s ease,background .15s ease;
+  }
+  .date-select:hover{border-color:rgba(245,234,61,0.35);}
+  .date-select.checked{border-color:var(--yellow);background:var(--yellow-soft);}
+  .date-select input{display:none;}
+  .date-select .check-box{
+    width:18px;height:18px;border-radius:5px;border:1.5px solid var(--muted-dim);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--navy-deep);
+  }
+  .date-select.checked .check-box{background:var(--yellow);border-color:var(--yellow);}
+  .date-select .d-info{flex:1;min-width:0;}
+  .date-select .d-title{font-size:14px;font-weight:700;}
+  .date-select .d-meta{font-size:12px;color:var(--muted-dim);}
+  .date-select .d-price{font-size:13.5px;font-weight:800;white-space:nowrap;}
+  .ds-tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:100px;margin-left:6px;background:var(--cyan-soft);color:var(--cyan);}
+
+  /* 도서 선택 */
+  .book-select-list{display:flex;flex-direction:column;gap:10px;}
+  .book-order-hint{font-size:12.5px;color:var(--muted-dim);margin:0 0 10px;}
+  .book-select{
+    display:flex;align-items:center;gap:12px;
+    border:1px solid var(--card-line);border-radius:10px;padding:12px 14px;
+    cursor:pointer;transition:border-color .15s ease,background .15s ease;
+  }
+  .book-select:hover{border-color:rgba(245,234,61,0.35);}
+  .book-select.checked{border-color:var(--yellow);background:var(--yellow-soft);}
+  .book-select input{display:none;}
+  .book-select .check-box{
+    width:18px;height:18px;border-radius:5px;border:1.5px solid var(--muted-dim);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--navy-deep);
+  }
+  .book-select.checked .check-box{background:var(--yellow);border-color:var(--yellow);}
+  .book-select .b-info{flex:1;min-width:0;}
+  .book-select .b-title{font-size:13.5px;font-weight:700;}
+  .book-select .b-meta{font-size:12px;color:var(--muted-dim);}
+  .book-select .b-price{font-size:13.5px;font-weight:800;white-space:nowrap;}
+  .bs-tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:100px;margin-left:6px;}
+  .bs-tag.designated{background:var(--yellow-soft);color:var(--yellow);}
+  .bs-tag.pick{background:var(--cyan-soft);color:var(--cyan);}
+
+  /* 직접 입력 도서 */
+  .custom-book{
+    margin-top:14px;padding-top:16px;border-top:1px dashed var(--card-line);
+  }
+  .cb-label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:10px;}
+  #custom-book-list{display:flex;flex-direction:column;gap:8px;}
+  .cb-row{display:flex;gap:8px;align-items:center;}
+  .cb-row input.cb-title{flex:1;min-width:0;}
+  .cb-row input.cb-price{width:112px;flex-shrink:0;text-align:right;}
+  .cb-row input{
+    background:var(--navy-deep);border:1px solid var(--card-line);border-radius:10px;
+    padding:11px 13px;color:var(--cream);font-size:14px;font-family:inherit;
+  }
+  .cb-row input:focus{outline:none;border-color:rgba(245,234,61,0.5);}
+  .cb-del{
+    width:32px;height:32px;flex-shrink:0;border-radius:8px;border:1px solid var(--card-line);
+    background:transparent;color:var(--muted-dim);font-size:16px;line-height:1;cursor:pointer;
+  }
+  .cb-del:hover{border-color:rgba(255,120,120,0.45);color:#ff9b9b;}
+  .cb-add{
+    margin-top:10px;background:transparent;border:1px dashed var(--card-line);
+    border-radius:10px;padding:10px 14px;width:100%;
+    color:var(--muted);font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;
+  }
+  .cb-add:hover{border-color:rgba(245,234,61,0.45);color:var(--yellow);}
+
+  .summary-card{
+    background:var(--card);border:1px solid var(--card-line);border-radius:var(--radius);
+    padding:28px;position:sticky;top:90px;
+  }
+  .summary-card h3{font-size:16px;margin-bottom:18px;}
+  .summary-line{display:flex;justify-content:space-between;font-size:13.5px;color:var(--muted);padding:8px 0;border-bottom:1px dashed var(--card-line);}
+  .summary-line.subtotal{font-weight:700;color:var(--cream);border-bottom-color:var(--card-line);}
+  .summary-line.subtotal span{color:var(--muted);font-weight:600;}
+  .summary-line.book-line span{color:var(--cyan);}
+  .summary-line b{color:var(--cream);font-weight:700;}
+  .summary-total{display:flex;justify-content:space-between;align-items:baseline;margin-top:16px;padding-top:16px;border-top:1px solid var(--card-line);}
+  .summary-total .t-label{font-size:14px;color:var(--muted);}
+  .summary-total .t-amt{font-size:28px;font-weight:800;color:var(--yellow);}
+  .coupon-note{
+    margin-top:14px;background:var(--cyan-soft);border:1px solid rgba(79,216,232,0.3);
+    border-radius:12px;padding:14px 16px;font-size:13px;color:var(--cyan);display:none;
+  }
+  .coupon-note.show{display:block;}
+  .coupon-note b{color:var(--cyan);}
+  .bank-box{
+    margin-top:16px;background:var(--navy-deep);border:1px solid var(--card-line);border-radius:12px;
+    padding:18px;font-size:13.5px;color:var(--muted);
+  }
+  .bank-box .acc{font-size:16px;font-weight:800;color:var(--cream);margin:6px 0;}
+  .confirm-row{display:flex;align-items:flex-start;gap:10px;margin-top:18px;font-size:13px;color:var(--muted);}
+  .confirm-row input{margin-top:3px;}
+  .submit-btn{
+    width:100%;margin-top:16px;padding:15px;border-radius:12px;border:none;
+    background:var(--yellow);color:#141414;font-weight:800;font-size:15px;cursor:pointer;
+  }
+  .submit-btn:disabled{opacity:0.4;cursor:not-allowed;}
+  .apply-alert{
+    margin-top:12px;padding:12px 14px;border-radius:10px;font-size:13px;
+    background:rgba(255,100,100,.12);border:1px solid rgba(255,100,100,.3);color:#ffb4b4;
+    display:none;
+  }
+  .apply-alert.show{display:block;}
+  .success-panel{display:none;text-align:center;padding:20px 4px;}
+  .success-panel .moon-big{font-size:34px;margin-bottom:14px;}
+  .success-panel h3{font-size:18px;margin-bottom:10px;}
+  .success-panel p{color:var(--muted);font-size:13.5px;margin-bottom:4px;}
+
+  footer{padding:44px 0 60px;text-align:center;color:var(--muted-dim);font-size:13px;}
+  footer a{color:var(--muted);text-decoration:none;}
+  footer a:hover{color:var(--yellow);}
+
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;gap:32px;}
+    .monday-cal{max-width:420px;margin:0 auto;}
+    .why-grid{grid-template-columns:1fr;}
+    .flow-cards{grid-template-columns:1fr;}
+    .shelf-row{grid-template-columns:repeat(2,1fr);}
+    .apply-grid{grid-template-columns:1fr;}
+    .fee-benefits{grid-template-columns:1fr;}
+    .summary-card{position:static;}
+  }
+  @media (max-width:520px){
+    .shelf-row{grid-template-columns:1fr;}
+    .book-card.featured{flex-direction:column;align-items:flex-start;}
+    .book-card.featured .book-price{align-items:flex-start;}
+    .nav-link{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a class="brand" href="september.html"><span class="moon">☾</span> B.BOOKS · 월요일의 달빛 리딩클럽</a>
+    <div class="nav-links">
+      <a class="nav-link" href="september.html">비북스 모임</a>
+      <a class="nav-cta" href="#apply">신청하기</a>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow">monday moonlight reading club</div>
+        <h1>한 주의 시작을,<br><span class="accent">퇴근 후 책 한 권</span>으로.</h1>
+        <p class="lede">월요일 저녁, 퇴근하고 비북스로 오세요. 90분은 각자의 속도로 조용히 읽고, 마지막 30분은 모두 함께 오늘 읽은 한 페이지를 나눕니다. 진행은 0.1평 점주 썬북친구(@sun__book79).</p>
+        <div class="hero-meta">
+          <span class="pill">8월 <b>10일 · 24일</b> (월)</span>
+          <span class="pill">8:00 PM – 10:00 PM</span>
+          <span class="pill">회당 <b>10,000원</b> · 간단한 다과 제공</span>
+        </div>
+        <div class="hero-cta">
+          <a href="#curation" class="btn btn-outline">이달의 책 먼저 보기</a>
+          <a href="#apply" class="btn btn-primary">신청하러 가기</a>
+        </div>
+      </div>
+
+      <!-- 시그니처: 월요일만 불이 켜진 캘린더 -->
+      <div class="monday-cal" id="monday-cal">
+        <div class="cal-head">
+          <div class="cal-month"><span id="cal-month-label"></span> 월요일의 밤</div>
+          <div class="cal-note">이 밤에만 불이 켜집니다</div>
+        </div>
+        <div class="cal-days">
+          <span class="mon">월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span><span>일</span>
+        </div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div class="cal-legend" id="cal-legend"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 왜 월요일인가 ===================== -->
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Why Monday</div>
+      <h2>왜 하필 월요일 저녁이냐면요</h2>
+      <p>일주일 중 가장 지치는 날을, 가장 기다려지는 날로 바꿔보려고요.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="w-num">하나</div>
+        <h3>월요병에는 책이 약</h3>
+        <p>월요일 저녁, 집에 가서 스마트폰만 보다 잠들기엔 아깝잖아요. 퇴근길에 들러 두 시간, 책과 함께 한 주의 리듬을 잡습니다.</p>
+      </div>
+      <div class="why-card">
+        <div class="w-num">둘</div>
+        <h3>월요일 저녁은 비북스</h3>
+        <p>요일이 고정되면 습관이 됩니다. 그 한 줄이면 독서 루틴이 저절로 만들어져요. 8월은 두 번, 파일럿으로 먼저 열립니다.</p>
+      </div>
+      <div class="why-card">
+        <div class="w-num">셋</div>
+        <h3>혼자 읽고, 함께 나누고</h3>
+        <p>90분은 각자 조용히, 마지막 30분은 다 같이. 읽은 만큼만 이야기하면 되니 부담 갖지 않으셔도 됩니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 월요일 저녁의 흐름 ===================== -->
+<section class="flow" id="flow">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Monday Night</div>
+      <h2>월요일 저녁의 흐름</h2>
+      <p>퇴근 시간에 맞춰 8시 시작, 10시에 마칩니다.</p>
+    </div>
+    <div class="flow-cards">
+      <div class="flow-card">
+        <div class="flow-time">7:40 — 8:00 PM</div>
+        <div class="flow-dur">20분</div>
+        <h3>퇴근하고, 도착</h3>
+        <p>저녁을 먹고 오셔도 좋습니다. 자리 잡고 간단한 다과와 함께 오늘 읽을 책을 펼칩니다.</p>
+      </div>
+      <div class="flow-card">
+        <div class="flow-time">8:00 — 9:30 PM</div>
+        <div class="flow-dur">1시간 30분</div>
+        <h3>혼자, 조용히</h3>
+        <p>각자 가져온 책 또는 이달의 책을 자기 속도로 읽습니다. 대화 없이 오롯이 읽기만 하는 90분.</p>
+      </div>
+      <div class="flow-card highlight">
+        <div class="flow-time">9:30 — 10:00 PM</div>
+        <div class="flow-dur">30분 · 다 같이</div>
+        <h3>모두 함께, 책 나눔</h3>
+        <p>썬북친구님 진행으로 전원이 둘러앉아, 오늘 읽은 부분에서 마음에 남은 한 문장을 나눕니다. 짧게 한마디여도 충분해요.</p>
+      </div>
+    </div>
+    <p class="flow-extra">
+      책 나눔은 <b>모두가 참여하는 시간</b>입니다. 읽던 책이 무엇이든 상관없고, 길게 말할 필요도 없습니다. 이 30분이 월요일 밤을 기억에 남게 만듭니다.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== 회비 ===================== -->
+<section class="fee" id="fee">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Fee</div>
+      <h2>회비 안내</h2>
+      <p>참가한 회차만큼만 내시면 됩니다.</p>
+    </div>
+    <div class="fee-card">
+      <div class="fee-label">월요일의 달빛 리딩클럽 · 1회 참가비</div>
+      <div class="fee-price">10,000원<small>/ 1회</small></div>
+      <p class="fee-desc">간단한 다과가 제공되고, 참가하실 때마다 5,000원 도서쿠폰을 드립니다.</p>
+      <div class="fee-benefits">
+        <div class="benefit-box"><b>간단한 다과 제공</b>따뜻한 차·커피와 가벼운 다과. 90분 읽는 동안 곁에 두세요.</div>
+        <div class="benefit-box coupon"><b>도서쿠폰 5,000원</b>참가 1회당 1장. 비북스에서 책 구입 시 바로 사용하실 수 있습니다.</div>
+      </div>
+      <div style="margin-top:22px;">
+        <a href="#apply" class="btn btn-primary">참여할 월요일 고르기</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== 큐레이션 ===================== -->
+<section class="curation" id="curation">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Curation</div>
+      <h2 id="curation-title">이달의 월요일, 함께 읽을 책</h2>
+      <p>어떤 책을 가져오셔도 좋지만, 고르기 어려우실 땐 이 책들을 권합니다. 신청서에서 함께 주문하실 수 있고, 받으신 도서쿠폰을 바로 쓰실 수 있어요.</p>
+    </div>
+    <div id="book-shelf"></div>
+    <p class="curation-note">
+      정가는 온라인 서점 기준이며, <b>5,000원 도서쿠폰</b>은 현장 수령 시 차감해 드립니다.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== 신청하기 ===================== -->
+<section class="apply" id="apply">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Apply</div>
+      <h2>신청하기</h2>
+      <p>참여할 월요일을 고르고, 원하시면 이달의 책도 함께 주문해보세요. 참가비를 입금하고 신청을 완료해주세요.</p>
+    </div>
+
+    <div class="apply-grid">
+      <div class="form-card">
+        <div class="field">
+          <label>이름</label>
+          <input type="text" id="f-name" placeholder="신청자 이름">
+        </div>
+        <div class="field">
+          <label>연락처 (전화번호)</label>
+          <input type="tel" id="f-phone" placeholder="010-0000-0000">
+        </div>
+
+        <div class="field">
+          <label>참여할 월요일 선택</label>
+          <div class="date-select-list" id="date-select-list"></div>
+          <p class="field-hint" id="date-field-hint"></p>
+        </div>
+
+        <div class="field">
+          <label>이달의 책, 함께 주문하기 (선택)</label>
+          <p class="book-order-hint">도서만 주문하셔도 됩니다. 도서쿠폰은 현장에서 책 받으실 때 차감해 드려요.</p>
+          <div class="book-select-list" id="book-select-list"></div>
+
+          <div class="custom-book">
+            <span class="cb-label">목록에 없는 책도 주문하실 수 있어요</span>
+            <div id="custom-book-list"></div>
+            <button type="button" class="cb-add" id="cb-add">+ 책 추가하기</button>
+            <p class="field-hint">정가는 온라인 서점 기준으로 적어주세요. 입고 가능 여부와 실제 금액이 다를 경우 확인 후 따로 안내드립니다.</p>
+          </div>
+        </div>
+
+        <div class="field" style="margin-bottom:0;">
+          <label>남기실 말 (선택)</label>
+          <textarea id="f-note" placeholder="처음 오시는지, 궁금한 점이 있는지 편하게 적어주세요."></textarea>
+        </div>
+      </div>
+
+      <div>
+        <div class="summary-card" id="summary-card">
+          <h3>결제 금액</h3>
+          <div id="summary-lines"></div>
+          <div class="summary-total">
+            <span class="t-label">총 합계</span>
+            <span class="t-amt" id="total-amt">0원</span>
+          </div>
+
+          <div class="coupon-note" id="coupon-note"></div>
+
+          <div class="bank-box">
+            예금주 <b>경규환</b>
+            <div class="acc">카카오뱅크 7942-33-45474</div>
+            입금자명은 신청 이름과 동일하게 해주세요.
+          </div>
+
+          <label class="confirm-row">
+            <input type="checkbox" id="f-confirm">
+            위 금액을 계좌로 입금 완료했습니다. 입금 확인 후 담당자가 연락드립니다.
+          </label>
+
+          <button class="submit-btn" id="submit-btn" disabled>신청 보내기</button>
+          <div class="apply-alert" id="apply-alert"></div>
+
+          <div class="success-panel" id="success-panel">
+            <div class="moon-big">🌙</div>
+            <h3>신청이 접수됐습니다</h3>
+            <p id="success-summary"></p>
+            <p>입금 내역 확인 후 담당자가 연락드릴게요.</p>
+            <p>일정·세부 안내는 비북스 카카오톡 오픈채팅으로 드립니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  월요일의 달빛 리딩클럽 · <a href="september.html">비북스 모임</a> · 진행 0.1평 점주 썬북친구 (@sun__book79)<br>
+  장소: 비북스 매장 · 월요일 8:00 PM – 10:00 PM
+</footer>
+
+<script>
+/* =========================================================
+   ★ 매달 여기만 수정하면 됩니다 ★
+   ========================================================= */
+const CONFIG = {
+  // Apps Script 웹앱 URL (달빛리딩클럽 탭으로 저장)
+  API: 'https://script.google.com/macros/s/AKfycbwmKpptDy_rt4SUMf4LToEHDSwsIsPQNIVZNBec3rvHjneB6c8qHWe_En0Li13PKJ5zOQ/exec',
+
+  MONTH: '8월',
+  YEAR: 2026,
+  MONTH_NUM: 8,
+
+  // 이번 달 진행 회차
+  SESSIONS: [
+    { date: '8/10', day: 10, label: '1회차 · 파일럿 모임', badge: '파일럿' },
+    { date: '8/24', day: 24, label: '2회차', badge: '' }
+  ],
+
+  PRICE: 10000,        // 회당 참가비 (간단한 다과 제공)
+  COUPON: 5000,        // 회당 제공 도서쿠폰
+  TIME: '8:00 PM – 10:00 PM'
+};
+
+// 이달의 추천 도서
+const BOOKS = [
+  {id:'time',      title:'시간의 감촉',           author:'은희경',       publisher:'문학동네',   price:18800, tag:'designated', featured:true, note:'첫 모임에 함께 읽기 좋은 이달의 책'},
+  {id:'summer1',   title:'첫 여름, 완주',          author:'김금희',       publisher:'무제',       price:17000, tag:'pick'},
+  {id:'volcano',   title:'여름은 오래 그곳에 남아', author:'마쓰이에 마사시', publisher:'비채',    price:14000, tag:'pick'},
+  {id:'formless',  title:'무정형의 삶',            author:'김민철',       publisher:'위즈덤하우스', price:20000, tag:'pick'},
+  {id:'leftsummer',title:'두고 온 여름',           author:'성해나',       publisher:'창비',       price:14000, tag:'pick'},
+  {id:'checkin',   title:'열두 번의 체크인',       author:'김미라',       publisher:'니케북스',   price:16800, tag:'pick'},
+  {id:'summer2',   title:'여름',                  author:'이디스 워튼',  publisher:'민음사',     price:12000, tag:'pick'},
+  {id:'justseason',title:'여름은 고작 계절',       author:'김서해',       publisher:'위즈덤하우스', price:17500, tag:'pick'}
+];
+/* ========================================================= */
+
+function won(n){ return n.toLocaleString('ko-KR') + '원'; }
+
+// ---- 동적 텍스트 ----
+document.getElementById('cal-month-label').textContent = CONFIG.MONTH;
+document.getElementById('curation-title').textContent = `${CONFIG.MONTH}의 월요일, 함께 읽을 책`;
+document.getElementById('date-field-hint').textContent =
+  `회당 ${won(CONFIG.PRICE)} · 간단한 다과 제공 · 참가 1회당 ${won(CONFIG.COUPON)} 도서쿠폰 제공`;
+document.getElementById('cal-legend').innerHTML = CONFIG.SESSIONS.map(s =>
+  `<span><i class="dot"></i>${s.date}(월) ${s.label} · ${CONFIG.TIME}</span>`
+).join('');
+
+// ---- 히어로 캘린더 ----
+(function renderCalendar(){
+  const grid = document.getElementById('cal-grid');
+  const first = new Date(CONFIG.YEAR, CONFIG.MONTH_NUM - 1, 1);
+  const daysInMonth = new Date(CONFIG.YEAR, CONFIG.MONTH_NUM, 0).getDate();
+  const offset = (first.getDay() + 6) % 7; // 월요일 시작
+  const openDays = CONFIG.SESSIONS.map(s => s.day);
+  const today = new Date();
+  const cells = [];
+  for (let i = 0; i < offset; i++) cells.push('<div class="cal-cell"></div>');
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isOpen = openDays.includes(d);
+    const cellDate = new Date(CONFIG.YEAR, CONFIG.MONTH_NUM - 1, d);
+    const isPast = cellDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    let cls = 'cal-cell';
+    if (isOpen) cls += ' is-open';
+    if (isOpen && isPast) cls += ' is-past';
+    cells.push(`<div class="${cls}">${d}</div>`);
+  }
+  grid.innerHTML = cells.join('');
+})();
+
+// ---- 책장 렌더링 ----
+const shelf = document.getElementById('book-shelf');
+const topRow = document.createElement('div');
+topRow.className = 'shelf-row top';
+const bottomRow = document.createElement('div');
+bottomRow.className = 'shelf-row';
+
+BOOKS.forEach(b => {
+  const card = document.createElement('div');
+  card.className = 'book-card' + (b.featured ? ' featured' : '');
+  if (b.featured) {
+    card.innerHTML = `
+      <div class="f-body">
+        <span class="book-tag ${b.tag}">이달의 책</span>
+        <div class="book-title">${b.title}</div>
+        <div class="book-meta">${b.author} · ${b.publisher}${b.note ? '<br>' + b.note : ''}</div>
+      </div>
+      <div class="book-price"><span class="label">정가</span><span class="amt">${won(b.price)}</span></div>
+    `;
+    topRow.appendChild(card);
+  } else {
+    card.innerHTML = `
+      <span class="book-tag ${b.tag}">추천도서</span>
+      <div class="book-title">${b.title}</div>
+      <div class="book-meta">${b.author} · ${b.publisher}</div>
+      <div class="book-price"><span class="label">정가</span><span class="amt">${won(b.price)}</span></div>
+    `;
+    bottomRow.appendChild(card);
+  }
+});
+shelf.appendChild(topRow);
+shelf.appendChild(bottomRow);
+
+// ---- 참여 날짜 선택 ----
+const dateListEl = document.getElementById('date-select-list');
+CONFIG.SESSIONS.forEach(s => {
+  const row = document.createElement('label');
+  row.className = 'date-select';
+  row.innerHTML = `
+    <input type="checkbox" data-date="${s.date}" data-label="${s.label}">
+    <span class="check-box">✓</span>
+    <span class="d-info">
+      <span class="d-title">${s.date} (월)${s.badge ? `<span class="ds-tag">${s.badge}</span>` : ''}</span>
+      <span class="d-meta">${s.label} · ${CONFIG.TIME} · 독서 90분 + 책 나눔 30분</span>
+    </span>
+    <span class="d-price">${won(CONFIG.PRICE)}</span>
+  `;
+  dateListEl.appendChild(row);
+  const input = row.querySelector('input');
+  input.addEventListener('change', () => {
+    row.classList.toggle('checked', input.checked);
+    updateSummary();
+  });
+});
+
+// ---- 도서 선택 ----
+const listEl = document.getElementById('book-select-list');
+BOOKS.forEach(b => {
+  const row = document.createElement('label');
+  row.className = 'book-select';
+  row.innerHTML = `
+    <input type="checkbox" data-id="${b.id}">
+    <span class="check-box">✓</span>
+    <span class="b-info">
+      <span class="b-title">${b.title}<span class="bs-tag ${b.tag}">${b.tag === 'designated' ? '이달의 책' : '추천'}</span></span>
+      <span class="b-meta">${b.author} · ${b.publisher}</span>
+    </span>
+    <span class="b-price">${won(b.price)}</span>
+  `;
+  listEl.appendChild(row);
+  const input = row.querySelector('input');
+  input.addEventListener('change', () => {
+    row.classList.toggle('checked', input.checked);
+    updateSummary();
+  });
+});
+
+// ---- 선택 상태 ----
+function selectedDates() {
+  return Array.from(document.querySelectorAll('#date-select-list input:checked')).map(inp => ({
+    date: inp.dataset.date,
+    label: inp.dataset.label
+  }));
+}
+function selectedBooks() {
+  return Array.from(document.querySelectorAll('#book-select-list input:checked')).map(inp =>
+    BOOKS.find(b => b.id === inp.dataset.id)
+  ).filter(Boolean);
+}
+// 목록에 없는 직접 입력 도서 — 제목 + 정가 입력, 합계에 포함
+function customBooks() {
+  return Array.from(document.querySelectorAll('#custom-book-list .cb-row')).map(row => ({
+    title: row.querySelector('.cb-title').value.trim(),
+    price: parseInt(row.querySelector('.cb-price').value.replace(/[^0-9]/g, ''), 10) || 0
+  })).filter(b => b.title);
+}
+
+// ---- 직접 입력 도서 행 렌더링 ----
+const customListEl = document.getElementById('custom-book-list');
+function addCustomRow() {
+  const row = document.createElement('div');
+  row.className = 'cb-row';
+  row.innerHTML = `
+    <input type="text" class="cb-title" placeholder="책 제목 / 저자">
+    <input type="text" class="cb-price" inputmode="numeric" placeholder="정가(원)">
+    <button type="button" class="cb-del" aria-label="삭제">×</button>
+  `;
+  customListEl.appendChild(row);
+  row.querySelectorAll('input').forEach(inp => inp.addEventListener('input', updateSummary));
+  row.querySelector('.cb-price').addEventListener('blur', e => {
+    const n = parseInt(e.target.value.replace(/[^0-9]/g, ''), 10);
+    e.target.value = n ? n.toLocaleString('ko-KR') : '';
+    updateSummary();
+  });
+  row.querySelector('.cb-del').addEventListener('click', () => {
+    row.remove();
+    if (!customListEl.children.length) addCustomRow();
+    updateSummary();
+  });
+  return row;
+}
+document.getElementById('cb-add').addEventListener('click', () => {
+  addCustomRow().querySelector('.cb-title').focus();
+});
+addCustomRow();
+
+// ---- 결제 요약 ----
+function updateSummary() {
+  const lines = [];
+  const dates = selectedDates();
+  const books = selectedBooks();
+  let moimTotal = 0;
+  let bookTotal = 0;
+
+  dates.forEach(d => {
+    lines.push([`${d.date}(월) 참가비`, CONFIG.PRICE]);
+    moimTotal += CONFIG.PRICE;
+  });
+  books.forEach(b => {
+    lines.push([`도서 · ${b.title}`, b.price, 'book']);
+    bookTotal += b.price;
+  });
+  const customs = customBooks();
+  customs.forEach(b => {
+    const short = b.title.length > 22 ? b.title.slice(0, 22) + '…' : b.title;
+    lines.push([`도서 · ${short}`, b.price, b.price > 0 ? 'book' : 'pending']);
+    bookTotal += b.price;
+  });
+
+  const displayLines = lines.map(([label, amt, kind]) => {
+    const cls = (kind === 'book' || kind === 'pending') ? 'summary-line book-line' : 'summary-line';
+    const value = kind === 'pending' ? '정가 입력 필요' : won(amt);
+    return `<div class="${cls}"><span>${label}</span><b>${value}</b></div>`;
+  });
+
+  if (moimTotal > 0 && bookTotal > 0) {
+    displayLines.push(`<div class="summary-line subtotal"><span>참가비 소계</span><b>${won(moimTotal)}</b></div>`);
+    displayLines.push(`<div class="summary-line subtotal"><span>도서비 소계</span><b>${won(bookTotal)}</b></div>`);
+  }
+
+  const total = moimTotal + bookTotal;
+  document.getElementById('summary-lines').innerHTML = displayLines.length
+    ? displayLines.join('')
+    : `<div class="summary-line"><span>참여할 월요일을 골라주세요</span></div>`;
+  document.getElementById('total-amt').textContent = won(total);
+
+  // 도서쿠폰 안내
+  const couponEl = document.getElementById('coupon-note');
+  if (dates.length > 0) {
+    const couponTotal = dates.length * CONFIG.COUPON;
+    couponEl.innerHTML = `참가 ${dates.length}회 → <b>${won(couponTotal)} 도서쿠폰</b>을 드립니다. 현장에서 책 구입하실 때 바로 사용하세요.`;
+    couponEl.classList.add('show');
+  } else {
+    couponEl.classList.remove('show');
+  }
+  return total;
+}
+
+// ---- 제출 ----
+const confirmBox = document.getElementById('f-confirm');
+const submitBtn = document.getElementById('submit-btn');
+const applyAlert = document.getElementById('apply-alert');
+confirmBox.addEventListener('change', () => {
+  submitBtn.disabled = !confirmBox.checked;
+});
+
+async function POST(data) {
+  const r = await fetch(CONFIG.API, {
+    method: 'POST',
+    redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(data)
+  });
+  const text = await r.text();
+  let out;
+  try {
+    out = JSON.parse(text);
+  } catch {
+    throw new Error('서버 응답을 읽을 수 없습니다. Apps Script 배포를 확인해주세요.');
+  }
+  if (out.error) throw new Error(out.error);
+  if (!out.ok) throw new Error(out.error || '요청 실패');
+  return out;
+}
+
+function buildNote() {
+  const parts = [];
+  const dates = selectedDates();
+  if (dates.length) parts.push('참여일: ' + dates.map(d => d.date + '(월)').join(', '));
+  if (dates.length) parts.push(`도서쿠폰 ${won(dates.length * CONFIG.COUPON)} 지급 대상`);
+  const memo = document.getElementById('f-note').value.trim();
+  if (memo) parts.push('메모: ' + memo);
+  return parts.join(' · ');
+}
+
+function buildBooksLabel() {
+  const parts = selectedBooks().map(b => `《${b.title}》 ${won(b.price)}`);
+  customBooks().forEach(b => {
+    parts.push(`《${b.title}》 ${b.price > 0 ? won(b.price) : '정가 미기재'} (직접주문)`);
+  });
+  return parts.join(' / ');
+}
+
+function showApplyError(msg) {
+  applyAlert.textContent = msg;
+  applyAlert.classList.add('show');
+}
+
+submitBtn.addEventListener('click', async () => {
+  const name = document.getElementById('f-name').value.trim();
+  const phone = document.getElementById('f-phone').value.trim();
+  const dates = selectedDates();
+  const books = selectedBooks();
+  const customs = customBooks();
+  const total = updateSummary();
+  const bookFee = books.reduce((s, b) => s + b.price, 0)
+                + customs.reduce((s, b) => s + b.price, 0);
+  const note = buildNote();
+  const booksLabel = buildBooksLabel();
+
+  applyAlert.classList.remove('show');
+  if (!name || !phone) {
+    showApplyError('이름과 연락처를 입력해주세요.');
+    return;
+  }
+  if (dates.length === 0 && books.length === 0 && customs.length === 0) {
+    showApplyError('참여할 월요일 또는 도서를 선택해주세요.');
+    return;
+  }
+  if (!confirmBox.checked) {
+    showApplyError('입금 확인에 체크해주세요.');
+    return;
+  }
+  if (customs.some(b => b.price <= 0)) {
+    showApplyError('직접 주문하실 책의 정가를 입력해주세요.');
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = '신청 중...';
+  try {
+    // 달빛리딩클럽 전용 시트(moonlightApply)로 전송
+    await POST({
+      action: 'moonlightApply',
+      month: CONFIG.MONTH,
+      name,
+      phone,
+      plan: 'session',
+      days: dates.map(d => `${d.date}(월)`),
+      freeCount: dates.length,
+      deepCount: 0,
+      fee: total,
+      moimFee: total - bookFee,
+      bookFee: bookFee,
+      coupon: dates.length * CONFIG.COUPON,
+      bammilon: false,
+      booksOnly: (books.length + customs.length) > 0 && dates.length === 0,
+      customBook: customs.map(b => `${b.title} ${won(b.price)}`).join(' / '),
+      note,
+      books: booksLabel
+    });
+    document.querySelector('.form-card').style.display = 'none';
+    document.getElementById('summary-card').querySelectorAll('.bank-box,.confirm-row,.submit-btn,#summary-lines,.summary-total,.coupon-note,h3,.apply-alert').forEach(el => {
+      el.style.display = 'none';
+    });
+    document.getElementById('success-panel').style.display = 'block';
+    const couponLine = dates.length ? ` ${won(dates.length * CONFIG.COUPON)} 도서쿠폰은 모임 당일 드립니다.` : '';
+    const bookLine = booksLabel ? ` 함께 주문하신 책: ${booksLabel}` : '';
+    const customLine = customs.length ? ' 직접 주문하신 책은 입고 확인 후 따로 연락드립니다.' : '';
+    document.getElementById('success-summary').textContent =
+      `${name}님, 총 ${won(total)} 신청이 접수되었습니다.${couponLine}${bookLine}${customLine}`;
+  } catch (err) {
+    showApplyError(err.message || '신청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    submitBtn.disabled = !confirmBox.checked;
+    submitBtn.textContent = '신청 보내기';
+  }
+});
+
+updateSummary();
+</script>
+</body>
+</html>

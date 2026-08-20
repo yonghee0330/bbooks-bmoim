@@ -106,10 +106,54 @@
     .cal-head {
       background: var(--navy); color: white;
       padding: 14px 20px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; flex-direction: column; gap: 12px;
     }
-    .cal-head strong { font-family: 'Noto Serif KR', serif; font-size: 17px; }
-    .cal-legend { display: flex; gap: 12px; font-size: 11px; color: rgba(255,255,255,.7); }
+    .cal-head-top {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .cal-head-center { flex: 1; text-align: center; min-width: 0; }
+    .cal-head strong { font-family: 'Noto Serif KR', serif; font-size: 17px; display: block; }
+    .cal-head-sub {
+      display: block; margin-top: 3px;
+      font-size: 11px; font-weight: 500; color: rgba(255,255,255,.62);
+    }
+    .cal-nav-btn {
+      flex-shrink: 0;
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 50%;
+      background: rgba(255,255,255,.1);
+      color: white;
+      font-size: 22px; line-height: 1;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s, opacity .15s;
+    }
+    .cal-nav-btn:hover:not(:disabled) { background: rgba(255,255,255,.22); }
+    .cal-nav-btn:disabled { opacity: .35; cursor: default; }
+    .cal-carousel-viewport { overflow: hidden; touch-action: pan-y pinch-zoom; }
+    .cal-carousel-track {
+      display: flex;
+      transition: transform .32s ease;
+      will-change: transform;
+    }
+    .cal-month-panel { flex: 0 0 100%; min-width: 0; }
+    .cal-dots {
+      display: flex; justify-content: center; gap: 8px;
+      padding: 12px 16px 14px;
+      border-top: 1px solid var(--border);
+      background: #f8fafc;
+    }
+    .cal-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      border: none; padding: 0;
+      background: #cbd5e1;
+      cursor: pointer;
+      transition: background .15s, transform .15s;
+    }
+    .cal-dot.active { background: var(--navy); transform: scale(1.15); }
+    .sec-title-sub { font-size: 14px; font-weight: 500; color: var(--muted); }
+    .cal-legend { display: flex; gap: 12px; font-size: 11px; color: rgba(255,255,255,.7); flex-wrap: wrap; }
     .cal-legend span { display: flex; align-items: center; gap: 4px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
     .dot-moim { background: #4a8cff; }
@@ -189,18 +233,15 @@
     }
     .featured-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
       max-width: 920px;
       margin: 0 auto;
       align-items: stretch;
     }
-    .featured-grid.has-curation {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .featured-grid:not(.has-curation) .voice-event {
-      max-width: min(100%, 400px);
-      margin: 0 auto;
+    .featured-grid .voice-event {
+      max-width: none;
+      margin: 0;
     }
     .featured-card-head {
       padding: 12px 14px 10px;
@@ -250,7 +291,7 @@
     .voice-event .featured-card-title { color: #78350f; }
     .voice-event .featured-card-lead { color: #92400e; }
     .moim-curation {
-      display: none;
+      display: flex;
       flex-direction: column;
       height: 100%;
       border-radius: 16px;
@@ -258,9 +299,6 @@
       background: #fff;
       border: 2px solid #93c5fd;
       box-shadow: 0 10px 32px rgba(37, 99, 235, .1);
-    }
-    .featured-grid.has-curation .moim-curation {
-      display: flex;
     }
     .moim-curation .featured-card-head {
       background: linear-gradient(180deg, #eff6ff 0%, #fff 100%);
@@ -487,6 +525,63 @@
       font-size: 11px; padding: 4px 10px;
       border-radius: 12px;
     }
+    .moim-poster-num {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      left: auto;
+      z-index: 3;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 999px;
+      background: var(--navy);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 28px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(10, 31, 68, .28);
+      pointer-events: none;
+    }
+    .moim-poster-num.is-left {
+      right: auto;
+      left: 10px;
+    }
+    .moim-open-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
+      border: 1px solid #dbeafe;
+      border-radius: 14px;
+    }
+    .moim-open-stat {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .moim-open-num {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+    }
+    .moim-open-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e40af;
+    }
+    .moim-open-desc {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
 
     /* 모임 포스터 2장+ 슬라이더 */
     .poster-slider-wrap {
@@ -701,6 +796,41 @@
       line-height: 1.5;
     }
 
+    /* 대관 신청 모달 — 요금·환불 안내 */
+    .rent-modal-note {
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-size: 10px;
+      line-height: 1.55;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .rent-modal-note-bottom { margin-bottom: 0; margin-top: 4px; }
+    .rent-modal-note.fee {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+    }
+    .rent-modal-note.refund {
+      background: var(--sand-dark);
+      border: 1px solid var(--border);
+    }
+    .rent-modal-note-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 5px;
+    }
+    .rent-modal-fee-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .rent-modal-fee-list li::before { content: '· '; color: var(--ocean); font-weight: 700; }
+    .rent-modal-note strong { font-weight: 600; color: var(--text); }
+
     /* ── 모달 ─────────────────────────────── */
     .ov {
       display: none; position: fixed; inset: 0;
@@ -753,9 +883,16 @@
     @keyframes rot { to { transform: rotate(360deg); } }
 
     /* ── 환불 정책 ────────────────────────── */
-    .refund { margin-top: 40px; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-    .refund h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
-    .refund p { font-size: 12px; color: var(--muted); line-height: 1.8; }
+    .refund {
+      margin: 28px 0 24px;
+      padding: 12px 14px;
+      background: var(--sand-dark);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .refund h3 { font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .refund p { font-size: 11px; color: var(--muted); line-height: 1.65; }
+    .refund strong { font-weight: 600; color: var(--text); }
 
     /* ── 라이트박스 ───────────────────────── */
     .lightbox {
@@ -816,6 +953,219 @@
     .poster-img-slot img[src=""], .poster-img-slot img:not([src]) { display: none; }
 
     .btn-apply.sold-out { background: #94a3b8; cursor: not-allowed; }
+    .moim-full-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      background: #fee2e2;
+      color: #991b1b;
+      vertical-align: middle;
+    }
+    .moim-ended-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      background: #fef3c7;
+      color: #b45309;
+      vertical-align: middle;
+    }
+    .moim-closed-badge {
+      display: inline-block;
+      margin-left: 6px;
+      padding: 1px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 800;
+      background: #fef3c7;
+      color: #92400e;
+      vertical-align: middle;
+    }
+    .stab.stab-full {
+      opacity: .55;
+      text-decoration: line-through;
+    }
+    .stab.stab-ended {
+      opacity: .6;
+      color: #64748b;
+    }
+    .moim-card.moim-sold-out .moim-poster-img::before,
+    .moim-card.moim-sold-out .poster-slider-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: rgba(8, 18, 38, 0.22);
+      pointer-events: none;
+    }
+    .moim-card.moim-sold-out .moim-poster-img::after,
+    .moim-card.moim-sold-out .poster-slider-wrap::after {
+      content: '모집 완료';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      z-index: 5;
+      text-align: center;
+      background: rgba(185, 28, 28, 0.88);
+      color: #fff;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      padding: 6px 14px;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .22);
+      border-radius: 6px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .moim-card.moim-sold-out .moim-poster-img:hover::after,
+    .moim-card.moim-sold-out .poster-slider-wrap:hover::after {
+      content: '모집 완료';
+      left: 50%;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      background: rgba(185, 28, 28, 0.88);
+      color: #fff;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 6px 14px;
+      border-radius: 6px;
+    }
+    .voice-event.moim-sold-out .voice-event-poster::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      background: rgba(8, 18, 38, 0.22);
+      pointer-events: none;
+    }
+    .voice-event.moim-sold-out .voice-event-poster::after {
+      content: '모집 완료';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      z-index: 4;
+      text-align: center;
+      background: rgba(185, 28, 28, 0.88);
+      color: #fff;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      padding: 6px 14px;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .22);
+      border-radius: 6px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .moim-card.moim-ended .moim-poster-img::before,
+    .moim-card.moim-ended .poster-slider-wrap::before,
+    .voice-event.moim-ended .voice-event-poster::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: rgba(15, 23, 42, 0.22);
+      pointer-events: none;
+    }
+    .moim-card.moim-ended .moim-poster-img::after,
+    .moim-card.moim-ended .poster-slider-wrap::after,
+    .voice-event.moim-ended .voice-event-poster::after {
+      content: '모임 종료';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      z-index: 5;
+      text-align: center;
+      background: rgba(217, 119, 6, 0.92);
+      color: #fff;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      padding: 6px 14px;
+      border: 2px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 16px rgba(180, 83, 9, 0.35);
+      border-radius: 6px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .moim-card.moim-ended .moim-poster-img:hover::after,
+    .moim-card.moim-ended .poster-slider-wrap:hover::after {
+      content: '모임 종료';
+      left: 50%;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      background: rgba(217, 119, 6, 0.92);
+      color: #fff;
+      font-size: clamp(13px, 3.5vw, 16px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      padding: 6px 14px;
+      border-radius: 6px;
+    }
+    .moim-card.moim-closed .moim-poster-img::before,
+    .moim-card.moim-closed .poster-slider-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: rgba(8, 18, 38, 0.55);
+      pointer-events: none;
+    }
+    .moim-card.moim-closed .moim-poster-img::after,
+    .moim-card.moim-closed .poster-slider-wrap::after {
+      content: '모임 신청 마감';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      z-index: 5;
+      min-width: 72%;
+      max-width: 92%;
+      text-align: center;
+      background: rgba(146, 64, 14, 0.94);
+      color: #fff;
+      font-size: clamp(17px, 5.5vw, 28px);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      line-height: 1.25;
+      padding: 14px 10px;
+      border: 3px solid #fff;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, .35);
+      border-radius: 8px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    .moim-card.moim-closed .moim-poster-img:hover::after,
+    .moim-card.moim-closed .poster-slider-wrap:hover::after {
+      content: '모임 신청 마감';
+      left: 50%;
+      top: 50%;
+      right: auto;
+      bottom: auto;
+      transform: translate(-50%, -50%) rotate(-8deg);
+      background: rgba(146, 64, 14, 0.94);
+      color: #fff;
+      font-size: clamp(17px, 5.5vw, 28px);
+      padding: 14px 10px;
+      border-radius: 8px;
+    }
 
     /* ── 시간 슬롯 ──────────────────────── */
     .tslot {
@@ -891,6 +1241,48 @@
     .space-info { padding: 18px; }
     .space-info h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
     .space-info p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .space-fee-box {
+      margin-bottom: 20px;
+      padding: 16px 18px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #f0f9ff 0%, #fff 100%);
+      border: 1px solid #bae6fd;
+    }
+    .space-fee-box h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .space-fee-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .space-fee-list li {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.55;
+      padding-left: 14px;
+      position: relative;
+    }
+    .space-fee-list li::before {
+      content: '·';
+      position: absolute;
+      left: 0;
+      color: var(--ocean);
+      font-weight: 700;
+    }
+    .space-fee-list strong { color: var(--navy); font-weight: 700; }
+    .space-fee-note {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
     .slider-nav {
       display: flex; justify-content: space-between; align-items: center;
       margin-top: 12px;
@@ -927,12 +1319,13 @@
       .sec-title { font-size: 18px; }
 
       .cal-head {
-        flex-direction: column;
-        align-items: flex-start;
         gap: 10px;
         padding: 12px 14px;
       }
+      .cal-head-top { width: 100%; }
       .cal-head strong { font-size: 15px; }
+      .cal-head-sub { font-size: 10px; }
+      .cal-nav-btn { width: 30px; height: 30px; font-size: 20px; }
       .cal-legend {
         flex-wrap: wrap;
         gap: 6px 10px;
@@ -975,9 +1368,9 @@
         padding: 11px 16px;
       }
 
-      .featured-grid.has-curation { grid-template-columns: 1fr; }
-      .featured-grid:not(.has-curation) .voice-event,
-      .featured-grid.has-curation .voice-event { max-width: min(100%, 360px); margin: 0 auto; }
+      .featured-grid { grid-template-columns: 1fr; }
+      .featured-grid .voice-event { max-width: min(100%, 360px); margin: 0 auto; }
+      .moim-curation { max-width: min(100%, 360px); margin: 0 auto; }
       .voice-event-desc { font-size: 9px; -webkit-line-clamp: 4; }
       .voice-fact { font-size: 8px; padding: 4px 5px; }
       .featured-poster { aspect-ratio: 3 / 4; }
@@ -1017,18 +1410,28 @@
   <!-- ── 캘린더 ── -->
   <div style="margin-bottom:8px">
     <div class="sec-label">Calendar</div>
-    <div class="sec-title">6월 일정</div>
+    <div class="sec-title">6월 일정 <span class="sec-title-sub">· 대관 8월까지</span></div>
   </div>
-  <div class="cal-wrap">
+  <div class="cal-wrap" id="calWrap">
     <div class="cal-head">
-      <strong>2026년 6월</strong>
-      <div class="cal-legend">
-        <span><span class="dot dot-moim"></span> 비모임</span>
-        <span><span class="dot dot-voice"></span> b.voice</span>
-        <span><span class="dot dot-rent"></span> 대관 가능 (모임 외 시간)</span>
+      <div class="cal-head-top">
+        <button type="button" class="cal-nav-btn" id="calPrevBtn" aria-label="이전 달">‹</button>
+        <div class="cal-head-center">
+          <strong id="calMonthLabel">2026년 6월</strong>
+          <span class="cal-head-sub" id="calMonthSub">비모임 · b.voice · 대관</span>
+        </div>
+        <button type="button" class="cal-nav-btn" id="calNextBtn" aria-label="다음 달">›</button>
+      </div>
+      <div class="cal-legend" id="calLegend">
+        <span id="calLegendMoim"><span class="dot dot-moim"></span> 비모임</span>
+        <span id="calLegendVoice"><span class="dot dot-voice"></span> b.voice</span>
+        <span><span class="dot dot-rent"></span> 대관 가능</span>
       </div>
     </div>
-    <div class="cal-grid">
+    <div class="cal-carousel-viewport" id="calCarouselViewport">
+      <div class="cal-carousel-track" id="calCarouselTrack">
+        <div class="cal-month-panel" data-cal-month="0">
+    <div class="cal-grid" id="calGridJune">
       <div class="cal-dow sun">일</div>
       <div class="cal-dow">월</div>
       <div class="cal-dow">화</div>
@@ -1123,7 +1526,7 @@
       <!-- 5주 -->
       <div class="cal-cell sun" onclick="openRent('2026-06-28')">
         <div class="cal-day">28</div>
-        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('nextdoor')">황동만 옆집?</div>
+        <div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('nextdoor')">DRIVE Teatime</div>
         <div class="cal-rent-btn">대관</div>
       </div>
       <div class="cal-cell" onclick="openRent('2026-06-29')"><div class="cal-day">29</div><div class="cal-rent-btn">대관</div></div>
@@ -1133,6 +1536,12 @@
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
     </div>
+        </div>
+        <div class="cal-month-panel" data-cal-month="1" id="calPanelJuly"></div>
+        <div class="cal-month-panel" data-cal-month="2" id="calPanelAugust"></div>
+      </div>
+    </div>
+    <div class="cal-dots" id="calDots" aria-label="캘린더 월 선택"></div>
   </div>
 
   <!-- ── 특별 큐레이션 (b.voice + b.moim) ── -->
@@ -1192,6 +1601,14 @@
   <div style="margin-bottom:16px">
     <div class="sec-label">b.moim</div>
     <div class="sec-title">6월 개설 모임</div>
+  </div>
+
+  <div class="moim-open-bar">
+    <div class="moim-open-stat">
+      <span class="moim-open-num" id="moimTotalCount">0</span>
+      <span class="moim-open-label">개 모임 개설</span>
+    </div>
+    <p class="moim-open-desc">6월 비북스 b.moim · 아래 번호 순서대로 모임을 확인할 수 있습니다.</p>
   </div>
 
   <div class="moim-grid">
@@ -1277,7 +1694,7 @@
         <div class="moim-meta" id="tue2-meta" style="display:none">
           <div class="meta-row"><span class="mi">📅</span>6월 23일 (화) 오후 2:00 – 4:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
-          <div class="meta-row"><span class="mi">👥</span>5명</div>
+          <div class="meta-row"><span class="mi">👥</span>4명</div>
           <div class="meta-row"><span class="mi">📚</span>모임 도서 &lt;구덩이&gt; 구매 조건</div>
         </div>
         <div class="moim-foot">
@@ -1389,15 +1806,15 @@
 
     <!-- Creative Writing Club · 영국정원 Lovey -->
     <div class="moim-card" id="creativewriting">
-      <div class="moim-poster-img" onclick="openLightbox('images/creativewriting_6월.png','Creative Writing Club 포스터')">
-        <img src="images/creativewriting_6월.png" alt="Creative Writing Club 포스터">
+      <div class="moim-poster-img" onclick="openLightbox('images/creativewriting_june.jpg','Creative Writing Club 포스터')">
+        <img src="images/creativewriting_june.jpg" alt="Creative Writing Club 포스터">
       </div>
       <div class="moim-body">
         <div class="moim-name">Creative Writing Club</div>
-        <p class="moim-host-line">영국정원 Lovey</p>
+        <p class="moim-host-line">영국정원 Lovey · 러비쌤</p>
         <div class="moim-desc">
-          Creative Writing Club — 영어로 글을 쓰고, 읽고, 함께 다듬는 작은 창작 모임입니다.<br><br>
-          짧은 프롬프트에서 시작해 각자의 문장을 꺼내 봅니다. 시, 에세이, 짧은 이야기 무엇이든 좋아요. 완벽한 영문력이 없어도 괜찮습니다. 글쓰기를 처음 해보는 분도 환영해요. 네 사람의 작은 클럽에서 조용히, 그리고 따뜻하게 창작해 봅니다.
+          영국출신 영어과외 전문교사와 함께하는 영어글쓰기 모임입니다.<br><br>
+          Creative Writing Club — 영어로 글을 쓰고, 읽고, 함께 다듬는 작은 창작 모임입니다. 짧은 프롬프트에서 시작해 각자의 문장을 꺼내 봅니다. 시, 에세이, 짧은 이야기 무엇이든 좋아요. 완벽한 영문력이 없어도 괜찮습니다.
         </div>
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>6월 22일 (월) 오후 7:00 – 8:30</div>
@@ -1408,7 +1825,7 @@
         <div class="moim-foot">
           <div>
             <div class="moim-price">15,000원</div>
-            <div class="moim-cap">재료 준비 없음</div>
+            <div class="moim-cap">참가비 중 공간사용료 5,000원 포함</div>
           </div>
           <button class="btn-apply" id="apply-creativewriting" onclick="openApply('Creative Writing Club','creativewriting')">신청하기</button>
         </div>
@@ -1448,15 +1865,15 @@
 
     <!-- 영어 북클럽 · 영국정원 Lovey -->
     <div class="moim-card" id="engbookclub">
-      <div class="moim-poster-img" onclick="openLightbox('images/engbookclub_6월.png','영어 북클럽 포스터')">
-        <img src="images/engbookclub_6월.png" alt="영어 북클럽 포스터">
+      <div class="moim-poster-img" onclick="openLightbox('images/engbookclub_june.jpg','영어 북클럽 포스터')">
+        <img src="images/engbookclub_june.jpg" alt="영어 북클럽 포스터">
       </div>
       <div class="moim-body">
         <div class="moim-name">영어 북클럽</div>
-        <p class="moim-host-line">영국정원 Lovey</p>
+        <p class="moim-host-line">영국정원 Lovey · 러비쌤</p>
         <div class="moim-desc">
-          영어 원서 한 권, 편안한 독서 시간. 각자 읽어온 책을 들고 와 가볍게 이야기 나누는 영어 북클럽입니다.<br><br>
-          정해진 과제나 발표는 없어요. 좋아하는 문장, 인상 깊은 장면, 읽으며 떠올랐던 생각을 영어로, 한국어로 자유롭게 나눕니다. 영어가 서툴러도 괜찮아요. 책 이야기를 나누며 자연스럽게 늘어나는 시간입니다.
+          영어 원서 한 권, 각자 읽어온 책을 들고 와 가볍게 이야기 나누는 영어 북클럽입니다.<br><br>
+          좋아하는 문장, 인상 깊은 장면, 읽으며 떠올랐던 생각을 영어·한국어로 자유롭게 나눕니다. 영어가 서툴러도 괜찮아요!!
         </div>
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>6월 27일 (토) 오전 10:00 – 12:00</div>
@@ -1467,7 +1884,7 @@
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
-            <div class="moim-cap">재료 준비 없음</div>
+            <div class="moim-cap">참가비 중 공간사용료 5,000원 포함</div>
           </div>
           <button class="btn-apply" id="apply-engbookclub" onclick="openApply('영어 북클럽','engbookclub')">신청하기</button>
         </div>
@@ -1476,35 +1893,15 @@
 
     <!-- Reading Wave · 책방,파도 x 또봐 만화방 -->
     <div class="moim-card" id="readingwave">
-      <div class="poster-slider-wrap" id="poster-slider-readingwave"
-           onclick="openPosterLightbox('readingwave')"
-           data-posters='["images/readingwave_6월_1.png","images/readingwave_6월_2.png"]'
-           data-alt="Reading Wave 포스터">
-        <span class="poster-slider-hint">1 / 2</span>
-        <div class="poster-slider-viewport">
-          <div class="poster-slider" data-slider="readingwave">
-            <div class="poster-slide">
-              <img src="images/readingwave_6월_1.png" alt="Reading Wave 포스터 1">
-            </div>
-            <div class="poster-slide">
-              <img src="images/readingwave_6월_2.png" alt="Reading Wave 포스터 2">
-            </div>
-          </div>
-        </div>
-        <div class="poster-slider-nav" onclick="event.stopPropagation()">
-          <div class="slider-dots" data-dots="readingwave"></div>
-          <div class="slider-arrows">
-            <button type="button" class="sarr" aria-label="이전" onclick="posterSlide('readingwave', -1)">‹</button>
-            <button type="button" class="sarr" aria-label="다음" onclick="posterSlide('readingwave', 1)">›</button>
-          </div>
-        </div>
+      <div class="moim-poster-img" onclick="openLightbox('images/readingwave_june.jpg','Reading Wave 포스터')">
+        <img src="images/readingwave_june.jpg" alt="Reading Wave 포스터">
       </div>
       <div class="moim-body">
         <div class="moim-name">책방,파도 x 또봐 만화방 : Reading Wave</div>
         <p class="moim-host-line">책방,파도 · 또봐 만화방</p>
         <div class="moim-desc">
-          뉴욕에 READING RHYTHMS이 있다면, 부천에는 READING WAVE가 있다.<br><br>
-          조용히 책에 집중하는 시간. 각자 문장의 파도를 타고, 마음을 가볍게 나누는 시간.
+          뉴욕엔 Reading Rhythms, 부천엔?!<br><br>
+          조용히 책에 집중하는 시간. 각자 문장의 파도를 타고, 마음을 가볍게 나누는 시간입니다.
         </div>
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>6월 27일 (토) 오후 2:00 – 4:00</div>
@@ -1515,49 +1912,58 @@
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
-            <div class="moim-cap">준비물: 책 1권</div>
+            <div class="moim-cap">준비물: 책 1권 · 공간사용료 5,000원 포함</div>
           </div>
           <button class="btn-apply" id="apply-readingwave" onclick="openApply('책방,파도 x 또봐 만화방 : Reading Wave','readingwave')">신청하기</button>
         </div>
       </div>
     </div>
 
-    <!-- 우리집 옆집에 황동만이 산다? -->
+    <!-- 영화는 어떻게 만들어지나요? · DRIVE 정연 감독 Teatime -->
     <div class="moim-card" id="nextdoor">
-      <div class="moim-poster-img" onclick="openLightbox('images/nextdoor_6월.png','우리집 옆집에 황동만이 산다? 포스터')">
-        <img src="images/nextdoor_6월.png" alt="우리집 옆집에 황동만이 산다? 포스터">
+      <div class="moim-poster-img" onclick="openLightbox('images/drive_teatime_june.jpg','영화는 어떻게 만들어지나요? — DRIVE 정연 감독 Teatime 포스터')">
+        <img src="images/drive_teatime_june.jpg" alt="영화는 어떻게 만들어지나요? 독립영화 DRIVE 정연 감독과 Teatime 포스터">
       </div>
       <div class="moim-body">
-        <div class="moim-name">우리집 옆집에 황동만이 산다?</div>
-        <p class="moim-host-line">스튜디오 이상한 나라의 원더랜드</p>
+        <div class="moim-name">영화는 어떻게 만들어지나요? : 독립영화 &lt;DRIVE&gt; 정연 감독과 Teatime</div>
+        <p class="moim-host-line">스튜디오 이상한 나라의 원더랜드 · 정연 감독</p>
         <div class="moim-desc">
-          최근 드라마 &lt;모두가 자신의 무가치함과 씨우고 있다&gt;를 계기로, 영화를 제작 중인 감독(영화 드라이브)과 함께 시나리오·촬영·편집·개봉·홍보·배급 등 제작 과정과 상업·독립·단편·장편 영화 이야기를 편하게 나눕니다.<br><br>
-          영화에 대한 궁금함은 주제 불문 환영합니다. 질문 보따리를 들고 가볍게 오세요. 모임이 이어지면 짧은 영화(29초 영화 등)를 함께 만드는 날도 기대해 봅니다.
+          현재 영화 제작 중인 감독과 함께 차 한잔 마시며, 영화 감독, 시나리오, 촬영, 편집, 개봉, 홍보, 배급 등 영화 제작 과정과 상업·독립·단편·장편 영화, OTT에 대해 세상 편하게!
         </div>
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>6월 28일 (일) 오후 3:00 – 5:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
-          <div class="meta-row"><span class="mi">👥</span>7명</div>
-          <div class="meta-row"><span class="mi">📚</span>모임 참가자 &lt;드라이브 아카이브 북&gt; 1만원 구입 가능</div>
+          <div class="meta-row"><span class="mi">👥</span>5명</div>
         </div>
         <div class="moim-foot">
           <div>
             <div class="moim-price">10,000원</div>
-            <div class="moim-cap">재료 준비 없음</div>
+            <div class="moim-cap">참가비 중 공간사용료 5,000원 포함</div>
           </div>
-          <button class="btn-apply" id="apply-nextdoor" onclick="openApply('우리집 옆집에 황동만이 산다?','nextdoor')">신청하기</button>
+          <button class="btn-apply" id="apply-nextdoor" onclick="openApply('영화는 어떻게 만들어지나요? : 독립영화 &lt;DRIVE&gt; 정연 감독과 Teatime','nextdoor')">신청하기</button>
         </div>
       </div>
     </div>
 
   </div>
 
+  <div class="refund">
+    <h3>💳 환불 규정</h3>
+    <p>
+      <strong>재료 준비가 있는 모임</strong><br>
+      · 모임 2일 전 취소: 100% 환불 · 1일 전: 50% · 당일: 환불 불가<br>
+      <strong>재료 준비가 없는 모임</strong><br>
+      · 모임 1일 전 취소: 100% 환불 · 당일: 환불 불가<br>
+      취소 문의는 비북스 공식 인스타그램 DM으로 부탁드립니다.
+    </p>
+  </div>
+
   <!-- ── 대관 안내 ── -->
   <div class="rent-box">
     <h3>🏠 공간 대관 문의</h3>
-    <p>비북스 세미나실과 매장 테이블을 대관하실 수 있어요.<br>
-    비모임이 있는 날에도 모임 시간 외에는 신청 가능합니다.<br>
-    캘린더의 대관 표시를 클릭하면 예약된 시간을 확인할 수 있어요.<br>
+    <p>비북스 세미나실·매장 테이블·계단 좌석·전체 대관을 신청하실 수 있어요.<br>
+    비모임은 6월까지이며, <strong>대관은 6–8월</strong>까지 캘린더에서 미리 신청할 수 있어요.<br>
+    캘린더를 넘기면 7·8월 대관 일정도 확인·신청할 수 있습니다.<br>
     일정 확인 후 담당자가 연락드립니다.</p>
     <button class="btn-rent" onclick="openRent('')">대관 신청하기</button>
   </div>
@@ -1569,6 +1975,15 @@
       <div class="sec-title">비북스 공간 소개</div>
     </div>
     <p style="font-size:13px;color:var(--muted);margin-bottom:16px">책이 있는 공간에서, 당신의 모임을 펼쳐보세요</p>
+    <div class="space-fee-box">
+      <h4>💰 공간 이용료 안내</h4>
+      <ul class="space-fee-list">
+        <li><strong>세미나실 / 매장 테이블</strong> (최대 8인) · 2시간 기준 1인당 5,000원</li>
+        <li><strong>계단 좌석</strong> (최대 20인) · 시간당 50,000원</li>
+        <li><strong>전체 대관</strong> (최대 40인) · 시간당 100,000원</li>
+      </ul>
+      <p class="space-fee-note">세미나실과 매장 테이블은 동일 요금입니다. 정확한 금액은 신청 후 담당자가 안내드립니다.</p>
+    </div>
     <div class="space-filter">
       <button class="sf-btn active" onclick="filterSpace('all',this)">전체</button>
       <button class="sf-btn" onclick="filterSpace('main',this)">🏠 매장 전체</button>
@@ -1689,19 +2104,6 @@
   </div>
 
 
-    <h3>💳 환불 규정</h3>
-    <p>
-      <strong>재료 준비가 있는 모임</strong><br>
-      · 모임 2일 전 취소: 100% 환불<br>
-      · 모임 1일 전 취소: 50% 환불<br>
-      · 당일 취소: 환불 불가<br><br>
-      <strong>재료 준비가 없는 모임</strong><br>
-      · 모임 1일 전 취소: 100% 환불<br>
-      · 당일 취소: 환불 불가<br><br>
-      취소 문의는 비북스 공식 인스타그램 DM으로 부탁드립니다.
-    </p>
-  </div>
-
 </div>
 
 <!-- ══ 라이트박스 ══ -->
@@ -1781,17 +2183,27 @@
   <div class="modal">
     <div class="modal-title">🏠 공간 대관 신청</div>
     <div class="modal-sub">비북스 담당자가 확인 후 연락드립니다</div>
+    <div class="rent-modal-note fee">
+      <div class="rent-modal-note-title">💰 공간 이용료 안내</div>
+      <ul class="rent-modal-fee-list">
+        <li><strong>세미나실 / 매장 테이블</strong> (최대 8인) · 2시간 기준 1인당 5,000원</li>
+        <li><strong>계단 좌석</strong> (최대 20인) · 시간당 50,000원</li>
+        <li><strong>전체 대관</strong> (최대 40인) · 시간당 100,000원</li>
+      </ul>
+    </div>
     <div id="rentAlert"></div>
     <div class="fg"><label>공간 선택 *</label>
       <select id="rSpace" onchange="renderTimeSlots()">
         <option value="">선택해주세요</option>
         <option value="세미나실">📌 세미나실</option>
         <option value="매장 테이블">☕ 매장 테이블</option>
+        <option value="계단 좌석">🪜 계단 좌석</option>
+        <option value="전체 대관">🏠 전체 대관</option>
       </select>
     </div>
     <div class="fg">
       <label>희망 날짜 *</label>
-      <input type="date" id="rDate" onchange="renderTimeSlots()"/>
+      <input type="date" id="rDate" min="2026-06-01" max="2026-08-31" onchange="renderTimeSlots()"/>
     </div>
     <div id="rentBlockedWrap" class="rent-blocked-wrap" hidden>
       <div class="rent-blocked-title">📋 이 날 예약 현황</div>
@@ -1811,6 +2223,14 @@
     </div>
     <div class="fg"><label>사용 목적</label><input type="text" id="rPurpose" placeholder="독서모임, 스터디 등"/></div>
     <div class="fg"><label>인원</label><input type="number" id="rCount" placeholder="예: 6"/></div>
+    <div class="rent-modal-note refund rent-modal-note-bottom">
+      <div class="rent-modal-note-title">💳 환불 규정</div>
+      <p>
+        <strong>재료 준비가 있는 모임</strong> · 2일 전 100% · 1일 전 50% · 당일 불가<br>
+        <strong>재료 준비가 없는 모임</strong> · 1일 전 100% · 당일 불가<br>
+        취소는 비북스 공식 인스타그램 DM으로 문의해주세요.
+      </p>
+    </div>
     <div class="modal-foot">
       <button class="btn btn-cancel" onclick="closeOv('rentOv')">취소</button>
       <button class="btn btn-submit" id="rentBtn" onclick="submitRent()">신청하기</button>
@@ -1824,9 +2244,19 @@
 
 <script>
 // ══ 설정 ═══════════════════════════════
-const API = 'https://script.google.com/macros/s/AKfycbwfZYQ9FtaMWm6ZqyPhd1tByTzrQV352jtQZYT0-lplGlR0WOKCW_V928gLmRptuPik4g/exec';
+const API = 'https://script.google.com/macros/s/AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ/exec';
+const RENT_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent('대관신청');
+const MOIM_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM/gviz/tq?tqx=out:json&sheet=' + encodeURIComponent('모임신청');
+const RENT_CAL_MONTHS = ['6월', '7월', '8월'];
+const CAL_PANELS = [
+  { year: 2026, month: 6, label: '2026년 6월', sub: '비모임 · b.voice · 대관', hasMoim: true },
+  { year: 2026, month: 7, label: '2026년 7월', sub: '대관 신청 가능', hasMoim: false },
+  { year: 2026, month: 8, label: '2026년 8월', sub: '대관 신청 가능', hasMoim: false },
+];
+let calPanelIndex = 0;
 
 // ══ 모임 데이터 ════════════════════════
+const MOIM_YEAR = 2026;
 // session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
 const MOIMS = {
   dong: {
@@ -1852,7 +2282,7 @@ const MOIMS = {
       { label: '① 6/14(일) 오후 2:00–4:00', value: '6월14일' },
       { label: '② 6/23(화) 오후 2:00–4:00', value: '6월23일' }
     ],
-    capacity: { '6월14일': 6, '6월23일': 5 },
+    capacity: { '6월14일': 6, '6월23일': 4 },
     amount: 10000,
     hasSession: true
   },
@@ -1861,7 +2291,8 @@ const MOIMS = {
     sessions: [{ label: '6/20(토) 오후 2:00–4:00', value: '6월20일' }],
     capacity: 6,
     amount: 20000,
-    hasSession: false
+    hasSession: false,
+    applyClosed: true
   },
   zoomchi: {
     name: '줌치풍경만들기',
@@ -1913,9 +2344,9 @@ const MOIMS = {
     hasSession: false
   },
   nextdoor: {
-    name: '우리집 옆집에 황동만이 산다?',
+    name: '영화는 어떻게 만들어지나요? : 독립영화 <DRIVE> 정연 감독과 Teatime',
     sessions: [{ label: '6/28(일) 오후 3:00–5:00', value: '6월28일' }],
-    capacity: 7,
+    capacity: 5,
     amount: 10000,
     hasSession: false
   }
@@ -1936,6 +2367,7 @@ let curMoimKey = '';
 let curVoiceKey = '';
 let curationPool = [];
 let curationPickIndex = -1;
+let latestMoimCounts = {};
 
 const MOIM_CURATION_META = {
   dong: { cardId: 'dongseobukbook', poster: 'images/classic_6월.png' },
@@ -1945,12 +2377,20 @@ const MOIM_CURATION_META = {
   zoomchi: { cardId: 'zoomchi', poster: 'images/zoomchi_6월.png' },
   movie: { cardId: 'movie', poster: 'images/movie_6월.png' },
   bookit: { cardId: 'bookit', poster: 'images/bookit_6월.png' },
-  creativewriting: { cardId: 'creativewriting', poster: 'images/creativewriting_6월.png' },
+  creativewriting: { cardId: 'creativewriting', poster: 'images/creativewriting_june.jpg' },
   letter: { cardId: 'letter', poster: 'images/letter_6월.png' },
-  engbookclub: { cardId: 'engbookclub', poster: 'images/engbookclub_6월.png' },
-  readingwave: { cardId: 'readingwave', poster: 'images/readingwave_6월_1.png' },
-  nextdoor: { cardId: 'nextdoor', poster: 'images/nextdoor_6월.png' }
+  engbookclub: { cardId: 'engbookclub', poster: 'images/engbookclub_june.jpg' },
+  readingwave: { cardId: 'readingwave', poster: 'images/readingwave_june.jpg' },
+  nextdoor: { cardId: 'nextdoor', poster: 'images/drive_teatime_june.jpg' }
 };
+
+const MOIM_DEFAULT_SESSION = {};
+Object.values(MOIMS).forEach(m => {
+  if (m.sessions.length === 1) MOIM_DEFAULT_SESSION[m.name] = m.sessions[0].value;
+});
+Object.values(VOICES).forEach(v => {
+  MOIM_DEFAULT_SESSION[v.name] = v.sessions[0].value;
+});
 
 function getMoimSessionCount(counts, name, sessionValue) {
   if (name === '슬기로운 영화 속 클래식') {
@@ -1959,12 +2399,271 @@ function getMoimSessionCount(counts, name, sessionValue) {
   return counts[`${name}_${sessionValue}`] ?? counts[name] ?? 0;
 }
 
+function getSessionCapacity(m, sessionValue) {
+  return typeof m.capacity === 'object' ? m.capacity[sessionValue] : m.capacity;
+}
+
+function isSessionFull(m, sessionValue, counts) {
+  const cap = getSessionCapacity(m, sessionValue);
+  if (!cap) return false;
+  return getMoimSessionCount(counts, m.name, sessionValue) >= cap;
+}
+
+function getNowKstMs() {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' })).getTime();
+}
+
+function parseSessionEndMs(session) {
+  if (session._endMs != null) return session._endMs;
+  const label = session.label || '';
+  const dateMatch = label.match(/(\d{1,2})\/(\d{1,2})/);
+  if (!dateMatch) {
+    session._endMs = null;
+    return null;
+  }
+  const month = parseInt(dateMatch[1], 10);
+  const day = parseInt(dateMatch[2], 10);
+  const rangeMatch = label.match(/(\d{1,2}(?::\d{2})?)\s*[~–\-]\s*(\d{1,2}(?::\d{2})?)/);
+  if (!rangeMatch) {
+    session._endMs = new Date(MOIM_YEAR, month - 1, day, 23, 59, 59).getTime();
+    return session._endMs;
+  }
+  const isPM = label.includes('오후');
+  const isAM = label.includes('오전');
+  const startPart = rangeMatch[1];
+  const endPart = rangeMatch[2];
+  const startHour = startPart.includes(':')
+    ? parseInt(startPart.split(':')[0], 10)
+    : parseInt(startPart, 10);
+  let endHour = endPart.includes(':')
+    ? parseInt(endPart.split(':')[0], 10)
+    : parseInt(endPart, 10);
+  const endMin = endPart.includes(':') ? parseInt(endPart.split(':')[1], 10) : 0;
+  if (isPM && endHour < 12) endHour += 12;
+  if (isAM && endHour < startHour) endHour += 12;
+  session._endMs = new Date(MOIM_YEAR, month - 1, day, endHour, endMin, 0).getTime();
+  return session._endMs;
+}
+
+function isSessionEnded(session) {
+  const endMs = parseSessionEndMs(session);
+  if (endMs == null) return false;
+  return getNowKstMs() > endMs;
+}
+
+function isSessionClosed(m, session, counts) {
+  if (m.applyClosed) return true;
+  return isSessionEnded(session) || isSessionFull(m, session.value, counts);
+}
+
+function isMoimFullySoldOut(key, counts) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  return m.sessions.every(s => isSessionFull(m, s.value, counts || latestMoimCounts));
+}
+
+function isMoimFullyEnded(key) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  return m.sessions.every(s => isSessionEnded(s));
+}
+
+function isMoimFullyClosed(key, counts) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  counts = counts || latestMoimCounts;
+  return m.sessions.every(s => isSessionClosed(m, s, counts));
+}
+
+function isMoimApplyOpen(key, counts) {
+  const m = MOIMS[key];
+  if (!m) return false;
+  counts = counts || latestMoimCounts;
+  return m.sessions.some(s => !isSessionClosed(m, s, counts));
+}
+
+function isVoiceFullySoldOut(key, counts) {
+  const v = VOICES[key];
+  if (!v) return false;
+  const session = v.sessions[0].value;
+  return getMoimSessionCount(counts || latestMoimCounts, v.name, session) >= v.capacity;
+}
+
+function isVoiceEnded(key) {
+  const v = VOICES[key];
+  return v ? isSessionEnded(v.sessions[0]) : false;
+}
+
+function isVoiceClosed(key, counts) {
+  return isVoiceEnded(key) || isVoiceFullySoldOut(key, counts);
+}
+
+function resolveSessionKey(moimName, session) {
+  if (!session) return MOIM_DEFAULT_SESSION[moimName] || '';
+  const m = Object.values(MOIMS).find(x => x.name === moimName)
+    || Object.values(VOICES).find(x => x.name === moimName);
+  if (!m) return session;
+  if (m.sessions.some(s => s.value === session)) return session;
+  const prefixed = m.sessions.find(s => s.value.startsWith(session));
+  return prefixed ? prefixed.value : session;
+}
+
+function normalizeApplySession(rawF, rawV, moimName) {
+  if (rawF) return String(rawF).trim();
+  const s = String(rawV ?? '').trim();
+  if (!s) return MOIM_DEFAULT_SESSION[moimName] || '';
+  const dm = s.match(/Date\((\d+),(\d+),(\d+)\)/);
+  if (dm) {
+    const month = parseInt(dm[2], 10) + 1;
+    const day = parseInt(dm[3], 10);
+    return `${month}월${day}일`;
+  }
+  return s;
+}
+
+function addMoimCount(counts, moimName, sessionValue) {
+  if (!moimName) return;
+  if (sessionValue) {
+    counts[`${moimName}_${sessionValue}`] = (counts[`${moimName}_${sessionValue}`] || 0) + 1;
+    if (moimName === '슬기로운 영화 속 클래식') {
+      counts[`동서남북book_${sessionValue}`] = counts[`${moimName}_${sessionValue}`];
+    }
+  }
+  counts[moimName] = (counts[moimName] || 0) + 1;
+}
+
+function countsFromMoimGviz(data) {
+  const counts = {};
+  (data?.table?.rows || []).forEach(row => {
+    const cells = row.c || [];
+    if (cells[1]?.v !== '6월') return;
+    const note = String(cells[7]?.v || '');
+    if (note.includes('취소')) return;
+    const moimName = String(cells[2]?.v || '').trim();
+    const name = String(cells[4]?.v || '').trim();
+    if (!moimName || !name) return;
+    const session = resolveSessionKey(
+      moimName,
+      normalizeApplySession(cells[3]?.f, cells[3]?.v, moimName)
+    );
+    addMoimCount(counts, moimName, session);
+  });
+  return counts;
+}
+
+async function loadMoimCounts() {
+  try {
+    const res = await fetch(MOIM_SHEET_GVIZ, { redirect: 'follow' });
+    const data = parseGvizResponse(await res.text());
+    if (data) latestMoimCounts = countsFromMoimGviz(data);
+  } catch (e) {
+    console.warn('모임 신청 현황 로딩 실패:', e);
+  }
+  updateMoimCapacity(latestMoimCounts);
+  updateMoimCuration(latestMoimCounts);
+}
+
+function soldOut(btnId, label = '모집 완료') {
+  const btn = q(`#${btnId}`);
+  if (!btn) return;
+  btn.disabled = true;
+  btn.classList.add('sold-out');
+  btn.textContent = label;
+}
+
+function resetApplyBtn(btnId, label = '신청하기') {
+  const btn = q(`#${btnId}`);
+  if (!btn) return;
+  btn.disabled = false;
+  btn.classList.remove('sold-out');
+  btn.textContent = label;
+}
+
+function setSessionMetaBadge(meta, type) {
+  if (!meta) return;
+  meta.querySelectorAll('.moim-full-badge, .moim-ended-badge, .moim-closed-badge').forEach(el => el.remove());
+  if (!type) return;
+  const labels = { full: '모집 완료', ended: '모임 종료', closed: '모임 신청 마감' };
+  const classes = { full: 'moim-full-badge', ended: 'moim-ended-badge', closed: 'moim-closed-badge' };
+  const badge = document.createElement('span');
+  badge.className = classes[type];
+  badge.textContent = labels[type];
+  const capRow = [...meta.querySelectorAll('.meta-row')].find(r => r.textContent.includes('👥'));
+  (capRow || meta).appendChild(badge);
+}
+
+function updateSessionTab(tab, ended, full) {
+  if (!tab) return;
+  if (!tab.dataset.baseLabel) {
+    tab.dataset.baseLabel = tab.textContent.replace(' ✓', '').replace(' ·종료', '');
+  }
+  tab.classList.toggle('stab-ended', ended);
+  tab.classList.toggle('stab-full', full && !ended);
+  if (ended) tab.textContent = `${tab.dataset.baseLabel} ·종료`;
+  else if (full) tab.textContent = `${tab.dataset.baseLabel} ✓`;
+  else tab.textContent = tab.dataset.baseLabel;
+}
+
+function updateMoimCapacity(counts) {
+  counts = counts || latestMoimCounts || {};
+
+  Object.entries(MOIMS).forEach(([key, m]) => {
+    const btn = q(`#apply-${key}`);
+    if (!btn) return;
+    const card = btn.closest('.moim-card');
+    const allEnded = isMoimFullyEnded(key);
+    const allSold = isMoimFullySoldOut(key, counts);
+    const applyOpen = isMoimApplyOpen(key, counts);
+
+    card?.classList.remove('moim-sold-out', 'moim-ended', 'moim-closed');
+    if (allEnded) {
+      soldOut(`apply-${key}`, '모임 종료');
+      card?.classList.add('moim-ended');
+    } else if (m.applyClosed) {
+      soldOut(`apply-${key}`, '모임 신청 마감');
+      card?.classList.add('moim-closed');
+    } else if (allSold) {
+      soldOut(`apply-${key}`, '모집 완료');
+      card?.classList.add('moim-sold-out');
+    } else if (!applyOpen) {
+      soldOut(`apply-${key}`, '신청 마감');
+    } else {
+      resetApplyBtn(`apply-${key}`);
+    }
+
+    const metas = card ? card.querySelectorAll('.moim-meta') : [];
+    const tabs = card ? card.querySelectorAll('.stab') : [];
+    m.sessions.forEach((session, idx) => {
+      const ended = isSessionEnded(session);
+      const full = isSessionFull(m, session.value, counts);
+      const badgeType = m.applyClosed ? 'closed' : (ended ? 'ended' : (full ? 'full' : null));
+      setSessionMetaBadge(metas[idx], badgeType);
+      updateSessionTab(tabs[idx], ended, full);
+    });
+  });
+
+  Object.entries(VOICES).forEach(([key, v]) => {
+    const voiceCard = q(`#${key}`);
+    voiceCard?.classList.remove('moim-sold-out', 'moim-ended');
+    if (isVoiceEnded(key)) {
+      soldOut(`apply-${key}`, '모임 종료');
+      voiceCard?.classList.add('moim-ended');
+    } else if (isVoiceFullySoldOut(key, counts)) {
+      soldOut(`apply-${key}`, '모집 완료');
+      voiceCard?.classList.add('moim-sold-out');
+    } else {
+      resetApplyBtn(`apply-${key}`, 'b.voice 신청하기');
+    }
+  });
+}
+
 function buildAlmostFullMoimSlots(counts) {
   const slots = [];
   Object.entries(MOIMS).forEach(([key, m]) => {
     const meta = MOIM_CURATION_META[key];
     if (!meta) return;
     m.sessions.forEach(session => {
+      if (isSessionEnded(session) || m.applyClosed) return;
       const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
       const cur = getMoimSessionCount(counts, m.name, session.value);
       const remaining = cap - cur;
@@ -2001,22 +2700,38 @@ function pickCurationSlot(excludeIndex = -1) {
   return curationPool[idx];
 }
 
+function buildCurationSlots(counts) {
+  const almostFull = buildAlmostFullMoimSlots(counts);
+  if (almostFull.length) return almostFull;
+
+  const open = [];
+  Object.entries(MOIMS).forEach(([key, m]) => {
+    const meta = MOIM_CURATION_META[key];
+    if (!meta) return;
+    m.sessions.forEach(session => {
+      if (isSessionEnded(session) || m.applyClosed) return;
+      const cap = typeof m.capacity === 'object' ? m.capacity[session.value] : m.capacity;
+      const cur = getMoimSessionCount(counts, m.name, session.value);
+      if (cap - cur <= 0) return;
+      open.push({
+        key,
+        cardId: meta.cardId,
+        poster: meta.poster,
+        name: m.name,
+        sessionLabel: session.label,
+        amount: m.amount,
+        remaining: cap - cur,
+        fillRatio: cur / cap
+      });
+    });
+  });
+  return open.sort((a, b) => a.remaining - b.remaining);
+}
+
 function renderMoimCuration(excludeIndex = -1) {
-  const row = q('#voiceZoneRow');
-  if (!row) return;
-
-  if (!curationPool.length) {
-    row.classList.remove('has-curation');
-    return;
-  }
-
   const slot = pickCurationSlot(excludeIndex);
-  if (!slot) {
-    row.classList.remove('has-curation');
-    return;
-  }
+  if (!slot) return;
 
-  row.classList.add('has-curation');
   q('#curationPoster').src = slot.poster;
   q('#curationPoster').alt = `${slot.name} 포스터`;
   q('#curationName').textContent = slot.name;
@@ -2025,29 +2740,177 @@ function renderMoimCuration(excludeIndex = -1) {
 }
 
 function updateMoimCuration(counts) {
-  curationPool = buildAlmostFullMoimSlots(counts);
+  curationPool = buildCurationSlots(counts || {});
   renderMoimCuration();
 }
 
 // ══ 대관·캘린더 데이터 로딩 ═══════════════
-async function loadCounts() {
-  try {
-    const res = await fetch(`${API}?action=count&month=6월`, { redirect: 'follow' });
-    const counts = await res.json();
-    if (counts.error) { console.warn('count error:', counts.error); return; }
+function parseGvizResponse(text) {
+  const match = String(text).match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);/);
+  if (!match) return null;
+  try { return JSON.parse(match[1]); } catch { return null; }
+}
 
-    buildRentBookings(counts._rentDates || []);
-    renderCalendarRentBadges();
-    updateMoimCuration(counts);
+function rentEntriesFromGviz(data) {
+  const rows = data?.table?.rows || [];
+  const entries = [];
+  rows.forEach(row => {
+    const cells = row.c || [];
+    const month = cells[1]?.v;
+    if (!RENT_CAL_MONTHS.includes(month)) return;
+    const note = String(cells[9]?.v || '');
+    if (note.includes('취소')) return;
+    const space = cells[2]?.v || '';
+    const dateRaw = cells[3]?.f || cells[3]?.v || '';
+    const time = cells[4]?.v || '';
+    const dateStr = normalizeRentDate(dateRaw);
+    if (!dateStr || !time) return;
+    entries.push({ date: dateStr, space, time });
+  });
+  return entries;
+}
 
-    if (q('#rDate').value) renderTimeSlots();
-  } catch(e) {
-    console.warn('대관 현황 로딩 실패:', e);
+function rentMonthFromDate(dateStr) {
+  const m = String(dateStr || '').match(/^\d{4}-(\d{2})-/);
+  if (!m) return '6월';
+  return `${parseInt(m[1], 10)}월`;
+}
+
+function tagRentDateCells() {
+  document.querySelectorAll('.cal-cell[onclick*="openRent"]').forEach(cell => {
+    const match = cell.getAttribute('onclick')?.match(/openRent\('([^']*)'\)/);
+    if (match?.[1]) cell.dataset.rentDate = match[1];
+  });
+}
+
+function buildRentMonthGrid(year, month) {
+  const firstDow = new Date(year, month - 1, 1).getDay();
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const trailing = (7 - ((firstDow + daysInMonth) % 7)) % 7;
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  let html = `
+    <div class="cal-dow sun">일</div>
+    <div class="cal-dow">월</div>
+    <div class="cal-dow">화</div>
+    <div class="cal-dow">수</div>
+    <div class="cal-dow">목</div>
+    <div class="cal-dow">금</div>
+    <div class="cal-dow sat">토</div>`;
+
+  for (let i = 0; i < firstDow; i++) {
+    html += '<div class="cal-cell empty"></div>';
   }
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${year}-${pad2(month)}-${pad2(day)}`;
+    const dow = (firstDow + day - 1) % 7;
+    const cls = [
+      'cal-cell',
+      dow === 0 ? 'sun' : '',
+      dow === 6 ? 'sat' : '',
+      dateStr === todayStr ? 'today' : ''
+    ].filter(Boolean).join(' ');
+    html += `<div class="${cls}" data-rent-date="${dateStr}" onclick="openRent('${dateStr}')">
+      <div class="cal-day">${day}</div>
+      <div class="cal-rent-btn">대관</div>
+    </div>`;
+  }
+
+  for (let i = 0; i < trailing; i++) {
+    html += '<div class="cal-cell empty"></div>';
+  }
+
+  return `<div class="cal-grid">${html}</div>`;
+}
+
+function updateCalCarouselUI() {
+  const panel = CAL_PANELS[calPanelIndex];
+  const track = q('#calCarouselTrack');
+  if (track) track.style.transform = `translateX(-${calPanelIndex * 100}%)`;
+
+  const label = q('#calMonthLabel');
+  const sub = q('#calMonthSub');
+  if (label) label.textContent = panel.label;
+  if (sub) sub.textContent = panel.sub;
+
+  const prev = q('#calPrevBtn');
+  const next = q('#calNextBtn');
+  if (prev) prev.disabled = calPanelIndex <= 0;
+  if (next) next.disabled = calPanelIndex >= CAL_PANELS.length - 1;
+
+  const moimLegend = q('#calLegendMoim');
+  const voiceLegend = q('#calLegendVoice');
+  if (moimLegend) moimLegend.style.display = panel.hasMoim ? '' : 'none';
+  if (voiceLegend) voiceLegend.style.display = panel.hasMoim ? '' : 'none';
+
+  q('#calDots')?.querySelectorAll('.cal-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === calPanelIndex);
+    dot.setAttribute('aria-current', i === calPanelIndex ? 'true' : 'false');
+  });
+}
+
+function goCalMonth(index) {
+  if (index < 0 || index >= CAL_PANELS.length || index === calPanelIndex) return;
+  calPanelIndex = index;
+  updateCalCarouselUI();
+}
+
+function initCalCarousel() {
+  const july = q('#calPanelJuly');
+  const august = q('#calPanelAugust');
+  if (july) july.innerHTML = buildRentMonthGrid(2026, 7);
+  if (august) august.innerHTML = buildRentMonthGrid(2026, 8);
+
+  tagRentDateCells();
+
+  const dots = q('#calDots');
+  if (dots) {
+    dots.innerHTML = CAL_PANELS.map((p, i) =>
+      `<button type="button" class="cal-dot${i === 0 ? ' active' : ''}" aria-label="${p.label}" aria-current="${i === 0 ? 'true' : 'false'}" onclick="goCalMonth(${i})"></button>`
+    ).join('');
+  }
+
+  q('#calPrevBtn')?.addEventListener('click', () => goCalMonth(calPanelIndex - 1));
+  q('#calNextBtn')?.addEventListener('click', () => goCalMonth(calPanelIndex + 1));
+
+  const viewport = q('#calCarouselViewport');
+  if (viewport) {
+    let touchStartX = 0;
+    viewport.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    viewport.addEventListener('touchend', e => {
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(dx) < 48) return;
+      goCalMonth(dx > 0 ? calPanelIndex - 1 : calPanelIndex + 1);
+    }, { passive: true });
+  }
+
+  updateCalCarouselUI();
+}
+
+async function loadRentBookings() {
+  try {
+    const res = await fetch(RENT_SHEET_GVIZ, { redirect: 'follow' });
+    const data = parseGvizResponse(await res.text());
+    if (!data) return;
+    buildRentBookings(rentEntriesFromGviz(data));
+    renderCalendarRentBadges();
+    if (q('#rDate')?.value) renderTimeSlots();
+  } catch (e) {
+    console.warn('대관 시트 로딩 실패:', e);
+  }
+}
+
+async function loadCounts() {
+  await loadMoimCounts();
+  await loadRentBookings();
 }
 
 // ══ 모임 신청 모달 ══════════════════════
 function openApply(name, key) {
+  if (!isMoimApplyOpen(key, latestMoimCounts)) return;
   curMoimKey = key;
   const m = MOIMS[key];
   q('#modalMoimName').textContent = m.name;
@@ -2061,9 +2924,16 @@ function openApply(name, key) {
     sw.style.display = 'block';
     const sel = q('#aSession');
     sel.innerHTML = '<option value="">회차를 선택해주세요</option>';
-    m.sessions.forEach(s => { sel.innerHTML += `<option value="${s.value}">${s.label}</option>`; });
+    m.sessions.forEach(s => {
+      const ended = isSessionEnded(s);
+      const full = isSessionFull(m, s.value, latestMoimCounts);
+      const closed = m.applyClosed || ended || full;
+      const suffix = m.applyClosed ? ' (모임 신청 마감)' : (ended ? ' (모임 종료)' : (full ? ' (모집 완료)' : ''));
+      sel.innerHTML += `<option value="${s.value}"${closed ? ' disabled' : ''}>${s.label}${suffix}</option>`;
+    });
   } else {
     sw.style.display = 'none';
+    if (isSessionClosed(m, m.sessions[0], latestMoimCounts)) return;
   }
   openOv('applyOv');
 }
@@ -2076,6 +2946,19 @@ async function submitApply() {
 
   if (!name || !phone) { flash('applyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
   if (m.hasSession && !session) { flash('applyAlert', '회차를 선택해주세요.', 'e'); return; }
+  const pickedSession = m.sessions.find(s => s.value === session) || m.sessions[0];
+  if (m.applyClosed) {
+    flash('applyAlert', '모임 신청이 마감되었습니다.', 'e');
+    return;
+  }
+  if (isSessionEnded(pickedSession)) {
+    flash('applyAlert', '모임이 종료되어 신청할 수 없습니다.', 'e');
+    return;
+  }
+  if (isSessionFull(m, session, latestMoimCounts)) {
+    flash('applyAlert', '선택한 회차는 모집이 완료되었습니다.', 'e');
+    return;
+  }
 
   setLoad('submitBtn', true, '신청 중...');
   try {
@@ -2114,6 +2997,7 @@ async function submitApply() {
 let voiceFormTemplate = null;
 
 function openVoiceApply(key) {
+  if (isVoiceClosed(key, latestMoimCounts)) return;
   curVoiceKey = key;
   const v = VOICES[key];
   const formEl = q('#voiceApplyForm');
@@ -2136,6 +3020,14 @@ async function submitVoiceApply() {
   const session = v.sessions[0].value;
 
   if (!name || !phone) { flash('voiceApplyAlert', '이름과 연락처를 입력해주세요.', 'e'); return; }
+  if (isVoiceEnded(curVoiceKey)) {
+    flash('voiceApplyAlert', '모임이 종료되어 신청할 수 없습니다.', 'e');
+    return;
+  }
+  if (isVoiceFullySoldOut(curVoiceKey, latestMoimCounts)) {
+    flash('voiceApplyAlert', '모집이 완료되었습니다.', 'e');
+    return;
+  }
 
   setLoad('voiceSubmitBtn', true, '신청 중...');
   try {
@@ -2198,7 +3090,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-06-24', space: '세미나실',   start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-06-27', space: '세미나실',   start: '10:00', end: '12:00', tag: '영어 북클럽' },
   { date: '2026-06-27', space: '세미나실',   start: '14:00', end: '16:00', tag: 'Reading Wave' },
-  { date: '2026-06-28', space: '세미나실',   start: '15:00', end: '17:00', tag: '황동만 옆집?' },
+  { date: '2026-06-28', space: '세미나실',   start: '15:00', end: '17:00', tag: 'DRIVE Teatime' },
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
@@ -2209,6 +3101,8 @@ let rentBookingsByDate = {};
 function shortSpaceLabel(space) {
   if (space === '세미나실') return '세미나';
   if (space === '매장 테이블') return '테이블';
+  if (space === '계단 좌석') return '계단';
+  if (space === '전체 대관') return '전체';
   return space || '대관';
 }
 
@@ -2279,7 +3173,7 @@ function buildRentBookings(rentEntries) {
 function renderCalendarRentBadges() {
   document.querySelectorAll('.cal-rent-slot').forEach(el => el.remove());
   Object.entries(rentBookingsByDate).forEach(([dateStr, bookings]) => {
-    const cell = document.querySelector(`.cal-cell[onclick*="openRent('${dateStr}')"]`);
+    const cell = document.querySelector(`.cal-cell[data-rent-date="${dateStr}"]`);
     if (!cell) return;
     const anchor = cell.querySelector('.cal-rent-btn') || null;
     bookings.forEach(booking => {
@@ -2299,8 +3193,8 @@ function renderCalendarRentBadges() {
 
 function getScheduleSummary(date, spaceFilter) {
   const items = [];
-  SCHEDULED_MOIM_BLOCKS
-    .filter(b => b.date === date && (!spaceFilter || b.space === spaceFilter))
+  getAllScheduledBlocks()
+    .filter(b => b.date === date && (!spaceFilter || scheduledBlockBlocksSpace(b.space, spaceFilter)))
     .forEach(b => {
       items.push({
         kind: 'moim',
@@ -2308,7 +3202,7 @@ function getScheduleSummary(date, spaceFilter) {
       });
     });
   (rentBookingsByDate[date] || [])
-    .filter(b => !spaceFilter || !b.space || b.space === spaceFilter)
+    .filter(b => !spaceFilter || rentBookingBlocksSpace(b.space, spaceFilter))
     .forEach(b => {
       items.push({
         kind: 'rent',
@@ -2354,8 +3248,10 @@ function normalizeDash(s) {
 function normalizeSpace(spaceStr) {
   const s = String(spaceStr || '').trim();
   if (!s) return '';
+  if (s.includes('전체')) return '전체 대관';
+  if (s.includes('계단') || s.includes('매장홀')) return '계단 좌석';
   if (s.includes('세미나')) return '세미나실';
-  if (s.includes('테이블') || s.includes('매장')) return '매장 테이블';
+  if (s.includes('테이블') || (s.includes('매장') && !s.includes('홀'))) return '매장 테이블';
   return s;
 }
 
@@ -2367,8 +3263,8 @@ function normalizeRentDate(dateStr) {
   if (iso) {
     return `${iso[1]}-${iso[2].padStart(2,'0')}-${iso[3].padStart(2,'0')}`;
   }
-  const kr = s.match(/6\s*월\s*(\d{1,2})\s*일/);
-  if (kr) return `2026-06-${String(parseInt(kr[1], 10)).padStart(2, '0')}`;
+  const kr = s.match(/(6|7|8)\s*월\s*(\d{1,2})\s*일/);
+  if (kr) return `2026-${kr[1].padStart(2, '0')}-${String(parseInt(kr[2], 10)).padStart(2, '0')}`;
   return null;
 }
 
@@ -2393,9 +3289,51 @@ function parseTimeRangeToMinutes(rangeStr) {
   return { startMin, endMin };
 }
 
+function getAllScheduledBlocks() {
+  const blocks = [...SCHEDULED_MOIM_BLOCKS];
+  if (typeof SCHEDULED_EVENT_BLOCKS !== 'undefined') {
+    blocks.push(...SCHEDULED_EVENT_BLOCKS);
+  }
+  return blocks;
+}
+
+/** 대관 신청 시 같은 시간대에 함께 잡을 수 없는 공간 */
+function getRentConflictSpaces(space) {
+  if (!space) return [];
+  const out = new Set([space, '전체 대관']);
+  if (space === '전체 대관') {
+    out.add('세미나실');
+    out.add('매장 테이블');
+    out.add('계단 좌석');
+  }
+  if (space === '계단 좌석') out.add('매장 테이블');
+  if (space === '매장 테이블') out.add('계단 좌석');
+  return [...out];
+}
+
+/** 모임·행사가 선택한 대관 공간을 막는지 (같은 장소 / 계단↔테이블 / 전체 대관) */
+function scheduledBlockBlocksSpace(blockSpace, requestedSpace) {
+  if (!requestedSpace) return true;
+  if (blockSpace === requestedSpace) return true;
+  if (requestedSpace === '계단 좌석' && blockSpace === '매장 테이블') return true;
+  if (requestedSpace === '매장 테이블' && blockSpace === '계단 좌석') return true;
+  if (requestedSpace === '전체 대관') return true;
+  return false;
+}
+
+/** 기존 대관이 선택한 공간 신청을 막는지 */
+function rentBookingBlocksSpace(bookingSpace, requestedSpace) {
+  if (!requestedSpace) return true;
+  const norm = bookingSpace ? normalizeSpace(bookingSpace) : '_any';
+  if (!norm || norm === '_any') return true;
+  return getRentConflictSpaces(requestedSpace).includes(norm);
+}
+
 function getBlockedRangesForDate(date, space) {
-  const moimRanges = SCHEDULED_MOIM_BLOCKS
-    .filter(b => b.date === date && (!space || b.space === space))
+  if (!space) return { moimRanges: [], rentRanges: [] };
+
+  const moimRanges = getAllScheduledBlocks()
+    .filter(b => b.date === date && scheduledBlockBlocksSpace(b.space, space))
     .map(b => {
       const startMin = parseHHMMToMinutes(b.start);
       const endMin = parseHHMMToMinutes(b.end);
@@ -2405,14 +3343,26 @@ function getBlockedRangesForDate(date, space) {
     .filter(Boolean);
 
   const bySpace = rentSlotsByDate[date] || {};
-  const spaceSlots = (bySpace[space] || []).concat(bySpace._any || []);
-  const rentRanges = spaceSlots
-    .map(timeStr => {
-      const r = parseTimeRangeToMinutes(timeStr);
-      if (!r) return null;
-      return { ...r, tag: formatRentSlotTag(space, timeStr), kind: 'rent' };
-    })
-    .filter(Boolean);
+  const rentRanges = [];
+  const seen = new Set();
+
+  const addRentRange = (sp, timeStr) => {
+    const r = parseTimeRangeToMinutes(timeStr);
+    if (!r) return;
+    const key = `${sp}|${r.startMin}|${r.endMin}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    rentRanges.push({
+      ...r,
+      tag: formatRentSlotTag(sp === '_any' ? '' : sp, timeStr),
+      kind: 'rent'
+    });
+  };
+
+  getRentConflictSpaces(space).forEach(sp => {
+    (bySpace[sp] || []).forEach(timeStr => addRentRange(sp, timeStr));
+  });
+  (bySpace._any || []).forEach(timeStr => addRentRange('_any', timeStr));
 
   return { moimRanges, rentRanges };
 }
@@ -2563,6 +3513,8 @@ function openRent(date) {
   clearSelection();
   if (date) {
     q('#rDate').value = date;
+    const panelIdx = CAL_PANELS.findIndex(p => p.year === parseInt(date.slice(0, 4), 10) && p.month === parseInt(date.slice(5, 7), 10));
+    if (panelIdx >= 0) goCalMonth(panelIdx);
     renderTimeSlots();
   } else {
     q('#rDate').value = '';
@@ -2586,7 +3538,7 @@ async function submitRent() {
   setLoad('rentBtn',true,'신청 중...');
   try {
     await POST({
-      action:'rent', month:'6월', space, date, time,
+      action:'rent', month: rentMonthFromDate(date), space, date, time,
       name, phone, purpose:q('#rPurpose').value, count:q('#rCount').value,
       reqDate:new Date().toLocaleString('ko-KR')
     });
@@ -2774,9 +3726,28 @@ function buildDots() {
 
 function goSlide(i) { curSlide = i; updateSlider(); }
 
+function initMoimOverview() {
+  const cards = document.querySelectorAll('.moim-grid > .moim-card');
+  const totalEl = q('#moimTotalCount');
+  if (totalEl) totalEl.textContent = cards.length;
+
+  cards.forEach((card, index) => {
+    const poster = card.querySelector('.moim-poster-img, .poster-slider-wrap');
+    if (!poster || poster.querySelector('.moim-poster-num')) return;
+    const num = document.createElement('span');
+    num.className = 'moim-poster-num' + (card.id === 'afternoon' ? ' is-left' : '');
+    num.textContent = index + 1;
+    num.setAttribute('aria-label', `${index + 1}번 모임`);
+    poster.appendChild(num);
+  });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   initSlider();
   initMoimPosterSliders();
+  initMoimOverview();
+  initCalCarousel();
+  updateMoimCuration({});
   loadCounts();
   q('#curationShuffleBtn')?.addEventListener('click', () => renderMoimCuration(curationPickIndex));
 });
