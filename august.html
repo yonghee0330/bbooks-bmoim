@@ -3906,7 +3906,8 @@ const EVENTS = {
     capacity: 15,
     amount: 10000,
     feeNote: '간단한 다과 제공',
-    space: '비북스 계단 좌석'
+    space: '비북스 계단 좌석',
+    forceSoldOut: true
   },
   yes24lee: {
     type: 'yes24',
@@ -4056,13 +4057,16 @@ function updateEventCapacity(counts) {
     const btn = q(`#apply-${key}`);
     if (!btn) return;
     const card = q(`#${key}`);
-    card?.classList.remove('moim-sold-out', 'moim-ended');
+    card?.classList.remove('moim-sold-out', 'moim-ended', 'moim-closed');
     if (isEventEnded(key)) {
       soldOut(`apply-${key}`, '행사 종료');
       card?.classList.add('moim-ended');
-    } else if (ev.capacity && isEventFullySoldOut(key, counts)) {
+    } else if (ev.forceSoldOut || (ev.capacity && isEventFullySoldOut(key, counts))) {
       soldOut(`apply-${key}`, '모집 완료');
       card?.classList.add('moim-sold-out');
+    } else if (ev.applyClosed) {
+      soldOut(`apply-${key}`, '신청 마감');
+      card?.classList.add('moim-closed');
     } else {
       let label = ev.external
         ? (ev.applyUrl ? '셀러 신청하기' : '셀러 신청 안내')
@@ -4243,7 +4247,7 @@ function isVoiceEnded(key) {
 function isEventClosed(key, counts) {
   const ev = EVENTS[key];
   if (!ev || ev.comingSoon) return true;
-  if (ev.applyClosed) return true;
+  if (ev.applyClosed || ev.forceSoldOut) return true;
   return isEventEnded(key) || isEventFullySoldOut(key, counts);
 }
 
