@@ -3015,22 +3015,23 @@
       </article>
 
       <article class="event-card type-bvoice" id="svoice1">
-        <div class="event-poster-wrap type-svoice" onclick="openLightbox('images/bvoice_ep06_august_poster.jpg','b.voice EP.06 — 투덜작가 공생의 어쨌거나 같이 씹자')">
-          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep06_august_poster.jpg','b.voice EP.06 — 투덜작가 공생의 어쨌거나 같이 씹자')">🔍</button>
-          <img src="images/bvoice_ep06_august_poster.jpg" alt="b.voice EP.06 — 투덜작가 공생(빛친 공인애대표)의 어쨌거나 같이 씹자 · 8/30(일) 16:00–18:00">
+        <div class="event-poster-wrap type-svoice" onclick="openLightbox('images/bvoice_ep06_august_poster.jpg','b.voice EP.06 — 개킹받는 당신을 위한 투덜투덜 욕TALK')">
+          <button type="button" class="event-poster-zoom" aria-label="포스터 크게 보기" onclick="event.stopPropagation();openLightbox('images/bvoice_ep06_august_poster.jpg','b.voice EP.06 — 개킹받는 당신을 위한 투덜투덜 욕TALK')">🔍</button>
+          <img src="images/bvoice_ep06_august_poster.jpg" alt="b.voice EP.06 — 개킹받는 당신을 위한 투덜투덜 욕TALK · 8/30(일) 16:00–18:00">
         </div>
         <div class="event-body">
           <span class="event-type-badge">b.voice EP.06</span>
-          <div class="event-name">투덜작가 공생(빛친 공인애대표)의 "어쨌거나 같이 씹자"</div>
+          <div class="event-name">개킹받는 당신을 위한 투덜투덜 욕TALK</div>
           <div class="event-desc">
-            투덜거림도 삶의 한 방식입니다. 같이 씹으면 조금 더 맛있어지죠.<br>
-            빛친 공인애 대표와 함께, 일과 사람 사이에서 쌓인 이야기를 유쾌하게 풀어 봅니다.<br>
-            웃다가 공감하다가, 어느새 내 이야기도 꺼내 보게 될 자리예요.
+            착하게 살다 가슴에 쌓인 울화, 이날만큼은 참지 말고 함께 투덜거려 보세요.<br>
+            투덜작가 공월님과 화·스트레스를 시원하게 풀고, 김권하쌤과 감사·명상으로 이너피스까지.<br>
+            신청 시 욕하고 싶은 사연을 보내 주시면, 대신 시원하게 욕해 드립니다. 어쨌거나, 우리 같이 씹어요!
           </div>
           <div class="event-meta">
             <div class="meta-row"><span class="mi">📅</span>8/30(일) 16:00–18:00</div>
-            <div class="meta-row"><span class="mi">📌</span>비북스 계단 좌석</div>
-            <div class="meta-row"><span class="mi">💰</span>참가비 10,000원</div>
+            <div class="meta-row"><span class="mi">📌</span>비북스</div>
+            <div class="meta-row"><span class="mi">🎤</span>공월(빛나는친구들) · 김권하 《안나의 성장하는 감사일기》</div>
+            <div class="meta-row"><span class="mi">💰</span>참가비 10,000원 · 간단한 다과 제공</div>
           </div>
           <div class="event-foot">
             <button type="button" class="btn-event-apply type-bvoice" id="apply-svoice1" onclick="openEventApply('svoice1')">b.voice 신청하기</button>
@@ -3888,13 +3889,15 @@ const EVENTS = {
   svoice1: {
     type: 'bvoice',
     typeLabel: 'b.voice EP.06',
-    name: '투덜작가 공생(빛친 공인애대표)의 "어쨌거나 같이 씹자"',
-    subtitle: 'b.voice EP.06',
+    name: '개킹받는 당신을 위한 투덜투덜 욕TALK',
+    subtitle: '투덜작가 공월 · 김권하',
     poster: 'images/bvoice_ep06_august_poster.jpg',
     sessions: [{ label: '8/30(일) 16:00–18:00', value: '8월30일_svoice', _endMs: new Date(2026, 7, 30, 18, 0, 0).getTime() }],
     capacity: 20,
     amount: 10000,
-    space: '비북스 계단 좌석'
+    feeNote: '간단한 다과 제공',
+    space: '비북스',
+    storyPrompt: '욕하고 싶은 사연 (선택)'
   },
   bvoice4: {
     type: 'bvoice',
@@ -4956,6 +4959,17 @@ function openEventApply(key) {
   q('#eName').value = '';
   q('#ePhone').value = '';
 
+  if (ev.storyPrompt) {
+    const fgRow = formEl.querySelector('.fg-row');
+    if (fgRow) {
+      fgRow.insertAdjacentHTML('afterend', `
+        <div class="fg">
+          <label>${ev.storyPrompt}</label>
+          <textarea id="eStory" rows="3" placeholder="차마 입 밖으로 꺼내지 못한 그 말, 이날만큼은 함께 투덜거려 보세요"></textarea>
+        </div>`);
+    }
+  }
+
   if (ev.bookOrder) {
     const fgRow = formEl.querySelector('.fg-row');
     if (fgRow) fgRow.insertAdjacentHTML('afterend', buildYes24BookOrderHtml(ev));
@@ -5204,6 +5218,9 @@ async function submitEventApply() {
   } else {
     amount = isHost ? 0 : (ev.amount || 0);
   }
+
+  const story = q('#eStory')?.value.trim();
+  if (story) noteParts.push(`사연: ${story}`);
 
   setLoad('eventSubmitBtn', true, '신청 중...');
   try {
