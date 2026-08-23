@@ -3450,7 +3450,10 @@ const MOIMS = {
     capacity: 8,
     amount: 20000,
     amountLabel: '4회분 (음료 포함)',
-    hasSession: false
+    hasSession: false,
+    bookRequestPrompt: '도서 구매 신청 (선택)',
+    bookRequestHint: '회비만 먼저 입금해 주세요. 《토지》 구매를 원하시면 아래에 적어 주시면, 도서비는 별도로 안내드립니다.',
+    bookRequestPlaceholder: '예) 《토지》 구매 희망 / 지참 예정 / ○권 구매'
   },
   dongseosat: {
     name: '클래식 음악 감상 모임',
@@ -4286,6 +4289,18 @@ function openApply(name, key) {
     if (isSessionClosed(m, m.sessions[0], latestMoimCounts)) return;
   }
 
+  if (m.bookRequestPrompt) {
+    const insertAfter = formEl.querySelector('#sessionSelectWrap') || formEl.querySelector('.fg-row');
+    if (insertAfter) {
+      insertAfter.insertAdjacentHTML('afterend', `
+        <div class="fg">
+          <label>${m.bookRequestPrompt}</label>
+          ${m.bookRequestHint ? `<p class="book-order-hint">${m.bookRequestHint}</p>` : ''}
+          <textarea id="aBookRequest" rows="2" placeholder="${m.bookRequestPlaceholder || ''}"></textarea>
+        </div>`);
+    }
+  }
+
   if (m.bookOrder) {
     const fgRow = formEl.querySelector('.fg-row');
     if (fgRow) fgRow.insertAdjacentHTML('afterend', buildYes24BookOrderHtml(m));
@@ -4294,6 +4309,12 @@ function openApply(name, key) {
     q('#modalAmount').textContent = m.amountLabel
       ? `${m.amountLabel} ${m.amount.toLocaleString()}원`
       : m.amount.toLocaleString() + '원';
+    if (m.bookRequestPrompt) {
+      q('#applyPayNote').innerHTML = `
+          <strong>모임통장: 카카오뱅크 7942-33-45474</strong> (예금주 경규환)<br>
+          입금자명은 신청 시 이름과 동일하게 부탁드립니다.<br>
+          <span style="color:var(--muted)">회비만 입금해 주세요. 도서 구매는 별도 안내드립니다.</span>`;
+    }
   }
 
   openOv('applyOv');
@@ -4338,6 +4359,12 @@ async function submitApply() {
         : '도서 미신청';
       amount += selected.reduce((sum, b) => sum + b.price, 0);
       if (selected.length) noteParts.push('수령: 매장 수령 (선결제)');
+    } else if (m.bookRequestPrompt) {
+      const bookRequest = q('#aBookRequest')?.value.trim() || '';
+      if (bookRequest) {
+        booksLabel = bookRequest;
+        noteParts.push('도서비 별도 안내');
+      }
     }
 
     for (let i = 0; i < sessionsToApply.length; i++) {
@@ -4359,9 +4386,11 @@ async function submitApply() {
         date: new Date().toLocaleString('ko-KR')
       });
     }
-    const booksMsg = m.bookOrder && booksLabel !== '도서 미신청'
+    const booksMsg = m.bookOrder && booksLabel && booksLabel !== '도서 미신청'
       ? `<br>도서: ${booksLabel}<br>합계 ${amount.toLocaleString()}원`
-      : '';
+      : (m.bookRequestPrompt && booksLabel
+        ? `<br>도서 구매 신청: ${booksLabel}<br>도서비는 별도 안내드립니다.`
+        : '');
     const sessionNote = m.bundleApply
       ? `<br>${m.sessions.map(s => s.label).join(' · ')} (①②③④ 통합 신청)`
       : '';
