@@ -3008,8 +3008,8 @@
         </div>
         <div class="moim-foot">
           <div>
-            <div class="moim-price">20,000원</div>
-            <div class="moim-cap">4회분 · 음료 포함 · 재료 준비 없음</div>
+            <div class="moim-price">30,000원</div>
+            <div class="moim-cap">4회분 · 다과 포함 · 재료 준비 없음</div>
           </div>
           <button class="btn-apply" id="apply-tojichallenge" onclick="openApply('독서 부채 탕감 프로젝트: 박경리 《토지》 완독 챌린지','tojichallenge')">신청하기</button>
         </div>
@@ -3445,8 +3445,8 @@ const MOIMS = {
     ],
     bundleApply: true,
     capacity: 8,
-    amount: 20000,
-    amountLabel: '4회분 (음료 포함)',
+    amount: 30000,
+    amountLabel: '4회분 (다과 포함)',
     hasSession: false,
     bookRequestPrompt: '도서 구매 신청 (선택)',
     bookRequestHint: '회비만 먼저 입금해 주세요. 《토지》 구매를 원하시면 아래에 적어 주시면, 도서비는 별도로 안내드립니다.',
@@ -4367,11 +4367,9 @@ async function submitApply() {
     for (let i = 0; i < sessionsToApply.length; i++) {
       const s = sessionsToApply[i];
       const baseNote = noteParts.join(' · ');
-      const note = m.bundleApply && i > 0
+      const note = m.bundleApply && (i > 0 || sessionsToApply.length === 1)
         ? [baseNote, '4회 일괄신청'].filter(Boolean).join(' · ')
-        : (m.bundleApply && sessionsToApply.length === 1
-          ? [baseNote, '4회 일괄신청'].filter(Boolean).join(' · ')
-          : baseNote);
+        : baseNote;
       await POST({
         action: 'apply',
         month: PAGE_MONTH,
