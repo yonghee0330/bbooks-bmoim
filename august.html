@@ -4706,7 +4706,8 @@ function initCalCarousel() {
   const octEvents = {
     1: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#tojichallenge'">토지완독 1030-1230</div>`,
     2: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectfri'">문장수집가금 15-17</div>`,
-    3: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectsat'">문장수집가토 14-16</div>`
+    3: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectsat'">문장수집가토 14-16</div>`,
+    31: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sunnyclassicwrite'">써니고전 14-16</div>`
   };
   if (september) september.innerHTML = buildRentMonthGrid(2026, 9, sepEvents);
   if (october) october.innerHTML = buildRentMonthGrid(2026, 10, octEvents);
@@ -5319,7 +5320,8 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-09-30', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-10-01', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
   { date: '2026-10-02', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
-  { date: '2026-10-03', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' }
+  { date: '2026-10-03', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
+  { date: '2026-10-31', space: '매장 테이블', start: '14:00', end: '16:00', tag: '써니와 함께 고전 읽고 글쓰기' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
   { date: '2026-08-30', space: '계단 좌석', start: '16:00', end: '18:00', tag: 'b.voice EP.06' },

@@ -3095,6 +3095,34 @@
       </div>
     </div>
 
+    <div class="moim-card" id="sunnyclassicwrite">
+      <div class="moim-poster-img" onclick="openLightbox('images/sunny_classic_september.jpg','써니와 함께 고전 읽고 글쓰기 포스터')">
+        <img src="images/sunny_classic_september.jpg" alt="써니와 함께 고전 읽고 글쓰기 — 톨스토이 《사람은 무엇으로 사는가》 · 7주 · 10/31 오프라인">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">써니와 함께 고전 읽고 글쓰기</div>
+        <p class="moim-host-line">B-19 선이와 병수</p>
+        <div class="moim-desc">
+          톨스토이 《사람은 무엇으로 사는가》를 7주에 걸쳐 읽고, 마음에 닿는 문장을 골라 글을 씁니다.<br>
+          매주 밴드에서 글쓰기 활동을 이어가고, 7주가 끝난 뒤 오프라인에서 만나 이야기를 나눠요.<br>
+          <span style="font-size:12px;color:var(--muted)">9/1–10/26 주차별 읽기 · 도서는 개별 구매</span>
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>10월 31일 (토) 14:00 – 16:00 · 7주 프로그램 오프라인</div>
+          <div class="meta-row"><span class="mi">📌</span>비북스 서점 · 매장 테이블</div>
+          <div class="meta-row"><span class="mi">📚</span>톨스토이 《사람은 무엇으로 사는가》</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">30,000원</div>
+            <div class="moim-cap">7주 프로그램 · 도서 별도 · 재료 준비 없음</div>
+          </div>
+          <button class="btn-apply" id="apply-sunnyclassicwrite" onclick="openApply('써니와 함께 고전 읽고 글쓰기','sunnyclassicwrite')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
     <div class="moim-card" id="letter">
       <div class="moim-poster-img" onclick="openLightbox('images/letter_motungi.jpg','한 사람을 위한 편지 포스터')">
         <img src="images/letter_motungi.jpg" alt="한 사람을 위한 편지 — 모퉁이 우표점 · 매월 마지막 주 수요일 정기모임">
@@ -3446,7 +3474,7 @@ const EVENT_SHEET_GVIZ = 'https://docs.google.com/spreadsheets/d/186sx_pR2M2chev
 const RENT_CAL_MONTHS = ['9월', '10월', '11월'];
 const CAL_PANELS = [
   { year: 2026, month: 9, label: '2026년 9월', sub: '비모임 · 대관', hasMoim: true },
-  { year: 2026, month: 10, label: '2026년 10월', sub: '대관 신청 가능', hasMoim: false },
+  { year: 2026, month: 10, label: '2026년 10월', sub: '비모임 · 대관', hasMoim: true },
   { year: 2026, month: 11, label: '2026년 11월', sub: '대관 신청 가능', hasMoim: false },
 ];
 let calPanelIndex = 0;
@@ -3532,6 +3560,21 @@ const MOIMS = {
     amount: 20000,
     hasSession: false
   },
+  sunnyclassicwrite: {
+    name: '써니와 함께 고전 읽고 글쓰기',
+    sessions: [
+      { label: '9/1–10/26 밴드 글쓰기 · 10/31(토) 14:00–16:00 오프라인', value: '10월31일_써니고전글쓰기', _endMs: new Date(2026, 9, 31, 16, 0, 0).getTime() }
+    ],
+    capacity: 6,
+    amount: 30000,
+    amountLabel: '7주 프로그램',
+    hasSession: false,
+    intro: `톨스토이 《사람은 무엇으로 사는가》 7주 읽기·글쓰기 프로그램입니다.
+
+매주 밴드에서 읽은 내용을 바탕으로 문장을 고르고 자유롭게 글을 씁니다. 7주가 끝난 뒤 10월 31일(토) 14:00–16:00에 비북스에서 오프라인으로 만납니다.
+
+도서는 개별 구매해 주세요.`
+  },
   letter: {
     name: '한 사람을 위한 편지',
     sessions: [{ label: '9/30(수) 11:00–13:00', value: '9월30일_편지', _endMs: new Date(2026, 8, 30, 13, 0, 0).getTime() }],
@@ -3566,7 +3609,8 @@ const MOIM_CURATION_META = {
   tojichallenge: { cardId: 'tojichallenge', poster: 'images/toji_challenge_september.jpg' },
   daonhwayo: { cardId: 'daonhwayo', poster: 'images/daon_hwayodahoe_september.jpg' },
   daonbookclub: { cardId: 'daonbookclub', poster: 'images/daon_bookclub_welcome_september.jpg' },
-  dongseosat: { cardId: 'dongseosat' },
+  dongseosat: { cardId: 'dongseosat', poster: 'images/dongseo_seoga_september.jpg' },
+  sunnyclassicwrite: { cardId: 'sunnyclassicwrite', poster: 'images/sunny_classic_september.jpg' },
   letter: { cardId: 'letter', poster: 'images/letter_motungi.jpg' }
 };
 
@@ -4251,7 +4295,8 @@ function initCalCarousel() {
   const octEvents = {
     1: `<div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tojichallenge')" data-session="9월_토지4회">토지완독 1030-1230</div>`,
     2: `<div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="10월2일_문장수집금">문장수집가금 15-17</div>`,
-    3: `<div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="10월3일_문장수집토">문장수집가토 14-16</div>`
+    3: `<div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="10월3일_문장수집토">문장수집가토 14-16</div>`,
+    31: `<div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sunnyclassicwrite')" data-session="10월31일_써니고전글쓰기">써니고전 14-16</div>`
   };
   if (october) october.innerHTML = buildRentMonthGrid(2026, 10, octEvents);
   if (november) november.innerHTML = buildRentMonthGrid(2026, 11);
@@ -4852,7 +4897,8 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-09-30', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-10-01', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
   { date: '2026-10-02', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
-  { date: '2026-10-03', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' }
+  { date: '2026-10-03', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
+  { date: '2026-10-31', space: '매장 테이블', start: '14:00', end: '16:00', tag: '써니와 함께 고전 읽고 글쓰기' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
 ];
