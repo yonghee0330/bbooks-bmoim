@@ -1878,6 +1878,83 @@
       z-index: 1;
       text-align: center;
     }
+    #dongseosat .ocean-music-poster {
+      padding: 20px 18px 22px;
+      justify-content: flex-start;
+      gap: 0;
+      min-height: 280px;
+    }
+    #dongseosat .ocean-music-poster .poster-music-illust {
+      width: min(72px, 22vw);
+      margin: 0 auto 10px;
+    }
+    #dongseosat .ocean-music-poster .poster-badge {
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,.78);
+      margin-bottom: 6px;
+    }
+    #dongseosat .ocean-music-poster .poster-title {
+      font-size: clamp(24px, 5.8vw, 32px);
+      line-height: 1.28;
+      margin-top: 2px;
+    }
+    #dongseosat .ocean-music-poster .poster-sub {
+      font-size: clamp(14px, 3.4vw, 17px);
+      color: rgba(255,255,255,.92);
+      margin-top: 10px;
+      font-weight: 500;
+      text-align: center;
+      line-height: 1.5;
+      max-width: 96%;
+    }
+    #dongseosat .ocean-music-poster .poster-host {
+      font-size: clamp(13px, 3vw, 16px);
+      color: rgba(255,255,255,.8);
+      margin-top: 10px;
+      text-align: center;
+      line-height: 1.45;
+    }
+    #dongseosat .ocean-music-poster .poster-info {
+      margin-top: 14px;
+      width: 100%;
+      max-width: 96%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.24);
+      z-index: 1;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    #dongseosat .ocean-music-poster .poster-info-date {
+      font-size: clamp(15px, 3.6vw, 18px);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.35;
+    }
+    #dongseosat .ocean-music-poster .poster-info-place {
+      margin-top: 6px;
+      font-size: clamp(13px, 3vw, 16px);
+      font-weight: 600;
+      color: rgba(255,255,255,.9);
+    }
+    #dongseosat .ocean-music-poster .poster-fee {
+      margin-top: 14px;
+      font-size: clamp(16px, 3.8vw, 20px);
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.02em;
+      z-index: 1;
+      text-align: center;
+    }
+    #dongseosat .moim-desc {
+      font-size: 14px;
+      line-height: 1.75;
+    }
+    #dongseosat .moim-meta .meta-row {
+      font-size: 14px;
+    }
     .moim-poster.ocean-minbook-poster { background: linear-gradient(155deg, #7c2d12 0%, #ea580c 42%, #fdba74 100%); }
     .ocean-minbook-poster .poster-minbook-illust {
       width: 58%;
@@ -3017,8 +3094,20 @@
     </div>
 
     <div class="moim-card" id="dongseosat">
-      <div class="moim-poster-img" onclick="openLightbox('images/dongseo_seoga_september.jpg','클래식 음악 감상 모임 포스터')">
-        <img src="images/dongseo_seoga_september.jpg" alt="클래식 음악 감상 모임 — 너라면 · 9/19(토) 14:00–16:00">
+      <div class="moim-poster ocean-music-poster" aria-hidden="true">
+        <div class="poster-badge">9월 · 9/19(토)</div>
+        <svg class="poster-music-illust" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M24 46a8 8 0 1 1-2-5.3V14l24-6v32.7a8 8 0 1 1-2-5.3V16.5L24 21.2V46z" fill="rgba(255,255,255,0.92)"/>
+        </svg>
+        <div class="poster-title">클래식 음악 감상 모임</div>
+        <div class="poster-sub">슈만 《어린이 정경》을 들으며<br>서로 다른 삶의 이야기를 나누는 시간</div>
+        <div class="poster-host">너라면 · 동서남북book</div>
+        <div class="poster-info">
+          <div class="poster-info-date">9/19 (토) 14:00 – 16:00</div>
+          <div class="poster-info-place">세미나실</div>
+        </div>
+        <div class="poster-fee">10,000원</div>
+        <div class="poster-deco">♪</div>
       </div>
       <div class="moim-body">
         <div class="moim-name">클래식 음악 감상 모임</div>
@@ -3564,9 +3653,9 @@ const MOIM_CURATION_META = {
   sentcollectfri: { cardId: 'sentcollectfri', poster: 'images/sentcollect_september_fri.jpg' },
   sentcollectsat: { cardId: 'sentcollectsat', poster: 'images/sentcollect_september_sat.jpg' },
   tojichallenge: { cardId: 'tojichallenge', poster: 'images/toji_challenge_september.jpg' },
-  dongseosat: { cardId: 'dongseosat', poster: 'images/dongseo_seoga_september.jpg' },
   daonhwayo: { cardId: 'daonhwayo', poster: 'images/daon_hwayodahoe_september.jpg' },
   daonbookclub: { cardId: 'daonbookclub', poster: 'images/daon_bookclub_welcome_september.jpg' },
+  dongseosat: { cardId: 'dongseosat' },
   letter: { cardId: 'letter', poster: 'images/letter_motungi.jpg' }
 };
 
