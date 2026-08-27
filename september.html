@@ -2832,14 +2832,14 @@
       <div class="cal-cell sat" onclick="openRent('2026-09-12')"><div class="cal-day">12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="9월12일_문장수집토">문장수집가토 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-09-13')"><div class="cal-day">13</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-14')"><div class="cal-day">14</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-09-15')"><div class="cal-day">15</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-09-15')"><div class="cal-day">15</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('daonhwayo')" data-session="9월15일_화요다회">화요다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-16')"><div class="cal-day">16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-17')"><div class="cal-day">17</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tojichallenge')" data-session="9월_토지4회">토지완독 1030-1230</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-18')"><div class="cal-day">18</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="9월18일_문장수집금">문장수집가금 15-17</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-09-19')"><div class="cal-day">19</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('storyaunt')">그림책이모 1030-12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="9월19일_문장수집토">문장수집가토 14-16</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseosat')" data-session="9월19일_동서서가">클래식감상 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-09-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-21')"><div class="cal-day">21</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-09-22')"><div class="cal-day">22</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-09-22')"><div class="cal-day">22</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('daonbookclub')" data-session="9월22일_북클럽웰컴">북클럽 10-11</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-23')"><div class="cal-day">23</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-24')"><div class="cal-day">24</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-25')"><div class="cal-day">25</div><div class="cal-rent-btn">[대관]</div></div>
@@ -3038,6 +3038,59 @@
             <div class="moim-cap">재료 준비 없음</div>
           </div>
           <button class="btn-apply" id="apply-dongseosat" onclick="openApply('클래식 음악 감상 모임','dongseosat')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="daonhwayo">
+      <div class="moim-poster-img" onclick="openLightbox('images/daon_hwayodahoe_september.jpg','[화요다회] 포스터')">
+        <img src="images/daon_hwayodahoe_september.jpg" alt="[화요다회] 오전 10시 세계의 차를 만나다 — 스리랑카 · 9/15(화)">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">[화요다회] · 세계의 차를 만나다</div>
+        <p class="moim-host-line">다온 글방 (@daon_gulbang)</p>
+        <div class="moim-desc">
+          오전 10시, 세계의 차를 만나는 다회입니다.<br>
+          이번 회차는 <strong>스리랑카</strong> — 누와라엘리아부터 루후나까지, 7개 산지의 정수를 한자리에서 만납니다.
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>9월 15일 (화) 10:00 – 12:00</div>
+          <div class="meta-row"><span class="mi">📌</span>비북스 (부천로 136번길) · 매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">30,000원</div>
+            <div class="moim-cap">재료 준비 있음 · 문의 @daon_gulbang DM</div>
+          </div>
+          <button class="btn-apply" id="apply-daonhwayo" onclick="openApply('[화요다회] · 세계의 차를 만나다','daonhwayo')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="daonbookclub">
+      <div class="moim-poster-img" onclick="openLightbox('images/daon_bookclub_welcome_september.jpg','북클럽 웰컴 데이 포스터')">
+        <img src="images/daon_bookclub_welcome_september.jpg" alt="월간 목요 북클럽 Little Friday Salon — 9월 웰컴 데이 · 9/22(화)">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">월간 목요 북클럽: Little Friday Salon [9월 웰컴 데이]</div>
+        <p class="moim-host-line">다온 글방 (@daon_gulbang)</p>
+        <div class="moim-desc">
+          북클럽 운영 방안을 안내하고, 10월 책을 소개하며 차를 증정하는 웰컴 데이입니다.<br>
+          <span style="font-size:12px;color:var(--muted)">*9월만 화요일 진행 · 10월부터는 매주 목요일</span>
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>9월 22일 (화) 10:00 – 11:00</div>
+          <div class="meta-row"><span class="mi">📌</span>비북스 (부천로 136번길) · 매장 테이블</div>
+          <div class="meta-row"><span class="mi">📚</span>책은 별도 현장 결제</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">20,000원</div>
+            <div class="moim-cap">책 별도 · 문의 @daon_gulbang DM</div>
+          </div>
+          <button class="btn-apply" id="apply-daonbookclub" onclick="openApply('월간 목요 북클럽: Little Friday Salon [9월 웰컴 데이]','daonbookclub')">신청하기</button>
         </div>
       </div>
     </div>
@@ -3461,6 +3514,24 @@ const MOIMS = {
     amount: 10000,
     hasSession: false
   },
+  daonhwayo: {
+    name: '[화요다회] · 세계의 차를 만나다',
+    sessions: [
+      { label: '9/15(화) 10:00–12:00 · 스리랑카', value: '9월15일_화요다회', _endMs: new Date(2026, 8, 15, 12, 0, 0).getTime() }
+    ],
+    capacity: 6,
+    amount: 30000,
+    hasSession: false
+  },
+  daonbookclub: {
+    name: '월간 목요 북클럽: Little Friday Salon [9월 웰컴 데이]',
+    sessions: [
+      { label: '9/22(화) 10:00–11:00', value: '9월22일_북클럽웰컴', _endMs: new Date(2026, 8, 22, 11, 0, 0).getTime() }
+    ],
+    capacity: 6,
+    amount: 20000,
+    hasSession: false
+  },
   letter: {
     name: '한 사람을 위한 편지',
     sessions: [{ label: '9/30(수) 11:00–13:00', value: '9월30일_편지', _endMs: new Date(2026, 8, 30, 13, 0, 0).getTime() }],
@@ -3494,6 +3565,8 @@ const MOIM_CURATION_META = {
   sentcollectsat: { cardId: 'sentcollectsat', poster: 'images/sentcollect_september_sat.jpg' },
   tojichallenge: { cardId: 'tojichallenge', poster: 'images/toji_challenge_september.jpg' },
   dongseosat: { cardId: 'dongseosat', poster: 'images/dongseo_seoga_september.jpg' },
+  daonhwayo: { cardId: 'daonhwayo', poster: 'images/daon_hwayodahoe_september.jpg' },
+  daonbookclub: { cardId: 'daonbookclub', poster: 'images/daon_bookclub_welcome_september.jpg' },
   letter: { cardId: 'letter', poster: 'images/letter_motungi.jpg' }
 };
 
@@ -4769,11 +4842,13 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-09-10', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
   { date: '2026-09-11', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
   { date: '2026-09-12', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
+  { date: '2026-09-15', space: '매장 테이블', start: '10:00', end: '12:00', tag: '화요다회' },
   { date: '2026-09-17', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
   { date: '2026-09-18', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
   { date: '2026-09-19', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
   { date: '2026-09-19', space: '세미나실', start: '14:00', end: '16:00', tag: '클래식 음악 감상 모임' },
   { date: '2026-09-19', space: '계단 좌석', start: '10:30', end: '12:00', tag: '그림책 읽어주는 이모' },
+  { date: '2026-09-22', space: '매장 테이블', start: '10:00', end: '11:00', tag: '북클럽 웰컴 데이' },
   { date: '2026-09-30', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-10-01', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
   { date: '2026-10-02', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
