@@ -64,7 +64,7 @@ def main():
     d.line([(w // 2 - 130, y), (w // 2 + 130, y)], fill=line_col, width=1)
     y += 30
 
-    for line in ["9/19 (토)", "오후 2:00 – 4:00", "세미나실"]:
+    for line in ["9/19 (토)", "오후 12:00 – 2:00", "세미나실"]:
         d.text(((w - text_w(d, line, f_body)) // 2, y), line, fill=white, font=f_body)
         y += 42
 
