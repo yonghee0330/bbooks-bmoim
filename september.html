@@ -2829,7 +2829,7 @@
       <div class="cal-cell" onclick="openRent('2026-09-09')"><div class="cal-day">9</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-10')"><div class="cal-day">10</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tojichallenge')" data-session="9월_토지4회">토지완독 1030-1230</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-11')"><div class="cal-day">11</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="9월11일_문장수집금">문장수집가금 15-17</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-09-12')"><div class="cal-day">12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="9월12일_문장수집토">문장수집가토 14-16</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-09-12')"><div class="cal-day">12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseosat')" data-session="9월12일_동서서가">클래식감상 13-15</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="9월12일_문장수집토">문장수집가토 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-09-13')"><div class="cal-day">13</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-14')"><div class="cal-day">14</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-15')"><div class="cal-day">15</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('daonhwayo')" data-session="9월15일_화요다회">화요다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
@@ -3018,7 +3018,7 @@
 
     <div class="moim-card" id="dongseosat">
       <div class="moim-poster-img" onclick="openLightbox('images/dongseo_seoga_september.jpg','클래식 음악 감상 모임 포스터')">
-        <img src="images/dongseo_seoga_september.jpg" alt="클래식 음악 감상 모임 — 너라면 · 9/19(토) 12:00–14:00 · 세미나실">
+        <img src="images/dongseo_seoga_september.jpg" alt="클래식 음악 감상 모임 — 너라면 · 9/12·19(토) · 세미나실">
       </div>
       <div class="moim-body">
         <div class="moim-name">클래식 음악 감상 모임</div>
@@ -3027,15 +3027,24 @@
           같은 클래식 음악을 함께 들으며, 서로 다른 삶의 이야기를 나누는 시간입니다.<br>
           피아노를 전공한 절대음감의 동서남북 점주가 전하는 로베르트 슈만의 피아노 소품집 《어린이 정경》을 들으며, 편안히 귀고픔을 채워 가요.
         </div>
-        <div class="moim-meta">
+        <div class="session-tabs">
+          <button class="stab active" onclick="selectSession(this,'dongseo1')">① 9/12</button>
+          <button class="stab" onclick="selectSession(this,'dongseo2')">② 9/19</button>
+        </div>
+        <div class="moim-meta" id="dongseo1-meta">
+          <div class="meta-row"><span class="mi">📅</span>9월 12일 (토) 13:00 – 15:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-meta" id="dongseo2-meta" style="display:none">
           <div class="meta-row"><span class="mi">📅</span>9월 19일 (토) 12:00 – 14:00</div>
           <div class="meta-row"><span class="mi">📌</span>세미나실</div>
           <div class="meta-row"><span class="mi">👥</span>6명</div>
         </div>
         <div class="moim-foot">
           <div>
-            <div class="moim-price">10,000원</div>
-            <div class="moim-cap">재료 준비 없음</div>
+            <div class="moim-price">10,000원 <span style="font-size:12px;font-weight:500">/ 회차</span></div>
+            <div class="moim-cap">재료 준비 없음 · 회차별 개별 신청</div>
           </div>
           <button class="btn-apply" id="apply-dongseosat" onclick="openApply('클래식 음악 감상 모임','dongseosat')">신청하기</button>
         </div>
@@ -3536,11 +3545,12 @@ const MOIMS = {
   dongseosat: {
     name: '클래식 음악 감상 모임',
     sessions: [
-      { label: '9/19(토) 12:00–14:00', value: '9월19일_동서서가', _endMs: new Date(2026, 8, 19, 14, 0, 0).getTime() }
+      { label: '① 9/12(토) 13:00–15:00', value: '9월12일_동서서가', _endMs: new Date(2026, 8, 12, 15, 0, 0).getTime() },
+      { label: '② 9/19(토) 12:00–14:00', value: '9월19일_동서서가', _endMs: new Date(2026, 8, 19, 14, 0, 0).getTime() }
     ],
-    capacity: 6,
+    capacity: { '9월12일_동서서가': 6, '9월19일_동서서가': 6 },
     amount: 10000,
-    hasSession: false
+    hasSession: true
   },
   daonhwayo: {
     name: '[화요다회] · 세계의 차를 만나다',
@@ -4887,6 +4897,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-09-10', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
   { date: '2026-09-11', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
   { date: '2026-09-12', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
+  { date: '2026-09-12', space: '세미나실', start: '13:00', end: '15:00', tag: '클래식 음악 감상 모임' },
   { date: '2026-09-15', space: '매장 테이블', start: '10:00', end: '12:00', tag: '화요다회' },
   { date: '2026-09-17', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
   { date: '2026-09-18', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
