@@ -4691,22 +4691,17 @@ function initCalCarousel() {
   const october = q('#calPanelOctober');
   const sepEvents = {
     3: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#tojichallenge'">토지완독 1030-1230</div>`,
-    4: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectfri'">문장수집가금 15-17</div>`,
-    5: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectsat'">문장수집가토 14-16</div>`,
     10: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#tojichallenge'">토지완독 1030-1230</div>`,
-    11: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectfri'">문장수집가금 15-17</div>`,
-    12: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#dongseosat'">클래식감상 13-15</div><div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectsat'">문장수집가토 14-16</div>`,
+    12: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#dongseosat'">클래식감상 13-15</div>`,
     15: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#daonhwayo'">화요다회 10-12</div>`,
     17: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#tojichallenge'">토지완독 1030-1230</div>`,
-    18: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectfri'">문장수집가금 15-17</div><div class="cal-event ev-event" onclick="event.stopPropagation();location.href='september.html#yes24kim'">b.talks 1930-2130</div>`,
-    19: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#storyaunt'">그림책이모 1030-12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#dongseosat'">클래식감상 12-14</div><div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectsat'">문장수집가토 14-16</div>`,
+    18: `<div class="cal-event ev-event" onclick="event.stopPropagation();location.href='september.html#yes24kim'">b.talks 1930-2130</div>`,
+    19: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#storyaunt'">그림책이모 1030-12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#dongseosat'">클래식감상 12-14</div>`,
     22: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#daonbookclub'">북클럽 10-11</div>`,
     30: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#letter'">편지모임 11-13</div>`
   };
   const octEvents = {
     1: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#tojichallenge'">토지완독 1030-1230</div>`,
-    2: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectfri'">문장수집가금 15-17</div>`,
-    3: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sentcollectsat'">문장수집가토 14-16</div>`,
     31: `<div class="cal-event ev-moim" onclick="event.stopPropagation();location.href='september.html#sunnyclassicwrite'">써니고전 14-16</div>`
   };
   if (september) september.innerHTML = buildRentMonthGrid(2026, 9, sepEvents);
@@ -5306,23 +5301,15 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-08-31', space: '세미나실', start: '13:00', end: '14:30', tag: '일본어 모임' },
   { date: '2026-09-19', space: '계단 좌석', start: '10:30', end: '12:00', tag: '그림책 읽어주는 이모' },
   { date: '2026-09-03', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
-  { date: '2026-09-04', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
-  { date: '2026-09-05', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
   { date: '2026-09-10', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
-  { date: '2026-09-11', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
-  { date: '2026-09-12', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
   { date: '2026-09-12', space: '세미나실', start: '13:00', end: '15:00', tag: '클래식 음악 감상 모임' },
   { date: '2026-09-15', space: '매장 테이블', start: '10:00', end: '12:00', tag: '화요다회' },
   { date: '2026-09-17', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
-  { date: '2026-09-18', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
   { date: '2026-09-18', space: '계단 좌석', start: '19:30', end: '21:30', tag: 'b.talks' },
-  { date: '2026-09-19', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
   { date: '2026-09-19', space: '세미나실', start: '12:00', end: '14:00', tag: '클래식 음악 감상 모임' },
   { date: '2026-09-22', space: '매장 테이블', start: '10:00', end: '11:00', tag: '북클럽 웰컴 데이' },
   { date: '2026-09-30', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-10-01', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
-  { date: '2026-10-02', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
-  { date: '2026-10-03', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
   { date: '2026-10-31', space: '매장 테이블', start: '14:00', end: '16:00', tag: '써니와 함께 고전 읽고 글쓰기' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
