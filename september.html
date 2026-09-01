@@ -2835,7 +2835,7 @@
       <div class="cal-cell" onclick="openRent('2026-09-15')"><div class="cal-day">15</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('daonhwayo')" data-session="9월15일_화요다회">화요다회 10-12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-16')"><div class="cal-day">16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-17')"><div class="cal-day">17</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tojichallenge')" data-session="9월_토지4회">토지완독 1030-1230</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-09-18')"><div class="cal-day">18</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="9월18일_문장수집금">문장수집가금 15-17</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-09-18')"><div class="cal-day">18</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectfri')" data-session="9월18일_문장수집금">문장수집가금 15-17</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24kim')">b.talks 1930-2130</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-09-19')"><div class="cal-day">19</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('storyaunt')">그림책이모 1030-12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseosat')" data-session="9월19일_동서서가">클래식감상 12-14</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('sentcollectsat')" data-session="9월19일_문장수집토">문장수집가토 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-09-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-21')"><div class="cal-day">21</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2877,10 +2877,57 @@
       </svg>
     </div>
     <div class="event-overview-top">
-      <p class="event-overview-summary"><strong><span id="eventTotalCount">0</span>개 행사</strong> · 곧 공개됩니다</p>
+      <p class="event-overview-summary"><strong><span id="eventTotalCount">1</span>개 행사</strong> · b.talks</p>
     </div>
 
     <div class="event-grid" id="eventGrid">
+      <article class="event-card type-yes24" id="yes24kim">
+        <div class="poster-slider-wrap" id="poster-slider-btalks-sep"
+             onclick="openPosterLightboxIfTap(event,'btalks-sep')"
+             data-posters='["images/btalks_september_01.jpg","images/btalks_september_02.jpg","images/btalks_september_03.jpg","images/btalks_september_04.jpg"]'
+             data-alt="9월의 b.talks — 《마음 놓고 쉬고 싶은 당신을 위한 필사 노트》 김은영 작가와의 만남">
+          <div class="poster-slider-viewport">
+            <div class="poster-slider" data-slider="btalks-sep">
+              <div class="poster-slide"><img src="images/btalks_september_01.jpg" alt="《마음 놓고 쉬고 싶은 당신을 위한 필사 노트》 김은영 작가와의 만남 · 9/18(금) 19:30"></div>
+              <div class="poster-slide"><img src="images/btalks_september_02.jpg" alt="《마음 놓고 쉬고 싶은 당신을 위한 필사 노트》 중에서"></div>
+              <div class="poster-slide"><img src="images/btalks_september_03.jpg" alt="9월의 b.talks 행사 안내"></div>
+              <div class="poster-slide"><img src="images/btalks_september_04.jpg" alt="비북스 x 심심 x 예스24"></div>
+            </div>
+          </div>
+          <div class="poster-slider-nav">
+            <div class="slider-dots" data-dots="btalks-sep"></div>
+            <div class="slider-arrows">
+              <button type="button" class="sarr" aria-label="이전 포스터" onclick="event.stopPropagation();posterSlide('btalks-sep',-1)">‹</button>
+              <button type="button" class="sarr" aria-label="다음 포스터" onclick="event.stopPropagation();posterSlide('btalks-sep',1)">›</button>
+            </div>
+          </div>
+          <span class="poster-slider-hint">1 / 4</span>
+        </div>
+        <div class="event-body">
+          <span class="event-type-badge">9월의 b.talks · 비북스 x 심심 x 예스24</span>
+          <div class="event-name">《마음 놓고 쉬고 싶은 당신을 위한 필사 노트》 김은영 작가와의 만남</div>
+          <div class="event-desc">
+            좋은 문장들로 고요히 회복하는 나만의 마음 관리 처방전.<br>
+            정신건강의학과 전문의이자 작가 김은영과 함께, 멈춤과 휴식에 대해 이야기합니다.<br>
+            마음 놓고 쉬고 싶은 분들을 위한 저녁 북토크입니다.
+          </div>
+          <div class="event-meta">
+            <div class="meta-row"><span class="mi">📅</span>9/18(금) 19:30–21:30</div>
+            <div class="meta-row"><span class="mi">📌</span>계단좌석 및 홀</div>
+            <div class="meta-row"><span class="mi">📍</span>원미동 88-1 B02호 (원미구청앞)</div>
+            <div class="meta-row fee-block">
+              <span><span class="mi">💰</span>참가비</span>
+              <ul class="fee-list">
+                <li>0.1평서점 점주 무료</li>
+                <li>일반참가자 10,000원 (북토크 도서 구매 시, 참가비 무료)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="event-foot">
+            <button type="button" class="btn-event-apply type-yes24" id="apply-yes24kim" onclick="openEventApply('yes24kim')">b.talks 신청하기</button>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 
@@ -3602,7 +3649,36 @@ const MOIMS = {
   }
 };
 
-const EVENTS = {};
+const EVENTS = {
+  yes24kim: {
+    type: 'yes24',
+    typeLabel: '9월의 b.talks · 비북스 x 심심 x 예스24',
+    name: '《마음 놓고 쉬고 싶은 당신을 위한 필사 노트》 김은영 작가와의 만남',
+    subtitle: '좋은 문장들로 고요히 회복하는 나만의 마음 관리 처방전',
+    poster: 'images/btalks_september_01.jpg',
+    posters: [
+      'images/btalks_september_01.jpg',
+      'images/btalks_september_02.jpg',
+      'images/btalks_september_03.jpg',
+      'images/btalks_september_04.jpg'
+    ],
+    sessions: [{ label: '9/18(금) 19:30–21:30', value: '9월18일_예스24', _endMs: new Date(2026, 8, 18, 21, 30, 0).getTime() }],
+    capacity: 30,
+    amount: 10000,
+    space: '계단좌석 및 홀',
+    address: '원미동 88-1 B02호 (원미구청앞)',
+    feeNote: '0.1평서점 점주 무료 · 일반참가자 10,000원 (북토크 도서 구매 시 참가비 무료)',
+    freeFeeWithBook: true,
+    freeShippingMin: 30000,
+    deliveryFee: 2000,
+    bookOrder: true,
+    bookOrderHint: '일반 참가: 도서 구매 시 참가비 무료, 미구매 시 참가비 10,000원. 사전 주문 도서는 참가비와 합산하여 선결제해 주세요. 택배는 참가비 포함 3만원 이상 무료 배송, 미만 시 배송비 2,000원이 추가됩니다. 행사 후 저자 사인회가 있습니다.',
+    books: [
+      { id: 'pilsanote', title: '마음 놓고 쉬고 싶은 당신을 위한 필사 노트', price: 21000, url: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=400549364' },
+      { id: 'whyrest', title: '나는 왜 마음 놓고 쉬지 못할까', price: 19800, url: 'https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=361982414' }
+    ]
+  }
+};
 
 let curMoimKey = '';
 let curEventKey = '';
@@ -4901,6 +4977,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-09-15', space: '매장 테이블', start: '10:00', end: '12:00', tag: '화요다회' },
   { date: '2026-09-17', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
   { date: '2026-09-18', space: '세미나실', start: '15:00', end: '17:00', tag: '문장수집가들 금요반' },
+  { date: '2026-09-18', space: '계단 좌석', start: '19:30', end: '21:30', tag: 'b.talks' },
   { date: '2026-09-19', space: '세미나실', start: '14:00', end: '16:00', tag: '문장수집가들 토요반' },
   { date: '2026-09-19', space: '세미나실', start: '12:00', end: '14:00', tag: '클래식 음악 감상 모임' },
   { date: '2026-09-19', space: '계단 좌석', start: '10:30', end: '12:00', tag: '그림책 읽어주는 이모' },
@@ -4912,6 +4989,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-10-31', space: '매장 테이블', start: '14:00', end: '16:00', tag: '써니와 함께 고전 읽고 글쓰기' }
 ];
 const SCHEDULED_EVENT_BLOCKS = [
+  { date: '2026-09-18', space: '계단 좌석', start: '19:30', end: '21:30', tag: 'b.talks' }
 ];
 
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
