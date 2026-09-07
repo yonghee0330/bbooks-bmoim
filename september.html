@@ -2837,7 +2837,7 @@
       <div class="cal-cell" onclick="openRent('2026-09-17')"><div class="cal-day">17</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tojichallenge')" data-session="9월_토지4회">토지완독 1030-1230</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-18')"><div class="cal-day">18</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24kim')">b.talks 1930-2130</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-09-19')"><div class="cal-day">19</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('storyaunt')">그림책이모 1030-12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseosat')" data-session="9월19일_동서서가">클래식감상 12-14</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sun" onclick="openRent('2026-09-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-09-20')"><div class="cal-day">20</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('movietalk')" data-session="9월20일_영화한편">영화한편 15-1630</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-21')"><div class="cal-day">21</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-22')"><div class="cal-day">22</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('daonbookclub')" data-session="9월22일_북클럽웰컴">북클럽 10-11</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-23')"><div class="cal-day">23</div><div class="cal-rent-btn">[대관]</div></div>
@@ -3121,6 +3121,33 @@
             <div class="moim-cap">7주 프로그램 · 도서 별도 · 재료 준비 없음</div>
           </div>
           <button class="btn-apply" id="apply-sunnyclassicwrite" onclick="openApply('써니와 함께 고전 읽고 글쓰기','sunnyclassicwrite')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="movietalk">
+      <div class="moim-poster-img" onclick="openLightbox('images/movie_talk_september.jpg','영화 한편, 이야기 한잔 포스터')">
+        <img src="images/movie_talk_september.jpg" alt="영화 한편, 이야기 한잔 — 파프리카 · 폼포코 너구리 대작전 · 9/20(일) 15:00–16:30">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">영화 한편, 이야기 한잔</div>
+        <p class="moim-host-line">앗트</p>
+        <div class="moim-desc">
+          좋은 영화는, 좋은 사람들과 더 특별해지니까.<br>
+          함께 영화를 보고, 생각을 나누는 영화 모임.<br>
+          9월은 &lt;파프리카&gt;(곤 사토시)와 &lt;폼포코 너구리 대작전&gt;(다카하타 이사오)로 꿈과 현실, 자연과 인간의 이야기를 나눕니다.
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>9월 20일 (일) 15:00 – 16:30</div>
+          <div class="meta-row"><span class="mi">📌</span>매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>5명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 없음 · 장소비 포함</div>
+          </div>
+          <button class="btn-apply" id="apply-movietalk" onclick="openApply('영화 한편, 이야기 한잔','movietalk')">신청하기</button>
         </div>
       </div>
     </div>
@@ -3517,6 +3544,13 @@ const MOIMS = {
     amount: 10000,
     hasSession: true
   },
+  movietalk: {
+    name: '영화 한편, 이야기 한잔',
+    sessions: [{ label: '9/20(일) 15:00–16:30', value: '9월20일_영화한편', _endMs: new Date(2026, 8, 20, 16, 30, 0).getTime() }],
+    capacity: 5,
+    amount: 10000,
+    hasSession: false
+  },
   daonhwayo: {
     name: '[화요다회] · 세계의 차를 만나다',
     sessions: [
@@ -3612,6 +3646,7 @@ const MOIM_CURATION_META = {
   daonhwayo: { cardId: 'daonhwayo', poster: 'images/daon_hwayodahoe_september.jpg' },
   daonbookclub: { cardId: 'daonbookclub', poster: 'images/daon_bookclub_welcome_september.jpg' },
   dongseosat: { cardId: 'dongseosat', poster: 'images/dongseo_seoga_september.jpg' },
+  movietalk: { cardId: 'movietalk', poster: 'images/movie_talk_september.jpg' },
   sunnyclassicwrite: { cardId: 'sunnyclassicwrite', poster: 'images/sunny_classic_september.jpg' },
   letter: { cardId: 'letter', poster: 'images/letter_motungi.jpg' }
 };
@@ -4889,6 +4924,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-09-18', space: '계단 좌석', start: '19:30', end: '21:30', tag: 'b.talks' },
   { date: '2026-09-19', space: '세미나실', start: '12:00', end: '14:00', tag: '클래식 음악 감상 모임' },
   { date: '2026-09-19', space: '계단 좌석', start: '10:30', end: '12:00', tag: '그림책 읽어주는 이모' },
+  { date: '2026-09-20', space: '매장 테이블', start: '15:00', end: '16:30', tag: '영화 한편, 이야기 한잔' },
   { date: '2026-09-22', space: '매장 테이블', start: '10:00', end: '11:00', tag: '북클럽 웰컴 데이' },
   { date: '2026-09-30', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
   { date: '2026-10-01', space: '세미나실', start: '10:30', end: '12:30', tag: '토지 완독 챌린지' },
