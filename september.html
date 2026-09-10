@@ -2837,7 +2837,7 @@
       <div class="cal-cell" onclick="openRent('2026-09-17')"><div class="cal-day">17</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-18')"><div class="cal-day">18</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('yes24kim')">b.talks 1930-2130</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-09-19')"><div class="cal-day">19</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('storyaunt')">그림책이모 1030-12</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseosat')" data-session="9월19일_동서서가">클래식감상 12-14</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sun" onclick="openRent('2026-09-20')"><div class="cal-day">20</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('movietalk')" data-session="9월20일_영화한편">영화한편 15-1630</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tojichallenge')" data-session="토지완독챌린지">토지완독 16시</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-09-20')"><div class="cal-day">20</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('movietalk')" data-session="9월20일_영화한편">영화한편 15-1630</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tojichallenge')" data-session="토지완독챌린지">토지완독 1630</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-21')"><div class="cal-day">21</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-22')"><div class="cal-day">22</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('daonbookclub')" data-session="9월22일_북클럽웰컴">북클럽 10-11</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-09-23')"><div class="cal-day">23</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2996,7 +2996,7 @@
         </div>
         <div class="moim-meta">
           <div class="meta-row"><span class="mi">📅</span>챌린지 2026.9.20 – 12.31</div>
-          <div class="meta-row"><span class="mi">🗓️</span>오프라인 9/20 · 10/25 · 11/29 · 12/27 (일) 16:00</div>
+          <div class="meta-row"><span class="mi">🗓️</span>오프라인 9/20 16:30 · 10/25 · 11/29 · 12/27 16:00 (일)</div>
           <div class="meta-row"><span class="mi">📌</span>부천 비북스 · 세미나실</div>
           <div class="meta-row"><span class="mi">📚</span>박경리 《토지》</div>
         </div>
@@ -3573,7 +3573,7 @@ const MOIMS = {
   tojichallenge: {
     name: '《토지》 완독 챌린지',
     sessions: [
-      { label: '2026.9.20–12.31 · 오프라인 9/20·10/25·11/29·12/27 (일) 16:00', value: '토지완독챌린지', _endMs: new Date(2026, 11, 27, 18, 0, 0).getTime() }
+      { label: '2026.9.20–12.31 · 오프라인 9/20 16:30 · 10/25·11/29·12/27 16:00 (일)', value: '토지완독챌린지', _endMs: new Date(2026, 11, 27, 18, 0, 0).getTime() }
     ],
     capacity: 20,
     amount: 100000,
@@ -3586,7 +3586,7 @@ const MOIMS = {
 
 · 챌린지 기간: 2026.9.20 – 12.31
 · 방법: 매일 100쪽 읽고 단톡방 인증 + 월 1회 오프라인 모임
-· 오프라인: 9/20 · 10/25 · 11/29 · 12/27 (일) 16:00 · 부천 비북스
+· 오프라인: 9/20 16:30 · 10/25 · 11/29 · 12/27 16:00 (일) · 부천 비북스
 · 참여비 10만원 · 완수 시 비북스 5만 포인트 환급`
   },
   dongseosat: {
@@ -5041,7 +5041,7 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-09-19', space: '세미나실', start: '12:00', end: '14:00', tag: '클래식 음악 감상 모임' },
   { date: '2026-09-19', space: '계단 좌석', start: '10:30', end: '12:00', tag: '그림책 읽어주는 이모' },
   { date: '2026-09-20', space: '매장 테이블', start: '15:00', end: '16:30', tag: '영화 한편, 이야기 한잔' },
-  { date: '2026-09-20', space: '세미나실', start: '16:00', end: '18:00', tag: '《토지》 완독 챌린지' },
+  { date: '2026-09-20', space: '세미나실', start: '16:30', end: '18:30', tag: '《토지》 완독 챌린지' },
   { date: '2026-09-22', space: '매장 테이블', start: '10:00', end: '11:00', tag: '북클럽 웰컴 데이' },
   { date: '2026-09-28', space: '세미나실', start: '13:00', end: '14:30', tag: '일본어 명대사 필사' },
   { date: '2026-09-30', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },
