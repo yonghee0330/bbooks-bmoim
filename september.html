@@ -3671,6 +3671,8 @@ const MOIMS = {
     amount: 30000,
     hasSession: false,
     regular: true,
+    // 기존 신청자 불참으로 1석 재오픈 (시트 비고에 '취소' 반영되면 이 값 제거)
+    releasedSeats: 1,
     intro: `안녕하세요. 모퉁이 우표점입니다. 한 사람을 위한 편지 모임을 엽니다.
 
 타자기로 편지를 쓰고, 보내는 마음처럼 우표를 붙입니다.
@@ -3832,7 +3834,8 @@ function getSessionCapacity(m, sessionValue) {
 function isSessionFull(m, sessionValue, counts) {
   const cap = getSessionCapacity(m, sessionValue);
   if (!cap) return false;
-  return getMoimSessionCount(counts, m.name, sessionValue) >= cap;
+  const filled = Math.max(0, getMoimSessionCount(counts, m.name, sessionValue) - (m.releasedSeats || 0));
+  return filled >= cap;
 }
 
 function getNowKstMs() {
