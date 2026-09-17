@@ -32,9 +32,15 @@ function phoneHref(phone) {
 
 function statusBadge(applicant) {
   if (applicant.cancelled) return '<span class="badge cancel">취소</span>';
-  const note = String(applicant.note || '');
-  if (note.includes('입금확인')) return '<span class="badge ok">입금확인</span>';
-  return '<span class="badge wait">미확인</span>';
+  return '';
+}
+
+function displayNote(note) {
+  const s = String(note || '').trim();
+  if (!s) return '';
+  // 개설자 화면에서는 입금확인 메모는 숨김
+  if (/입금\s*확인/.test(s) && !/취소/.test(s)) return '';
+  return s;
 }
 
 function escapeHtml(str) {
@@ -54,7 +60,8 @@ function renderApplicants(applicants) {
     const phoneHtml = href
       ? `<a class="applicant-phone" href="${href}">${formatPhoneDisplay(a.phone)}</a>`
       : `<span class="applicant-phone">${formatPhoneDisplay(a.phone)}</span>`;
-    const note = a.note ? `<div class="applicant-meta">비고: ${escapeHtml(a.note)}</div>` : '';
+    const noteText = displayNote(a.note);
+    const note = noteText ? `<div class="applicant-meta">비고: ${escapeHtml(noteText)}</div>` : '';
     const applied = a.appliedAt ? `<div class="applicant-meta">신청: ${escapeHtml(a.appliedAt)}</div>` : '';
     const books = a.books ? `<div class="applicant-meta">도서: ${escapeHtml(a.books)}</div>` : '';
     return `<div class="applicant${a.cancelled ? ' cancelled' : ''}">
