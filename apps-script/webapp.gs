@@ -427,10 +427,11 @@ function formatPhone_(value) {
 }
 
 /**
- * 《토지》 완독 챌린지 점주코드 행을 「점주코드」시트에 추가합니다.
- * Apps Script 에디터에서 이 함수만 한 번 실행하면 됩니다.
+ * 9월 개설 모임 점주코드를 「점주코드」시트에 일괄 등록합니다.
+ * Apps Script 에디터에서 setupSeptemberHostCodes() 한 번 실행하세요.
+ * 전용 링크: https://moim.bbooks.co.kr/host/
  */
-function setupTojiHostCode() {
+function setupSeptemberHostCodes() {
   var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sheet = ss.getSheetByName(SHEET_CODES);
   if (!sheet) {
@@ -441,20 +442,44 @@ function setupTojiHostCode() {
     sheet.appendRow(['코드', '점주명', '모임명', '월']);
   }
 
-  var code = 'TOJI2026';
-  var hostName = '비북스';
-  var moimName = '《토지》 완독 챌린지';
-  var month = '9월';
-  var rows = sheet.getDataRange().getValues();
-  for (var i = 1; i < rows.length; i++) {
-    var rowCode = String(rows[i][0] || '').trim().toUpperCase();
-    var rowMonth = String(rows[i][3] || '').trim();
-    if (rowCode === code && rowMonth === month) {
-      return '이미 등록됨: ' + code + ' / ' + month;
-    }
+  var rows = [
+    ['TOJI2026', '비북스', '《토지》 완독 챌린지', '9월'],
+    ['STORY2026', '@sammycomma', '그림책 읽어주는 이모', '9월'],
+    ['DONGSEO2026', '너라면 · 동서남북book', '클래식 음악 감상 모임', '9월'],
+    ['MOVIE2026', '앗트', '영화 한편, 이야기 한잔', '9월'],
+    ['SUDDENLY2026', '써든리', '써든리와 함께하는 일본어 명대사 필사 모임', '9월'],
+    ['DAONHWA2026', '다온 글방', '[화요다회] · 세계의 차를 만나다', '9월'],
+    ['DAONBOOK2026', '다온 글방', '월간 목요 북클럽: Little Friday Salon [9월 웰컴 데이]', '9월'],
+    ['SUNNY2026', 'B-19 선이와 병수', '써니와 함께 고전 읽고 글쓰기', '9월'],
+    ['LETTER2026', '모퉁이 우표점', '한 사람을 위한 편지', '9월']
+  ];
+
+  var existing = sheet.getDataRange().getValues();
+  var existingKeys = {};
+  for (var i = 1; i < existing.length; i++) {
+    var k = String(existing[i][0] || '').trim().toUpperCase() + '|' + String(existing[i][3] || '').trim();
+    existingKeys[k] = true;
   }
-  sheet.appendRow([code, hostName, moimName, month]);
-  return '추가됨: ' + code + ' · ' + hostName + ' · ' + moimName + ' · ' + month;
+
+  var added = [];
+  var skipped = [];
+  rows.forEach(function(row) {
+    var key = String(row[0]).toUpperCase() + '|' + row[3];
+    if (existingKeys[key]) {
+      skipped.push(row[0]);
+      return;
+    }
+    sheet.appendRow(row);
+    added.push(row[0]);
+  });
+
+  return '추가 ' + added.length + '건' + (added.length ? ': ' + added.join(', ') : '')
+    + (skipped.length ? ' / 이미 있음: ' + skipped.join(', ') : '');
+}
+
+/** @deprecated setupSeptemberHostCodes 사용 */
+function setupTojiHostCode() {
+  return setupSeptemberHostCodes();
 }
 
 function cleanAladinTitle_(title) {

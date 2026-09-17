@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>개설자 신청 현황 링크 · b.moim</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="host.css">
+</head>
+<body>
+<header>
+  <a class="logo" href="https://moim.bbooks.co.kr/september.html">b<span>.</span>moim</a>
+</header>
+<div class="hero">
+  <h1>9월 개설자 링크</h1>
+  <p>각 모임 개설자에게 해당 링크만 공유하세요</p>
+</div>
+<div class="wrap">
+  <ul class="link-list" id="list"></ul>
+</div>
+<footer>
+  <a href="../september.html">← 9월 모임 페이지</a><br>
+  © 2026 · 비북스 b.moim
+</footer>
+<script src="moims.js"></script>
+<script>
+const list = document.getElementById('list');
+const order = ['storyaunt','toji','dongseo','daonhwayo','daonbookclub','sunny','movietalk','japanpilsa','letter'];
+order.forEach(slug => {
+  const m = HOST_MOIMS[slug];
+  if (!m) return;
+  const li = document.createElement('li');
+  li.innerHTML = `<a href="${slug}.html">
+    <div class="name">${m.title}</div>
+    <div class="meta">${m.hostName} · ${m.code} · https://moim.bbooks.co.kr/host/${slug}.html</div>
+  </a>`;
+  list.appendChild(li);
+});
+</script>
+</body>
+</html>
