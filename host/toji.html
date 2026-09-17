@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>비모임 신청 현황 · b.moim</title>
+  <title>《토지》 완독 챌린지 신청 현황 · b.moim</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -44,105 +44,24 @@
       background: linear-gradient(160deg, var(--navy) 0%, #1e3a6e 100%);
       color: white;
       text-align: center;
-      padding: 40px 20px 36px;
+      padding: 36px 20px 32px;
     }
     .hero h1 {
       font-family: 'Noto Serif KR', serif;
-      font-size: clamp(22px, 5vw, 28px);
+      font-size: clamp(20px, 5vw, 26px);
       margin-bottom: 8px;
     }
     .hero p { font-size: 14px; color: rgba(255,255,255,.72); line-height: 1.6; }
-    .wrap { max-width: 720px; margin: 0 auto; padding: 28px 16px 56px; }
-    .search-box {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px 20px;
-      box-shadow: 0 4px 24px rgba(10,31,68,.06);
-      margin-top: -28px;
-      position: relative;
-      z-index: 1;
-    }
-    .search-label {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--muted);
-      margin-bottom: 10px;
-      letter-spacing: .04em;
-    }
-    .search-row {
+    .wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 56px; }
+    .toolbar {
       display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .search-row input[type="text"] {
-      flex: 1 1 180px;
-      min-width: 0;
-      padding: 14px 16px;
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      font-size: 16px;
-      font-family: inherit;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
-    .search-row input[type="text"]:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-    .search-row select {
-      padding: 14px 12px;
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      font-size: 14px;
-      font-family: inherit;
-      background: white;
-    }
-    .btn-go {
-      padding: 14px 22px;
-      background: var(--navy);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      white-space: nowrap;
-    }
-    .btn-go:hover { background: #152d5c; }
-    .btn-go:disabled { opacity: .55; cursor: default; }
-    .hint {
-      margin-top: 12px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.55;
-    }
-    .alert {
-      margin-top: 14px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-    .alert.error { background: var(--cancel-bg); color: #991b1b; border: 1px solid #fecaca; }
-    .alert.info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
-    .result { display: none; margin-top: 24px; }
-    .result.on { display: block; }
-    .result-head {
-      display: flex;
-      align-items: flex-start;
       justify-content: space-between;
+      align-items: center;
       gap: 12px;
-      margin-bottom: 16px;
       flex-wrap: wrap;
+      margin-bottom: 16px;
     }
-    .result-title {
-      font-family: 'Noto Serif KR', serif;
-      font-size: 20px;
-      font-weight: 600;
-    }
-    .result-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .status-line { font-size: 13px; color: var(--muted); }
     .btn-refresh {
       padding: 8px 14px;
       border: 1px solid var(--border);
@@ -154,6 +73,43 @@
       font-family: inherit;
       color: var(--muted);
     }
+    .btn-refresh:disabled { opacity: .55; cursor: default; }
+    .alert {
+      margin-bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .alert.error { background: var(--cancel-bg); color: #991b1b; border: 1px solid #fecaca; }
+    .alert.info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
+    .setup {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 12px;
+      color: #92400e;
+      line-height: 1.65;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .setup.on { display: block; }
+    .setup code {
+      display: inline-block;
+      background: rgba(0,0,0,.06);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+    }
+    .result { display: none; }
+    .result.on { display: block; }
+    .result-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: 20px;
+      font-weight: 600;
+    }
+    .result-sub { font-size: 13px; color: var(--muted); margin-top: 4px; margin-bottom: 16px; }
     .stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -233,6 +189,9 @@
       text-align: center;
       color: var(--muted);
       font-size: 14px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
     }
     footer {
       text-align: center;
@@ -243,48 +202,38 @@
     footer a { color: var(--accent); text-decoration: none; }
     @media (max-width: 480px) {
       .stats { grid-template-columns: 1fr; }
-      .search-row { flex-direction: column; }
-      .search-row select, .btn-go { width: 100%; }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <a class="logo" href="https://moim.bbooks.co.kr/june.html">b<span>.</span>moim</a>
+  <a class="logo" href="https://moim.bbooks.co.kr/september.html">b<span>.</span>moim</a>
 </header>
 
 <div class="hero">
-  <h1>비모임 신청 현황</h1>
-  <p>점주 전용 · 발급받은 코드로<br>내 모임 신청자 명단을 확인합니다</p>
+  <h1>《토지》 완독 챌린지</h1>
+  <p>개설자 전용 · 신청자 명단 · 연락처</p>
 </div>
 
 <div class="wrap">
-  <div class="search-box">
-    <div class="search-label">점주 코드</div>
-    <div class="search-row">
-      <input type="text" id="codeInput" placeholder="코드 입력" autocomplete="off" maxlength="32" spellcheck="false">
-      <select id="monthSelect" aria-label="월 선택">
-        <option value="6월">6월</option>
-        <option value="7월">7월</option>
-        <option value="8월">8월</option>
-        <option value="9월" selected>9월</option>
-        <option value="10월">10월</option>
-      </select>
-      <button type="button" class="btn-go" id="submitBtn" onclick="loadStatus()">확인</button>
-    </div>
-    <p class="hint">비북스에서 받은 점주 코드를 입력하세요. 코드는 타인에게 공유하지 마세요.</p>
-    <div id="searchAlert"></div>
+  <div class="toolbar">
+    <div class="status-line" id="statusLine">불러오는 중…</div>
+    <button type="button" class="btn-refresh" id="refreshBtn" onclick="loadStatus()">↻ 새로고침</button>
   </div>
 
+  <div class="setup" id="setupBox">
+    <strong>처음 한 번만 설정이 필요합니다.</strong><br>
+    구글 시트 「점주코드」 탭에 아래 행을 추가한 뒤 이 페이지를 새로고침하세요.<br><br>
+    <code>TOJI2026</code> · <code>비북스</code> · <code>《토지》 완독 챌린지</code> · <code>9월</code><br>
+    ※ 모임명은 「모임신청」시트의 모임명과 글자 하나까지 같아야 합니다.
+  </div>
+
+  <div id="alertBox"></div>
+
   <div class="result" id="result">
-    <div class="result-head">
-      <div>
-        <div class="result-title" id="hostTitle"></div>
-        <div class="result-sub" id="hostSub"></div>
-      </div>
-      <button type="button" class="btn-refresh" onclick="loadStatus()">↻ 새로고침</button>
-    </div>
+    <div class="result-title" id="hostTitle"></div>
+    <div class="result-sub" id="hostSub"></div>
 
     <div class="stats">
       <div class="stat">
@@ -306,18 +255,20 @@
 </div>
 
 <footer>
-  <a href="september.html">← 9월 모임 페이지</a><br>
-  © 2026 · 비북스 b.moim
+  <a href="../september.html#tojichallenge">← 9월 모임 페이지</a>
+  · <a href="../host.html">점주 코드로 조회</a><br>
+  © 2026 · 비북스 b.moim · 이 링크는 개설자 전용입니다
 </footer>
 
 <script>
 const API = 'https://script.google.com/macros/s/AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ/exec';
-const STORAGE_KEY = 'bmoim_host_code';
+const HOST_CODE = 'TOJI2026';
+const HOST_MONTH = '9월';
 
 const q = sel => document.querySelector(sel);
 
 function showAlert(msg, type) {
-  q('#searchAlert').innerHTML = msg
+  q('#alertBox').innerHTML = msg
     ? `<div class="alert ${type || 'error'}">${msg}</div>`
     : '';
 }
@@ -344,6 +295,14 @@ function statusBadge(applicant) {
   return '<span class="badge wait">미확인</span>';
 }
 
+function escapeHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 function renderApplicants(applicants) {
   if (!applicants.length) {
     return '<div class="empty">아직 신청자가 없습니다.</div>';
@@ -355,27 +314,20 @@ function renderApplicants(applicants) {
       : `<span class="applicant-phone">${formatPhoneDisplay(a.phone)}</span>`;
     const note = a.note ? `<div class="applicant-meta">비고: ${escapeHtml(a.note)}</div>` : '';
     const applied = a.appliedAt ? `<div class="applicant-meta">신청: ${escapeHtml(a.appliedAt)}</div>` : '';
+    const books = a.books ? `<div class="applicant-meta">도서: ${escapeHtml(a.books)}</div>` : '';
     return `<div class="applicant${a.cancelled ? ' cancelled' : ''}">
       <div class="applicant-name">${escapeHtml(a.name || '—')}</div>
       ${statusBadge(a)}
       ${phoneHtml}
       <div class="applicant-meta">${Number(a.amount || 0).toLocaleString()}원</div>
-      ${applied}${note}
+      ${applied}${note}${books}
     </div>`;
   }).join('');
 }
 
-function escapeHtml(str) {
-  return String(str || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
 function renderResult(data) {
-  q('#hostTitle').textContent = `${data.hostName} 점주님`;
-  q('#hostSub').textContent = `${data.month} · ${data.moimNames.join(', ')}`;
+  q('#hostTitle').textContent = data.hostName || '개설자';
+  q('#hostSub').textContent = `${data.month} · ${(data.moimNames || []).join(', ')}`;
 
   const stats = data.stats || {};
   q('#statTotal').textContent = stats.total ?? 0;
@@ -407,66 +359,41 @@ function renderResult(data) {
 }
 
 async function loadStatus() {
-  const code = q('#codeInput').value.trim();
-  const month = q('#monthSelect').value;
-  if (!code) {
-    showAlert('점주 코드를 입력해주세요.', 'error');
-    return;
-  }
-
   showAlert('');
-  const btn = q('#submitBtn');
+  q('#setupBox').classList.remove('on');
+  q('#statusLine').textContent = '불러오는 중…';
+  const btn = q('#refreshBtn');
   btn.disabled = true;
-  btn.textContent = '조회 중…';
 
   try {
-    const url = `${API}?action=hostStatus&code=${encodeURIComponent(code)}&month=${encodeURIComponent(month)}`;
+    const url = `${API}?action=hostStatus&code=${encodeURIComponent(HOST_CODE)}&month=${encodeURIComponent(HOST_MONTH)}`;
     const res = await fetch(url, { redirect: 'follow' });
     const data = await res.json();
 
     if (data.error) {
       q('#result').classList.remove('on');
-      const hint = data.error.includes('unknown action') || data.error.includes('not defined')
-        ? '<br><br>관리자 안내: Apps Script에 <code>hostStatus</code> API가 아직 연결되지 않았습니다. <code>apps-script/host-status.gs</code>를 배포해주세요.'
-        : '';
-      showAlert(escapeHtml(data.error) + hint, 'error');
+      const needsSetup = /코드가 올바르지 않|점주코드 시트|등록된 모임/.test(data.error);
+      if (needsSetup) q('#setupBox').classList.add('on');
+      showAlert(escapeHtml(data.error), 'error');
+      q('#statusLine').textContent = '조회 실패';
       return;
     }
 
-    localStorage.setItem(STORAGE_KEY, code);
     renderResult(data);
     q('#result').classList.add('on');
+    const active = data.stats?.active ?? 0;
+    q('#statusLine').textContent = `유효 신청 ${active}명 · 방금 갱신됨`;
   } catch (e) {
     q('#result').classList.remove('on');
     showAlert('조회 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.', 'error');
+    q('#statusLine').textContent = '조회 오류';
     console.warn(e);
   } finally {
     btn.disabled = false;
-    btn.textContent = '확인';
   }
 }
 
-q('#codeInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') loadStatus();
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-  const params = new URLSearchParams(location.search);
-  const codeParam = (params.get('code') || '').trim();
-  const monthParam = (params.get('month') || '').trim();
-  const saved = localStorage.getItem(STORAGE_KEY);
-
-  if (monthParam) {
-    const opt = Array.from(q('#monthSelect').options).find(o => o.value === monthParam);
-    if (opt) q('#monthSelect').value = monthParam;
-  }
-  if (codeParam) {
-    q('#codeInput').value = codeParam;
-    loadStatus();
-    return;
-  }
-  if (saved) q('#codeInput').value = saved;
-});
+window.addEventListener('DOMContentLoaded', loadStatus);
 </script>
 </body>
 </html>
