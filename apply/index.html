@@ -465,9 +465,9 @@
     <circle cx="45" cy="105" r="2.5" fill="rgba(255,255,255,0.5)"/>
   </svg>
 
-  <div class="hero-badge">🍂 8·9월 모임 개설 신청</div>
+  <div class="hero-badge">🍁 9·10월 모임 개설 신청</div>
   <h1>비북스에서 당신의 모임을<br/>펼쳐보세요</h1>
-  <p class="hero-sub">8월 또는 9월 중 개설할 월을 고른 뒤 일정을 신청해 주세요</p>
+  <p class="hero-sub">9월 또는 10월 중 개설할 월을 고른 뒤 일정을 신청해 주세요</p>
 </div>
 
 <div class="container">
@@ -488,10 +488,10 @@
         <label class="req">개설 월</label>
         <div class="radio-group">
           <label class="radio-option">
-            <input type="radio" name="recruitMonth" value="8월" /> <span>☀️ 8월</span>
+            <input type="radio" name="recruitMonth" value="9월" /> <span>🍂 9월</span>
           </label>
           <label class="radio-option">
-            <input type="radio" name="recruitMonth" value="9월" /> <span>🍂 9월</span>
+            <input type="radio" name="recruitMonth" value="10월" /> <span>🍁 10월</span>
           </label>
         </div>
         <p class="hint">모임이 진행될 월을 선택해 주세요. 구글 시트에 월별로 구분되어 수집됩니다.</p>
@@ -600,7 +600,7 @@
           <p class="schedule-panel-empty" id="schedulePanelEmpty" hidden>이 날·공간에는 등록된 일정이 없습니다.</p>
         </div>
         <p class="schedule-load" id="scheduleLoadMsg">대관 일정을 불러오는 중…</p>
-        <p class="hint">8월·9월 중 희망 일정을 골라 주세요. 비어 있는 시간대만 선택할 수 있습니다.</p>
+        <p class="hint">9월·10월 중 희망 일정을 골라 주세요. 비어 있는 시간대만 선택할 수 있습니다.</p>
       </div>
     </div>
 
@@ -666,8 +666,8 @@
 <script>
   const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2WEJpCaLlmZwM7F5ysNV0Qcj2xaGB3k1GAwxnCaLt5OwLp6fMauAXRa3XSHjNE7V6/exec';
   const MONTH_RANGES = {
-    '8월': { min: '2026-08-01', max: '2026-08-31', prefix: '2026-08' },
-    '9월': { min: '2026-09-01', max: '2026-09-30', prefix: '2026-09' }
+    '9월': { min: '2026-09-01', max: '2026-09-30', prefix: '2026-09' },
+    '10월': { min: '2026-10-01', max: '2026-10-31', prefix: '2026-10' }
   };
   const SHEET_ID = '186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM';
   const RENT_SHEET_GVIZ = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent('대관신청')}`;
@@ -1231,7 +1231,7 @@
     const fee          = document.getElementById('fee').value.trim();
     const contact      = document.getElementById('contact').value.trim();
 
-    if (!recruitMonth) { alert('개설 월(8월/9월)을 선택해 주세요.'); return; }
+    if (!recruitMonth) { alert('개설 월(9월/10월)을 선택해 주세요.'); return; }
     if (!meetingName)  { alert('모임명을 입력해 주세요.'); return; }
     if (!description)  { alert('모임 소개를 입력해 주세요.'); return; }
     if (!hostName)     { alert('호스트 이름을 입력해 주세요.'); return; }
