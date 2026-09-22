@@ -2870,7 +2870,7 @@
       <div class="cal-cell empty"></div>
       <div class="cal-cell empty"></div>
       <div class="cal-cell" onclick="openRent('2026-10-01')"><div class="cal-day">1</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-10-02')"><div class="cal-day">2</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-10-02')"><div class="cal-day">2</div><div class="cal-event ev-event" onclick="event.stopPropagation();scrollToEvent('offbook')">OFF-BOOK 19-21</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-10-03')"><div class="cal-day">3</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-10-04')"><div class="cal-day">4</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-05')"><div class="cal-day">5</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2915,17 +2915,54 @@
 
 
   <!-- ── 행사 ── -->
-  <div class="event-zone is-empty" id="eventZone">
+  <div class="event-zone" id="eventZone">
     <div class="sec-head-row" style="margin-bottom:16px">
       <div>
         <div class="sec-label">Events</div>
         <div class="sec-title">10월 비북스 행사</div>
       </div>
+      <svg class="sec-witty" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M24 8c3 8 8 13 16 16-8 3-13 8-16 16-3-8-8-13-16-16 8-3 13-8 16-16z" fill="#c45c26" opacity="0.9"/>
+        <circle cx="24" cy="24" r="3" fill="#6b4423"/>
+      </svg>
     </div>
     <div class="event-overview-top">
-      <p class="event-overview-summary"><strong><span id="eventTotalCount">0</span>개 행사</strong></p>
+      <p class="event-overview-summary"><strong><span id="eventTotalCount">1</span>개 행사</strong> · 디에잇 x 비북스</p>
     </div>
-    <div class="event-grid" id="eventGrid"></div>
+    <div class="event-grid" id="eventGrid">
+      <article class="event-card type-external" id="offbook">
+        <div class="event-poster-wrap type-external" onclick="openLightbox('images/d8_offbook_october.jpg','OFF-BOOK 포스터')">
+          <img src="images/d8_offbook_october.jpg" alt="OFF-BOOK — 디에잇 x 비북스 · 10/2(금) 19:00–21:00">
+        </div>
+        <div class="event-body">
+          <span class="event-type-badge">디에잇 x 비북스 · Out Of Office Project</span>
+          <div class="event-name">OFF-BOOK</div>
+          <div class="event-desc">
+            읽는 감각을 깨우는 새로운 독서 소모임.<br>
+            퇴근 후에도 일 생각이 멈추지 않거나, 긴 글에 집중하기 어려운 분을 위한 시간입니다.<br>
+            읽기를 통해 상상력을 깨우고, 업무 생각을 잠시 멈추며 온전히 집중하는 회복의 시간을 함께합니다.
+          </div>
+          <div class="event-meta">
+            <div class="meta-row"><span class="mi">📅</span>10/2(금) 19:00–21:00</div>
+            <div class="meta-row"><span class="mi">📌</span>비북스 · 매장 테이블</div>
+            <div class="meta-row"><span class="mi">📍</span>경기도 부천시 원미구 부천로136번길 24 지하 B02호</div>
+            <div class="meta-row"><span class="mi">👥</span>선착순 12명 · 성별·직업·나이 무관</div>
+            <div class="meta-row fee-block">
+              <span><span class="mi">💰</span>참가비</span>
+              <ul class="fee-list">
+                <li>20,000원</li>
+                <li>접수 9/14–9/30 · 신청은 디에잇 페이지에서</li>
+                <li>진단 결과 기반 도서 큐레이션을 위한 간단한 사전 설문 포함</li>
+              </ul>
+            </div>
+            <div class="meta-row"><span class="mi">✉️</span>문의 edu@d8.company</div>
+          </div>
+          <div class="event-foot">
+            <button type="button" class="btn-event-apply type-external" id="apply-offbook" onclick="openEventApply('offbook')">디에잇에서 신청하기</button>
+          </div>
+        </div>
+      </article>
+    </div>
   </div>
 
   <!-- ── 모임 카드 ── -->
@@ -3597,7 +3634,34 @@ const MOIMS = {
   }
 };
 
-const EVENTS = {};
+const EVENTS = {
+  offbook: {
+    type: 'external',
+    typeLabel: '디에잇 x 비북스 · Out Of Office Project',
+    name: 'OFF-BOOK',
+    subtitle: '읽는 감각을 깨우는 새로운 독서 소모임',
+    poster: 'images/d8_offbook_october.jpg',
+    sessions: [{ label: '10/2(금) 19:00–21:00', value: '10월2일_OFFBOOK', _endMs: new Date(2026, 9, 2, 21, 0, 0).getTime() }],
+    capacity: 12,
+    amount: 20000,
+    space: '비북스 · 매장 테이블',
+    address: '경기도 부천시 원미구 부천로136번길 24 지하 B02호',
+    applyUrl: 'https://book-78zy.vercel.app/1710',
+    applyLabel: '디에잇에서 신청하기',
+    external: true,
+    feeNote: '접수 9/14–9/30 · 신청은 디에잇 페이지에서 진행',
+    audience: '책과 점점 멀어진 분 · 선착순 12명',
+    infoHtml: `<p><strong>신청은 디에잇(The Eight) 페이지에서 진행됩니다.</strong></p>
+      <ul>
+        <li>접수 기간: 2026.9.14 – 9.30</li>
+        <li>일시: 10/2(금) 19:00–21:00</li>
+        <li>장소: 비북스 (부천로136번길 24 지하 B02호)</li>
+        <li>참가비: 20,000원 · 선착순 12명</li>
+        <li>문의: edu@d8.company</li>
+      </ul>
+      <p class="event-external-note"><a href="https://book-78zy.vercel.app/1710" target="_blank" rel="noopener">https://book-78zy.vercel.app/1710</a></p>`
+  }
+};
 
 
 let curMoimKey = '';
@@ -3679,7 +3743,9 @@ function updateEventCapacity(counts) {
       soldOut(`apply-${key}`, '모집 완료');
       card?.classList.add('moim-sold-out');
     } else {
-      let label = ev.external
+      let label = ev.applyLabel
+        ? ev.applyLabel
+        : ev.external
         ? (ev.applyUrl ? '셀러 신청하기' : '셀러 신청 안내')
         : (ev.type === 'bammilon' ? '밤밀온 참가 신청'
           : ev.type === 'yes24' ? 'b.talks 신청하기'
@@ -4914,6 +4980,10 @@ const TT_START_MIN = 8 * 60;
 const TT_END_MIN = 22 * 60;
 
 // 비모임 고정 일정 (공간별 실제 시간 기준, 겹치면 차단)
+const SCHEDULED_EVENT_BLOCKS = [
+  { date: '2026-10-02', space: '매장 테이블', start: '19:00', end: '21:00', tag: 'OFF-BOOK' }
+];
+
 const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-10-15', space: '매장 테이블', start: '19:00', end: '21:00', tag: '목요 독서모임' },
   { date: '2026-10-17', space: '세미나실', start: '14:00', end: '16:00', tag: '클래식 음악 감상 모임' },
@@ -4927,8 +4997,6 @@ const SCHEDULED_MOIM_BLOCKS = [
   { date: '2026-11-30', space: '세미나실', start: '13:00', end: '14:30', tag: '일본어 명대사 필사' },
   { date: '2026-12-27', space: '세미나실', start: '16:00', end: '18:00', tag: '《토지》 완독 챌린지' }
 ];
-const SCHEDULED_EVENT_BLOCKS = [];
-
 // API에서 받아온 대관 날짜별 시간 (loadCounts에서 채움)
 // 형식: { 'YYYY-MM-DD': { '세미나실': ['14:00–16:00', ...], '매장 테이블': [...] } }
 let rentSlotsByDate = {};
