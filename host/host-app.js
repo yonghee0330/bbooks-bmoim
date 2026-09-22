@@ -110,11 +110,16 @@ function renderResult(data) {
 function fillSetupBox(cfg) {
   const box = q('#setupBox');
   if (!box || !cfg) return;
+  const names = (cfg.moimNames && cfg.moimNames.length)
+    ? cfg.moimNames
+    : [cfg.moimName].filter(Boolean);
+  const rows = names.map(name =>
+    `<code>${escapeHtml(cfg.code)}</code> · <code>${escapeHtml(cfg.hostName)}</code> · <code>${escapeHtml(name)}</code> · <code>${escapeHtml(cfg.month)}</code>`
+  ).join('<br>');
   box.innerHTML = `<strong>처음 한 번만 설정이 필요합니다.</strong><br>
-    구글 시트 「점주코드」 탭에 아래 행을 추가한 뒤 이 페이지를 새로고침하세요.<br><br>
-    <code>${escapeHtml(cfg.code)}</code> · <code>${escapeHtml(cfg.hostName)}</code> · <code>${escapeHtml(cfg.moimName)}</code> · <code>${escapeHtml(cfg.month)}</code><br>
-    ※ 모임명은 「모임신청」시트의 모임명과 글자 하나까지 같아야 합니다.<br>
-    ※ Apps Script에서 <code>setupSeptemberHostCodes()</code>를 한 번 실행하면 9월 전체가 등록됩니다.`;
+    구글 시트 「점주코드」 탭에 아래 ${names.length > 1 ? '행들을' : '행을'} 추가한 뒤 이 페이지를 새로고침하세요.<br><br>
+    ${rows}<br>
+    ※ 모임명은 「모임신청」시트의 모임명과 글자 하나까지 같아야 합니다.`;
 }
 
 async function loadStatus() {

@@ -477,6 +477,52 @@ function setupSeptemberHostCodes() {
     + (skipped.length ? ' / 이미 있음: ' + skipped.join(', ') : '');
 }
 
+/**
+ * 10월 개설 모임 점주코드를 「점주코드」시트에 일괄 등록합니다.
+ * 다온 글방은 DAON2026 코드 하나로 두 모임을 함께 조회합니다.
+ */
+function setupOctoberHostCodes() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sheet = ss.getSheetByName(SHEET_CODES);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_CODES);
+    sheet.appendRow(['코드', '점주명', '모임명', '월']);
+  }
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(['코드', '점주명', '모임명', '월']);
+  }
+
+  var rows = [
+    ['DONGSEO2026', '너라면 · 동서남북book', '클래식 음악 감상 모임', '10월'],
+    ['DAON2026', '다온 글방', '목요 독서모임', '10월'],
+    ['DAON2026', '다온 글방', '중국차 블렌딩 다회', '10월']
+  ];
+
+  var existing = sheet.getDataRange().getValues();
+  var existingKeys = {};
+  for (var i = 1; i < existing.length; i++) {
+    var k = String(existing[i][0] || '').trim().toUpperCase() + '|'
+      + String(existing[i][3] || '').trim() + '|'
+      + String(existing[i][2] || '').trim();
+    existingKeys[k] = true;
+  }
+
+  var added = [];
+  var skipped = [];
+  rows.forEach(function(row) {
+    var key = String(row[0]).toUpperCase() + '|' + row[3] + '|' + row[2];
+    if (existingKeys[key]) {
+      skipped.push(row[0] + '/' + row[2]);
+      return;
+    }
+    sheet.appendRow(row);
+    added.push(row[0] + '·' + row[2]);
+  });
+
+  return '추가 ' + added.length + '건' + (added.length ? ': ' + added.join(', ') : '')
+    + (skipped.length ? ' / 이미 있음: ' + skipped.join(', ') : '');
+}
+
 /** @deprecated setupSeptemberHostCodes 사용 */
 function setupTojiHostCode() {
   return setupSeptemberHostCodes();
