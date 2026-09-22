@@ -495,7 +495,8 @@ function setupOctoberHostCodes() {
   var rows = [
     ['DONGSEO2026', '너라면 · 동서남북book', '클래식 음악 감상 모임', '10월'],
     ['DAON2026', '다온 글방', '목요 독서모임', '10월'],
-    ['DAON2026', '다온 글방', '중국차 블렌딩 다회', '10월']
+    ['DAON2026', '다온 글방', '중국차 블렌딩 다회', '10월'],
+    ['STORY2026', '@sammycomma', '그림책 읽어주는 이모', '10월']
   ];
 
   var existing = sheet.getDataRange().getValues();

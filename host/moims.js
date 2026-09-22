@@ -13,7 +13,15 @@ window.HOST_MOIMS = {
     month: '9월',
     hostName: '@sammycomma',
     moimName: '그림책 읽어주는 이모',
-    title: '그림책 읽어주는 이모',
+    title: '그림책 읽어주는 이모 (9월)',
+    anchor: 'storyaunt'
+  },
+  storyauntoct: {
+    code: 'STORY2026',
+    month: '10월',
+    hostName: '@sammycomma',
+    moimName: '그림책 읽어주는 이모',
+    title: '그림책 읽어주는 이모 (10월)',
     anchor: 'storyaunt'
   },
   dongseo: {

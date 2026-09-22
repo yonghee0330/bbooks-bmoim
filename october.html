@@ -2878,7 +2878,7 @@
       <div class="cal-cell" onclick="openRent('2026-10-07')"><div class="cal-day">7</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-08')"><div class="cal-day">8</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-09')"><div class="cal-day">9</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-10-10')"><div class="cal-day">10</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-10-10')"><div class="cal-day">10</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('storyaunt')">그림책이모 1030-12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-10-11')"><div class="cal-day">11</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-12')"><div class="cal-day">12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-13')"><div class="cal-day">13</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2982,13 +2982,40 @@
 
   <div class="moim-open-bar">
     <div class="moim-open-stat">
-      <span class="moim-open-num" id="moimTotalCount">7</span>
+      <span class="moim-open-num" id="moimTotalCount">8</span>
       <span class="moim-open-label">개 모임 개설</span>
     </div>
     <p class="moim-open-desc">10월 비북스 b.moim · 단풍처럼 물들어가는 계절의 모임.</p>
   </div>
 
     <div class="moim-grid">
+
+    <div class="moim-card" id="storyaunt">
+      <div class="moim-poster-img" onclick="openLightbox('images/story_aunt_october.jpg','그림책 읽어주는 이모 포스터')">
+        <img src="images/story_aunt_october.jpg" alt="그림책 읽어주는 이모 — STORY TIME · 10/10(토)">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">그림책 읽어주는 이모</div>
+        <p class="moim-host-line">@sammycomma</p>
+        <div class="moim-desc">
+          책을 읽고 독후활동을 합니다 :-)<br><br>
+          유치원생~초등학교 저학년과 함께 그림책을 읽고, 읽은 뒤 손으로 만드는 독후활동 시간입니다.<br>
+          《화를 참지 못하는 페르갈》, 《곰씨의 의자》, 《The Colour Monster》와 함께하는 STORY TIME.
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>10월 10일 (토) 오전 10:30 – 12:00</div>
+          <div class="meta-row"><span class="mi">📌</span>계단 좌석</div>
+          <div class="meta-row"><span class="mi">👥</span>유치원생~초등 저학년 · 13명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원</div>
+            <div class="moim-cap">재료 준비 있음</div>
+          </div>
+          <button class="btn-apply" id="apply-storyaunt" onclick="openApply('그림책 읽어주는 이모','storyaunt')">신청하기</button>
+        </div>
+      </div>
+    </div>
 
     <div class="moim-card" id="dongseosat">
       <div class="moim-poster-img" onclick="openLightbox('images/dongseo_classic_october.jpg','클래식 음악 감상 모임 포스터')">
@@ -3526,6 +3553,13 @@ const MOIM_YEAR = 2026;
 const PAGE_MONTH = '10월';
 // session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
 const MOIMS = {
+  storyaunt: {
+    name: '그림책 읽어주는 이모',
+    sessions: [{ label: '10/10(토) 10:30–12:00', value: '10월10일', _endMs: new Date(2026, 9, 10, 12, 0, 0).getTime() }],
+    capacity: 13,
+    amount: 10000,
+    hasSession: false
+  },
   dongseosat: {
     name: '클래식 음악 감상 모임',
     sessions: [
@@ -3673,6 +3707,7 @@ let latestMoimCounts = {};
 let latestEventCounts = {};
 
 const MOIM_CURATION_META = {
+  storyaunt: { cardId: 'storyaunt', poster: 'images/story_aunt_october.jpg' },
   dongseosat: { cardId: 'dongseosat', poster: 'images/dongseo_classic_october.jpg' },
   daonbookclub: { cardId: 'daonbookclub', poster: 'images/daon_bookclub_october_temp.jpg' },
   daonteablend: { cardId: 'daonteablend', poster: 'images/daon_teablend_october_temp.jpg' },
@@ -4985,6 +5020,7 @@ const SCHEDULED_EVENT_BLOCKS = [
 ];
 
 const SCHEDULED_MOIM_BLOCKS = [
+  { date: '2026-10-10', space: '계단 좌석', start: '10:30', end: '12:00', tag: '그림책 읽어주는 이모' },
   { date: '2026-10-15', space: '매장 테이블', start: '19:00', end: '21:00', tag: '목요 독서모임' },
   { date: '2026-10-17', space: '세미나실', start: '14:00', end: '16:00', tag: '클래식 음악 감상 모임' },
   { date: '2026-10-24', space: '세미나실', start: '14:00', end: '16:00', tag: '클래식 음악 감상 모임' },
