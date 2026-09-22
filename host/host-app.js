@@ -169,7 +169,10 @@ function initHostPage() {
   const h1 = q('.hero h1');
   if (h1) h1.textContent = cfg.title;
   const back = q('#backLink');
-  if (back) back.href = `../september.html#${cfg.anchor || ''}`;
+  if (back) {
+    const page = cfg.month === '10월' ? 'october' : 'september';
+    back.href = `../${page}.html#${cfg.anchor || ''}`;
+  }
   fillSetupBox(cfg);
   loadStatus();
 }

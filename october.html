@@ -2885,14 +2885,14 @@
       <div class="cal-cell" onclick="openRent('2026-10-14')"><div class="cal-day">14</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-15')"><div class="cal-day">15</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-16')"><div class="cal-day">16</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-10-17')"><div class="cal-day">17</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-10-17')"><div class="cal-day">17</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseosat')" data-session="10월17일_동서서가">클래식감상 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-10-18')"><div class="cal-day">18</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-19')"><div class="cal-day">19</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-20')"><div class="cal-day">20</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-21')"><div class="cal-day">21</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-22')"><div class="cal-day">22</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-23')"><div class="cal-day">23</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sat" onclick="openRent('2026-10-24')"><div class="cal-day">24</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sat" onclick="openRent('2026-10-24')"><div class="cal-day">24</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseosat')" data-session="10월24일_동서서가">클래식감상 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-10-25')"><div class="cal-day">25</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tojichallenge')" data-session="토지완독챌린지">토지완독 16시</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-26')"><div class="cal-day">26</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('japanpilsa')" data-session="10월26일_일본어필사">일본어필사 13-1430</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2945,13 +2945,51 @@
 
   <div class="moim-open-bar">
     <div class="moim-open-stat">
-      <span class="moim-open-num" id="moimTotalCount">4</span>
+      <span class="moim-open-num" id="moimTotalCount">5</span>
       <span class="moim-open-label">개 모임 개설</span>
     </div>
     <p class="moim-open-desc">10월 비북스 b.moim · 단풍처럼 물들어가는 계절의 모임.</p>
   </div>
 
     <div class="moim-grid">
+
+    <div class="moim-card" id="dongseosat">
+      <div class="moim-poster-img" onclick="openLightbox('images/dongseo_classic_october.jpg','클래식 음악 감상 모임 포스터')">
+        <img src="images/dongseo_classic_october.jpg" alt="클래식 음악 감상 모임 — 너라면 · 10/17·24(토) 14:00–16:00 · 세미나실">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">클래식 음악 감상 모임</div>
+        <p class="moim-host-line">너라면 · 동서남북book</p>
+        <div class="moim-desc">
+          클래식 음악 피아노 전공한 음악인이 직접 연주하며, 작품 해설을 겸한 렉처 타임을 엽니다.<br>
+          이야기 주제: &lt;나의 10대와 20대 시절 추억&gt;<br>
+          연주와 해설, 그리고 서로의 추억을 나누는 시간입니다.
+        </div>
+        <div class="session-tabs">
+          <button class="stab active" onclick="selectSession(this,'dongseo1')">① 10/17</button>
+          <button class="stab" onclick="selectSession(this,'dongseo2')">② 10/24</button>
+        </div>
+        <div class="moim-meta" id="dongseo1-meta">
+          <div class="meta-row"><span class="mi">📅</span>10월 17일 (토) 14:00 – 16:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">🎹</span>연주·렉처 · &lt;나의 10대와 20대 시절 추억&gt;</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-meta" id="dongseo2-meta" style="display:none">
+          <div class="meta-row"><span class="mi">📅</span>10월 24일 (토) 14:00 – 16:00</div>
+          <div class="meta-row"><span class="mi">📌</span>세미나실</div>
+          <div class="meta-row"><span class="mi">🎹</span>연주·렉처 · &lt;나의 10대와 20대 시절 추억&gt;</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">10,000원 <span style="font-size:12px;font-weight:500">/ 회차</span></div>
+            <div class="moim-cap">재료 준비 없음 · 회차별 개별 신청</div>
+          </div>
+          <button class="btn-apply" id="apply-dongseosat" onclick="openApply('클래식 음악 감상 모임','dongseosat')">신청하기</button>
+        </div>
+      </div>
+    </div>
 
     <div class="moim-card" id="tojichallenge">
       <div class="moim-poster-img" onclick="openLightbox('images/toji_challenge_september.jpg','《토지》 완독 챌린지 포스터')">
@@ -3397,6 +3435,19 @@ const MOIM_YEAR = 2026;
 const PAGE_MONTH = '10월';
 // session.value = Apps Script D열에 저장되는 값 (= 카운트 키에서 모임명_ 뒤 부분)
 const MOIMS = {
+  dongseosat: {
+    name: '클래식 음악 감상 모임',
+    sessions: [
+      { label: '① 10/17(토) 14:00–16:00', value: '10월17일_동서서가', _endMs: new Date(2026, 9, 17, 16, 0, 0).getTime() },
+      { label: '② 10/24(토) 14:00–16:00', value: '10월24일_동서서가', _endMs: new Date(2026, 9, 24, 16, 0, 0).getTime() }
+    ],
+    capacity: { '10월17일_동서서가': 6, '10월24일_동서서가': 6 },
+    amount: 10000,
+    hasSession: true,
+    intro: `클래식 음악 피아노 전공한 음악인이 직접 연주하며, 작품 해설을 겸한 렉처 타임을 엽니다.
+
+이야기 주제: <나의 10대와 20대 시절 추억>`
+  },
   tojichallenge: {
     name: '《토지》 완독 챌린지',
     sessions: [
@@ -3480,6 +3531,7 @@ let latestMoimCounts = {};
 let latestEventCounts = {};
 
 const MOIM_CURATION_META = {
+  dongseosat: { cardId: 'dongseosat', poster: 'images/dongseo_classic_october.jpg' },
   tojichallenge: { cardId: 'tojichallenge', poster: 'images/toji_challenge_september.jpg' },
   japanpilsa: { cardId: 'japanpilsa', poster: 'images/japan_pilsa_september.png' },
   sunnyclassicwrite: { cardId: 'sunnyclassicwrite', poster: 'images/sunny_classic_september.jpg' },
@@ -4783,6 +4835,8 @@ const TT_END_MIN = 22 * 60;
 
 // 비모임 고정 일정 (공간별 실제 시간 기준, 겹치면 차단)
 const SCHEDULED_MOIM_BLOCKS = [
+  { date: '2026-10-17', space: '세미나실', start: '14:00', end: '16:00', tag: '클래식 음악 감상 모임' },
+  { date: '2026-10-24', space: '세미나실', start: '14:00', end: '16:00', tag: '클래식 음악 감상 모임' },
   { date: '2026-10-25', space: '세미나실', start: '16:00', end: '18:00', tag: '《토지》 완독 챌린지' },
   { date: '2026-10-26', space: '세미나실', start: '13:00', end: '14:30', tag: '일본어 명대사 필사' },
   { date: '2026-10-28', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },

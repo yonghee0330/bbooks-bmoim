@@ -21,7 +21,15 @@ window.HOST_MOIMS = {
     month: '9월',
     hostName: '너라면 · 동서남북book',
     moimName: '클래식 음악 감상 모임',
-    title: '클래식 음악 감상 모임',
+    title: '클래식 음악 감상 모임 (9월)',
+    anchor: 'dongseosat'
+  },
+  dongseooct: {
+    code: 'DONGSEO2026',
+    month: '10월',
+    hostName: '너라면 · 동서남북book',
+    moimName: '클래식 음악 감상 모임',
+    title: '클래식 음악 감상 모임 (10월)',
     anchor: 'dongseosat'
   },
   movietalk: {

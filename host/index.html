@@ -10,30 +10,32 @@
 </head>
 <body>
 <header>
-  <a class="logo" href="https://moim.bbooks.co.kr/september.html">b<span>.</span>moim</a>
+  <a class="logo" href="https://moim.bbooks.co.kr/october.html">b<span>.</span>moim</a>
 </header>
 <div class="hero">
-  <h1>9월 개설자 링크</h1>
+  <h1>개설자 신청 현황 링크</h1>
   <p>각 모임 개설자에게 해당 링크만 공유하세요</p>
 </div>
 <div class="wrap">
   <ul class="link-list" id="list"></ul>
 </div>
 <footer>
-  <a href="../september.html">← 9월 모임 페이지</a><br>
+  <a href="../october.html">← 10월 모임 페이지</a>
+  · <a href="../september.html">9월 모임 페이지</a><br>
   © 2026 · 비북스 b.moim
 </footer>
 <script src="moims.js"></script>
 <script>
 const list = document.getElementById('list');
-const order = ['storyaunt','toji','dongseo','daonhwayo','daonbookclub','sunny','movietalk','japanpilsa','letter'];
+const order = ['dongseooct','storyaunt','toji','dongseo','daonhwayo','daonbookclub','sunny','movietalk','japanpilsa','letter'];
 order.forEach(slug => {
   const m = HOST_MOIMS[slug];
   if (!m) return;
   const li = document.createElement('li');
+  const page = m.month === '10월' ? 'october' : 'september';
   li.innerHTML = `<a href="${slug}.html">
     <div class="name">${m.title}</div>
-    <div class="meta">${m.hostName} · ${m.code} · https://moim.bbooks.co.kr/host/${slug}.html</div>
+    <div class="meta">${m.hostName} · ${m.code} · ${m.month} · https://moim.bbooks.co.kr/host/${slug}.html</div>
   </a>`;
   list.appendChild(li);
 });
