@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>신청 현황 · b.moim</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="host.css">
+</head>
+<body>
+
+<header>
+  <a class="logo" href="https://moim.bbooks.co.kr/october.html">b<span>.</span>moim</a>
+</header>
+
+<div class="hero">
+  <h1>신청 현황</h1>
+  <p>개설자 전용 · 신청자 명단 · 연락처</p>
+</div>
+
+<div class="wrap">
+  <div class="toolbar">
+    <div class="status-line" id="statusLine">불러오는 중…</div>
+    <button type="button" class="btn-refresh" id="refreshBtn" onclick="loadStatus()">↻ 새로고침</button>
+  </div>
+
+  <div class="setup" id="setupBox"></div>
+  <div id="alertBox"></div>
+
+  <div class="result" id="result">
+    <div class="result-title" id="hostTitle"></div>
+    <div class="result-sub" id="hostSub"></div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num" id="statTotal">0</div>
+        <div class="stat-label">전체 신청</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num ok" id="statActive">0</div>
+        <div class="stat-label">유효 신청</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num cancel" id="statCancelled">0</div>
+        <div class="stat-label">취소</div>
+      </div>
+    </div>
+
+    <div id="moimList"></div>
+  </div>
+</div>
+
+<footer>
+  <a id="backLink" href="../september.html">← 9월 모임 페이지</a>
+  · <a href="index.html">개설자 링크 목록</a>
+  · <a href="../host.html">점주 코드로 조회</a><br>
+  © 2026 · 비북스 b.moim · 이 링크는 개설자 전용입니다
+</footer>
+
+<script>window.HOST_MOIM_SLUG = 'daonteaoct';</script>
+<script src="moims.js"></script>
+<script src="host-app.js"></script>
+</body>
+</html>

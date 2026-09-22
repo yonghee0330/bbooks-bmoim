@@ -2883,7 +2883,7 @@
       <div class="cal-cell" onclick="openRent('2026-10-12')"><div class="cal-day">12</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-13')"><div class="cal-day">13</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-14')"><div class="cal-day">14</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell" onclick="openRent('2026-10-15')"><div class="cal-day">15</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell" onclick="openRent('2026-10-15')"><div class="cal-day">15</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('daonbookclub')" data-session="10월15일_북클럽">목요독서 19-21</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-16')"><div class="cal-day">16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-10-17')"><div class="cal-day">17</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseosat')" data-session="10월17일_동서서가">클래식감상 14-16</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sun" onclick="openRent('2026-10-18')"><div class="cal-day">18</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2893,7 +2893,7 @@
       <div class="cal-cell" onclick="openRent('2026-10-22')"><div class="cal-day">22</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-23')"><div class="cal-day">23</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell sat" onclick="openRent('2026-10-24')"><div class="cal-day">24</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('dongseosat')" data-session="10월24일_동서서가">클래식감상 14-16</div><div class="cal-rent-btn">[대관]</div></div>
-      <div class="cal-cell sun" onclick="openRent('2026-10-25')"><div class="cal-day">25</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tojichallenge')" data-session="토지완독챌린지">토지완독 16시</div><div class="cal-rent-btn">[대관]</div></div>
+      <div class="cal-cell sun" onclick="openRent('2026-10-25')"><div class="cal-day">25</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('daonteablend')" data-session="10월25일_중국차다회">중국차다회 13-1430</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('tojichallenge')" data-session="토지완독챌린지">토지완독 16시</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-26')"><div class="cal-day">26</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('japanpilsa')" data-session="10월26일_일본어필사">일본어필사 13-1430</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-27')"><div class="cal-day">27</div><div class="cal-rent-btn">[대관]</div></div>
       <div class="cal-cell" onclick="openRent('2026-10-28')"><div class="cal-day">28</div><div class="cal-event ev-moim" onclick="event.stopPropagation();scrollToMoim('letter')">편지모임 11-13</div><div class="cal-rent-btn">[대관]</div></div>
@@ -2945,7 +2945,7 @@
 
   <div class="moim-open-bar">
     <div class="moim-open-stat">
-      <span class="moim-open-num" id="moimTotalCount">5</span>
+      <span class="moim-open-num" id="moimTotalCount">7</span>
       <span class="moim-open-label">개 모임 개설</span>
     </div>
     <p class="moim-open-desc">10월 비북스 b.moim · 단풍처럼 물들어가는 계절의 모임.</p>
@@ -2987,6 +2987,60 @@
             <div class="moim-cap">재료 준비 없음 · 회차별 개별 신청</div>
           </div>
           <button class="btn-apply" id="apply-dongseosat" onclick="openApply('클래식 음악 감상 모임','dongseosat')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="daonbookclub">
+      <div class="moim-poster-img" onclick="openLightbox('images/daon_bookclub_october_temp.jpg','목요 독서모임 임시 포스터')">
+        <img src="images/daon_bookclub_october_temp.jpg" alt="목요 독서모임 — 다온 글방 · 10/15(목) 19:00–21:00">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">목요 독서모임</div>
+        <p class="moim-host-line">다온 글방 (@daon_gulbang)</p>
+        <div class="moim-desc">
+          다온 글방과 함께하는 목요 저녁 독서모임입니다.<br>
+          책을 읽고 생각을 나누며, 천천히 깊어지는 시간을 보냅니다.<br>
+          <span style="font-size:12px;color:var(--muted)">*임시 포스터 · 확정 포스터로 곧 교체 예정</span>
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>10월 15일 (목) 19:00 – 21:00</div>
+          <div class="meta-row"><span class="mi">📌</span>비북스 · 매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">20,000원</div>
+            <div class="moim-cap">문의 @daon_gulbang DM</div>
+          </div>
+          <button class="btn-apply" id="apply-daonbookclub" onclick="openApply('목요 독서모임','daonbookclub')">신청하기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="moim-card" id="daonteablend">
+      <div class="moim-poster-img" onclick="openLightbox('images/daon_teablend_october_temp.jpg','중국차 블렌딩 다회 임시 포스터')">
+        <img src="images/daon_teablend_october_temp.jpg" alt="중국차 블렌딩 다회 — 다온 글방 · 10/25(일) 13:00–14:30">
+      </div>
+      <div class="moim-body">
+        <div class="moim-name">중국차 블렌딩 다회</div>
+        <p class="moim-host-line">다온 글방 (@daon_gulbang)</p>
+        <div class="moim-desc">
+          중국차를 직접 블렌딩하며 향과 맛을 알아가는 다회입니다.<br>
+          차와 함께 천천히 머무는 일요일 오후 시간입니다.<br>
+          <span style="font-size:12px;color:var(--muted)">*임시 포스터 · 확정 포스터로 곧 교체 예정</span>
+        </div>
+        <div class="moim-meta">
+          <div class="meta-row"><span class="mi">📅</span>10월 25일 (일) 13:00 – 14:30</div>
+          <div class="meta-row"><span class="mi">📌</span>비북스 · 매장 테이블</div>
+          <div class="meta-row"><span class="mi">👥</span>6명</div>
+        </div>
+        <div class="moim-foot">
+          <div>
+            <div class="moim-price">30,000원</div>
+            <div class="moim-cap">재료 준비 있음 · 문의 @daon_gulbang DM</div>
+          </div>
+          <button class="btn-apply" id="apply-daonteablend" onclick="openApply('중국차 블렌딩 다회','daonteablend')">신청하기</button>
         </div>
       </div>
     </div>
@@ -3448,6 +3502,30 @@ const MOIMS = {
 
 이야기 주제: <나의 10대와 20대 시절 추억>`
   },
+  daonbookclub: {
+    name: '목요 독서모임',
+    sessions: [
+      { label: '10/15(목) 19:00–21:00', value: '10월15일_북클럽', _endMs: new Date(2026, 9, 15, 21, 0, 0).getTime() }
+    ],
+    capacity: 6,
+    amount: 20000,
+    hasSession: false,
+    intro: `다온 글방과 함께하는 목요 저녁 독서모임입니다.
+
+책을 읽고 생각을 나누며, 천천히 깊어지는 시간을 보냅니다.`
+  },
+  daonteablend: {
+    name: '중국차 블렌딩 다회',
+    sessions: [
+      { label: '10/25(일) 13:00–14:30', value: '10월25일_중국차다회', _endMs: new Date(2026, 9, 25, 14, 30, 0).getTime() }
+    ],
+    capacity: 6,
+    amount: 30000,
+    hasSession: false,
+    intro: `중국차를 직접 블렌딩하며 향과 맛을 알아가는 다회입니다.
+
+차와 함께 천천히 머무는 일요일 오후 시간입니다.`
+  },
   tojichallenge: {
     name: '《토지》 완독 챌린지',
     sessions: [
@@ -3532,6 +3610,8 @@ let latestEventCounts = {};
 
 const MOIM_CURATION_META = {
   dongseosat: { cardId: 'dongseosat', poster: 'images/dongseo_classic_october.jpg' },
+  daonbookclub: { cardId: 'daonbookclub', poster: 'images/daon_bookclub_october_temp.jpg' },
+  daonteablend: { cardId: 'daonteablend', poster: 'images/daon_teablend_october_temp.jpg' },
   tojichallenge: { cardId: 'tojichallenge', poster: 'images/toji_challenge_september.jpg' },
   japanpilsa: { cardId: 'japanpilsa', poster: 'images/japan_pilsa_september.png' },
   sunnyclassicwrite: { cardId: 'sunnyclassicwrite', poster: 'images/sunny_classic_september.jpg' },
@@ -4835,8 +4915,10 @@ const TT_END_MIN = 22 * 60;
 
 // 비모임 고정 일정 (공간별 실제 시간 기준, 겹치면 차단)
 const SCHEDULED_MOIM_BLOCKS = [
+  { date: '2026-10-15', space: '매장 테이블', start: '19:00', end: '21:00', tag: '목요 독서모임' },
   { date: '2026-10-17', space: '세미나실', start: '14:00', end: '16:00', tag: '클래식 음악 감상 모임' },
   { date: '2026-10-24', space: '세미나실', start: '14:00', end: '16:00', tag: '클래식 음악 감상 모임' },
+  { date: '2026-10-25', space: '매장 테이블', start: '13:00', end: '14:30', tag: '중국차 블렌딩 다회' },
   { date: '2026-10-25', space: '세미나실', start: '16:00', end: '18:00', tag: '《토지》 완독 챌린지' },
   { date: '2026-10-26', space: '세미나실', start: '13:00', end: '14:30', tag: '일본어 명대사 필사' },
   { date: '2026-10-28', space: '세미나실', start: '11:00', end: '13:00', tag: '한 사람을 위한 편지' },

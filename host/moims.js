@@ -64,6 +64,22 @@ window.HOST_MOIMS = {
     title: '월간 목요 북클럽 웰컴 데이',
     anchor: 'daonbookclub'
   },
+  daonbookoct: {
+    code: 'DAONBOOK2026',
+    month: '10월',
+    hostName: '다온 글방',
+    moimName: '목요 독서모임',
+    title: '목요 독서모임 (10월)',
+    anchor: 'daonbookclub'
+  },
+  daonteaoct: {
+    code: 'DAONTEA2026',
+    month: '10월',
+    hostName: '다온 글방',
+    moimName: '중국차 블렌딩 다회',
+    title: '중국차 블렌딩 다회 (10월)',
+    anchor: 'daonteablend'
+  },
   sunny: {
     code: 'SUNNY2026',
     month: '9월',
