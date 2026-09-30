@@ -187,7 +187,7 @@
     const r = await fetch(CFG.apiUrl, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) });
     let out;
     try { out = JSON.parse(await r.text()); } catch { throw new Error('서버 응답을 읽을 수 없어요. 인스타그램 DM으로 문의해 주세요.'); }
-    if (out.error) throw new Error(out.error);
+    if (out.error) throw new Error(/unknown action: (lookup|cancelRequest|resend)/.test(out.error) ? '조회 기능을 준비 중이에요. 인스타그램 DM으로 문의해 주세요.' : String(out.error).replace(/^Error: /, ''));
     return out;
   };
   const sheetNow = () => new Date().toLocaleString('ko-KR');
@@ -237,18 +237,20 @@
         d.ref && d.ref !== 'direct' ? `유입 ${d.ref}` : ''
       ].filter(Boolean).join(' · ');
       const sessions = d.sessionIds.map(id => item.sessions.find(s => s.id === id));
+      let first = null;
       for (let i = 0; i < sessions.length; i++) {
         const row = {
           month: SH.month, moimName: sheetName(item), session: sheetSession(sessions[i]),
           name: d.name, phone: sheetPhone(d.phone), amount: i === 0 ? d.amount : '',
           note: noteBase, books: i === 0 ? (d.extra || '') : '', date: sheetNow()
         };
-        await sheetPostV2(
-          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '' },
+        const out = await sheetPostV2(
+          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '' },
           { action: 'apply', ...row, note: [noteBase, d.email ? `메일 ${d.email}` : ''].filter(Boolean).join(' · ') }
         );
+        if (i === 0) first = out || {};
       }
-      return { ok: true, code: '', amount: d.amount, deadline: Date.now() + CFG.payDeadlineHours * 3600e3, notified: {} };
+      return { ok: true, code: first?.code || '', amount: d.amount, deadline: first?.deadline || Date.now() + CFG.payDeadlineHours * 3600e3, notified: first?.notified || {} };
     },
     async rent(d) {
       const m = Number(d.date.slice(5, 7));
@@ -257,12 +259,18 @@
         name: d.name, phone: sheetPhone(d.phone), count: d.count || '', reqDate: sheetNow()
       };
       const extra = [d.ref && d.ref !== 'direct' ? `유입 ${d.ref}` : ''];
-      await sheetPostV2(
+      const out = await sheetPostV2(
         { action: 'rentV2', ...base, purpose: d.purpose || '', email: d.email || '', consent: d.consent, ref: d.ref || '' },
         { action: 'rent', ...base, purpose: [d.purpose, d.consent?.marketing ? '소식수신 동의' : '', d.email ? `메일 ${d.email}` : '', ...extra].filter(Boolean).join(' · ') }
       );
-      return { ok: true, code: '', notified: {} };
+      return { ok: true, code: out?.code || '', notified: out?.notified || {} };
     },
+    async lookup(d) {
+      const out = await sheetPost({ action: 'lookup', code: d.code, phone: d.phone });
+      return { apps: (out.apps || []).map(a => ({ ...a, slug: (ITEMS.find(i => sheetName(i) === a.title) || {}).slug || '' })) };
+    },
+    async cancelRequest(d) { return sheetPost({ action: 'cancelRequest', code: d.code, phone: d.phone, target: d.target }); },
+    async resend(d) { return sheetPost({ action: 'resend', name: d.name, phone: d.phone }); },
     async hostApply(d) {
       try {
         await sheetPost({ action: 'hostApply', month: SH.month, ...d });
@@ -721,7 +729,7 @@
         </div>
         <div class="form-alert" role="alert"></div>
         <button class="btn primary big" type="submit">신청하기</button>
-        <p class="muted small" style="text-align:center;margin:0">${SHEET ? '입금이 확인되면 비북스가 연락드려요. 문의는 인스타그램 DM으로 해 주세요.' : '신청 직후 카카오 알림톡으로 신청번호와 입금 안내를 보내드려요.'}</p>
+        <p class="muted small" style="text-align:center;margin:0">${SHEET ? '신청하면 신청번호가 나와요. 이메일을 적으면 입금 안내 메일도 보내드려요.' : '신청 직후 카카오 알림톡으로 신청번호와 입금 안내를 보내드려요.'}</p>
       </form>`
     });
     const form = $('form', body);
@@ -775,10 +783,10 @@
     });
   }
   function sentChips(n, demoNote) {
-    const lab = { sent: '보냄', demo: '테스트', skipped: '미설정', failed: '실패', none: '' };
+    const shown = v => v === 'sent' || v === 'demo';
     const chips = [];
-    if (n?.alimtalk) chips.push(`<span class="${n.alimtalk === 'sent' ? 'ok' : ''}">알림톡 ${lab[n.alimtalk] || n.alimtalk}</span>`);
-    if (n?.email && n.email !== 'none') chips.push(`<span class="${n.email === 'sent' ? 'ok' : ''}">메일 ${lab[n.email] || n.email}</span>`);
+    if (shown(n?.alimtalk)) chips.push(`<span class="ok">알림톡으로 안내를 보냈어요</span>`);
+    if (shown(n?.email)) chips.push(`<span class="ok">메일로 안내를 보냈어요</span>`);
     return `<div class="sent">${chips.join('')}</div>${DEMO && demoNote ? '<p class="muted small">테스트 모드라 실제 알림은 발송되지 않았어요.</p>' : ''}`;
   }
   function showDone(body, item, o, res, name, close) {

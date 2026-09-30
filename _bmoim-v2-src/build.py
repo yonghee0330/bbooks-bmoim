@@ -57,10 +57,10 @@ if '--sheet' in sys.argv:
     SITE['baseUrl'] = SITE['sheet'].get('siteUrl', 'https://moim.bbooks.co.kr')
     SITE['indexable'] = SITE['sheet'].get('indexable', True)
     SITE['apiUrl'] = SITE['sheet']['apiUrl']
-    SITE['refund']['contact'] = '취소는 비북스 인스타그램 DM으로 문의해 주세요.'
+    SITE['refund']['contact'] = '취소는 ‘내 신청’에서 요청하거나 비북스 인스타그램 DM으로 문의해 주세요.'
     SITE['privacy'].update({
         'items': '이름, 휴대폰 번호, 이메일(선택), 요청사항(선택)',
-        'purpose': '모임·대관 신청 접수, 입금 확인, 일정 안내 연락(문자·메일), 취소·환불 처리',
+        'purpose': '모임·대관 신청 접수, 신청번호 발급·조회, 입금 확인, 일정 안내(메일·카카오 알림톡·문자), 취소·환불 처리',
         'hostShare': '모임 개설자(호스트)에게 참가 확인 목적으로 신청자 이름과 연락처가 공유될 수 있습니다.',
         'marketing': '비북스 뉴스레터(이메일)와 문자로 다음 달 비모임·행사 소식을 받습니다. 언제든 수신 거부할 수 있습니다.'})
 MOIMS = load('moims.json')
@@ -386,7 +386,7 @@ def layout(*, page_id, title, desc, body, depth, path, og_image=None, og_type='w
   <div class="gnb-in">
     <a class="logo" href="{rel}./"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span><span class="logo-ko">비북스</span><span class="logo-en">b<i>.</i>moim</span></a>
     <nav class="gnb-nav" aria-label="주요 메뉴">{nav}</nav>
-    {'' if SHEET else f'<a class="gnb-my{" on" if page_id == "my" else ""}" href="{rel}my/">{ICON["ticket"]}<span>내 신청</span></a>'}
+    <a class="gnb-my{" on" if page_id == "my" else ""}" href="{rel}my/">{ICON["ticket"]}<span>내 신청</span></a>
   </div>
 </header>
 <div id="demoBar"></div>
@@ -395,7 +395,7 @@ def layout(*, page_id, title, desc, body, depth, path, og_image=None, og_type='w
   <div class="foot-in">
     <p class="foot-brand"><span class="logo-ko">비북스</span> <span class="logo-en">b<i>.</i>moim</span></p>
     <p>{esc(st["address"])}</p>
-    <p class="foot-links"><a href="https://instagram.com/{esc(st["instagram"])}" target="_blank" rel="noopener">인스타그램 @{esc(st["instagram"])}</a><a href="{rel}bmoim.ics">캘린더 구독</a>{'' if SHEET else f'<a href="{rel}my/">내 신청 확인</a>'}<a href="{rel}host/">모임 열기</a><a href="#privacy" data-open-privacy>개인정보 처리 안내</a></p>
+    <p class="foot-links"><a href="https://instagram.com/{esc(st["instagram"])}" target="_blank" rel="noopener">인스타그램 @{esc(st["instagram"])}</a><a href="{rel}bmoim.ics">캘린더 구독</a><a href="{rel}my/">내 신청 확인</a><a href="{rel}host/">모임 열기</a><a href="#privacy" data-open-privacy>개인정보 처리 안내</a></p>
   </div>
 </footer>
 {after_main}
@@ -652,7 +652,7 @@ def build_detail(it, others):
         apply_note = '이 행사는 파트너 페이지에서 신청합니다.'
     else:
         apply_btn = '<button type="button" class="btn primary" data-apply>신청하기</button>'
-        apply_note = '신청 후 입금해 주시면 확정돼요 · 문의는 인스타그램 DM' if SHEET else f'신청 후 {SITE["payDeadlineHours"]}시간 안에 입금하면 확정돼요 · 알림톡·메일로 안내'
+        apply_note = f'신청하면 신청번호가 나와요 · {SITE["payDeadlineHours"]}시간 안에 입금하면 확정' if SHEET else f'신청 후 {SITE["payDeadlineHours"]}시간 안에 입금하면 확정돼요 · 알림톡·메일로 안내'
 
     # 판권면 표기 (일시)
     if len(occ) == 1:
