@@ -2,43 +2,47 @@
 
 2026-09-30 기준. 10월 비모임 페이지를 새 디자인(v2 '서가')으로 이관하는 작업의 현재 상태와 이어서 할 일입니다.
 
-## 1. 지금 구조
+## 1. 지금 구조 (2026-09-30 루트 전환)
+
+**비모임은 이제 https://moim.bbooks.co.kr/ 한 주소로 운영합니다.** 월이 바뀌어도 주소는 그대로이고, 페이지 안의 내용만 바뀝니다.
 
 ```
-bbooks-bmoim/                     ← GitHub Pages (moim.bbooks.co.kr), Cursor 규칙상 작업 후 자동 커밋·푸시
-├─ october.html                   ← v2/ 로 넘겨 주는 페이지 (기존 링크·인스타 링크 유지)  ※ 생성물
-├─ october-old.html               ← 이관 전 10월 페이지 원본 (보관)
-├─ v2/                            ← 새 비모임 사이트 (정적 HTML)  ※ 생성물 — 직접 고치지 말 것
-├─ images/                        ← 포스터·공간 사진 (v2가 ../images/ 로 그대로 사용)
-├─ apps-script/webapp-v2-full.gs  ← 구글 시트 Apps Script 통합본 (아직 배포 전, 아래 4번)
-└─ _bmoim-v2-src/                 ← v2 원본 (밑줄 폴더라 GitHub Pages에 공개되지 않음)
-   ├─ data/moims.json             ← 모임·행사 (단일 원천)
-   ├─ data/spaces.json            ← 대관 공간·요금·사진
-   ├─ data/site.json              ← 계좌·환불·개인정보 문구·포스터 규격·시트 연결 설정
+bbooks-bmoim/  (GitHub Pages · Cursor 규칙상 작업 후 자동 커밋·푸시)
+├─ index.html  m/  space/  open/  open/status/  my/  cards/    ← 비모임 사이트  ※ 생성물 — 직접 고치지 말 것
+├─ assets/  data/  exports/  bmoim.ics  sitemap.xml  robots.txt ← 생성물
+├─ june~october.html, october-old.html  → 첫 화면으로 넘겨 주는 페이지 (옛 월별 주소 유지용)  ※ 생성물
+├─ host.html → open/status/ 로 넘김  ※ 생성물
+├─ v2/  → 새 주소로 넘겨 주는 페이지만 있음  ※ 생성물
+├─ host/  ← 옛 호스트 현황 페이지들 (그대로 둠, 새 현황은 open/status/)
+├─ images/  ← 포스터·공간 사진
+├─ apps-script/live/  ← 운영 중인 Apps Script 코드 (배포 버전 7)
+└─ _bmoim-v2-src/     ← 원본 (밑줄 폴더라 사이트에 공개되지 않음)
+   ├─ data/moims.json · spaces.json · site.json
    ├─ assets/app.css app.js rent.js cards.js
-   ├─ build.py                    ← data → HTML 생성 (Python 3 표준 라이브러리만)
-   └─ apps-script/Code.gs         ← (다음 단계용) 신청번호·알림톡이 있는 새 백엔드. 아직 미사용
+   └─ build.py
 ```
 
-**원칙: `v2/`와 `october.html`은 생성물입니다. 내용·디자인을 바꿀 때는 `_bmoim-v2-src/`를 고치고 다시 빌드하세요.**
+주소: 첫 화면 `/`, 일정 달력 `/#cal`, 모임 `/m/<slug>/`, 대관 `/space/`, 모임 열기 `/open/`(포스터 규격 `/open/#poster`), 호스트 현황 `/open/status/`(점주코드), 홍보 카드 `/cards/`.
+
+**원칙: 생성물은 직접 고치지 말고 `_bmoim-v2-src/`를 고친 뒤 다시 빌드.**
+그 밖의 페이지(voice, btalk, moonlight, store-directory, bbooks-guide, apply/, host/)는 빌드와 무관 — 평소처럼 직접 수정.
 
 ## 2. 수정 → 반영
 
 ```bash
 python3 _bmoim-v2-src/build.py --sheet
 ```
-- 저장소 `v2/` 전체와 `october.html`을 다시 만듭니다 (기존 v2/는 지우고 새로 생성).
-- 끝나면 커밋·푸시 → https://moim.bbooks.co.kr/v2/ 반영.
-- 미리보기: `python3 -m http.server 8000` (저장소 루트) → http://localhost:8000/v2/
-- 빌드가 알려 주는 것: 데이터 오류(회차 id 중복, 없는 공간 등), 같은 공간·시간 일정 겹침, 규격(1080×1350)과 다른 포스터 목록.
+- 저장소 루트의 비모임 파일들을 다시 만듭니다. 지우고 다시 만드는 폴더는 `m space open my cards assets data exports v2` 뿐이고, 다른 파일은 건드리지 않습니다.
+- 커밋·푸시 → https://moim.bbooks.co.kr/ 반영. 미리보기: 루트에서 `python3 -m http.server 8000` → http://localhost:8000/
+- 빌드가 알려 주는 것: 데이터 오류, 같은 공간·시간 일정 겹침, 규격(1080×1350)과 다른 포스터.
 
 자주 하는 일
 | 할 일 | 고칠 곳 |
 |---|---|
-| 모임 추가·수정 | `data/moims.json` 의 `items` (필드 설명은 `_bmoim-v2-src/README.md`) |
-| 새 달로 넘어가기 | `site.json` 의 `month`(제목·부제·이미지·캘린더 달), `sheet.month`, `sheet.countMonths` |
-| 계좌·환불·개인정보 문구 | `site.json` (`--sheet` 모드용 문구는 `build.py` 상단 `if '--sheet'` 블록에서 덮어씀) |
-| 디자인 | `assets/app.css` (색은 맨 위 `:root` 토큰) |
+| 모임 추가·수정 | `data/moims.json` 의 `items` |
+| **새 달로 넘어가기** | `moims.json`에 새 달 모임 추가(지난 모임은 `"status": "hidden"` 또는 삭제), `site.json`의 `month`(제목·부제·이미지·`calendarMonths`), `sheet.month`(시트 B열에 쓸 달), 이어지는 모임은 `sheetMonths` 확인. 주소는 그대로 |
+| 계좌·환불·개인정보 문구 | `site.json` (운영 문구는 `build.py` 상단 `if '--sheet'` 블록에서 덮어씀) |
+| 디자인 | `assets/app.css` (색은 맨 위 `:root`) |
 
 ## 3. 구글 시트 연결 (중요)
 
@@ -49,19 +53,18 @@ python3 _bmoim-v2-src/build.py --sheet
 - 시트가 `10월10일` 같은 회차 값을 날짜로 바꿔 저장하는 문제가 있어, 인원 집계는 날짜로도 맞춥니다 (`app.js` → `sheetApi.counts`).
 - 새 액션(`applyV2` 등)이 서버에 없으면 페이지가 자동으로 기존 `apply`/`rent`로 보냅니다. 이때 이메일·소식수신 동의는 **비고(H열)** 에 들어갑니다. 개설 신청은 인스타 DM용 복사 문구로 안내됩니다.
 
-## 4. 남은 일 — Apps Script 배포 (사용자가 구글 편집기에서 해야 함)
+## 4. Apps Script (배포 완료 · 2026-09-30)
 
-`apps-script/webapp-v2-full.gs` = 기존 webapp.gs 전체 + 새 기능. 배포하면:
-- 모임신청 J 이메일 · K 소식수신동의 · L 개인정보동의 / 대관신청 L~N 같은 항목 / `개설신청` 탭 / 시트 상단 '비모임' 메뉴(뉴스레터 명단 만들기)
-
-순서
-1. 스프레드시트 → 확장 프로그램 → Apps Script → **지금 코드를 다른 이름으로 백업**
-2. doGet/doPost 있는 파일에 통합본 전체를 덮어쓰기 (다른 파일에 doGet·doPost·onOpen이 또 있으면 삭제)
-3. 배포 → 배포 관리 → **기존 배포 편집 → 새 버전** (새 배포 금지: 주소가 바뀜). 배포 URL이 `sheet.apiUrl`과 같은지 확인
-4. 함수 `setupSheetV2` 한 번 실행 (권한 승인)
-5. 사이트에서 테스트 신청 1건 → J~L열 확인 후 그 줄 삭제
-
-주의: 저장소의 `apps-script/webapp.gs`는 배포본과 다를 수 있음 (그 복사본의 `appendApply_`에는 범위 오류가 있었고 통합본에서 고침). 배포 전 반드시 백업.
+- 웹앱은 **다른 구글 파일(`1XM5bF5…`)에 연결된 스크립트 프로젝트**에 있음 (신청 시트의 확장 프로그램 메뉴에서는 안 보일 수 있음). 시트는 ID로 열어서 씀.
+- 운영 코드 = `apps-script/live/Code.js` (배포 버전 **7**, 배포 ID `AKfycbx7…6HQ` 유지). 버전 6 코드에 추가만 한 것:
+  `applyV2` · `rentV2` · `hostApply` · `setupSheetV2()` · `buildNewsletterList()`
+- 모임신청 A~I, 대관신청 A~K는 기존과 동일하게 기록. 새 항목은 **제목으로 찾는 오른쪽 새 열**:
+  모임신청 `신청 메모 · 도서 요청 · 이메일 · 소식수신동의 · 개인정보동의 · 유입`, 대관신청 `이메일 · 소식수신동의 · 개인정보동의 · 유입`.
+  (H열은 기존처럼 접수일 — '취소' 표시도 H열에 하던 대로)
+- `개설신청` 탭: 첫 개설 신청 때 자동 생성. `뉴스레터` 탭: 편집기에서 `buildNewsletterList` 실행 시 생성·갱신.
+- 코드 수정 배포(clasp): `apps-script/live/` 기준으로 push → `clasp version "설명"` → `clasp deploy -i AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ -V <새 버전>`.
+  되돌리기: 같은 명령에 `-V 6` (이관 전 코드).
+- 참고: `apps-script/webapp.gs`·`Code.gs`는 옛 복사본으로 운영 코드와 다름. 옛 알리고 문자 코드는 저장소 밖 백업에만 있음.
 
 ## 5. 알려진 문제 · 다음 단계
 1. **개인정보 노출**: `대관신청`·`모임신청` 탭을 gviz(공개 링크)로 읽는 구조라, 시트가 "링크가 있는 모든 사용자" 공유면 신청자 이름·연락처가 노출될 수 있음. 해결: 대관 시간대만 돌려주는 `rentBlocks` 액션을 스크립트에 추가 → `app.js` `sheetApi.rentBlocks`를 그 액션으로 교체 → 시트 공유를 "제한됨"으로.
@@ -74,5 +77,5 @@ python3 _bmoim-v2-src/build.py --sheet
 - `v2/` 파일 직접 수정 (다음 빌드에서 덮어써짐)
 - 신청자 개인정보(시트 내용)를 저장소에 커밋
 - `apps-script/Code.gs` 커밋 (알리고 문자 API 키가 들어 있어 .gitignore 처리함)
-- Apps Script "새 배포" (주소 변경 → 모든 페이지 연결 끊김)
+- Apps Script "새 배포" (주소 변경 → 모든 페이지 연결 끊김). 항상 기존 배포 ID에 새 버전으로
 - `sheetName`/`sheetSession` 임의 변경 (기존 신청 인원 집계가 끊김)

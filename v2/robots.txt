@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /my/
-Disallow: /host/dashboard/
-Disallow: /cards/
-Sitemap: https://moim.bbooks.co.kr/v2/sitemap.xml

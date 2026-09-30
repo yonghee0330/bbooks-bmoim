@@ -33,9 +33,13 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(ROOT, 'data')
 ASSETS = os.path.join(ROOT, 'assets')
 SHARE = '--share' in sys.argv  # 공유용(클로드 아티팩트 등): 폴더 주소 대신 index.html, 허용된 폰트만
-SHEET = '--sheet' in sys.argv  # 기존 구글 시트(webapp.gs)에 연결 → deploy/v2/ (저장소 v2 폴더에 그대로 복사)
-# 저장소 안에서는 --sheet 결과를 저장소 루트의 v2/ 와 october.html 에 바로 씁니다
-DIST = os.path.join(ROOT, '..', 'v2') if SHEET else os.path.join(ROOT, 'share' if SHARE else 'dist')
+SHEET = '--sheet' in sys.argv  # 운영 빌드: 구글 시트 연결 + 저장소 루트(moim.bbooks.co.kr/)에 바로 생성
+DIST = os.path.abspath(os.path.join(ROOT, '..')) if SHEET else os.path.join(ROOT, 'share' if SHARE else 'dist')
+# 운영 사이트 루트에는 기존 host/ 폴더(옛 호스트 현황)가 있어서 '모임 열기'는 open/ 에 둡니다
+HOST_DIR = 'open/' if SHEET else 'host/'
+DASH_DIR = 'open/status/' if SHEET else 'host/dashboard/'
+# 운영 빌드가 루트에 만드는 폴더·파일 (다시 만들기 전에 이것만 지움)
+GENERATED = ['m', 'space', 'open', 'my', 'cards', 'assets', 'data', 'exports', 'v2']
 KST = timezone(timedelta(hours=9))
 WD = '월화수목금토일'
 ASSET_VER = datetime.now().strftime('%m%d%H%M')
@@ -48,8 +52,10 @@ def load(name):
 
 SITE = load('site.json')
 if '--sheet' in sys.argv:
-    # 저장소 루트의 images/ 폴더를 그대로 사용 (v2/ 한 단계 위)
-    SITE['images']['baseUrl'] = '../images/'
+    # 저장소 루트의 images/ 폴더를 그대로 사용
+    SITE['images']['baseUrl'] = 'images/'
+    SITE['baseUrl'] = SITE['sheet'].get('siteUrl', 'https://moim.bbooks.co.kr')
+    SITE['indexable'] = SITE['sheet'].get('indexable', True)
     SITE['apiUrl'] = SITE['sheet']['apiUrl']
     SITE['refund']['contact'] = '취소는 비북스 인스타그램 DM으로 문의해 주세요.'
     SITE['privacy'].update({
@@ -327,7 +333,7 @@ CATALOG = catalog()
 
 
 # ── 공통 레이아웃 ─────────────────────────────────────
-NAV = [('hub', '', '이번 달 모임'), ('cal', '#cal', '일정 달력'), ('space', 'space/', '공간 대관'), ('host', 'host/', '모임 열기')]
+NAV = [('hub', '', '이번 달 모임'), ('cal', '#cal', '일정 달력'), ('space', 'space/', '공간 대관'), ('host', HOST_DIR, '모임 열기')]
 
 
 def layout(*, page_id, title, desc, body, depth, path, og_image=None, og_type='website',
@@ -536,7 +542,7 @@ def build_hub():
         <p>세미나실 · 매장 테이블 · 계단 좌석 · 전체 대관. 사진과 요금을 보고 바로 시간을 골라 신청하세요.</p>
         <span class="go">대관 보러 가기 {ICON["arrow"]}</span>
       </a>
-      <a class="guide-card link" href="host/">
+      <a class="guide-card link" href="{HOST_DIR}">
         <h3>모임 열기</h3>
         <p>비북스에서 나만의 모임을 열어 보세요. 공간·신청 관리·홍보 페이지를 함께 준비합니다.</p>
         <span class="go">개설 신청하기 {ICON["arrow"]}</span>
@@ -962,9 +968,9 @@ def build_host():
     </form>
   </section>
 </main>'''
-    write('host/index.html', layout(page_id='host', title='모임 열기 · 비북스 b.moim',
+    write(HOST_DIR + 'index.html', layout(page_id='host', title='모임 열기 · 비북스 b.moim',
                                     desc='비북스에서 독서모임·글쓰기·클래스를 열어 보세요. 공간, 신청 관리, 홍보 페이지까지 함께 준비합니다.',
-                                    body=body, depth=1, path='host/'))
+                                    body=body, depth=1, path=HOST_DIR))
 
 
 def build_dashboard():
@@ -977,9 +983,9 @@ def build_dashboard():
   </form>
   <div id="dash" aria-live="polite"><p class="muted">불러오는 중…</p></div>
 </main>'''
-    write('host/dashboard/index.html', layout(page_id='dashboard', title='호스트 신청 현황 · 비북스 b.moim',
+    write(DASH_DIR + 'index.html', layout(page_id='dashboard', title='호스트 신청 현황 · 비북스 b.moim',
                                               desc='호스트 전용 신청 현황', body=body, depth=2,
-                                              path='host/dashboard/', private=True,
+                                              path=DASH_DIR, private=True,
                                               head_extra='<meta name="referrer" content="no-referrer">\n'))
 
 
@@ -1092,13 +1098,13 @@ def lineup_text():
 
 def sitemap():
     today = datetime.now(KST).strftime('%Y-%m-%d')
-    urls = ['', 'space/', 'host/'] + [f'm/{i["slug"]}/' for i in ITEMS]
+    urls = ['', 'space/', HOST_DIR] + [f'm/{i["slug"]}/' for i in ITEMS]
     body = ''.join(f'<url><loc>{esc(page_abs(u))}</loc><lastmod>{today}</lastmod></url>' for u in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>\n'
 
 
 def robots():
-    return ('User-agent: *\nAllow: /\nDisallow: /my/\nDisallow: /host/dashboard/\nDisallow: /cards/\n'
+    return (f'User-agent: *\nAllow: /\nDisallow: /my/\nDisallow: /{DASH_DIR}\nDisallow: /cards/\nDisallow: /_bmoim-v2-src/\n'
             f'Sitemap: {page_abs("sitemap.xml")}\n')
 
 
@@ -1204,6 +1210,38 @@ def poster_report():
     return lines
 
 
+def redirect_page(target, note='비모임 페이지가 한곳으로 모였어요.'):
+    return f'''<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>비북스 b.moim</title>
+<link rel="canonical" href="{esc(page_abs(target.lstrip('./').replace('../', '')))}">
+<meta http-equiv="refresh" content="0; url={esc(target)}">
+<script>location.replace({json.dumps(target)});</script>
+</head>
+<body style="font-family:sans-serif;padding:40px;text-align:center">
+<p>{esc(note)} <a href="{esc(target)}">여기를 눌러 이동하세요</a>.</p>
+</body>
+</html>
+'''
+
+
+def write_legacy_redirects():
+    """예전 월별 주소(june.html…october.html)와 /v2/ 주소를 새 첫 화면·새 주소로 연결"""
+    for name in SITE['sheet'].get('legacyPages', []):
+        write(name, redirect_page(DASH_DIR if name == 'host.html' else './'))
+    write('v2/index.html', redirect_page('../'))
+    for it in ITEMS:
+        write(f'v2/m/{it["slug"]}/index.html', redirect_page(f'../../../m/{it["slug"]}/'))
+    write('v2/space/index.html', redirect_page('../../space/'))
+    write('v2/host/index.html', redirect_page('../../open/'))
+    write('v2/host/dashboard/index.html', redirect_page('../../../open/status/'))
+    write('v2/my/index.html', redirect_page('../../my/'))
+
+
 def october_redirect():
     """저장소 루트의 october.html을 v2로 넘겨 주는 페이지 (기존 링크·인스타 링크 유지)"""
     return '''<!DOCTYPE html>
@@ -1230,9 +1268,15 @@ def main():
         print(e)
     if hard:
         sys.exit('데이터 오류로 빌드를 멈춥니다.')
-    if os.path.exists(DIST):
-        shutil.rmtree(DIST)
-    os.makedirs(DIST)
+    if SHEET:
+        for g in GENERATED:
+            gp = os.path.join(DIST, g)
+            if os.path.isdir(gp):
+                shutil.rmtree(gp)
+    else:
+        if os.path.exists(DIST):
+            shutil.rmtree(DIST)
+        os.makedirs(DIST)
     missing = copy_assets()
     build_hub()
     for it in ITEMS:
@@ -1249,7 +1293,7 @@ def main():
     write('sitemap.xml', sitemap())
     write('robots.txt', robots())
     if SHEET:
-        write('../october.html', october_redirect())
+        write_legacy_redirects()
     print(f'✓ {os.path.basename(DIST)}/ 생성 — 모임·행사 {len(ITEMS)}개, 개별 페이지 {len(ITEMS)}개')
     rep = poster_report()
     if rep:
@@ -1258,7 +1302,7 @@ def main():
     if missing:
         print('⚠ 이미지 없음:', ', '.join(missing))
     if SHEET:
-        print('ℹ 기존 구글 시트(webapp.gs) 연결 모드 → 저장소 v2/ 와 october.html 갱신')
+        print('ℹ 운영 빌드 → 저장소 루트(moim.bbooks.co.kr/) 갱신 + 예전 월별·v2 주소 연결')
     elif not SITE['apiUrl']:
         print('ℹ apiUrl 비어 있음 → 테스트(데모) 모드: 신청은 브라우저에만 저장됩니다.')
     if '--serve' in sys.argv:

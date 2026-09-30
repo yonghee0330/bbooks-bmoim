@@ -2,7 +2,7 @@
   "_readme": "사이트 전역 설정. baseUrl·apiUrl만 바꾸면 테스트 → 운영 전환이 됩니다. 자세한 설명은 README.md",
   "siteName": "비북스 b.moim",
   "tagline": "느슨하고 단단하게 함께 자라가는 모임",
-  "baseUrl": "https://moim.bbooks.co.kr/v2",
+  "baseUrl": "https://moim.bbooks.co.kr",
   "indexable": false,
   "testNow": "",
   "apiUrl": "",
@@ -119,6 +119,17 @@
     "hostMonths": [
       "9월",
       "10월"
+    ],
+    "siteUrl": "https://moim.bbooks.co.kr",
+    "indexable": true,
+    "legacyPages": [
+      "june.html",
+      "july.html",
+      "august.html",
+      "september.html",
+      "october.html",
+      "october-old.html",
+      "host.html"
     ]
   }
 }

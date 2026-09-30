@@ -1,0 +1,170 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//BeeBooks//bmoim//KO
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:비북스 b.moim
+X-WR-TIMEZONE:Asia/Seoul
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+BEGIN:VEVENT
+UID:offbook-2610-1002-0@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261002T100000Z
+DTEND:20261002T120000Z
+SUMMARY:OFF-BOOK · 비북스
+LOCATION:비북스 매장 테이블\, 경기도 부천시 원미구 부
+ 천로136번길 24 지하 B02호
+DESCRIPTION:퇴근 후에도 일 생각이 멈추지 않거나\, 긴 글
+ 에 집중하기 어려운 분을 위한 회복의 독서 시간. 10/2(
+ 금) 19시 부천 비북스.\nhttps://moim.bbooks.co.kr/m/offbook-2610/
+URL:https://moim.bbooks.co.kr/m/offbook-2610/
+END:VEVENT
+BEGIN:VEVENT
+UID:storyaunt-2610-1010-0@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261010T013000Z
+DTEND:20261010T030000Z
+SUMMARY:그림책 읽어주는 이모 · 비북스
+LOCATION:비북스 계단 좌석\, 경기도 부천시 원미구 부천
+ 로136번길 24 지하 B02호
+DESCRIPTION:유치원생~초등 저학년과 그림책을 읽고 손으
+ 로 만드는 독후활동 시간. 10/10(토) 오전 10:30 부천 비북
+ 스.\nhttps://moim.bbooks.co.kr/m/storyaunt-2610/
+URL:https://moim.bbooks.co.kr/m/storyaunt-2610/
+END:VEVENT
+BEGIN:VEVENT
+UID:daon-bookclub-2610-1015-0@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261015T100000Z
+DTEND:20261015T120000Z
+SUMMARY:목요 독서모임 · 비북스
+LOCATION:비북스 매장 테이블\, 경기도 부천시 원미구 부
+ 천로136번길 24 지하 B02호
+DESCRIPTION:다온 글방과 함께하는 목요 저녁 독서모임. 10/
+ 15(목) 19시 부천 비북스\, 6명.\nhttps://moim.bbooks.co.kr/m/daon
+ -bookclub-2610/
+URL:https://moim.bbooks.co.kr/m/daon-bookclub-2610/
+END:VEVENT
+BEGIN:VEVENT
+UID:daon-teablend-2610-1018-0@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261018T040000Z
+DTEND:20261018T053000Z
+SUMMARY:중국차 블렌딩 다회 · 비북스
+LOCATION:비북스 매장 테이블\, 경기도 부천시 원미구 부
+ 천로136번길 24 지하 B02호
+DESCRIPTION:중국차를 직접 블렌딩하며 향과 맛을 알아가
+ 는 다회. 10/18(일) 13시 부천 비북스.\nhttps://moim.bbooks.co.k
+ r/m/daon-teablend-2610/
+URL:https://moim.bbooks.co.kr/m/daon-teablend-2610/
+END:VEVENT
+BEGIN:VEVENT
+UID:dongseo-classic-2610-1024-0@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261024T050000Z
+DTEND:20261024T070000Z
+SUMMARY:클래식 음악 감상 모임 · 비북스
+LOCATION:비북스 세미나실\, 경기도 부천시 원미구 부천로
+ 136번길 24 지하 B02호
+DESCRIPTION:피아노 전공 음악인의 연주와 렉처. 슈만 《어
+ 린이정경》과 함께 나의 10대·20대 추억을 나눕니다. 10
+ /24(토) 14시.\nhttps://moim.bbooks.co.kr/m/dongseo-classic-2610/
+URL:https://moim.bbooks.co.kr/m/dongseo-classic-2610/
+END:VEVENT
+BEGIN:VEVENT
+UID:toji-challenge-26-all-0@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261025T070000Z
+DTEND:20261025T090000Z
+SUMMARY:《토지》 완독 챌린지 · 비북스
+LOCATION:비북스 세미나실\, 경기도 부천시 원미구 부천로
+ 136번길 24 지하 B02호
+DESCRIPTION:100일간 하루 100쪽씩 《토지》를 함께 완독하
+ 는 챌린지. 매일 단톡방 인증\, 월 1회 부천 비북스 오
+ 프라인 모임. 완수 시 5만 포인트 환급.\nhttps://moim.bbooks
+ .co.kr/m/toji-challenge-26/
+URL:https://moim.bbooks.co.kr/m/toji-challenge-26/
+END:VEVENT
+BEGIN:VEVENT
+UID:toji-challenge-26-all-1@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261129T070000Z
+DTEND:20261129T090000Z
+SUMMARY:《토지》 완독 챌린지 · 비북스
+LOCATION:비북스 세미나실\, 경기도 부천시 원미구 부천로
+ 136번길 24 지하 B02호
+DESCRIPTION:100일간 하루 100쪽씩 《토지》를 함께 완독하
+ 는 챌린지. 매일 단톡방 인증\, 월 1회 부천 비북스 오
+ 프라인 모임. 완수 시 5만 포인트 환급.\nhttps://moim.bbooks
+ .co.kr/m/toji-challenge-26/
+URL:https://moim.bbooks.co.kr/m/toji-challenge-26/
+END:VEVENT
+BEGIN:VEVENT
+UID:toji-challenge-26-all-2@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261227T070000Z
+DTEND:20261227T090000Z
+SUMMARY:《토지》 완독 챌린지 · 비북스
+LOCATION:비북스 세미나실\, 경기도 부천시 원미구 부천로
+ 136번길 24 지하 B02호
+DESCRIPTION:100일간 하루 100쪽씩 《토지》를 함께 완독하
+ 는 챌린지. 매일 단톡방 인증\, 월 1회 부천 비북스 오
+ 프라인 모임. 완수 시 5만 포인트 환급.\nhttps://moim.bbooks
+ .co.kr/m/toji-challenge-26/
+URL:https://moim.bbooks.co.kr/m/toji-challenge-26/
+END:VEVENT
+BEGIN:VEVENT
+UID:japan-pilsa-2610-s2-0@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261026T040000Z
+DTEND:20261026T053000Z
+SUMMARY:써든리와 함께하는 일본어 명대사 필사 모임 · 
+ 비북스
+LOCATION:비북스 세미나실\, 경기도 부천시 원미구 부천로
+ 136번길 24 지하 B02호
+DESCRIPTION:영화 공식 예고편을 보고 일본어 명대사를 필
+ 사하는 모임. ② 10/26 · ③ 11/30 (월) 13시\, 회차별 6명.\n
+ https://moim.bbooks.co.kr/m/japan-pilsa-2610/
+URL:https://moim.bbooks.co.kr/m/japan-pilsa-2610/
+END:VEVENT
+BEGIN:VEVENT
+UID:japan-pilsa-2610-s3-1@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261130T040000Z
+DTEND:20261130T053000Z
+SUMMARY:써든리와 함께하는 일본어 명대사 필사 모임 · 
+ 비북스
+LOCATION:비북스 세미나실\, 경기도 부천시 원미구 부천로
+ 136번길 24 지하 B02호
+DESCRIPTION:영화 공식 예고편을 보고 일본어 명대사를 필
+ 사하는 모임. ② 10/26 · ③ 11/30 (월) 13시\, 회차별 6명.\n
+ https://moim.bbooks.co.kr/m/japan-pilsa-2610/
+URL:https://moim.bbooks.co.kr/m/japan-pilsa-2610/
+END:VEVENT
+BEGIN:VEVENT
+UID:letter-2610-1028-0@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261028T020000Z
+DTEND:20261028T040000Z
+SUMMARY:한 사람을 위한 편지 · 비북스
+LOCATION:비북스 세미나실\, 경기도 부천시 원미구 부천로
+ 136번길 24 지하 B02호
+DESCRIPTION:타자기로 편지를 쓰고 우표를 붙이는\, 정원 1
+ 명의 편지 모임. 10/28(수) 11시 부천 비북스 세미나실.\nh
+ ttps://moim.bbooks.co.kr/m/letter-2610/
+URL:https://moim.bbooks.co.kr/m/letter-2610/
+END:VEVENT
+BEGIN:VEVENT
+UID:sunny-classic-2610-1031-0@bmoim.bbooks
+DTSTAMP:20260930T045012Z
+DTSTART:20261031T050000Z
+DTEND:20261031T070000Z
+SUMMARY:써니와 함께 고전 읽고 글쓰기 · 비북스
+LOCATION:비북스 매장 테이블\, 경기도 부천시 원미구 부
+ 천로136번길 24 지하 B02호
+DESCRIPTION:톨스토이 《사람은 무엇으로 사는가》 7주 읽
+ 기·글쓰기. 밴드에서 매주 쓰고 10/31(토) 비북스에서 
+ 만납니다.\nhttps://moim.bbooks.co.kr/m/sunny-classic-2610/
+URL:https://moim.bbooks.co.kr/m/sunny-classic-2610/
+END:VEVENT
+END:VCALENDAR

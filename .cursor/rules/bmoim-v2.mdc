@@ -1,14 +1,15 @@
 ---
-description: 비모임 v2 (v2/, october.html, _bmoim-v2-src/) 수정·빌드·시트 연결 규칙
+description: 비모임 사이트(moim.bbooks.co.kr 루트) 수정·빌드·시트 연결 규칙
 alwaysApply: true
 ---
 
 # 비모임 v2 규칙
 
 - 상세 인수인계: `_bmoim-v2-src/HANDOFF.md` 를 먼저 읽을 것.
-- `v2/` 폴더와 루트 `october.html` 은 **생성물**이다. 직접 고치지 말고 `_bmoim-v2-src/` (data/*.json, assets/*, build.py) 를 고친 뒤
-  `python3 _bmoim-v2-src/build.py --sheet` 로 다시 만든다. 빌드 출력의 오류·겹침 경고를 사용자에게 알린다.
+- 비모임은 사이트 루트(https://moim.bbooks.co.kr/) 한 주소로 운영한다. 월별 새 html 파일을 만들지 않는다.
+- 루트 `index.html`, `m/ space/ open/ my/ cards/ assets/ data/ exports/ v2/`, 옛 월별 `june~october.html`·`october-old.html`·`host.html` 은 **생성물**이다.
+  직접 고치지 말고 `_bmoim-v2-src/` (data/*.json, assets/*, build.py) 를 고친 뒤 `python3 _bmoim-v2-src/build.py --sheet` 로 다시 만든다. 빌드 출력의 오류·겹침 경고를 사용자에게 알린다.
 - 모임 추가·수정은 `_bmoim-v2-src/data/moims.json`. 이미 신청이 들어온 모임의 `sheetName` / `sheetSession` 은 바꾸지 않는다 (구글 시트 집계 키).
 - 구글 시트 웹앱 주소(`site.json` → `sheet.apiUrl`)를 바꾸지 않는다. Apps Script 는 "새 배포"가 아니라 기존 배포의 새 버전으로만 올리도록 안내한다.
 - 신청자 이름·연락처 등 시트 데이터를 저장소 파일에 넣거나 커밋하지 않는다.
-- `october-old.html` 은 이관 전 원본 보관용이다. 지우지 않는다.
+- 이관 전 월별 페이지 원본은 git 기록(커밋 ffbd9b9 이전)에 있다. 필요하면 git에서 꺼내 본다.
