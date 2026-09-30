@@ -1,0 +1,84 @@
+{
+  "_readme": "대관 공간 정보. conflicts = 같은 시간에 함께 예약할 수 없는 공간(기존 운영 규칙 그대로).",
+
+  "hours": { "open": "08:00", "close": "22:00", "stepMin": 30 },
+  "bookableMonths": ["2026-10", "2026-11", "2026-12"],
+
+  "spaces": [
+    {
+      "id": "세미나실",
+      "icon": "📚",
+      "name": "세미나실",
+      "maxPeople": 8,
+      "pricing": { "type": "perPerson", "unit": 5000, "blockHours": 2 },
+      "priceText": "1인 5,000원",
+      "priceUnit": "2시간 기준",
+      "fits": "강의 · 워크숍 · 팀 모임 · 스터디",
+      "features": ["대형 화이트보드", "원목 테이블 · 가득 찬 책장", "테이블 내장 콘센트 + USB", "보드게임 (다빈치코드 · 루미큐브 · 딕싯 등)"],
+      "desc": "대형 화이트보드와 원목 테이블, 가득 찬 책장이 어우러진 독립 공간입니다.",
+      "photos": [
+        { "src": "seminar_01.jpg", "caption": "세미나실" },
+        { "src": "seminar_02.jpg", "caption": "보드게임이 준비되어 있어요" },
+        { "src": "seminar_03.jpg", "caption": "테이블 내장 전원" }
+      ],
+      "conflicts": ["전체 대관"]
+    },
+    {
+      "id": "매장 테이블",
+      "icon": "☕",
+      "name": "매장 모임 테이블",
+      "maxPeople": 8,
+      "pricing": { "type": "perPerson", "unit": 5000, "blockHours": 2 },
+      "priceText": "1인 5,000원",
+      "priceUnit": "2시간 기준",
+      "fits": "소규모 독서 모임 · 스터디 · 티타임",
+      "features": ["책장 사이 원목 테이블", "4~6인 기본, 붙여서 6~8인", "매장 분위기 그대로"],
+      "desc": "책장 사이에 자리한 아늑한 원목 테이블. 테이블을 붙여 더 넓게 쓸 수 있어요.",
+      "photos": [
+        { "src": "table_01.jpg", "caption": "매장 모임 테이블" },
+        { "src": "table_02.jpg", "caption": "테이블을 붙여 넓게" },
+        { "src": "table_03.jpg", "caption": "책으로 둘러싸인 자리" }
+      ],
+      "conflicts": ["계단 좌석", "전체 대관"]
+    },
+    {
+      "id": "계단 좌석",
+      "icon": "🪜",
+      "name": "계단 좌석",
+      "maxPeople": 20,
+      "pricing": { "type": "perHour", "unit": 50000 },
+      "priceText": "시간당 50,000원",
+      "priceUnit": "최대 20인",
+      "fits": "낭독 · 강연 · 어린이 프로그램처럼 한 방향을 보는 모임",
+      "features": ["최대 20인 좌석", "매장 테이블과 같은 시간 동시 사용 불가"],
+      "desc": "계단형 좌석에 앉아 한곳을 바라보는 모임에 어울립니다.",
+      "photos": [],
+      "conflicts": ["매장 테이블", "전체 대관"]
+    },
+    {
+      "id": "전체 대관",
+      "icon": "🏠",
+      "name": "매장 전체 대관",
+      "maxPeople": 40,
+      "pricing": { "type": "perHour", "unit": 100000 },
+      "priceText": "시간당 100,000원",
+      "priceUnit": "최대 40인",
+      "fits": "북토크 · 전시 · 소규모 행사 · 파티",
+      "features": ["매장 전 공간 단독 사용", "소파·의자 자유 배치", "최대 40인"],
+      "desc": "책장이 가득한 매장 전체를 단독으로. 낮부터 밤까지 모임에 맞게 바뀝니다.",
+      "photos": [
+        { "src": "space_01.jpg", "caption": "비북스 매장 전체" },
+        { "src": "space_02.jpg", "caption": "소파와 의자가 어우러진 배치" },
+        { "src": "space_03.jpg", "caption": "책으로 둘러싸인 고요한 공간" }
+      ],
+      "conflicts": ["세미나실", "매장 테이블", "계단 좌석"]
+    }
+  ],
+
+  "steps": [
+    { "title": "공간·날짜·시간 선택", "desc": "비어 있는 30분 칸을 시작–끝 두 번 눌러 고릅니다." },
+    { "title": "신청 접수", "desc": "알림톡·메일로 접수 안내가 갑니다." },
+    { "title": "담당자 확인 연락", "desc": "일정과 정확한 금액을 안내드려요." },
+    { "title": "입금 후 이용", "desc": "입금이 확인되면 예약이 확정됩니다." }
+  ]
+}

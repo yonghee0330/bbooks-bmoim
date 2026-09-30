@@ -1,0 +1,124 @@
+{
+  "_readme": "사이트 전역 설정. baseUrl·apiUrl만 바꾸면 테스트 → 운영 전환이 됩니다. 자세한 설명은 README.md",
+  "siteName": "비북스 b.moim",
+  "tagline": "느슨하고 단단하게 함께 자라가는 모임",
+  "baseUrl": "https://moim.bbooks.co.kr/v2",
+  "indexable": false,
+  "testNow": "",
+  "apiUrl": "",
+  "kakaoJsKey": "",
+  "month": {
+    "key": "2026-10",
+    "title": "10월 비모임",
+    "sub": "단풍처럼 천천히 물들어가는 계절, 책과 함께",
+    "desc": "부천 원미동 비북스에서 열리는 이번 달 모임과 행사를 한 칸의 서가처럼 모았어요.",
+    "heroImage": "october_hero_fall_bleed.jpg",
+    "calendarMonths": [
+      "2026-10",
+      "2026-11",
+      "2026-12"
+    ]
+  },
+  "images": {
+    "copyFrom": "../images",
+    "baseUrl": "images/"
+  },
+  "poster": {
+    "_readme": "호스트 포스터 제출 규격. 모임 열기 페이지의 가이드와 빌드 검사가 이 값을 씁니다.",
+    "width": 1080,
+    "height": 1350,
+    "tolerance": 0.03,
+    "safe": 64,
+    "badgeW": 220,
+    "badgeH": 300,
+    "badgeRight": 30,
+    "maxMB": 2,
+    "formats": "JPG 또는 PNG"
+  },
+  "store": {
+    "name": "비북스",
+    "nameEn": "BeeBooks",
+    "address": "경기도 부천시 원미구 부천로136번길 24 지하 B02호",
+    "streetAddress": "부천로136번길 24 지하 B02호",
+    "locality": "부천시",
+    "region": "경기도",
+    "country": "KR",
+    "instagram": "bbooks_bucheon",
+    "mapUrl": "https://map.naver.com/p/search/%EB%B9%84%EB%B6%81%EC%8A%A4%20%EB%B6%80%EC%B2%9C"
+  },
+  "bank": {
+    "name": "카카오뱅크",
+    "number": "7942-33-45474",
+    "holder": "경규환"
+  },
+  "payDeadlineHours": 24,
+  "refund": {
+    "materials": [
+      "모임 2일 전 취소: 100% 환불",
+      "모임 1일 전: 50% 환불",
+      "당일: 환불 불가"
+    ],
+    "noMaterials": [
+      "모임 1일 전 취소: 100% 환불",
+      "당일: 환불 불가"
+    ],
+    "contact": "취소는 ‘내 신청 확인’에서 요청하거나 비북스 인스타그램 DM으로 문의해 주세요."
+  },
+  "privacy": {
+    "items": "이름, 휴대폰 번호, 이메일(선택), 요청사항(선택)",
+    "purpose": "모임·대관 신청 접수, 입금 확인, 일정 안내(카카오 알림톡·문자·메일), 취소·환불 처리",
+    "retention": "모임(대관) 종료일로부터 6개월 후 파기. 단, 관계 법령에 따라 보관이 필요한 경우 해당 기간 동안 보관",
+    "refuse": "동의를 거부할 수 있으며, 거부 시 신청이 제한됩니다.",
+    "hostShare": "모임 개설자(호스트)에게는 이름 일부와 연락처 뒷자리만 공유되며, 참가 확인 목적 외에는 사용되지 않습니다.",
+    "marketing": "다음 달 비모임·행사 소식을 알림톡·문자·메일로 받습니다. 언제든 수신 거부할 수 있습니다."
+  },
+  "demo": {
+    "counts": {
+      "daon-bookclub-2610:1015": 4,
+      "daon-teablend-2610:1018": 3,
+      "dongseo-classic-2610:1024": 5,
+      "storyaunt-2610:1010": 9,
+      "toji-challenge-26:all": 14,
+      "japan-pilsa-2610:s2": 2,
+      "japan-pilsa-2610:s3": 1,
+      "sunny-classic-2610:1031": 6
+    },
+    "rentBlocks": [
+      {
+        "date": "2026-10-03",
+        "space": "세미나실",
+        "time": "14:00–17:00"
+      },
+      {
+        "date": "2026-10-11",
+        "space": "매장 테이블",
+        "time": "10:00–12:00"
+      },
+      {
+        "date": "2026-10-17",
+        "space": "전체 대관",
+        "time": "18:00–21:00"
+      }
+    ],
+    "hostToken": "demo"
+  },
+  "sheet": {
+    "_readme": "build.py --sheet 로 만들면 기존 Apps Script(webapp.gs)와 구글 시트에 그대로 연결됩니다. 신청번호·알림톡 등 v2 전용 기능은 새 백엔드 연결 전까지 꺼집니다.",
+    "apiUrl": "https://script.google.com/macros/s/AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ/exec",
+    "month": "10월",
+    "countMonths": [
+      "9월",
+      "10월"
+    ],
+    "rentMonths": [
+      "10월",
+      "11월",
+      "12월"
+    ],
+    "rentGviz": "https://docs.google.com/spreadsheets/d/186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM/gviz/tq?tqx=out:json&sheet=%EB%8C%80%EA%B4%80%EC%8B%A0%EC%B2%AD",
+    "hostMonths": [
+      "9월",
+      "10월"
+    ]
+  }
+}

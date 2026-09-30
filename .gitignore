@@ -3,3 +3,12 @@ node_modules/
 **/.DS_Store
 apps-script/.clasp.json
 *.log
+
+# 비모임 v2 원본 폴더의 미리보기 산출물 (배포는 v2/)
+_bmoim-v2-src/dist/
+_bmoim-v2-src/share/
+_bmoim-v2-src/deploy/
+_bmoim-v2-src/archive-v1/
+
+# API 키가 들어 있는 스크립트 — 커밋 금지
+apps-script/Code.gs

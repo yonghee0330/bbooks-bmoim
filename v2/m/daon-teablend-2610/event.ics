@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//BeeBooks//bmoim//KO
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:중국차 블렌딩 다회
+X-WR-TIMEZONE:Asia/Seoul
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+BEGIN:VEVENT
+UID:daon-teablend-2610-1018-0@bmoim.bbooks
+DTSTAMP:20260930T034921Z
+DTSTART:20261018T040000Z
+DTEND:20261018T053000Z
+SUMMARY:중국차 블렌딩 다회 · 비북스
+LOCATION:비북스 매장 테이블\, 경기도 부천시 원미구 부
+ 천로136번길 24 지하 B02호
+DESCRIPTION:중국차를 직접 블렌딩하며 향과 맛을 알아가
+ 는 다회. 10/18(일) 13시 부천 비북스.\nhttps://moim.bbooks.co.k
+ r/v2/m/daon-teablend-2610/
+URL:https://moim.bbooks.co.kr/v2/m/daon-teablend-2610/
+END:VEVENT
+END:VCALENDAR
