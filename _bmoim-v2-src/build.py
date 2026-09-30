@@ -482,7 +482,7 @@ def build_hub():
     <dl class="stamp">
       <div><dt>모임</dt><dd>{n_moim}</dd></div>
       <div><dt>행사</dt><dd>{n_event}</dd></div>
-      <div><dt>남은 자리</dt><dd data-stat="seats">–</dd></div>
+      <div><dt>모집 중</dt><dd data-stat="seats">–</dd></div>
     </dl>
   </section>
 

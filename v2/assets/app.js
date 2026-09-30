@@ -99,7 +99,7 @@
     let state = 'open';
     if (!live.length) state = 'ended';
     else if (!open.length) state = live.some(i => i.full) ? 'full' : 'closed';
-    else if (known && open.some(i => i.remaining <= 2 || i.filled / i.cap >= 0.7)) state = 'hot';
+    else if (known && open.some(i => i.filled >= 3 && (i.remaining <= 2 || i.filled / i.cap >= 0.7))) state = 'hot';
     return {
       state, infos, known, external: !!item.applyUrl,
       remaining: open.reduce((a, i) => a + i.remaining, 0),
@@ -112,9 +112,11 @@
     if (info.state === 'full') return '모집 완료';
     if (info.state === 'closed') return info.external ? '접수 마감' : '신청 마감';
     if (info.external) return '파트너 신청';
-    if (!info.known) return '신청 가능';
-    if (info.state === 'hot') return info.single && info.single.remaining === 1 ? '마지막 1자리' : `마감 임박 · ${info.remaining}자리`;
-    return `${info.remaining}자리 남음`;
+    if (!info.known) return '모집 중';
+    const showSeats = info.single ? info.single.filled >= 3 : false;
+    if (!showSeats) return '모집 중';
+    if (info.state === 'hot') return info.single.remaining === 1 ? '마지막 1자리' : `마감 임박 · ${info.single.remaining}자리`;
+    return `${info.single.remaining}자리 남음`;
   }
   function optionsOf(item, counts) {
     const opts = item.sessions.map(s => {
@@ -132,13 +134,14 @@
         sub: p.sessions.map(id => fshort(kst(item.sessions.find(s => s.id === id).dates[0].start))).join(' + ') + ' 일괄',
         info: {
           open: infos.every(i => i.open), full: infos.some(i => i.full), ended: infos.some(i => i.ended),
-          closed: infos.some(i => i.closed), remaining: Math.min(...infos.map(i => i.remaining)), known: !!counts
+          closed: infos.some(i => i.closed), remaining: Math.min(...infos.map(i => i.remaining)),
+          filled: Math.max(0, ...infos.map(i => i.filled)), known: !!counts
         }
       });
     });
     return opts;
   }
-  const optStatus = i => i.ended ? '종료' : i.full ? '모집 완료' : i.closed ? '신청 마감' : (i.known ? `${i.remaining}자리 남음` : '신청 가능');
+  const optStatus = i => i.ended ? '종료' : i.full ? '모집 완료' : i.closed ? '신청 마감' : (i.known && i.filled >= 3 ? `${i.remaining}자리 남음` : '모집 중');
   // 포스터 왼쪽 위 배지 (동행클럽식 'n자리 남음')
   function badgeText(info) {
     if (info.state !== 'hot') return '';
@@ -828,10 +831,10 @@
       seats.className = 'seats';
       if (info.external) seats.textContent = `선착순 ${item.sessions[0].capacity}명`;
       else if (closed) { seats.textContent = label; seats.classList.add('off'); }
-      else if (info.known && info.single) {
+      else if (info.known && info.single && info.single.filled >= 3) {
         seats.textContent = `남은 자리 ${info.single.remaining}/${info.single.cap}`;
         if (info.state === 'hot') seats.classList.add('hot');
-      }
+      } else if (info.known) seats.textContent = '모집 중';
       card.dataset.state = info.state;
     });
   }
@@ -1008,8 +1011,8 @@
       counts = c;
       paintCards(c);
       if (c) {
-        const seats = ITEMS.filter(i => !i.applyUrl).reduce((a, i) => a + itemInfo(i, c).remaining, 0);
-        const el = $('[data-stat="seats"]'); if (el) el.textContent = seats;
+        const el = $('[data-stat="seats"]');
+        if (el) el.textContent = ITEMS.filter(i => ['open', 'hot'].includes(itemInfo(i, c).state)).length;
       }
       apply();
     };
@@ -1048,19 +1051,19 @@
       if (ctaState) ctaState.textContent = info.external ? item.dateText : `${item.dateText} · ${label}`;
 
       const bar = $('[data-seatbar]');
-      if (info.known && item.sessions.length === 1 && !closed) {
-        const s = info.infos[0];
+      const s0 = info.infos[0];
+      if (info.known && item.sessions.length === 1 && !closed && s0.filled >= 3) {
         bar.hidden = false;
         bar.classList.toggle('hot', info.state === 'hot');
-        $('[data-seat-text]', bar).textContent = s.remaining === 1 ? '마지막 1자리 남았어요' : `${s.remaining}자리 남았어요`;
-        $('[data-seat-sub]', bar).textContent = `정원 ${s.cap}명 중 ${s.filled}명 신청`;
-        requestAnimationFrame(() => { $('[data-seat-fill]', bar).style.width = `${Math.min(100, s.filled / s.cap * 100)}%`; });
+        $('[data-seat-text]', bar).textContent = s0.remaining === 1 ? '마지막 1자리 남았어요' : `${s0.remaining}자리 남았어요`;
+        $('[data-seat-sub]', bar).textContent = `정원 ${s0.cap}명 중 ${s0.filled}명 신청`;
+        requestAnimationFrame(() => { $('[data-seat-fill]', bar).style.width = `${Math.min(100, s0.filled / s0.cap * 100)}%`; });
       } else bar.hidden = true;
 
       const box = $('[data-sessions]');
       if (box && !item.applyUrl) {
         box.innerHTML = optionsOf(item, counts).map(o => {
-          const low = o.info.open && o.info.known && o.info.remaining <= 2;
+          const low = o.info.open && o.info.known && o.info.filled >= 3 && o.info.remaining <= 2;
           return `<div class="sess${o.info.open ? '' : ' off'}">
             <div class="sess-l"><div class="sess-name">${esc(o.label)}</div><div class="sess-sub">${esc(o.sub)}</div></div>
             <div class="sess-r"><b>${won(o.price)}</b><span class="${low ? 'hot' : ''}">${esc(optStatus(o.info))}</span></div>
@@ -1077,7 +1080,7 @@
           (Array.isArray(data) ? data : [data]).forEach((ev, idx) => {
             const sid = occs[idx]?.sid;
             const si = info.infos[item.sessions.findIndex(s => s.id === sid)];
-            if (ev.offers && si) ev.offers.availability = si.ended || si.closed || si.full ? 'https://schema.org/SoldOut' : si.remaining <= 2 ? 'https://schema.org/LimitedAvailability' : 'https://schema.org/InStock';
+            if (ev.offers && si) ev.offers.availability = si.ended || si.closed || si.full ? 'https://schema.org/SoldOut' : (si.filled >= 3 && si.remaining <= 2) ? 'https://schema.org/LimitedAvailability' : 'https://schema.org/InStock';
           });
           ld.textContent = JSON.stringify(data);
         } catch { /* 무시 */ }
