@@ -53,23 +53,22 @@ python3 _bmoim-v2-src/build.py --sheet
 - 시트가 `10월10일` 같은 회차 값을 날짜로 바꿔 저장하는 문제가 있어, 인원 집계는 날짜로도 맞춥니다 (`app.js` → `sheetApi.counts`).
 - 새 액션(`applyV2` 등)이 서버에 없으면 페이지가 자동으로 기존 `apply`/`rent`로 보냅니다. 이때 이메일·소식수신 동의는 **비고(H열)** 에 들어갑니다. 개설 신청은 인스타 DM용 복사 문구로 안내됩니다.
 
-## 4. Apps Script (배포 완료 · 2026-09-30)
+## 4. Apps Script (배포 버전 8 · 2026-10)
 
-- 웹앱은 **다른 구글 파일(`1XM5bF5…`)에 연결된 스크립트 프로젝트**에 있음 (신청 시트의 확장 프로그램 메뉴에서는 안 보일 수 있음). 시트는 ID로 열어서 씀.
-- 운영 코드 = `apps-script/live/Code.js` (배포 버전 **7**, 배포 ID `AKfycbx7…6HQ` 유지). 버전 6 코드에 추가만 한 것:
-  `applyV2` · `rentV2` · `hostApply` · `setupSheetV2()` · `buildNewsletterList()`
-- 모임신청 A~I, 대관신청 A~K는 기존과 동일하게 기록. 새 항목은 **제목으로 찾는 오른쪽 새 열**:
-  모임신청 `신청 메모 · 도서 요청 · 이메일 · 소식수신동의 · 개인정보동의 · 유입`, 대관신청 `이메일 · 소식수신동의 · 개인정보동의 · 유입`.
-  (H열은 기존처럼 접수일 — '취소' 표시도 H열에 하던 대로)
-- `개설신청` 탭: 첫 개설 신청 때 자동 생성. `뉴스레터` 탭: 편집기에서 `buildNewsletterList` 실행 시 생성·갱신.
-- 코드 수정 배포(clasp): `apps-script/live/` 기준으로 push → `clasp version "설명"` → `clasp deploy -i AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ -V <새 버전>`.
-  되돌리기: 같은 명령에 `-V 6` (이관 전 코드).
-- 참고: `apps-script/webapp.gs`·`Code.gs`는 옛 복사본으로 운영 코드와 다름. 옛 알리고 문자 코드는 저장소 밖 백업에만 있음.
+- 웹앱 = 구글 파일 `1XM5bF5…`에 연결된 스크립트 프로젝트 (편집기: https://script.google.com/d/1La7qXwWHKPVus9equlZi672_PUF0YtKwhohz6EYq7UcjUPu8fj61WmFD/edit). 배포 ID `AKfycbx7…6HQ` 유지.
+- 운영 코드 사본 = `apps-script/live/Code.js`. 버전 이력: 6 이관 전 · 7 이메일/동의/개설신청 · **8 신청번호·조회/취소·메일/알림톡**.
+- 액션: GET `count`·`hostStatus` / POST `applyV2`·`rentV2`·`hostApply`·`lookup`·`cancelRequest`·`resend` (+ 옛 `apply`·`rent`·`eventApply`).
+- 모임신청 탭 오른쪽 열(제목으로 찾음): 신청 메모 · 도서 요청 · 이메일 · 소식수신동의 · 개인정보동의 · 유입 · **신청번호 · 상태 · 입금기한 · 알림**. 대관신청도 신청번호·상태·알림.
+- 운영자 흐름: `상태`를 **입금확인**으로 바꾸면 확정 메일(트리거 onStatusEditV3) / 취소요청이 오면 환불 후 **취소**로 (취소로 시작하면 남은 자리에서 빠짐. H열 '취소'도 계속 인정).
+- 스크립트 속성(선택): OPERATOR_EMAIL, BANK_TEXT, INSTAGRAM, PAY_DEADLINE_HOURS, SOLAPI_* 와 TPL_APPLY/TPL_PAID/TPL_RENT/TPL_RESEND (알림톡 — 없으면 건너뜀. 템플릿 문구는 `_bmoim-v2-src/apps-script/SETUP.md`).
+- 배포(clasp): `apps-script/live/` 를 push → `clasp version "설명"` → `clasp deploy -i AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ -V <버전>`.
+  새 권한(메일·외부요청 등)을 쓰는 코드는 **배포 전에 편집기에서 한 번 실행해 권한 승인**부터. 되돌리기: `-V 7` 또는 `-V 6`.
 
 ## 5. 알려진 문제 · 다음 단계
 1. **개인정보 노출**: `대관신청`·`모임신청` 탭을 gviz(공개 링크)로 읽는 구조라, 시트가 "링크가 있는 모든 사용자" 공유면 신청자 이름·연락처가 노출될 수 있음. 해결: 대관 시간대만 돌려주는 `rentBlocks` 액션을 스크립트에 추가 → `app.js` `sheetApi.rentBlocks`를 그 액션으로 교체 → 시트 공유를 "제한됨"으로.
 2. **호스트 코드**: `점주코드` 탭의 코드(TOJI2026 등)가 추측 가능하고 `host/moims.js`에 공개돼 있음. 무작위 코드로 교체 권장.
-3. 신청번호·내 신청 조회/취소·알림톡: `_bmoim-v2-src/apps-script/Code.gs`(+ `SETUP.md`)에 새 백엔드가 준비돼 있음. 쓰려면 새 스크립트로 배포 후 `site.json` `apiUrl` 지정, `--sheet` 없이 빌드하는 구조로 전환 (별도 작업).
+3. 알림톡: 버전 8에 코드 있음. 카카오 채널 + 솔라피 가입 + 템플릿 검수 후 스크립트 속성만 넣으면 켜짐.
+6. 카드 결제: 토스페이먼츠 결제위젯 연동 예정 (테스트 키로 먼저).
 4. 토지·필사·써니 모임은 `모임신청` 탭에 신청 기록이 없음 (다른 경로로 접수됐는지 확인 필요).
 5. 포스터 9개 중 7개가 4:5 규격이 아님 → 호스트에게 `/v2/host/#poster` 가이드로 재제출 요청.
 
