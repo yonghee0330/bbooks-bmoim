@@ -267,7 +267,13 @@
     },
     async lookup(d) {
       const out = await sheetPost({ action: 'lookup', code: d.code, phone: d.phone });
-      return { apps: (out.apps || []).map(a => ({ ...a, slug: (ITEMS.find(i => sheetName(i) === a.title) || {}).slug || '' })) };
+      return {
+        apps: (out.apps || []).map(a => {
+          const item = ITEMS.find(i => sheetName(i) === a.title);
+          const sess = item?.sessions.find(x => sheetSession(x) === a.optionLabel);
+          return { ...a, slug: item?.slug || '', optionLabel: sess ? (sess.name || sessDateText(sess)) : a.optionLabel };
+        })
+      };
     },
     async cancelRequest(d) { return sheetPost({ action: 'cancelRequest', code: d.code, phone: d.phone, target: d.target }); },
     async resend(d) { return sheetPost({ action: 'resend', name: d.name, phone: d.phone }); },
