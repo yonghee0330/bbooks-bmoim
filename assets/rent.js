@@ -200,10 +200,15 @@
       const p = kp(kst(date));
       f.outerHTML = `<div class="card-form done"><div class="done-icon">✓</div><h3>대관 신청이 접수됐어요</h3>
         <p class="muted">${esc(SPACE[space].name)} · ${p.m}월 ${p.d}일 (${WD[p.wd]}) ${time}</p>
-        ${res.code ? `<div class="code-box">${esc(res.code)}</div>` : ''}
+        ${res.code ? `<div class="codecard">
+          <span class="codecard-label">신청번호</span>
+          <div class="code-box">${esc(res.code)} <button type="button" class="btn ghost sm" data-copy="${esc(res.code)}">복사</button></div>
+          <p class="codecard-hint">이 번호와 휴대폰 번호로 상단 ‘내 신청’에서 대관 신청 상태를 확인하고 취소를 요청할 수 있어요.</p>
+        </div>` : ''}
         <p class="muted small">담당자가 일정 확인 후 금액과 입금 방법을 안내드려요. 입금이 확인되면 예약이 확정됩니다.</p>
         ${res.code ? sentChips(res.notified, true) : ''}
         ${res.code ? `<a class="btn outline" href="${esc(BM.page('my/', `?code=${encodeURIComponent(res.code)}`))}">내 신청 확인</a>` : ''}</div>`;
+      $('.book .done [data-copy]')?.addEventListener('click', e => BM.copy(e.currentTarget.dataset.copy, '신청번호를 복사했어요'));
       await loadBlocks();
     } catch (err) { formAlert(alertEl, err.message); setBusy(btn, false); }
   });

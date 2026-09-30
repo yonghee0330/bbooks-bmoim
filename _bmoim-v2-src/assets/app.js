@@ -801,7 +801,11 @@
       <div class="done-icon">✓</div>
       <h3>신청이 접수됐어요</h3>
       <p class="muted">입금이 확인되면 신청이 확정돼요.</p>
-      ${res.code ? `<div class="code-box">${esc(res.code)} <button type="button" class="btn ghost sm" data-copy="${esc(res.code)}">복사</button></div>` : '<div style="height:12px"></div>'}
+      ${res.code ? `<div class="codecard">
+        <span class="codecard-label">신청번호</span>
+        <div class="code-box">${esc(res.code)} <button type="button" class="btn ghost sm" data-copy="${esc(res.code)}">복사</button></div>
+        <p class="codecard-hint">이 번호와 휴대폰 번호로 <a href="${esc(page('my/', `?code=${encodeURIComponent(res.code)}`))}">내 신청</a>에서 신청 내역·입금 상태를 확인하고 취소를 요청할 수 있어요. 캡처하거나 복사해 두세요.</p>
+      </div>` : '<div style="height:12px"></div>'}
       <div class="paybox">
         <div class="paybox-row"><span>입금할 금액</span><span class="muted">${esc(deadline)}</span></div>
         <div class="paybox-amount">${won(res.amount ?? o.price)}</div>

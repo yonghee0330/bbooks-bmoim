@@ -474,6 +474,11 @@ body.has-cta .foot { padding-bottom: 110px; }
 .done { text-align: center; }
 .done-icon { width: 60px; height: 60px; border-radius: 50%; background: var(--ink); color: #fff; display: grid; place-items: center; font-size: 26px; margin: 4px auto 14px; }
 .done h3 { font-size: 21px; font-weight: 800; margin-bottom: 4px; }
+.codecard { margin: 14px 0 16px; padding: 14px 16px 12px; border: 1px solid var(--line-2); border-radius: 12px; background: var(--paper); text-align: center; }
+.codecard-label { display: block; font-size: 13px; font-weight: 700; color: var(--accent-ink); letter-spacing: .04em; }
+.codecard .code-box { margin: 6px 0 8px; background: #fff; }
+.codecard-hint { margin: 0; font-size: 13px; line-height: 1.6; color: var(--ink-2); }
+.codecard-hint a { color: var(--accent-ink); font-weight: 700; }
 .code-box { display: inline-flex; gap: 10px; align-items: center; border: 1px dashed var(--line-2); border-radius: 10px; padding: 9px 14px; margin: 12px 0 16px; font-weight: 800; font-size: 19px; letter-spacing: .05em; }
 .sent { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin: 14px 0 6px; }
 .sent span { font-size: 12.5px; background: var(--soft); border-radius: 999px; padding: 4px 11px; color: var(--ink-2); font-weight: 600; }
