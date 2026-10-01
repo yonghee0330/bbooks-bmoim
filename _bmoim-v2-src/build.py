@@ -791,12 +791,15 @@ def build_space():
     min_p = min(sp['maxPeople'] for sp in spaces)
     max_p = max(sp['maxPeople'] for sp in spaces)
     main_src = hero.get('main') or spaces[-1]['photos'][0]['src']
+    intro = SPACES.get('intro') or {}
+    kw = ''.join(f'<span>{esc(k)}</span>' for k in intro.get('keywords', []))
     hero_html = (
         '<section class="space-hero">'
         '<div class="sh-copy">'
-        '<p class="eyebrow">Space · 공간 대관</p>'
-        '<h1 class="page-title">책에 둘러싸여<br>모이는 공간</h1>'
-        '<p class="page-desc">혼자 집중하는 1인실부터 40명이 함께하는 전체 대관까지. 부천 원미동 비북스의 공간을 둘러보고 바로 예약하세요.</p>'
+        f'<p class="eyebrow">{esc(intro.get("eyebrow", "Space · 공간 대관"))}</p>'
+        + (f'<p class="sh-kw">{kw}</p>' if kw else '') +
+        f'<h1 class="page-title">{intro.get("title", "공간 대관")}</h1>'
+        f'<p class="page-desc">{esc(intro.get("desc", ""))}</p>'
         f'<ul class="sh-facts"><li><b>{len(spaces)}</b>곳의 공간</li><li><b>{min_p}~{max_p}</b>인</li>'
         f'<li><b>{esc(h["open"])}–{esc(h["close"])}</b></li><li><b>30분</b> 단위 예약</li></ul>'
         '<div class="sh-cta"><a class="btn primary" href="#book">예약하러 가기</a><a class="btn outline" href="#priceH">요금 보기</a></div>'
@@ -805,6 +808,24 @@ def build_space():
         f'<a class="sh-main" href="#sp-whole"><img src="{esc(img_rel(main_src, rel))}" alt="비북스 매장 전체" fetchpriority="high"><span>매장 전체</span></a>'
         f'{tiles}'
         '</div></section>')
+
+    # 비북스에서 모이면 좋은 점 + 기본 제공
+    perks = ''.join(f'<li><b>{esc(x["t"])}</b><span>{esc(x["d"])}</span></li>' for x in intro.get('perks', []))
+    amen = ''.join(f'<li>{ICON["check"]}{esc(x)}</li>' for x in intro.get('amenities', []))
+    why_html = ('<section class="space-why" aria-labelledby="whyH">'
+                '<h2 class="sec-title" id="whyH">비북스에서 모이면 좋은 점</h2>'
+                f'<ol class="why-list">{perks}</ol>'
+                '<div class="amenities"><p class="am-title">기본으로 드려요</p>'
+                f'<ul>{amen}</ul><p class="muted small">{esc(intro.get("amenitiesNote", ""))}</p></div>'
+                '</section>') if perks else ''
+
+    # 공간별로 실제 열린 비모임 (모임 데이터에서 자동)
+    held = {}
+    for it in ITEMS:
+        for o in occurrences(it):
+            lst = held.setdefault(o['space'], [])
+            if it['slug'] not in [x['slug'] for x in lst]:
+                lst.append(it)
 
     # ② 공간 바로가기
     jump = ''
@@ -851,6 +872,10 @@ def build_space():
             '</dl>'
             f'<p class="sc-fits"><b>이런 모임에</b>{esc(sp["fits"])}</p>'
             f'<ul class="sc-feats">{feats}</ul>'
+            + (f'<div class="sc-suggest"><b>비북스의 제안</b><p>{esc(sp["suggest"])}</p></div>' if sp.get('suggest') else '')
+            + (('<div class="sc-held"><b>이 공간에서 열린 비모임</b><div>' + ''.join(
+                f'<a href="{rel}m/{esc(x["slug"])}/">{esc(x.get("short") or x["title"])}</a>' for x in held.get(sp['id'], [])[:6]) + '</div></div>')
+               if held.get(sp['id']) else '') +
             f'<div class="sc-btns"><button type="button" class="btn primary" data-pick-space="{esc(sp["id"])}">이 공간 예약하기</button>'
             f'<button type="button" class="btn outline" data-gallery-open-btn>사진 {len(photos)}장 보기</button></div>'
             '</div></section>')
@@ -872,12 +897,14 @@ def build_space():
 
   <nav class="space-jump" aria-label="공간 바로가기">{jump}</nav>
 
+  {why_html}
+
   {shows}
 
   <section aria-labelledby="priceH">
     <h2 class="sec-title" id="priceH">한눈에 보는 요금</h2>
     <div class="table-wrap"><table class="ptable"><thead><tr><th>공간</th><th>인원</th><th>요금</th></tr></thead><tbody>{price_rows}</tbody></table></div>
-    <p class="muted small">세미나실과 매장 테이블은 같은 요금입니다. 정확한 금액은 신청 후 담당자가 안내드려요.</p>
+    <p class="muted small">{esc(SPACES.get("billingNote", ""))}<br>세미나실과 매장 테이블은 같은 요금이에요. 모든 비품은 무료이고, 정확한 금액은 신청 후 담당자가 안내드려요.</p>
   </section>
 
   <section class="calc" aria-labelledby="calcH">
@@ -900,6 +927,7 @@ def build_space():
     <div class="book-step"><span class="num">1</span><div><b>공간 선택</b><div class="picks" id="spacePicks">{space_opts}</div></div></div>
     <div class="book-step"><span class="num">2</span><div><b>날짜 선택</b> <small class="muted">점이 있는 날은 일부 시간이 이미 예약돼 있어요</small><div id="rentCal" class="minical"></div></div></div>
     <div class="book-step"><span class="num">3</span><div><b>시간 선택</b> <small class="muted" id="timeNote">시작 칸과 끝 칸을 차례로 눌러 주세요</small>
+      <p class="bill-note">{esc(SPACES.get("billingNote", ""))}</p>
       <div id="dayBusy" class="daybusy" hidden></div>
       <div id="timeGrid" class="timegrid"><p class="muted small">공간과 날짜를 먼저 골라 주세요.</p></div>
       <div class="legend"><span><i class="lg free"></i>예약 가능</span><span><i class="lg moim"></i>비모임</span><span><i class="lg rent"></i>대관 있음</span><span><i class="lg sel"></i>선택</span></div>

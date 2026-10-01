@@ -719,55 +719,56 @@
     "pricing": {
      "type": "perPerson",
      "unit": 5000,
-     "blockHours": 2
+     "blockHours": 2,
+     "minHours": 2
     },
     "priceText": "1인 5,000원",
     "priceUnit": "2시간 기준",
-    "fits": "강의 · 워크숍 · 팀 모임 · 스터디",
+    "fits": "독서모임 · 정기 미팅 · 회의 · 스터디",
     "features": [
-     "대형 화이트보드",
-     "대형 모니터",
-     "테이블 내장 콘센트 + USB",
-     "복합기 비치",
-     "사방이 책장인 독립 공간"
+     "화이트보드 · 모니터 · 프로젝터 · 앰프 무료",
+     "복합기(프린트) 무료",
+     "최대 8명 테이블",
+     "양쪽 벽 가득한 서가"
     ],
-    "desc": "문을 닫으면 조용해지는 독립된 방. 화이트보드, 대형 모니터, 테이블 내장 콘센트가 있어 강의·워크숍·스터디에 잘 맞아요.",
+    "desc": "서점 안에 숨은 모임방이에요. 양쪽 벽이 모두 서가라 회의가 막히면 책 한 권 꺼내 머리를 식히기 좋아요. 화이트보드와 모니터, 프로젝터, 프린트까지 모임에 필요한 건 다 갖춰 두었어요. 그동안 여러 독서모임이 이 방에서 자랐어요.",
     "photos": [
      {
       "src": "space/seminar-1.jpg",
       "thumb": "space/thumb/seminar-1.jpg",
-      "caption": "화이트보드와 큰 테이블"
+      "caption": "화이트보드 앞에서 생각을 마음껏 펼쳐 보세요"
      },
      {
       "src": "space/seminar-2.jpg",
       "thumb": "space/thumb/seminar-2.jpg",
-      "caption": "책장에 둘러싸인 독립 공간"
+      "caption": "양쪽 서가가 든든하게 감싸 주는 방"
      },
      {
       "src": "space/seminar-3.jpg",
       "thumb": "space/thumb/seminar-3.jpg",
-      "caption": "모임에 맞춘 테이블 배치"
+      "caption": "여덟 명이 둘러앉기 딱 좋은 테이블"
      },
      {
       "src": "space/seminar-4.jpg",
       "thumb": "space/thumb/seminar-4.jpg",
-      "caption": "대형 모니터"
+      "caption": "자료는 모니터로 크게 함께 봐요"
      },
      {
       "src": "space/seminar-5.jpg",
       "thumb": "space/thumb/seminar-5.jpg",
-      "caption": "테이블 내장 콘센트·USB"
+      "caption": "노트북 충전 걱정은 내려놓으세요"
      },
      {
       "src": "space/seminar-6.jpg",
       "thumb": "space/thumb/seminar-6.jpg",
-      "caption": "복합기 비치"
+      "caption": "필요한 자료는 바로 뽑아 쓰세요"
      }
     ],
     "conflicts": [
      "전체 대관"
     ],
-    "tagline": "화이트보드와 큰 테이블이 있는 책장 속 독립 공간"
+    "tagline": "문을 닫으면, 오롯이 우리 모임만의 시간",
+    "suggest": "격주나 매달 같은 요일, 같은 자리에서 모여 보세요. 한 공간에 쌓이는 시간이 모임을 단단하게 만들어요."
    },
    {
     "id": "매장 테이블",
@@ -777,54 +778,56 @@
     "pricing": {
      "type": "perPerson",
      "unit": 5000,
-     "blockHours": 2
+     "blockHours": 2,
+     "minHours": 2
     },
     "priceText": "1인 5,000원",
     "priceUnit": "2시간 기준",
-    "fits": "소규모 독서 모임 · 스터디 · 티타임",
+    "fits": "독서모임 · 필사 · 만들기 모임 · 티타임",
     "features": [
-     "책장 사이 원목 테이블",
-     "4~6인 기본, 붙여서 6~8인",
-     "매장 분위기 그대로"
+     "최대 8명 원목 긴 테이블",
+     "세미나실과 같은 비품 무료 사용",
+     "서가로 둘러싸인 열린 자리"
     ],
-    "desc": "책장 사이에 놓인 긴 원목 테이블. 책을 펼쳐 두고 둘러앉기 좋아 독서모임·필사·티타임에 사랑받는 자리예요.",
+    "desc": "세미나실과 같은 조건이지만 문 대신 서가가 둘러싼 열린 자리예요. 은은한 책 냄새와 서점의 공기가 배경이 되어서, 막힌 방보다 이곳을 더 좋아하는 모임이 많아요. 지금도 여러 독서모임과 만들기 모임이 이 테이블에서 열리고 있어요.",
     "photos": [
      {
       "src": "space/table-1.jpg",
       "thumb": "space/thumb/table-1.jpg",
-      "caption": "책장 사이 원목 테이블"
+      "caption": "서가 사이, 긴 원목 테이블"
      },
      {
       "src": "space/table-2.jpg",
       "thumb": "space/thumb/table-2.jpg",
-      "caption": "최대 8인까지 넉넉하게"
+      "caption": "여덟 명이 둘러앉아도 넉넉해요"
      },
      {
       "src": "space/table-3.jpg",
       "thumb": "space/thumb/table-3.jpg",
-      "caption": "책으로 둘러싸인 자리"
+      "caption": "어느 자리에 앉아도 책이 보여요"
      },
      {
       "src": "space/table-4.jpg",
       "thumb": "space/thumb/table-4.jpg",
-      "caption": "모임 책을 펼쳐 두기 좋은 테이블"
+      "caption": "모임 책을 펼쳐 두기 좋은 자리"
      },
      {
       "src": "space/table-5.jpg",
       "thumb": "space/thumb/table-5.jpg",
-      "caption": "조명 아래 긴 테이블"
+      "caption": "조명 아래 모이는 저녁 모임"
      },
      {
       "src": "space/table-6.jpg",
       "thumb": "space/thumb/table-6.jpg",
-      "caption": "매장 쪽에서 본 테이블"
+      "caption": "매장 한쪽의 열린 모임 자리"
      }
     ],
     "conflicts": [
      "계단 좌석",
      "전체 대관"
     ],
-    "tagline": "책장 사이, 긴 원목 테이블에 둘러앉는 자리"
+    "tagline": "답답한 방이 싫다면, 서가 한가운데로",
+    "suggest": "모임 시작 전 10분, 각자 서가를 한 바퀴 돌고 마음에 든 책 한 권씩 들고 앉아 보세요. 그 책이 첫 이야깃거리가 돼요."
    },
    {
     "id": "계단 좌석",
@@ -837,50 +840,52 @@
     },
     "priceText": "시간당 50,000원",
     "priceUnit": "최대 20인",
-    "fits": "낭독 · 강연 · 어린이 프로그램처럼 한 방향을 보는 모임",
+    "fits": "작가 북토크 · 낭독극 · 연극 · 소규모 공연",
     "features": [
-     "최대 20인 좌석",
-     "등받이 좌식 의자 · 스탠드 조명",
-     "매장 테이블과 같은 시간 동시 사용 불가"
+     "10~20명 계단식 좌석",
+     "앰프 · 프로젝터 무료",
+     "등받이 좌식 의자와 스탠드 조명",
+     "매장 테이블과 같은 시간에는 함께 예약할 수 없어요"
     ],
-    "desc": "나무 단 위에 등받이 좌식 의자와 스탠드를 둔 좌석이에요. 낭독회·강연·어린이 프로그램처럼 한곳을 바라보는 모임에 어울려요.",
+    "desc": "계단식 좌석이 한곳을 바라보는, 비북스의 미니 소극장이에요. 작가 북토크, 낭독극, 연극, 작은 음악회까지. 책 이야기만이 아니라 10~20명이 함께 보고 듣는 순간이라면 어디든 어울려요.",
     "photos": [
      {
       "src": "space/stairs-1.jpg",
       "thumb": "space/thumb/stairs-1.jpg",
-      "caption": "계단 좌석 전경"
+      "caption": "한곳을 바라보는 계단 좌석"
      },
      {
       "src": "space/stairs-2.jpg",
       "thumb": "space/thumb/stairs-2.jpg",
-      "caption": "등받이 좌식 의자"
+      "caption": "등받이가 있어 오래 앉아도 편안해요"
      },
      {
       "src": "space/stairs-3.jpg",
       "thumb": "space/thumb/stairs-3.jpg",
-      "caption": "단 위 좌석과 작은 탁자"
+      "caption": "계단마다 놓인 작은 탁자"
      },
      {
       "src": "space/stairs-4.jpg",
       "thumb": "space/thumb/stairs-4.jpg",
-      "caption": "넓게 이어진 단 좌석"
+      "caption": "열 명이든 스무 명이든 넉넉하게"
      },
      {
       "src": "space/stairs-5.jpg",
       "thumb": "space/thumb/stairs-5.jpg",
-      "caption": "스탠드 조명이 있는 코너"
+      "caption": "은은한 스탠드 불빛 아래"
      },
      {
       "src": "space/stairs-6.jpg",
       "thumb": "space/thumb/stairs-6.jpg",
-      "caption": "안락의자와 낮은 테이블"
+      "caption": "공연 전 잠깐 쉬어 가는 자리"
      }
     ],
     "conflicts": [
      "매장 테이블",
      "전체 대관"
     ],
-    "tagline": "단 위 좌식 좌석에 앉아 한곳을 바라보는 모임"
+    "tagline": "서점 안의 작은 극장",
+    "suggest": "출간 기념 북토크나 낭독회를 준비 중이라면 여기서 시작해 보세요. 행사 책은 비북스에서 바로 판매할 수 있어요."
    },
    {
     "id": "1인실",
@@ -897,55 +902,56 @@
       "from": "10:00",
       "to": "18:00",
       "label": "오픈 프로모션 50% 할인"
-     }
+     },
+     "minHours": 2
     },
     "priceText": "2시간 10,000원",
     "priceUnit": "종일권(10–18시) 20,000원 · 오픈 특가",
-    "tagline": "책장 사이에 숨은, 혼자 집중하는 작은 방",
-    "fits": "공부 · 작업 · 글쓰기 · 혼자 읽기",
-    "desc": "책장 사이에 숨은 작은 방이에요. 스탠드 하나, 책상 하나. 혼자 집중하고 싶은 날을 위한 자리예요.",
+    "tagline": "작가의 방처럼, 오롯이 나에게 집중하는 시간",
+    "fits": "글쓰기 · 작업 · 공부 · 혼자 읽기",
+    "desc": "다른 용도로 쓰던 작은 방을 혼자만의 작업실로 새로 열었어요. 스탠드 불빛 하나, 책상 하나. 문을 닫으면 서점의 소리가 멀어지고, 나만의 속도로 쓰고 읽고 일할 수 있어요.",
     "features": [
      "1인 전용 책상과 의자",
-     "초록 스탠드 조명 · 콘센트",
-     "작은 선반",
-     "매장 안 조용한 자리"
+     "스탠드 조명 · 콘센트 · 와이파이",
+     "문만 열면 이어지는 서가"
     ],
     "photos": [
      {
       "src": "space/solo-1.jpg",
       "thumb": "space/thumb/solo-1.jpg",
-      "caption": "혼자 집중하는 1인실"
+      "caption": "스탠드 불빛 아래, 나만의 책상"
      },
      {
       "src": "space/solo-2.jpg",
       "thumb": "space/thumb/solo-2.jpg",
-      "caption": "책상과 선반"
+      "caption": "작은 선반에 오늘 읽을 책을"
      },
      {
       "src": "space/solo-3.jpg",
       "thumb": "space/thumb/solo-3.jpg",
-      "caption": "스탠드와 꽃이 있는 책상"
+      "caption": "튤립 한 송이가 놓인 책상"
      },
      {
       "src": "space/solo-4.jpg",
       "thumb": "space/thumb/solo-4.jpg",
-      "caption": "작업하기 좋은 자리"
+      "caption": "몰입하기 좋은 자리"
      },
      {
       "src": "space/solo-5.jpg",
       "thumb": "space/thumb/solo-5.jpg",
-      "caption": "입구에서 본 1인실"
+      "caption": "문만 열면 서가로 이어져요"
      },
      {
       "src": "space/solo-6.jpg",
       "thumb": "space/thumb/solo-6.jpg",
-      "caption": "아늑한 조명"
+      "caption": "늦은 오후의 따뜻한 조명"
      }
     ],
     "conflicts": [
      "전체 대관"
     ],
-    "new": true
+    "new": true,
+    "suggest": "종일권(10~18시)으로 하루를 통째로 맡겨 보세요. 막히는 순간엔 문 밖 104개의 서가가 기다리고 있어요."
    },
    {
     "id": "전체 대관",
@@ -958,43 +964,43 @@
     },
     "priceText": "시간당 100,000원",
     "priceUnit": "최대 40인",
-    "fits": "북토크 · 전시 · 소규모 행사 · 파티",
+    "fits": "단체 정기 모임 · 출판 기념회 · 워크숍 · 파티",
     "features": [
-     "매장 전 공간 단독 사용",
-     "계단 좌석 · 라운지 · 테이블 모두 사용",
-     "최대 40인"
+     "세미나실 · 매장 테이블 · 계단 좌석 · 탕비실 모두 사용",
+     "최대 40명",
+     "모든 비품 무료"
     ],
-    "desc": "매장 전체를 비우고 우리 모임만의 공간으로. 북토크·전시·파티처럼 많은 사람이 모이는 날에 좋아요.",
+    "desc": "세미나실, 매장 테이블, 계단 좌석, 탕비실까지 비북스의 모든 공간을 단독으로 쓰는 대관이에요. 최대 40명까지 함께한 적이 있고, 교회나 동호회처럼 정기적으로 모이는 단체에도 잘 맞아요.",
     "photos": [
      {
       "src": "space/whole-1.jpg",
       "thumb": "space/thumb/whole-1.jpg",
-      "caption": "비북스 매장 전체"
+      "caption": "비북스의 모든 공간을 단독으로"
      },
      {
       "src": "space/whole-2.jpg",
       "thumb": "space/thumb/whole-2.jpg",
-      "caption": "입구에서 본 매장"
+      "caption": "들어서는 순간부터 우리 모임의 공간"
      },
      {
       "src": "space/whole-3.jpg",
       "thumb": "space/thumb/whole-3.jpg",
-      "caption": "매대와 책장"
+      "caption": "서가와 매대 사이를 자유롭게"
      },
      {
       "src": "space/whole-4.jpg",
       "thumb": "space/thumb/whole-4.jpg",
-      "caption": "계단 좌석 쪽 풍경"
+      "caption": "계단 좌석을 무대처럼"
      },
      {
       "src": "space/whole-5.jpg",
       "thumb": "space/thumb/whole-5.jpg",
-      "caption": "책장으로 둘러싸인 라운지"
+      "caption": "서가로 둘러싸인 라운지"
      },
      {
       "src": "space/whole-6.jpg",
       "thumb": "space/thumb/whole-6.jpg",
-      "caption": "빈백이 있는 라운지 코너"
+      "caption": "빈백에 기대 쉬어 가는 코너"
      }
     ],
     "conflicts": [
@@ -1003,13 +1009,14 @@
      "계단 좌석",
      "1인실"
     ],
-    "tagline": "책장 가득한 매장 전체를 단독으로"
+    "tagline": "비북스 전체를, 그날만큼은 당신의 공간으로",
+    "suggest": "40명 규모 행사라면 계단 좌석은 무대로, 매장 테이블은 다과 자리로, 세미나실은 대기실로 나눠 써 보세요."
    }
   ],
   "steps": [
    {
     "title": "공간·날짜·시간 선택",
-    "desc": "비어 있는 30분 칸을 시작–끝 두 번 눌러 고릅니다."
+    "desc": "비어 있는 30분 칸을 시작–끝 두 번 눌러 고릅니다. 요금은 1시간 단위로 계산돼요."
    },
    {
     "title": "신청 접수",
@@ -1048,7 +1055,41 @@
      "space/solo-1.jpg"
     ]
    ]
-  }
+  },
+  "intro": {
+   "eyebrow": "Space · 비북스 대관",
+   "title": "104개의 서가 속,<br>우리만의 아지트",
+   "keywords": [
+    "집중",
+    "편안",
+    "독립"
+   ],
+   "desc": "비북스는 104개의 0.1평 서가로 채워진 서점이에요. 서가마다 주인의 취향과 관점이 달라서, 모임 사이사이 꺼내 든 한 권이 생각지 못한 인사이트가 되곤 해요. 책으로 둘러싸인 아날로그한 공간에 편안한 좌석까지 갖춘 곳은 흔치 않아서, 모임하기에 이보다 좋은 곳이 없겠다 싶어 대관을 시작했어요.",
+   "perks": [
+    {
+     "t": "책 곁에서 대화가 깊어져요",
+     "d": "104개 서가에 담긴 서로 다른 시선이 모임에 자연스러운 영감이 돼요. 이야기가 막히면 책장을 한 바퀴 둘러보세요."
+    },
+    {
+     "t": "필요한 책은 그 자리에서",
+     "d": "모임 책, 참고할 책, 선물할 책까지 비북스에서 바로 살 수 있어요."
+    },
+    {
+     "t": "어디에도 없는 분위기",
+     "d": "서가마다 주인이 다른 서점. 들어서는 순간부터 우리 모임이 조금 특별해져요."
+    }
+   ],
+   "amenities": [
+    "책 열람",
+    "와이파이",
+    "간단한 음료·간식",
+    "주차",
+    "프린트·복합기",
+    "모니터·프로젝터·앰프"
+   ],
+   "amenitiesNote": "모두 대관 요금에 포함돼 있어요. 따로 챙겨 오지 않으셔도 돼요."
+  },
+  "billingNote": "시간은 30분 단위로 고를 수 있고, 요금은 1시간 단위로 올려 계산돼요. (예: 1시간 30분 → 2시간 요금)"
  },
  "blocks": [
   {

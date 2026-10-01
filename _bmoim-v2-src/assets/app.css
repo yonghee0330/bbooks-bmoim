@@ -774,3 +774,29 @@ body.has-cta .toast { bottom: 104px; }
 .daypass b { color: var(--accent-ink); font-size: 16px; }
 .daypass em { font-style: normal; font-size: 11.5px; font-weight: 800; color: #fff; background: var(--accent); border-radius: 4px; padding: 2px 7px; }
 .ptable .dp-price { color: var(--accent-ink); font-size: 14px; margin: 0; display: inline; }
+
+/* 대관 페이지: 키워드 · 좋은 점 · 기본 제공 · 제안 · 열린 모임 */
+.sh-kw { display: flex; gap: 6px; margin: 0 0 10px; }
+.sh-kw span { font-size: 12.5px; font-weight: 700; color: var(--accent-ink); background: var(--accent-soft); border-radius: 999px; padding: 3px 10px; }
+.space-why { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 28px 40px; align-items: start; }
+.space-why .sec-title { grid-column: 1 / -1; margin-bottom: 0; }
+.why-list { list-style: none; counter-reset: w; margin: 0; padding: 0; display: grid; gap: 14px; }
+.why-list li { counter-increment: w; display: grid; grid-template-columns: 36px 1fr; column-gap: 12px; }
+.why-list li::before { content: counter(w); grid-row: 1 / 3; width: 32px; height: 32px; border-radius: 50%; background: var(--ink); color: var(--bg); font-weight: 800; display: grid; place-items: center; font-size: 14px; }
+.why-list b { font-family: var(--serif); font-size: 17.5px; }
+.why-list span { color: var(--ink-2); font-size: 14.5px; line-height: 1.7; }
+.amenities { background: var(--paper); border-radius: var(--r-lg); padding: 20px 22px; }
+.am-title { font-weight: 800; margin: 0 0 10px; }
+.amenities ul { list-style: none; margin: 0 0 10px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 14px; }
+.amenities li { display: flex; gap: 6px; align-items: flex-start; }
+.amenities .i { color: var(--ok); margin-top: 3px; }
+@media (max-width: 860px) { .space-why { grid-template-columns: 1fr; } }
+.sc-suggest { margin-top: 18px; padding: 14px 16px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 10px 10px 0; }
+.sc-suggest b { font-size: 13px; color: var(--accent-ink); letter-spacing: .04em; }
+.sc-suggest p { margin: 4px 0 0; font-family: var(--serif); font-size: 15.5px; line-height: 1.7; color: var(--ink); }
+.sc-held { margin-top: 14px; }
+.sc-held b { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.sc-held div { display: flex; flex-wrap: wrap; gap: 6px; }
+.sc-held a { font-size: 13px; font-weight: 600; text-decoration: none; color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 999px; padding: 4px 11px; }
+.sc-held a:hover { border-color: var(--ink); color: var(--ink); }
+.bill-note { margin: 6px 0 0; font-size: 13px; color: var(--accent-ink); background: var(--accent-soft); border-radius: 8px; padding: 7px 11px; }

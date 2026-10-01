@@ -91,42 +91,50 @@
   });
 
   // ── 예상 금액 ──
-  // 1인실처럼 '2시간 단위 + 종일권' 요금: 10–18시 안에서는 더 싼 쪽(종일권)으로
+  // 요금은 1시간 단위로 올려 계산 (30분 단위로 골라도 1시간 30분 → 2시간 요금)
+  // '2시간 기준' 요금은 1시간 단가로 나눠 계산하고, 최소 이용 시간(minHours)을 적용
+  const billedHours = (p, hours) => Math.max(Math.ceil(hours - 1e-9), p.minHours || 0);
+  const hourlyRate = p => p.unit / (p.blockHours || 1);
   function blockPrice(p, hours, startMin) {
-    const byBlock = p.unit * Math.ceil(hours / (p.blockHours || 2));
+    const bh = billedHours(p, hours);
+    const byHour = hourlyRate(p) * bh;
     const dp = p.dayPass;
-    if (!dp) return { amount: byBlock, dayPass: false };
+    if (!dp) return { amount: byHour, dayPass: false, hours: bh };
     const inWindow = startMin == null || (startMin >= toMin(dp.from) && startMin + hours * 60 <= toMin(dp.to));
-    return inWindow && dp.price < byBlock ? { amount: dp.price, dayPass: true } : { amount: byBlock, dayPass: false };
+    return inWindow && dp.price < byHour ? { amount: dp.price, dayPass: true, hours: bh } : { amount: byHour, dayPass: false, hours: bh };
   }
   function estimate(spId, people, hours, startMin) {
     const sp = SPACE[spId];
     if (!sp) return null;
     const p = sp.pricing;
-    if (p.type === 'inquiry') return null; // 요금 문의 공간
+    if (p.type === 'inquiry') return null;
     if (p.type === 'block') return blockPrice(p, hours, startMin).amount;
-    if (p.type === 'perPerson') return p.unit * Math.max(1, people) * Math.ceil(hours / (p.blockHours || 2));
-    return p.unit * hours;
+    if (p.type === 'perPerson') return hourlyRate(p) * Math.max(1, people) * billedHours(p, hours);
+    return p.unit * billedHours(p, hours);
   }
   function renderCalc() {
     const spId = $('#calcSpace').value;
     const people = Math.max(1, Number($('#calcPeople').value) || 1);
     const hours = Number($('#calcHours').value);
     const sp = SPACE[spId];
+    const p = sp.pricing;
     const est = estimate(spId, people, hours);
     if (est == null) { $('#calcOut').innerHTML = `<b>${esc(sp.name)}</b>은 요금을 따로 안내드려요. 예약 신청을 남겨 주시면 담당자가 연락드릴게요.`; return; }
-    if (sp.pricing.type === 'block') {
-      const p = sp.pricing, r = blockPrice(p, hours), dp = p.dayPass;
-      const how = r.dayPass ? `종일권 ${dp.from}–${dp.to} 적용` : `${p.blockHours}시간 ${won(p.unit)} × ${Math.ceil(hours / p.blockHours)}구간`;
-      const promo = dp ? `<br><small class="muted">종일권(${dp.from}–${dp.to}) ${dp.regular ? `<del>${won(dp.regular)}</del> ` : ''}<b>${won(dp.price)}</b>${dp.label ? ` · ${esc(dp.label)}` : ''}</small>` : '';
-      $('#calcOut').innerHTML = `예상 <b>${won(r.amount)}</b> <small class="muted">(${how})</small>${promo}`;
-      return;
+    const bh = billedHours(p, hours);
+    const round = bh !== hours ? ` · ${hours}시간 → ${bh}시간 요금` : '';
+    let how;
+    if (p.type === 'block') {
+      const r = blockPrice(p, hours);
+      how = r.dayPass ? `종일권 ${p.dayPass.from}–${p.dayPass.to} 적용` : `시간당 ${won(hourlyRate(p))} × ${bh}시간${round}`;
+    } else if (p.type === 'perPerson') {
+      how = `1인 시간당 ${won(hourlyRate(p))} × ${people}명 × ${bh}시간${round}`;
+    } else {
+      how = `시간당 ${won(p.unit)} × ${bh}시간${round}`;
     }
-    const over = people > sp.maxPeople ? `<br><small style="color:var(--danger)">${esc(sp.name)}은 최대 ${sp.maxPeople}인이에요. 더 넓은 공간을 골라 보세요.</small>` : '';
-    const how = sp.pricing.type === 'perPerson'
-      ? `1인 ${won(sp.pricing.unit)} × ${people}명 × ${Math.ceil(hours / sp.pricing.blockHours)}구간(2시간 단위)`
-      : `시간당 ${won(sp.pricing.unit)} × ${hours}시간`;
-    $('#calcOut').innerHTML = `예상 <b>${won(est)}</b> <small class="muted">(${how})</small>${over}<br><small class="muted">정확한 금액은 신청 후 담당자가 안내드려요.</small>`;
+    const over = people > sp.maxPeople ? `<br><small style="color:var(--danger)">${esc(sp.name)}은 최대 ${sp.maxPeople}명이에요. 더 넓은 공간을 골라 보세요.</small>` : '';
+    const dp = p.dayPass;
+    const promo = dp ? `<br><small class="muted">종일권(${dp.from}–${dp.to}) ${dp.regular ? `<del>${won(dp.regular)}</del> ` : ''}<b>${won(dp.price)}</b>${dp.label ? ` · ${esc(dp.label)}` : ''}</small>` : '';
+    $('#calcOut').innerHTML = `예상 <b>${won(est)}</b> <small class="muted">(${how})</small>${over}${promo}<br><small class="muted">모든 비품은 무료예요. 정확한 금액은 신청 후 담당자가 안내드려요.</small>`;
   }
   ['#calcSpace', '#calcPeople', '#calcHours'].forEach(s => $(s).addEventListener('input', renderCalc));
   renderCalc();
@@ -244,7 +252,8 @@
     const people = Number($('#rentForm').elements.namedItem('count').value) || (SPACE[space].pricing.type === 'perPerson' ? 1 : 0);
     const est = estimate(space, people || 1, hours, selA);
     const pr = SPACE[space].pricing;
-    const dpNote = pr.type === 'block' && blockPrice(pr, hours, selA).dayPass ? ' · 종일권 적용' : '';
+    const dpNote = pr.type === 'block' && blockPrice(pr, hours, selA).dayPass ? ' · 종일권 적용'
+      : (pr.type !== 'inquiry' && billedHours(pr, hours) !== hours ? ` · ${billedHours(pr, hours)}시간 요금` : '');
     const estText = est == null ? '요금은 담당자가 안내드려요' : `예상 ${won(est)}${pr.type === 'perPerson' ? ` · ${people || 1}명 기준` : ''}${dpNote}`;
     box.innerHTML = `${esc(SPACE[space].name)} · ${p.m}월 ${p.d}일 (${WD[p.wd]}) ${toHM(selA)}–${toHM(selB)} <span class="muted">(${hours}시간)</span><br><small>${estText}</small>`;
   }
