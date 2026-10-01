@@ -245,7 +245,12 @@
           note: noteBase, books: i === 0 ? (d.extra || '') : '', date: sheetNow()
         };
         const out = await sheetPostV2(
-          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '' },
+          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '',
+            // 안내 메일용: 모임 이름·포스터·페이지·장소·메모·환불 규정
+            title: item.title, kindLabel: [item.kindLabel, ...(item.tags || []).slice(0, 1)].filter(Boolean).join(' · '),
+            place: [...new Set(sessions.flatMap(x => x.dates.map(dd => dd.space)))].join(' · '),
+            poster: absUrl(imgUrl(item.poster)), pageUrl: itemUrl(item), memo: d.memo || '',
+            refund: (CFG.refund[item.materials ? 'materials' : 'noMaterials'] || []).join(' · ') },
           { action: 'apply', ...row, note: [noteBase, d.email ? `메일 ${d.email}` : ''].filter(Boolean).join(' · ') }
         );
         if (i === 0) first = out || {};

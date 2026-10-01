@@ -56,7 +56,8 @@ python3 _bmoim-v2-src/build.py --sheet
 ## 4. Apps Script (배포 버전 8 · 2026-10)
 
 - 웹앱 = 구글 파일 `1XM5bF5…`에 연결된 스크립트 프로젝트 (편집기: https://script.google.com/d/1La7qXwWHKPVus9equlZi672_PUF0YtKwhohz6EYq7UcjUPu8fj61WmFD/edit). 배포 ID `AKfycbx7…6HQ` 유지.
-- 운영 코드 사본 = `apps-script/live/Code.js`. 버전 이력: 6 이관 전 · 7 이메일/동의/개설신청 · **8 신청번호·조회/취소·메일/알림톡**.
+- 운영 코드 사본 = `apps-script/live/Code.js`. 버전 이력: 6 이관 전 · 7 이메일/동의/개설신청 · 8 신청번호·조회/취소·메일/알림톡 · **9 안내 메일 디자인 + 매니저 수신**.
+- 메일 디자인 = `Code.js` 맨 아래 `m4…Mail_` 함수들 (같은 내용 `_bmoim-v2-src/apps-script/mail-templates.js` — 미리보기용). 운영자 알림 받는 사람 = 스크립트 속성 `OPERATOR_EMAIL`(기본: 소유 계정) + `MANAGER_EMAILS`(기본: yorokobi720@gmail.com, 쉼표로 여러 명).
 - 액션: GET `count`·`hostStatus` / POST `applyV2`·`rentV2`·`hostApply`·`lookup`·`cancelRequest`·`resend` (+ 옛 `apply`·`rent`·`eventApply`).
 - 모임신청 탭 오른쪽 열(제목으로 찾음): 신청 메모 · 도서 요청 · 이메일 · 소식수신동의 · 개인정보동의 · 유입 · **신청번호 · 상태 · 입금기한 · 알림**. 대관신청도 신청번호·상태·알림.
 - 운영자 흐름: `상태`를 **입금확인**으로 바꾸면 확정 메일(트리거 onStatusEditV3) / 취소요청이 오면 환불 후 **취소**로 (취소로 시작하면 남은 자리에서 빠짐. H열 '취소'도 계속 인정).
