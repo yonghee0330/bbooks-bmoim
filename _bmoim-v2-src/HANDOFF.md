@@ -56,7 +56,7 @@ python3 _bmoim-v2-src/build.py --sheet
 ## 4. Apps Script (배포 버전 8 · 2026-10)
 
 - 웹앱 = 구글 파일 `1XM5bF5…`에 연결된 스크립트 프로젝트 (편집기: https://script.google.com/d/1La7qXwWHKPVus9equlZi672_PUF0YtKwhohz6EYq7UcjUPu8fj61WmFD/edit). 배포 ID `AKfycbx7…6HQ` 유지.
-- 운영 코드 사본 = `apps-script/live/Code.js`. 버전 이력: 6 이관 전 · 7 이메일/동의/개설신청 · 8 신청번호·조회/취소·메일/알림톡 · **9 안내 메일 디자인 + 매니저 수신**.
+- 운영 코드 사본 = `apps-script/live/Code.js`. 버전 이력: 6 이관 전 · 7 이메일/동의/개설신청 · 8 신청번호·조회/취소·메일/알림톡 · 9 안내 메일 디자인 + 매니저 수신 · **10 솔라피 문자(SMS/LMS)**.
 - 메일 디자인 = `Code.js` 맨 아래 `m4…Mail_` 함수들 (같은 내용 `_bmoim-v2-src/apps-script/mail-templates.js` — 미리보기용). 운영자 알림 받는 사람 = 스크립트 속성 `OPERATOR_EMAIL`(기본: 소유 계정) + `MANAGER_EMAILS`(기본: yorokobi720@gmail.com, 쉼표로 여러 명).
 - 액션: GET `count`·`hostStatus` / POST `applyV2`·`rentV2`·`hostApply`·`lookup`·`cancelRequest`·`resend` (+ 옛 `apply`·`rent`·`eventApply`).
 - 모임신청 탭 오른쪽 열(제목으로 찾음): 신청 메모 · 도서 요청 · 이메일 · 소식수신동의 · 개인정보동의 · 유입 · **신청번호 · 상태 · 입금기한 · 알림**. 대관신청도 신청번호·상태·알림.
@@ -68,7 +68,7 @@ python3 _bmoim-v2-src/build.py --sheet
 ## 5. 알려진 문제 · 다음 단계
 1. **개인정보 노출**: `대관신청`·`모임신청` 탭을 gviz(공개 링크)로 읽는 구조라, 시트가 "링크가 있는 모든 사용자" 공유면 신청자 이름·연락처가 노출될 수 있음. 해결: 대관 시간대만 돌려주는 `rentBlocks` 액션을 스크립트에 추가 → `app.js` `sheetApi.rentBlocks`를 그 액션으로 교체 → 시트 공유를 "제한됨"으로.
 2. **호스트 코드**: `점주코드` 탭의 코드(TOJI2026 등)가 추측 가능하고 `host/moims.js`에 공개돼 있음. 무작위 코드로 교체 권장.
-3. 알림톡: 버전 8에 코드 있음. 카카오 채널 + 솔라피 가입 + 템플릿 검수 후 스크립트 속성만 넣으면 켜짐.
+3. 문자·알림톡(솔라피): 스크립트 속성 SOLAPI_API_KEY · SOLAPI_API_SECRET · SOLAPI_SENDER 를 넣으면 신청 접수·확정·대관 접수·재안내 문자가 자동 발송 (편집기 함수 testSmsV5 로 발신번호에 테스트 문자). 알림톡은 SOLAPI_PFID + TPL_* 템플릿까지 넣으면 알림톡 우선·실패 시 문자. 문자 끄기: SMS_ENABLED=N. 시트 '알림' 열에 발송 결과 기록.
 6. 카드 결제: 토스페이먼츠 결제위젯 연동 예정 (테스트 키로 먼저).
 4. 토지·필사·써니 모임은 `모임신청` 탭에 신청 기록이 없음 (다른 경로로 접수됐는지 확인 필요).
 5. 포스터 9개 중 7개가 4:5 규격이 아님 → 호스트에게 `/v2/host/#poster` 가이드로 재제출 요청.
