@@ -681,6 +681,69 @@ function v3Alimtalk_(phone, tplKey, vars) {
   } catch (e) { return 'failed'; }
 }
 
+
+// ── v5: 솔라피 문자(SMS/LMS) ── 스크립트 속성 SOLAPI_API_KEY · SOLAPI_API_SECRET · SOLAPI_SENDER(등록된 발신번호)
+// 알림톡 템플릿(TPL_*)이 설정돼 있으면 알림톡을 먼저 보내고(실패 시 문자로 대체), 없으면 바로 문자로 보냅니다.
+// 문자를 끄려면 스크립트 속성 SMS_ENABLED 를 N 으로.
+function v5Solapi_(message) {
+  var key = v3Prop_('SOLAPI_API_KEY', ''), secret = v3Prop_('SOLAPI_API_SECRET', '');
+  var date = new Date().toISOString(), salt = Utilities.getUuid().replace(/-/g, '');
+  var sig = Utilities.computeHmacSha256Signature(date + salt, secret).map(function (b) { return ('0' + (b & 0xff).toString(16)).slice(-2); }).join('');
+  var res = UrlFetchApp.fetch('https://api.solapi.com/messages/v4/send', {
+    method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+    headers: { Authorization: 'HMAC-SHA256 apiKey=' + key + ', date=' + date + ', salt=' + salt + ', signature=' + sig },
+    payload: JSON.stringify({ message: message })
+  });
+  return { ok: res.getResponseCode() < 300, code: res.getResponseCode(), body: res.getContentText() };
+}
+
+function v5Sms_(phone, text, subject) {
+  if (v3Prop_('SMS_ENABLED', 'Y') === 'N') return 'off';
+  var from = v3Digits_(v3Prop_('SOLAPI_SENDER', '')), to = v3Digits_(phone);
+  if (!v3Prop_('SOLAPI_API_KEY', '') || !v3Prop_('SOLAPI_API_SECRET', '') || !from) return 'skipped';
+  if (!/^01\d{8,9}$/.test(to)) return 'none';
+  try {
+    var msg = { to: to, from: from, text: String(text) };
+    if (subject) msg.subject = subject;   // 길면 솔라피가 장문(LMS)으로 자동 전환
+    return v5Solapi_(msg).ok ? 'sent' : 'failed';
+  } catch (e) { return 'failed'; }
+}
+
+/** 알림톡(설정 시) → 아니면 문자. 결과: { alimtalk, sms } */
+function v5Notify_(phone, tplKey, vars, smsText, smsSubject) {
+  var at = v3Alimtalk_(phone, tplKey, vars);
+  var sms = at === 'sent' ? 'skipped' : v5Sms_(phone, smsText, smsSubject);
+  return { alimtalk: at, sms: sms };
+}
+
+/** 문자 문구 */
+function v5SmsApply_(v, amount) {
+  return '[비북스] ' + v['#{이름}'] + '님, ' + v['#{모임명}'] + ' 신청이 접수됐어요.\n' +
+    '신청번호 ' + v['#{신청번호}'] + '\n' +
+    (amount > 0 ? '입금 ' + v['#{금액}'] + '\n' + v['#{계좌}'] + '\n입금기한 ' + v['#{기한}'] + '\n' : '') +
+    '확인·취소 ' + v['#{확인링크}'];
+}
+function v5SmsPaid_(v) {
+  return '[비북스] ' + v['#{이름}'] + '님, ' + v['#{모임명}'] + ' 참가가 확정됐어요.\n' +
+    '일정 ' + v['#{일정}'] + '\n장소 비북스 (부천로136번길 24 지하 B02호)\n신청번호 ' + v['#{신청번호}'];
+}
+function v5SmsRent_(v) {
+  return '[비북스] ' + v['#{이름}'] + '님, ' + v['#{공간}'] + ' 대관 신청이 접수됐어요.\n' +
+    '일정 ' + v['#{일정}'] + '\n신청번호 ' + v['#{신청번호}'] + '\n담당자가 확인 후 금액과 입금 방법을 안내드려요.';
+}
+
+/** 편집기에서 실행: 발신번호(또는 스크립트 속성 TEST_PHONE)로 테스트 문자 1통. 결과는 실행 로그에 표시 */
+function testSmsV5() {
+  var to = v3Prop_('TEST_PHONE', v3Prop_('SOLAPI_SENDER', ''));
+  if (!v3Prop_('SOLAPI_API_KEY', '') || !v3Prop_('SOLAPI_API_SECRET', '') || !v3Prop_('SOLAPI_SENDER', '')) {
+    Logger.log('스크립트 속성에 SOLAPI_API_KEY · SOLAPI_API_SECRET · SOLAPI_SENDER 를 먼저 넣어 주세요.');
+    return 'missing';
+  }
+  var r = v5Solapi_({ to: v3Digits_(to), from: v3Digits_(v3Prop_('SOLAPI_SENDER', '')), text: '[비북스] 비모임 문자 발송 테스트입니다. 이 문자를 받으셨다면 연결이 잘 된 거예요.' });
+  Logger.log((r.ok ? '성공' : '실패') + ' (' + r.code + ') ' + r.body);
+  return r.ok ? 'sent' : 'failed';
+}
+
 // ── 신청 직후 안내 ──
 function v3MailInfo_(data) {
   return { title: String(data.title || data.moimName || ''), kindLabel: String(data.kindLabel || '비모임'), when: String(data.optionLabel || data.session || ''),
@@ -699,14 +762,15 @@ function v3NotifyApply_(data, code, deadline, sheetRow) {
     code: code, myUrl: vars['#{확인링크}'], amount: vars['#{금액}'], amountNum: amount, bank: vars['#{계좌}'], deadline: vars['#{기한}'],
     memo: String(data.memo || ''), refund: String(data.refund || ''), instagram: v3Insta_(), siteUrl: v3Site_('')
   });
-  var n = { email: v3MailHtml_(data.email, mail), alimtalk: v3Alimtalk_(data.phone, 'TPL_APPLY', vars) };
+  var t = v5Notify_(data.phone, 'TPL_APPLY', vars, v5SmsApply_(vars, amount), '비모임 신청 접수');
+  var n = { email: v3MailHtml_(data.email, mail), alimtalk: t.alimtalk, sms: t.sms };
   v3Ops_({
     kind: '신청', headline: info.title + ' · ' + vars['#{이름}'], sub: info.when,
     rows: [['신청번호', code], ['이름', vars['#{이름}']], ['연락처', data.phone], ['이메일', v2Email_(data.email)], ['금액', vars['#{금액}']],
       ['입금 기한', amount > 0 ? vars['#{기한}'] : ''], ['메모', data.memo || ''], ['도서 요청', data.books || ''], ['유입', data.ref || '']],
     todo: amount > 0 ? '입금이 확인되면 모임신청 탭 <b>상태</b>를 <b>입금확인</b>으로 바꿔 주세요. 참가 확정 메일이 자동으로 나가요.<br>기한까지 입금이 없으면 <b>취소</b>로 바꾸면 남은 자리로 돌아가요.' : ''
   });
-  v3Log_(SHEET_APPLY, sheetRow, '접수 메일 ' + n.email + ' · 알림톡 ' + n.alimtalk);
+  v3Log_(SHEET_APPLY, sheetRow, '접수 메일 ' + n.email + ' · 알림톡 ' + n.alimtalk + ' · 문자 ' + n.sms);
   return n;
 }
 
@@ -714,14 +778,15 @@ function v3NotifyRent_(data, code, sheetRow) {
   var vars = { '#{이름}': String(data.name || ''), '#{공간}': String(data.space || ''), '#{일정}': String(data.date || '') + ' ' + String(data.time || ''), '#{신청번호}': code, '#{확인링크}': v3Site_('my/?code=' + code) };
   var mail = m4RentMail_({ name: vars['#{이름}'], code: code, myUrl: vars['#{확인링크}'], space: vars['#{공간}'], date: String(data.date || ''), time: String(data.time || ''),
     count: data.count || '', purpose: String(data.purpose || ''), instagram: v3Insta_(), siteUrl: v3Site_('') });
-  var n = { email: v3MailHtml_(data.email, mail), alimtalk: v3Alimtalk_(data.phone, 'TPL_RENT', vars) };
+  var t = v5Notify_(data.phone, 'TPL_RENT', vars, v5SmsRent_(vars), '대관 신청 접수');
+  var n = { email: v3MailHtml_(data.email, mail), alimtalk: t.alimtalk, sms: t.sms };
   v3Ops_({
     kind: '대관', headline: vars['#{공간}'] + ' · ' + vars['#{일정}'], sub: vars['#{이름}'] + '님 신청',
     rows: [['신청번호', code], ['이름', vars['#{이름}']], ['연락처', data.phone], ['이메일', v2Email_(data.email)], ['공간', vars['#{공간}']], ['일정', vars['#{일정}']],
       ['인원', data.count ? data.count + '명' : ''], ['목적', data.purpose || ''], ['유입', data.ref || '']],
     todo: '일정을 확인한 뒤 신청자에게 금액과 입금 방법을 안내해 주세요. 대관신청 탭 <b>상태</b>에 진행 상황(확정·취소 등)을 적어 두면 내 신청 조회에 그대로 보여요.'
   });
-  v3Log_(SHEET_RENT, sheetRow, '접수 메일 ' + n.email + ' · 알림톡 ' + n.alimtalk);
+  v3Log_(SHEET_RENT, sheetRow, '접수 메일 ' + n.email + ' · 알림톡 ' + n.alimtalk + ' · 문자 ' + n.sms);
   return n;
 }
 
@@ -791,7 +856,8 @@ function v3Resend_(data) {
   var mine = v3Mine_(phone).filter(function (m) { return String(m.name).trim() === name && m.pub.status.indexOf('취소') !== 0; });
   if (mine.length) {
     var list = mine.map(function (m) { return m.pub.title + ' ' + m.pub.code; }).join('\n');
-    v3Alimtalk_(phone, 'TPL_RESEND', { '#{이름}': name, '#{신청목록}': list, '#{확인링크}': v3Site_('my/') });
+    v5Notify_(phone, 'TPL_RESEND', { '#{이름}': name, '#{신청목록}': list, '#{확인링크}': v3Site_('my/') },
+      '[비북스] ' + name + '님의 신청번호\n' + list + '\n확인 ' + v3Site_('my/'), '신청번호 안내');
     var email = mine.map(function (m) { return v2Email_(m.email); }).filter(String)[0];
     if (email) v3MailHtml_(email, m4ResendMail_({ name: name, list: mine.map(function (m) { return { code: m.pub.code, title: m.pub.title + ' · ' + m.pub.optionLabel }; }), myUrl: v3Site_('my/'), instagram: v3Insta_(), siteUrl: v3Site_('') }));
   }
@@ -813,7 +879,8 @@ function onStatusEditV3(e) {
     if (info.when) vars['#{일정}'] = info.when;
     var em = v3MailHtml_(r[head.indexOf('이메일')], m4PaidMail_({ name: vars['#{이름}'], title: info.title || vars['#{모임명}'], kindLabel: info.kindLabel, when: vars['#{일정}'],
       place: info.place || '', poster: info.poster || '', pageUrl: info.pageUrl || '', code: String(code), myUrl: vars['#{확인링크}'], instagram: v3Insta_(), siteUrl: v3Site_('') }));
-    var at = v3Alimtalk_(r[5], 'TPL_PAID', vars);
+    var tt = v5Notify_(r[5], 'TPL_PAID', vars, v5SmsPaid_(vars), '참가 확정');
+    var at = tt.alimtalk + ' · 문자 ' + tt.sms;
     v3Log_(SHEET_APPLY, e.range.getRow(), '확정 메일 ' + em + ' · 알림톡 ' + at);
   } catch (err) { /* 무시 */ }
 }

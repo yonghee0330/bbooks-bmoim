@@ -799,6 +799,7 @@
     const chips = [];
     if (shown(n?.alimtalk)) chips.push(`<span class="ok">알림톡으로 안내를 보냈어요</span>`);
     if (shown(n?.email)) chips.push(`<span class="ok">메일로 안내를 보냈어요</span>`);
+    if (shown(n?.sms)) chips.push(`<span class="ok">문자로 안내를 보냈어요</span>`);
     return `<div class="sent">${chips.join('')}</div>${DEMO && demoNote ? '<p class="muted small">테스트 모드라 실제 알림은 발송되지 않았어요.</p>' : ''}`;
   }
   function showDone(body, item, o, res, name, close) {
