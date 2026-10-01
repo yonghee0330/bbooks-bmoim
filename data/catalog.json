@@ -888,10 +888,19 @@
     "name": "1인실",
     "maxPeople": 1,
     "pricing": {
-     "type": "inquiry"
+     "type": "block",
+     "unit": 10000,
+     "blockHours": 2,
+     "dayPass": {
+      "price": 20000,
+      "regular": 40000,
+      "from": "10:00",
+      "to": "18:00",
+      "label": "오픈 프로모션 50% 할인"
+     }
     },
-    "priceText": "요금 문의",
-    "priceUnit": "1인 · 30분 단위 예약",
+    "priceText": "2시간 10,000원",
+    "priceUnit": "종일권(10–18시) 20,000원 · 오픈 특가",
     "tagline": "책장 사이에 숨은, 혼자 집중하는 작은 방",
     "fits": "공부 · 작업 · 글쓰기 · 혼자 읽기",
     "desc": "책장 사이에 숨은 작은 방이에요. 스탠드 하나, 책상 하나. 혼자 집중하고 싶은 날을 위한 자리예요.",

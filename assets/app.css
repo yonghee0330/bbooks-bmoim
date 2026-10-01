@@ -766,3 +766,11 @@ body.has-cta .toast { bottom: 104px; }
 .gv-nav:hover, .gv-x:hover { background: rgba(255, 255, 255, .26); }
 .gv-nav.prev { left: 12px; } .gv-nav.next { right: 12px; }
 @media (max-width: 640px) { .gv { padding: 56px 8px 24px; } .gv-nav { top: auto; bottom: 14px; transform: none; } .gv-nav.prev { left: calc(50% - 60px); } .gv-nav.next { right: calc(50% - 60px); } .gv-fig img { max-height: calc(100vh - 190px); } }
+
+/* 종일권(할인가) 표기 */
+.daypass { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; margin-top: 4px; font-size: 14px; }
+.daypass .dp-name { color: var(--ink-2); }
+.daypass del, .ptable del { color: var(--faint); font-size: 13px; }
+.daypass b { color: var(--accent-ink); font-size: 16px; }
+.daypass em { font-style: normal; font-size: 11.5px; font-weight: 800; color: #fff; background: var(--accent); border-radius: 4px; padding: 2px 7px; }
+.ptable .dp-price { color: var(--accent-ink); font-size: 14px; margin: 0; display: inline; }

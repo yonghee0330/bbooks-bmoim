@@ -767,6 +767,17 @@ def photo_is_portrait(src):
     return bool(size and size[1] > size[0])
 
 
+def price_dd_daypass(sp):
+    """2시간권 + 종일권(할인가) 표기"""
+    pr = sp['pricing']
+    dp = pr['dayPass']
+    regular = f'<del>{won(dp["regular"])}</del>' if dp.get('regular') else ''
+    label = f'<em>{esc(dp["label"])}</em>' if dp.get('label') else ''
+    return (f'<div><dt>요금</dt><dd><b>{pr["blockHours"]}시간 {won(pr["unit"])}</b>'
+            f'<span class="daypass"><span class="dp-name">종일권 {esc(dp["from"])}–{esc(dp["to"])}</span>'
+            f'{regular}<b>{won(dp["price"])}</b>{label}</span></dd></div>')
+
+
 def build_space():
     rel = '../'
     h = SPACES['hours']
@@ -835,7 +846,8 @@ def build_space():
             f'<p class="sc-desc">{esc(sp["desc"])}</p>'
             '<dl class="sc-facts">'
             f'<div><dt>인원</dt><dd>최대 <b>{sp["maxPeople"]}</b>인</dd></div>'
-            f'<div><dt>요금</dt><dd><b>{esc(sp["priceText"])}</b> <small>{esc(sp["priceUnit"])}</small></dd></div>'
+            + (price_dd_daypass(sp) if (sp.get('pricing') or {}).get('dayPass') else
+               f'<div><dt>요금</dt><dd><b>{esc(sp["priceText"])}</b> <small>{esc(sp["priceUnit"])}</small></dd></div>') +
             '</dl>'
             f'<p class="sc-fits"><b>이런 모임에</b>{esc(sp["fits"])}</p>'
             f'<ul class="sc-feats">{feats}</ul>'
@@ -843,8 +855,14 @@ def build_space():
             f'<button type="button" class="btn outline" data-gallery-open-btn>사진 {len(photos)}장 보기</button></div>'
             '</div></section>')
 
+    def price_cell(sp):
+        dp = (sp.get('pricing') or {}).get('dayPass')
+        if dp:
+            reg = f'<del>{won(dp["regular"])}</del> ' if dp.get('regular') else ''
+            return f'<b>{esc(sp["priceText"])}</b><small>종일권({esc(dp["from"])}–{esc(dp["to"])}) {reg}<b class="dp-price">{won(dp["price"])}</b> · {esc(dp.get("label", ""))}</small>'
+        return f'<b>{esc(sp["priceText"])}</b><small>{esc(sp["priceUnit"])}</small>'
     price_rows = ''.join(
-        f'<tr><th scope="row">{esc(sp["name"])}</th><td>{sp["maxPeople"]}인</td><td><b>{esc(sp["priceText"])}</b><small>{esc(sp["priceUnit"])}</small></td></tr>'
+        f'<tr><th scope="row">{esc(sp["name"])}</th><td>{sp["maxPeople"]}인</td><td>{price_cell(sp)}</td></tr>'
         for sp in spaces)
     steps = ''.join(f'<li><b>{esc(s["title"])}</b><span>{esc(s["desc"])}</span></li>' for s in SPACES['steps'])
     space_opts = ''.join(f'<button type="button" class="pick" data-space-opt="{esc(sp["id"])}"><b>{esc(sp["name"])}</b><small>{esc(sp["priceText"])} · {sp["maxPeople"]}인</small></button>' for sp in spaces)
