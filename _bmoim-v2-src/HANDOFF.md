@@ -65,13 +65,23 @@ python3 _bmoim-v2-src/build.py --sheet
 - 배포(clasp): `apps-script/live/` 를 push → `clasp version "설명"` → `clasp deploy -i AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ -V <버전>`.
   새 권한(메일·외부요청 등)을 쓰는 코드는 **배포 전에 편집기에서 한 번 실행해 권한 승인**부터. 되돌리기: `-V 7` 또는 `-V 6`.
 
+## 4-1. 대관 페이지 (`/space/`) 고치는 법
+- 문구·사진·요금은 모두 `data/spaces.json`에서 고침 → `python3 _bmoim-v2-src/build.py --sheet` → 커밋·푸시.
+  - `intro`: 첫 화면 제목·소개, 좋은 점 3개(`perks`), 기본 제공 목록(`amenities`, 마지막 항목 '개인 노트북 지참 필요'), `amenitiesNote`
+  - 공간별: `tagline`(큰 제목) · `desc`(사장님 소개) · `fits` · `suggest`(비북스의 제안) · `features` · `photos`(src·thumb·caption)
+  - `billingNote`: 요금표·예약 화면에 나오는 올림 안내
+- "이 공간에서 열린 비모임"은 `moims.json` 일정의 장소로 자동 생성.
+- 요금 계산(`assets/rent.js`): 30분 단위 선택, 요금은 1시간 단위 올림. 2시간 기준 요금(세미나실·매장 테이블 1인 5,000원, 1인실 10,000원)은 시간당 비례 + 최소 2시간. 1인실 종일권(10–18시) 20,000원(오픈 프로모션, 정가 40,000원)은 더 싸면 자동 적용. 계단 50,000원/시간, 전체 100,000원/시간.
+- 사진 추가: `images/space/<slug>-n.jpg`(긴 변 1800px, EXIF 제거) + `images/space/thumb/`.
+
 ## 5. 알려진 문제 · 다음 단계
 1. **개인정보 노출**: `대관신청`·`모임신청` 탭을 gviz(공개 링크)로 읽는 구조라, 시트가 "링크가 있는 모든 사용자" 공유면 신청자 이름·연락처가 노출될 수 있음. 해결: 대관 시간대만 돌려주는 `rentBlocks` 액션을 스크립트에 추가 → `app.js` `sheetApi.rentBlocks`를 그 액션으로 교체 → 시트 공유를 "제한됨"으로.
 2. **호스트 코드**: `점주코드` 탭의 코드(TOJI2026 등)가 추측 가능하고 `host/moims.js`에 공개돼 있음. 무작위 코드로 교체 권장.
 3. 문자·알림톡(솔라피): 스크립트 속성 SOLAPI_API_KEY · SOLAPI_API_SECRET · SOLAPI_SENDER 를 넣으면 신청 접수·확정·대관 접수·재안내 문자가 자동 발송 (편집기 함수 testSmsV5 로 발신번호에 테스트 문자). 알림톡은 SOLAPI_PFID + TPL_* 템플릿까지 넣으면 알림톡 우선·실패 시 문자. 문자 끄기: SMS_ENABLED=N. 시트 '알림' 열에 발송 결과 기록.
-6. 카드 결제: 토스페이먼츠 결제위젯 연동 예정 (테스트 키로 먼저).
 4. 토지·필사·써니 모임은 `모임신청` 탭에 신청 기록이 없음 (다른 경로로 접수됐는지 확인 필요).
 5. 포스터 9개 중 7개가 4:5 규격이 아님 → 호스트에게 `/v2/host/#poster` 가이드로 재제출 요청.
+6. 카드 결제: 토스페이먼츠 결제위젯 연동 예정 (테스트 키로 먼저).
+7. 시트의 테스트 행(이름 '테스트(삭제)', 월 '테스트') 삭제.
 
 ## 6. 하지 말 것
 - `v2/` 파일 직접 수정 (다음 빌드에서 덮어써짐)
