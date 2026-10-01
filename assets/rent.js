@@ -33,11 +33,69 @@
     }, { passive: true });
   });
 
+  // ── 공간 갤러리: 썸네일 → 큰 사진, 큰 사진 → 전체 화면 보기 ──
+  function galleryOf(sec) {
+    return $$('.sc-th', sec).map(t => ({ src: t.dataset.src, cap: t.dataset.cap, portrait: t.dataset.portrait === '1' }));
+  }
+  function showPhoto(sec, i) {
+    const list = galleryOf(sec);
+    const p = list[i];
+    if (!p) return;
+    const main = $('.sc-main', sec);
+    $('.sc-img', main).src = p.src;
+    $('.sc-img', main).alt = p.cap;
+    $('.sc-bg', main).src = p.src;
+    $('.sc-cap', main).textContent = p.cap;
+    $('.sc-count', main).textContent = `${i + 1} / ${list.length}`;
+    main.classList.toggle('is-portrait', p.portrait);
+    main.dataset.i = i;
+    $$('.sc-th', sec).forEach((t, k) => t.classList.toggle('on', k === i));
+  }
+  function openViewer(sec, start) {
+    const list = galleryOf(sec);
+    let i = start || 0;
+    const name = sec.querySelector('.sc-kicker')?.textContent || '';
+    const v = document.createElement('div');
+    v.className = 'gv';
+    v.setAttribute('role', 'dialog');
+    v.setAttribute('aria-label', `${name} 사진`);
+    v.innerHTML = `<button type="button" class="gv-x" aria-label="닫기">✕</button>
+      <button type="button" class="gv-nav prev" aria-label="이전 사진">‹</button>
+      <figure class="gv-fig"><img alt=""><figcaption></figcaption></figure>
+      <button type="button" class="gv-nav next" aria-label="다음 사진">›</button>`;
+    const render = () => {
+      $('img', v).src = list[i].src;
+      $('img', v).alt = list[i].cap;
+      $('figcaption', v).textContent = `${name} · ${list[i].cap}  (${i + 1}/${list.length})`;
+    };
+    const go = d => { i = (i + d + list.length) % list.length; render(); showPhoto(sec, i); };
+    const close = () => { v.remove(); document.body.style.overflow = ''; document.removeEventListener('keydown', key); };
+    const key = e => { if (e.key === 'Escape') close(); if (e.key === 'ArrowLeft') go(-1); if (e.key === 'ArrowRight') go(1); };
+    $('.gv-x', v).addEventListener('click', close);
+    $('.prev', v).addEventListener('click', e => { e.stopPropagation(); go(-1); });
+    $('.next', v).addEventListener('click', e => { e.stopPropagation(); go(1); });
+    v.addEventListener('click', e => { if (e.target === v) close(); });
+    let sx = 0;
+    v.addEventListener('touchstart', e => { sx = e.changedTouches[0].clientX; }, { passive: true });
+    v.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); }, { passive: true });
+    document.addEventListener('keydown', key);
+    document.body.appendChild(v);
+    document.body.style.overflow = 'hidden';
+    render();
+    $('.gv-x', v).focus();
+  }
+  $$('.showcase').forEach(sec => {
+    $$('.sc-th', sec).forEach((t, i) => t.addEventListener('click', () => showPhoto(sec, i)));
+    $('[data-gallery-open]', sec).addEventListener('click', e => openViewer(sec, Number(e.currentTarget.dataset.i || 0)));
+    $('[data-gallery-open-btn]', sec)?.addEventListener('click', () => openViewer(sec, 0));
+  });
+
   // ── 예상 금액 ──
   function estimate(spId, people, hours) {
     const sp = SPACE[spId];
     if (!sp) return null;
     const p = sp.pricing;
+    if (p.type === 'inquiry') return null; // 요금 문의 공간
     if (p.type === 'perPerson') return p.unit * Math.max(1, people) * Math.ceil(hours / (p.blockHours || 2));
     return p.unit * hours;
   }
@@ -47,6 +105,7 @@
     const hours = Number($('#calcHours').value);
     const sp = SPACE[spId];
     const est = estimate(spId, people, hours);
+    if (est == null) { $('#calcOut').innerHTML = `<b>${esc(sp.name)}</b>은 요금을 따로 안내드려요. 예약 신청을 남겨 주시면 담당자가 연락드릴게요.`; return; }
     const over = people > sp.maxPeople ? `<br><small style="color:var(--danger)">${esc(sp.name)}은 최대 ${sp.maxPeople}인이에요. 더 넓은 공간을 골라 보세요.</small>` : '';
     const how = sp.pricing.type === 'perPerson'
       ? `1인 ${won(sp.pricing.unit)} × ${people}명 × ${Math.ceil(hours / sp.pricing.blockHours)}구간(2시간 단위)`
@@ -168,7 +227,8 @@
     const hours = (selB - selA) / 60;
     const people = Number($('#rentForm').elements.namedItem('count').value) || (SPACE[space].pricing.type === 'perPerson' ? 1 : 0);
     const est = estimate(space, people || 1, hours);
-    box.innerHTML = `${esc(SPACE[space].name)} · ${p.m}월 ${p.d}일 (${WD[p.wd]}) ${toHM(selA)}–${toHM(selB)} <span class="muted">(${hours}시간)</span><br><small>예상 ${won(est)}${SPACE[space].pricing.type === 'perPerson' ? ` · ${people || 1}명 기준` : ''}</small>`;
+    const estText = est == null ? '요금은 담당자가 안내드려요' : `예상 ${won(est)}${SPACE[space].pricing.type === 'perPerson' ? ` · ${people || 1}명 기준` : ''}`;
+    box.innerHTML = `${esc(SPACE[space].name)} · ${p.m}월 ${p.d}일 (${WD[p.wd]}) ${toHM(selA)}–${toHM(selB)} <span class="muted">(${hours}시간)</span><br><small>${estText}</small>`;
   }
   $('#rentForm').elements.namedItem('count').addEventListener('input', renderSummary);
 
@@ -193,7 +253,7 @@
     try {
       const res = await api('rent', {
         space, date, time, name: F('name').value.trim(), phone: F('phone').value.trim(), email: F('email').value.trim(),
-        purpose: F('purpose').value.trim(), count, estimate: estimate(space, count || 1, (selB - selA) / 60),
+        purpose: F('purpose').value.trim(), count, estimate: estimate(space, count || 1, (selB - selA) / 60) || '',
         consent, ref: refOut(), website: F('website').value
       });
       if (res.code) rememberCode({ code: res.code, title: `대관 · ${space}`, at: Date.now() });

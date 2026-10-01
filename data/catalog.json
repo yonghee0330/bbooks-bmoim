@@ -726,28 +726,48 @@
     "fits": "강의 · 워크숍 · 팀 모임 · 스터디",
     "features": [
      "대형 화이트보드",
-     "원목 테이블 · 가득 찬 책장",
+     "대형 모니터",
      "테이블 내장 콘센트 + USB",
-     "보드게임 (다빈치코드 · 루미큐브 · 딕싯 등)"
+     "복합기 비치",
+     "사방이 책장인 독립 공간"
     ],
-    "desc": "대형 화이트보드와 원목 테이블, 가득 찬 책장이 어우러진 독립 공간입니다.",
+    "desc": "문을 닫으면 조용해지는 독립된 방. 화이트보드, 대형 모니터, 테이블 내장 콘센트가 있어 강의·워크숍·스터디에 잘 맞아요.",
     "photos": [
      {
-      "src": "seminar_01.jpg",
-      "caption": "세미나실"
+      "src": "space/seminar-1.jpg",
+      "thumb": "space/thumb/seminar-1.jpg",
+      "caption": "화이트보드와 큰 테이블"
      },
      {
-      "src": "seminar_02.jpg",
-      "caption": "보드게임이 준비되어 있어요"
+      "src": "space/seminar-2.jpg",
+      "thumb": "space/thumb/seminar-2.jpg",
+      "caption": "책장에 둘러싸인 독립 공간"
      },
      {
-      "src": "seminar_03.jpg",
-      "caption": "테이블 내장 전원"
+      "src": "space/seminar-3.jpg",
+      "thumb": "space/thumb/seminar-3.jpg",
+      "caption": "모임에 맞춘 테이블 배치"
+     },
+     {
+      "src": "space/seminar-4.jpg",
+      "thumb": "space/thumb/seminar-4.jpg",
+      "caption": "대형 모니터"
+     },
+     {
+      "src": "space/seminar-5.jpg",
+      "thumb": "space/thumb/seminar-5.jpg",
+      "caption": "테이블 내장 콘센트·USB"
+     },
+     {
+      "src": "space/seminar-6.jpg",
+      "thumb": "space/thumb/seminar-6.jpg",
+      "caption": "복합기 비치"
      }
     ],
     "conflicts": [
      "전체 대관"
-    ]
+    ],
+    "tagline": "화이트보드와 큰 테이블이 있는 책장 속 독립 공간"
    },
    {
     "id": "매장 테이블",
@@ -767,25 +787,44 @@
      "4~6인 기본, 붙여서 6~8인",
      "매장 분위기 그대로"
     ],
-    "desc": "책장 사이에 자리한 아늑한 원목 테이블. 테이블을 붙여 더 넓게 쓸 수 있어요.",
+    "desc": "책장 사이에 놓인 긴 원목 테이블. 책을 펼쳐 두고 둘러앉기 좋아 독서모임·필사·티타임에 사랑받는 자리예요.",
     "photos": [
      {
-      "src": "table_01.jpg",
-      "caption": "매장 모임 테이블"
+      "src": "space/table-1.jpg",
+      "thumb": "space/thumb/table-1.jpg",
+      "caption": "책장 사이 원목 테이블"
      },
      {
-      "src": "table_02.jpg",
-      "caption": "테이블을 붙여 넓게"
+      "src": "space/table-2.jpg",
+      "thumb": "space/thumb/table-2.jpg",
+      "caption": "최대 8인까지 넉넉하게"
      },
      {
-      "src": "table_03.jpg",
+      "src": "space/table-3.jpg",
+      "thumb": "space/thumb/table-3.jpg",
       "caption": "책으로 둘러싸인 자리"
+     },
+     {
+      "src": "space/table-4.jpg",
+      "thumb": "space/thumb/table-4.jpg",
+      "caption": "모임 책을 펼쳐 두기 좋은 테이블"
+     },
+     {
+      "src": "space/table-5.jpg",
+      "thumb": "space/thumb/table-5.jpg",
+      "caption": "조명 아래 긴 테이블"
+     },
+     {
+      "src": "space/table-6.jpg",
+      "thumb": "space/thumb/table-6.jpg",
+      "caption": "매장 쪽에서 본 테이블"
      }
     ],
     "conflicts": [
      "계단 좌석",
      "전체 대관"
-    ]
+    ],
+    "tagline": "책장 사이, 긴 원목 테이블에 둘러앉는 자리"
    },
    {
     "id": "계단 좌석",
@@ -801,14 +840,103 @@
     "fits": "낭독 · 강연 · 어린이 프로그램처럼 한 방향을 보는 모임",
     "features": [
      "최대 20인 좌석",
+     "등받이 좌식 의자 · 스탠드 조명",
      "매장 테이블과 같은 시간 동시 사용 불가"
     ],
-    "desc": "계단형 좌석에 앉아 한곳을 바라보는 모임에 어울립니다.",
-    "photos": [],
+    "desc": "나무 단 위에 등받이 좌식 의자와 스탠드를 둔 좌석이에요. 낭독회·강연·어린이 프로그램처럼 한곳을 바라보는 모임에 어울려요.",
+    "photos": [
+     {
+      "src": "space/stairs-1.jpg",
+      "thumb": "space/thumb/stairs-1.jpg",
+      "caption": "계단 좌석 전경"
+     },
+     {
+      "src": "space/stairs-2.jpg",
+      "thumb": "space/thumb/stairs-2.jpg",
+      "caption": "등받이 좌식 의자"
+     },
+     {
+      "src": "space/stairs-3.jpg",
+      "thumb": "space/thumb/stairs-3.jpg",
+      "caption": "단 위 좌석과 작은 탁자"
+     },
+     {
+      "src": "space/stairs-4.jpg",
+      "thumb": "space/thumb/stairs-4.jpg",
+      "caption": "넓게 이어진 단 좌석"
+     },
+     {
+      "src": "space/stairs-5.jpg",
+      "thumb": "space/thumb/stairs-5.jpg",
+      "caption": "스탠드 조명이 있는 코너"
+     },
+     {
+      "src": "space/stairs-6.jpg",
+      "thumb": "space/thumb/stairs-6.jpg",
+      "caption": "안락의자와 낮은 테이블"
+     }
+    ],
     "conflicts": [
      "매장 테이블",
      "전체 대관"
-    ]
+    ],
+    "tagline": "단 위 좌식 좌석에 앉아 한곳을 바라보는 모임"
+   },
+   {
+    "id": "1인실",
+    "icon": "🪑",
+    "name": "1인실",
+    "maxPeople": 1,
+    "pricing": {
+     "type": "inquiry"
+    },
+    "priceText": "요금 문의",
+    "priceUnit": "1인 · 30분 단위 예약",
+    "tagline": "책장 사이에 숨은, 혼자 집중하는 작은 방",
+    "fits": "공부 · 작업 · 글쓰기 · 혼자 읽기",
+    "desc": "책장 사이에 숨은 작은 방이에요. 스탠드 하나, 책상 하나. 혼자 집중하고 싶은 날을 위한 자리예요.",
+    "features": [
+     "1인 전용 책상과 의자",
+     "초록 스탠드 조명 · 콘센트",
+     "작은 선반",
+     "매장 안 조용한 자리"
+    ],
+    "photos": [
+     {
+      "src": "space/solo-1.jpg",
+      "thumb": "space/thumb/solo-1.jpg",
+      "caption": "혼자 집중하는 1인실"
+     },
+     {
+      "src": "space/solo-2.jpg",
+      "thumb": "space/thumb/solo-2.jpg",
+      "caption": "책상과 선반"
+     },
+     {
+      "src": "space/solo-3.jpg",
+      "thumb": "space/thumb/solo-3.jpg",
+      "caption": "스탠드와 꽃이 있는 책상"
+     },
+     {
+      "src": "space/solo-4.jpg",
+      "thumb": "space/thumb/solo-4.jpg",
+      "caption": "작업하기 좋은 자리"
+     },
+     {
+      "src": "space/solo-5.jpg",
+      "thumb": "space/thumb/solo-5.jpg",
+      "caption": "입구에서 본 1인실"
+     },
+     {
+      "src": "space/solo-6.jpg",
+      "thumb": "space/thumb/solo-6.jpg",
+      "caption": "아늑한 조명"
+     }
+    ],
+    "conflicts": [
+     "전체 대관"
+    ],
+    "new": true
    },
    {
     "id": "전체 대관",
@@ -824,29 +952,49 @@
     "fits": "북토크 · 전시 · 소규모 행사 · 파티",
     "features": [
      "매장 전 공간 단독 사용",
-     "소파·의자 자유 배치",
+     "계단 좌석 · 라운지 · 테이블 모두 사용",
      "최대 40인"
     ],
-    "desc": "책장이 가득한 매장 전체를 단독으로. 낮부터 밤까지 모임에 맞게 바뀝니다.",
+    "desc": "매장 전체를 비우고 우리 모임만의 공간으로. 북토크·전시·파티처럼 많은 사람이 모이는 날에 좋아요.",
     "photos": [
      {
-      "src": "space_01.jpg",
+      "src": "space/whole-1.jpg",
+      "thumb": "space/thumb/whole-1.jpg",
       "caption": "비북스 매장 전체"
      },
      {
-      "src": "space_02.jpg",
-      "caption": "소파와 의자가 어우러진 배치"
+      "src": "space/whole-2.jpg",
+      "thumb": "space/thumb/whole-2.jpg",
+      "caption": "입구에서 본 매장"
      },
      {
-      "src": "space_03.jpg",
-      "caption": "책으로 둘러싸인 고요한 공간"
+      "src": "space/whole-3.jpg",
+      "thumb": "space/thumb/whole-3.jpg",
+      "caption": "매대와 책장"
+     },
+     {
+      "src": "space/whole-4.jpg",
+      "thumb": "space/thumb/whole-4.jpg",
+      "caption": "계단 좌석 쪽 풍경"
+     },
+     {
+      "src": "space/whole-5.jpg",
+      "thumb": "space/thumb/whole-5.jpg",
+      "caption": "책장으로 둘러싸인 라운지"
+     },
+     {
+      "src": "space/whole-6.jpg",
+      "thumb": "space/thumb/whole-6.jpg",
+      "caption": "빈백이 있는 라운지 코너"
      }
     ],
     "conflicts": [
      "세미나실",
      "매장 테이블",
-     "계단 좌석"
-    ]
+     "계단 좌석",
+     "1인실"
+    ],
+    "tagline": "책장 가득한 매장 전체를 단독으로"
    }
   ],
   "steps": [
@@ -866,7 +1014,32 @@
     "title": "입금 후 이용",
     "desc": "입금이 확인되면 예약이 확정됩니다."
    }
-  ]
+  ],
+  "heroPhotos": {
+   "main": "space/whole-1.jpg",
+   "tiles": [
+    [
+     "seminar",
+     "세미나실",
+     "space/seminar-1.jpg"
+    ],
+    [
+     "table",
+     "매장 테이블",
+     "space/table-1.jpg"
+    ],
+    [
+     "stairs",
+     "계단 좌석",
+     "space/stairs-1.jpg"
+    ],
+    [
+     "solo",
+     "1인실",
+     "space/solo-1.jpg"
+    ]
+   ]
+  }
  },
  "blocks": [
   {

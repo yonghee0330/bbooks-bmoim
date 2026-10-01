@@ -87,6 +87,7 @@ ICON = {
     'insta': _svg('<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/>'),
     'arrow': _svg('<path d="M5 12h14M13 6l6 6-6 6"/>'),
     'back': _svg('<path d="M19 12H5M11 6l-6 6 6 6"/>'),
+    'check': _svg('<path d="m5 12.5 4.5 4.5L19 7.5"/>'),
     'ticket': _svg('<path d="M4 7.5A1.5 1.5 0 0 1 5.5 6h13A1.5 1.5 0 0 1 20 7.5V10a2 2 0 0 0 0 4v2.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 16.5V14a2 2 0 0 0 0-4V7.5z"/><path d="M14 6v12" stroke-dasharray="1.5 2"/>'),
     'list': _svg('<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>'),
     'map': _svg('<path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6 9 4zM9 4v14M15 6v14"/>'),
@@ -539,7 +540,7 @@ def build_hub():
       </div>
       <a class="guide-card link" href="space/">
         <h3>공간 대관</h3>
-        <p>세미나실 · 매장 테이블 · 계단 좌석 · 전체 대관. 사진과 요금을 보고 바로 시간을 골라 신청하세요.</p>
+        <p>세미나실 · 매장 테이블 · 계단 좌석 · 1인실 · 전체 대관. 사진과 요금을 보고 바로 시간을 골라 신청하세요.</p>
         <span class="go">대관 보러 가기 {ICON["arrow"]}</span>
       </a>
       <a class="guide-card link" href="{HOST_DIR}">
@@ -757,48 +758,108 @@ def build_detail(it, others):
 
 
 # ── 대관 ────────────────────────────────────────────
+SPACE_SLUG = {'세미나실': 'seminar', '매장 테이블': 'table', '계단 좌석': 'stairs', '1인실': 'solo', '전체 대관': 'whole'}
+
+
+def photo_is_portrait(src):
+    d = image_src_dir()
+    size = image_size(os.path.join(d, src)) if d else None
+    return bool(size and size[1] > size[0])
+
+
 def build_space():
     rel = '../'
-    cards = ''
-    for sp in SPACES['spaces']:
-        if sp['photos']:
-            slides = ''.join(
-                f'<figure class="ph-slide"><img src="{esc(img_rel(p["src"], rel))}" alt="{esc(p["caption"])}" loading="lazy"><figcaption>{esc(p["caption"])}</figcaption></figure>'
-                for p in sp['photos'])
-        else:
-            slides = '<figure class="ph-slide ph-empty"><figcaption>사진 준비 중</figcaption></figure>'
-        feats = ''.join(f'<li>{esc(f)}</li>' for f in sp['features'])
-        cards += f'''
-<article class="scard" data-space="{esc(sp["id"])}">
-  <div class="ph" data-photos>{slides}</div>
-  <div class="card-strip"><b>{esc(sp["name"])}</b><span>최대 {sp["maxPeople"]}인</span></div>
-  <div class="scard-body">
-    <p class="scard-price"><b>{esc(sp["priceText"])}</b> <span>{esc(sp["priceUnit"])}</span></p>
-    <p class="muted">{esc(sp["desc"])}</p>
-    <p class="fits"><b>이런 모임에</b> {esc(sp["fits"])}</p>
-    <ul class="feats">{feats}</ul>
-    <button type="button" class="btn outline" data-pick-space="{esc(sp["id"])}">이 공간으로 예약하기</button>
-  </div>
-</article>'''
+    h = SPACES['hours']
+    spaces = SPACES['spaces']
+    hero = SPACES.get('heroPhotos') or {}
+
+    # ① 첫 화면: 사진 모자이크 (큰 사진 1 + 공간별 4)
+    tiles = ''.join(
+        f'<a class="sh-tile" href="#sp-{slug}"><img src="{esc(img_rel(src, rel))}" alt="{esc(label)}" loading="lazy"><span>{esc(label)}</span></a>'
+        for slug, label, src in hero.get('tiles', []))
+    min_p = min(sp['maxPeople'] for sp in spaces)
+    max_p = max(sp['maxPeople'] for sp in spaces)
+    main_src = hero.get('main') or spaces[-1]['photos'][0]['src']
+    hero_html = (
+        '<section class="space-hero">'
+        '<div class="sh-copy">'
+        '<p class="eyebrow">Space · 공간 대관</p>'
+        '<h1 class="page-title">책에 둘러싸여<br>모이는 공간</h1>'
+        '<p class="page-desc">혼자 집중하는 1인실부터 40명이 함께하는 전체 대관까지. 부천 원미동 비북스의 공간을 둘러보고 바로 예약하세요.</p>'
+        f'<ul class="sh-facts"><li><b>{len(spaces)}</b>곳의 공간</li><li><b>{min_p}~{max_p}</b>인</li>'
+        f'<li><b>{esc(h["open"])}–{esc(h["close"])}</b></li><li><b>30분</b> 단위 예약</li></ul>'
+        '<div class="sh-cta"><a class="btn primary" href="#book">예약하러 가기</a><a class="btn outline" href="#priceH">요금 보기</a></div>'
+        '</div>'
+        '<div class="sh-mosaic">'
+        f'<a class="sh-main" href="#sp-whole"><img src="{esc(img_rel(main_src, rel))}" alt="비북스 매장 전체" fetchpriority="high"><span>매장 전체</span></a>'
+        f'{tiles}'
+        '</div></section>')
+
+    # ② 공간 바로가기
+    jump = ''
+    for sp in spaces:
+        slug = SPACE_SLUG.get(sp['id'], 'x')
+        th = sp['photos'][0].get('thumb', sp['photos'][0]['src'])
+        new = ' <i>NEW</i>' if sp.get('new') else ''
+        jump += (f'<a class="sj" href="#sp-{slug}"><img src="{esc(img_rel(th, rel))}" alt="" loading="lazy">'
+                 f'<span><b>{esc(sp["name"])}{new}</b><small>최대 {sp["maxPeople"]}인 · {esc(sp["priceText"])}</small></span></a>')
+
+    # ③ 공간별 쇼케이스 (큰 사진 + 썸네일 + 정보)
+    shows = ''
+    for n, sp in enumerate(spaces):
+        slug = SPACE_SLUG.get(sp['id'], f'sp{n}')
+        photos = sp['photos']
+        first = photos[0]
+        thumbs = ''
+        for i, p in enumerate(photos):
+            thumbs += (f'<button type="button" class="sc-th{" on" if i == 0 else ""}" data-i="{i}" '
+                       f'data-src="{esc(img_rel(p["src"], rel))}" data-cap="{esc(p["caption"])}" '
+                       f'data-portrait="{1 if photo_is_portrait(p["src"]) else 0}" aria-label="{esc(p["caption"])}">'
+                       f'<img src="{esc(img_rel(p.get("thumb", p["src"]), rel))}" alt="" loading="lazy"></button>')
+        feats = ''.join(f'<li>{ICON["check"]}{esc(f)}</li>' for f in sp['features'])
+        portrait = ' is-portrait' if photo_is_portrait(first['src']) else ''
+        rev = ' rev' if n % 2 else ''
+        new = ' <i>NEW</i>' if sp.get('new') else ''
+        shows += (
+            f'<section class="showcase{rev}" id="sp-{slug}" data-space="{esc(sp["id"])}" aria-labelledby="h-{slug}">'
+            '<div class="sc-gallery">'
+            f'<button type="button" class="sc-main{portrait}" data-gallery-open aria-label="{esc(sp["name"])} 사진 크게 보기">'
+            f'<img class="sc-bg" src="{esc(img_rel(first["src"], rel))}" alt="" aria-hidden="true">'
+            f'<img class="sc-img" src="{esc(img_rel(first["src"], rel))}" alt="{esc(first["caption"])}" loading="lazy">'
+            f'<span class="sc-cap">{esc(first["caption"])}</span><span class="sc-count">1 / {len(photos)}</span></button>'
+            f'<div class="sc-thumbs">{thumbs}</div>'
+            '</div>'
+            '<div class="sc-info">'
+            f'<p class="sc-kicker">{esc(sp["name"])}{new}</p>'
+            f'<h2 class="sc-title" id="h-{slug}">{esc(sp.get("tagline", sp["name"]))}</h2>'
+            f'<p class="sc-desc">{esc(sp["desc"])}</p>'
+            '<dl class="sc-facts">'
+            f'<div><dt>인원</dt><dd>최대 <b>{sp["maxPeople"]}</b>인</dd></div>'
+            f'<div><dt>요금</dt><dd><b>{esc(sp["priceText"])}</b> <small>{esc(sp["priceUnit"])}</small></dd></div>'
+            '</dl>'
+            f'<p class="sc-fits"><b>이런 모임에</b>{esc(sp["fits"])}</p>'
+            f'<ul class="sc-feats">{feats}</ul>'
+            f'<div class="sc-btns"><button type="button" class="btn primary" data-pick-space="{esc(sp["id"])}">이 공간 예약하기</button>'
+            f'<button type="button" class="btn outline" data-gallery-open-btn>사진 {len(photos)}장 보기</button></div>'
+            '</div></section>')
+
     price_rows = ''.join(
         f'<tr><th scope="row">{esc(sp["name"])}</th><td>{sp["maxPeople"]}인</td><td><b>{esc(sp["priceText"])}</b><small>{esc(sp["priceUnit"])}</small></td></tr>'
-        for sp in SPACES['spaces'])
+        for sp in spaces)
     steps = ''.join(f'<li><b>{esc(s["title"])}</b><span>{esc(s["desc"])}</span></li>' for s in SPACES['steps'])
-    space_opts = ''.join(f'<button type="button" class="pick" data-space-opt="{esc(sp["id"])}"><b>{esc(sp["name"])}</b><small>{esc(sp["priceText"])} · {sp["maxPeople"]}인</small></button>' for sp in SPACES['spaces'])
-    h = SPACES['hours']
+    space_opts = ''.join(f'<button type="button" class="pick" data-space-opt="{esc(sp["id"])}"><b>{esc(sp["name"])}</b><small>{esc(sp["priceText"])} · {sp["maxPeople"]}인</small></button>' for sp in spaces)
     body = f'''
-<main id="main" class="wrap">
-  {page_head('Space', '공간 대관', f'책이 있는 공간에서 당신의 모임을 펼쳐 보세요.<br>이용 시간 {h["open"]}–{h["close"]} · 30분 단위로 예약할 수 있어요.')}
+<main id="main" class="wrap space-page">
+  {hero_html}
+
+  <nav class="space-jump" aria-label="공간 바로가기">{jump}</nav>
+
+  {shows}
 
   <section aria-labelledby="priceH">
     <h2 class="sec-title" id="priceH">한눈에 보는 요금</h2>
     <div class="table-wrap"><table class="ptable"><thead><tr><th>공간</th><th>인원</th><th>요금</th></tr></thead><tbody>{price_rows}</tbody></table></div>
     <p class="muted small">세미나실과 매장 테이블은 같은 요금입니다. 정확한 금액은 신청 후 담당자가 안내드려요.</p>
-  </section>
-
-  <section aria-labelledby="spacesH">
-    <h2 class="sec-title" id="spacesH">공간 둘러보기</h2>
-    <div class="sgrid">{cards}</div>
   </section>
 
   <section class="calc" aria-labelledby="calcH">
@@ -851,9 +912,9 @@ def build_space():
   </section>
 </main>'''
     write('space/index.html', layout(page_id='space', title='공간 대관 · 비북스 b.moim',
-                                     desc='부천 원미동 독립서점 비북스 공간 대관 — 세미나실·매장 테이블·계단 좌석·전체 대관. 사진, 요금, 예약 가능 시간을 확인하고 바로 신청하세요.',
+                                     desc='부천 원미동 독립서점 비북스 공간 대관 — 세미나실·매장 테이블·계단 좌석·1인실·전체 대관. 사진과 요금을 보고 예약 가능한 시간을 바로 신청하세요.',
                                      body=body, depth=1, path='space/', extra_scripts=('rent.js',),
-                                     og_image=img_abs(SPACES['spaces'][0]['photos'][0]['src'])))
+                                     og_image=img_abs((SPACES.get('heroPhotos') or {}).get('main') or SPACES['spaces'][0]['photos'][0]['src'])))
 
 
 # ── 모임 열기 ────────────────────────────────────────

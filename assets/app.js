@@ -354,6 +354,7 @@
   function sheetSpace(v) {
     const s = String(v || '');
     if (s.includes('전체')) return '전체 대관';
+    if (s.includes('1인')) return '1인실';
     if (s.includes('계단') || s.includes('매장홀')) return '계단 좌석';
     if (s.includes('세미나')) return '세미나실';
     if (s.includes('테이블') || s.includes('매장')) return '매장 테이블';
