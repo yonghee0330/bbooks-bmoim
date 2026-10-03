@@ -343,7 +343,7 @@
       }
      ],
      "capacity": 6,
-     "price": 30000,
+     "price": 25000,
      "sheetSession": "10월18일_중국차다회"
     }
    ],
@@ -355,7 +355,7 @@
    "dateText": "10/18(일) 13:00–14:30",
    "cardDate": "10.18 (일) 13:00",
    "spaceText": "매장 테이블",
-   "priceText": "30,000원",
+   "priceText": "25,000원",
    "fit": "contain",
    "color": "#B7791F",
    "kindLabel": "비모임"
