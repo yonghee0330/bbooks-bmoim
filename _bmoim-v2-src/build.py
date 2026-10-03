@@ -946,8 +946,10 @@ def build_space():
         <label class="field"><span>사용 목적</span><input name="purpose" placeholder="독서모임, 스터디, 북토크 등"></label>
         <input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div data-consent></div>
+        <div class="paybox" id="rentPay" hidden></div>
         <div class="form-alert" id="rentAlert" role="alert"></div>
         <button class="btn primary big" id="rentSubmit" type="submit">대관 신청하기</button>
+        <p class="muted small pay-rule">입금이 확인되면 신청이 완료돼요. 아래 계좌로 먼저 입금하고 신청하셔도 되고, 신청 후 기한 안에 입금하셔도 돼요.</p>
       </form>
     </div></div>
   </section>

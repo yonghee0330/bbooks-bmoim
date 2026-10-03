@@ -800,3 +800,6 @@ body.has-cta .toast { bottom: 104px; }
 .sc-held a { font-size: 13px; font-weight: 600; text-decoration: none; color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 999px; padding: 4px 11px; }
 .sc-held a:hover { border-color: var(--ink); color: var(--ink); }
 .bill-note { margin: 6px 0 0; font-size: 13px; color: var(--accent-ink); background: var(--accent-soft); border-radius: 8px; padding: 7px 11px; }
+.pay-rule { margin: 8px 0 0; text-align: center; }
+.paybox .pay-rule { text-align: left; }
+.app-hint { margin: 2px 0 0; font-size: 13px; color: var(--muted, #85766a); }

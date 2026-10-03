@@ -265,10 +265,10 @@
       };
       const extra = [d.ref && d.ref !== 'direct' ? `유입 ${d.ref}` : ''];
       const out = await sheetPostV2(
-        { action: 'rentV2', ...base, purpose: d.purpose || '', email: d.email || '', consent: d.consent, ref: d.ref || '' },
+        { action: 'rentV2', ...base, purpose: d.purpose || '', email: d.email || '', consent: d.consent, ref: d.ref || '', amount: d.amount || 0 },
         { action: 'rent', ...base, purpose: [d.purpose, d.consent?.marketing ? '소식수신 동의' : '', d.email ? `메일 ${d.email}` : '', ...extra].filter(Boolean).join(' · ') }
       );
-      return { ok: true, code: out?.code || '', notified: out?.notified || {} };
+      return { ok: true, code: out?.code || '', deadline: out?.deadline || 0, notified: out?.notified || {} };
     },
     async lookup(d) {
       const out = await sheetPost({ action: 'lookup', code: d.code, phone: d.phone });
@@ -737,7 +737,9 @@
         <div class="paybox" data-paybox hidden>
           <div class="paybox-row"><span>입금할 금액</span><span class="muted">신청 후 ${CFG.payDeadlineHours}시간 안에</span></div>
           <div class="paybox-amount" data-amount></div>
-          <div class="paybox-bank"><span>${esc(CFG.bank.name)} <b>${esc(CFG.bank.number)}</b><br><small class="muted">예금주 ${esc(CFG.bank.holder)} · 입금자명은 신청자 이름으로</small></span></div>
+          <div class="paybox-bank"><span>${esc(CFG.bank.name)} <b>${esc(CFG.bank.number)}</b><br><small class="muted">예금주 ${esc(CFG.bank.holder)} · 입금자명은 신청자 이름으로</small></span>
+            <button type="button" class="btn dark sm" data-copy-bank="${esc(CFG.bank.name + ' ' + CFG.bank.number)}">계좌 복사</button></div>
+          <p class="muted small pay-rule">입금이 확인되면 신청이 완료돼요. 지금 먼저 입금하고 신청하셔도 되고, 신청 후 기한 안에 입금하셔도 돼요.</p>
         </div>
         <div class="form-alert" role="alert"></div>
         <button class="btn primary big" type="submit">신청하기</button>
@@ -759,6 +761,7 @@
       if (o) { $('[data-amount]', form).textContent = won(o.price); submitBtn.textContent = `신청하기 · ${won(o.price)}`; }
     };
     form.addEventListener('change', e => { if (e.target.name === 'opt') refresh(); });
+    $('[data-copy-bank]', form).addEventListener('click', e => copy(e.currentTarget.dataset.copyBank, '계좌번호를 복사했어요'));
     refresh();
 
     const F = n => form.elements.namedItem(n);
@@ -807,7 +810,7 @@
     body.innerHTML = `<div class="done">
       <div class="done-icon">✓</div>
       <h3>신청이 접수됐어요</h3>
-      <p class="muted">입금이 확인되면 신청이 확정돼요.</p>
+      <p class="muted">입금이 확인되면 신청이 완료돼요. 이미 입금하셨다면 따로 연락하지 않으셔도 돼요.</p>
       ${res.code ? `<div class="codecard">
         <span class="codecard-label">신청번호</span>
         <div class="code-box">${esc(res.code)} <button type="button" class="btn ghost sm" data-copy="${esc(res.code)}">복사</button></div>
@@ -1132,16 +1135,23 @@
     }
     if (params.get('code')) form.code.value = params.get('code');
     let last = null;
-    const statusCls = s => s === '입금확인' || s === '확정' ? 'st-paid' : s === '취소요청' ? 'st-cancelreq' : s?.startsWith('취소') ? 'st-cancel' : 'st-pending';
+    const PAID = ['입금확인', '신청완료', '확정'];
+    const statusCls = s => PAID.includes(s) ? 'st-paid' : s === '취소요청' ? 'st-cancelreq' : s?.startsWith('취소') ? 'st-cancel' : 'st-pending';
+    const statusLabel = s => PAID.includes(s) ? '신청 완료' : s === '입금대기' ? '입금 대기' : s === '취소요청' ? '취소 요청됨' : s === '접수' ? '담당자 확인 중' : s;
+    const statusHint = a => PAID.includes(a.status) ? '입금이 확인되어 신청이 완료됐어요.'
+      : a.status === '입금대기' ? '입금이 확인되면 ‘신청 완료’로 바뀌어요. 이미 입금하셨다면 확인까지 조금만 기다려 주세요.'
+      : a.status === '접수' ? '담당자가 일정을 확인하고 금액과 입금 방법을 안내드려요.'
+      : a.status === '취소요청' ? '취소 요청을 받았어요. 환불 규정에 맞춰 처리한 뒤 ‘취소’로 바뀌어요.' : '';
     function render(apps, phone) {
       result.innerHTML = `<div class="app-list">${apps.sort((a, b) => b.at - a.at).map(a => {
         const item = BY_SLUG[a.slug];
         const pending = a.status === '입금대기';
-        const canCancel = ['입금대기', '입금확인', '접수', '확정'].includes(a.status);
+        const canCancel = ['입금대기', '접수', ...PAID].includes(a.status);
         return `<article class="app">
-          <div class="app-top"><div><div class="app-title">${esc(a.title)}</div><div class="app-sub">${esc(a.optionLabel || '')}</div></div><span class="st ${statusCls(a.status)}">${esc(a.status)}</span></div>
+          <div class="app-top"><div><div class="app-title">${esc(a.title)}</div><div class="app-sub">${esc(a.optionLabel || '')}</div></div><span class="st ${statusCls(a.status)}">${esc(statusLabel(a.status))}</span></div>
+          ${statusHint(a) ? `<p class="app-hint">${esc(statusHint(a))}</p>` : ''}
           <div class="app-sub">신청번호 <b>${esc(a.code)}</b> · ${esc(flong(a.at))} ${hm(a.at)} 신청${a.amount ? ` · ${won(a.amount)}` : ''}</div>
-          ${pending && a.amount ? `<div class="paybox"><div class="paybox-row"><span>입금 기한</span><span>${esc(flong(a.deadline))} ${hm(a.deadline)}까지</span></div>
+          ${pending && a.amount ? `<div class="paybox"><div class="paybox-row"><span>입금할 금액 <b>${won(a.amount)}</b></span><span>${a.deadline ? `${esc(flong(a.deadline))} ${hm(a.deadline)}까지` : ''}</span></div>
             <div class="paybox-bank" style="margin-top:6px"><span>${esc(CFG.bank.name)} <b>${esc(CFG.bank.number)}</b><br><small class="muted">예금주 ${esc(CFG.bank.holder)} · 입금자명 ${esc(a.name || '')}</small></span><button type="button" class="btn dark sm" data-copy="${esc(CFG.bank.name + ' ' + CFG.bank.number)}">계좌 복사</button></div></div>` : ''}
           <div class="app-actions">
             ${item ? `<a class="btn ghost sm" href="${esc(page(item.url))}">모임 페이지</a>` : ''}
@@ -1278,7 +1288,7 @@
       let total = 0, paid = 0, cap = 0;
       d.moims.forEach(m => m.sessions.forEach(s => {
         const act = s.applicants.filter(a => !String(a.status).startsWith('취소'));
-        total += act.length; paid += act.filter(a => a.status === '입금확인').length; cap += s.capacity;
+        total += act.length; paid += act.filter(a => a.status === '입금확인' || a.status === '신청완료').length; cap += s.capacity;
       }));
       box.innerHTML = `
         <p><b>${esc(d.host?.name || '')}</b> 님의 모임 · <span class="muted small">${esc(flong(d.updatedAt))} ${hm(d.updatedAt)} 기준</span>
@@ -1297,7 +1307,7 @@
               const act = s.applicants.filter(a => !String(a.status).startsWith('취소'));
               return `<div class="dash-sess"><h3><span>${esc(s.label)}</span><span class="muted small">${act.length} / ${s.capacity}명</span></h3>
                 ${s.applicants.length ? `<div class="table-wrap" style="border:0"><table class="dtable"><thead><tr><th>이름</th><th>연락처</th><th>상태</th><th>신청일</th><th>메모</th></tr></thead><tbody>
-                ${s.applicants.sort((a, b) => a.at - b.at).map(a => `<tr><td>${esc(a.name)}</td><td>${esc(a.phone)}</td><td><span class="st ${a.status === '입금확인' ? 'st-paid' : String(a.status).startsWith('취소') ? 'st-cancel' : 'st-pending'}">${esc(a.status)}</span></td><td>${esc(fshort(a.at))}</td><td>${esc(a.memo || '')}</td></tr>`).join('')}
+                ${s.applicants.sort((a, b) => a.at - b.at).map(a => `<tr><td>${esc(a.name)}</td><td>${esc(a.phone)}</td><td><span class="st ${a.status === '입금확인' || a.status === '신청완료' ? 'st-paid' : String(a.status).startsWith('취소') ? 'st-cancel' : 'st-pending'}">${esc(a.status)}</span></td><td>${esc(fshort(a.at))}</td><td>${esc(a.memo || '')}</td></tr>`).join('')}
                 </tbody></table></div>` : '<p class="dash-empty">아직 신청이 없어요.</p>'}</div>`;
             }).join('')}</section>`;
         }).join('')}

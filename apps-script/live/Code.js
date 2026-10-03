@@ -58,6 +58,9 @@ function doPost(e) {
     var data = parseBody_(e);
     var action = data.action || '';
 
+    if (action === 'setupStatusUi') {
+      return jsonOutput(v11StatusUi_());
+    }
     if (action === 'lookup') {
       return jsonOutput(v3Lookup_(data));
     }
@@ -452,6 +455,8 @@ function appendRentV2_(data) {
   var sheet = ss.getSheetByName(SHEET_RENT);
   if (!sheet) throw new Error('대관신청 시트 없음');
   var code = v3NewCode_('BR');
+  var amount = Math.max(0, Math.round(Number(data.amount) || 0));
+  var deadline = new Date(Date.now() + Number(v3Prop_('PAY_DEADLINE_HOURS', 24)) * 3600e3);
   v2Append_(sheet, [
     new Date(),
     v2Clean_(data.month, 10),
@@ -470,10 +475,13 @@ function appendRentV2_(data) {
     '개인정보동의': v2Stamp_(true),
     '유입': v2Clean_(data.ref, 40),
     '신청번호': code,
-    '상태': '접수'
+    '금액': amount || '',
+    '입금기한': amount > 0 ? deadline : '',
+    '상태': amount > 0 ? '입금대기' : '접수'
   });
-  var notified = v3NotifyRent_(data, code, sheet.getLastRow());
-  return { ok: true, v: 3, code: code, notified: notified };
+  v11StatusUi_(true);
+  var notified = v3NotifyRent_(data, code, sheet.getLastRow(), amount, deadline);
+  return { ok: true, v: 3, code: code, amount: amount, deadline: amount > 0 ? deadline.getTime() : 0, notified: notified };
 }
 
 /** 모임 개설 신청 — '개설신청' 탭 (없으면 생성) */
@@ -564,7 +572,7 @@ function buildNewsletterList() {
 // 처음 한 번: 편집기에서 setupV3 실행 → 메일·외부요청·트리거 권한 승인 + '상태' 변경 알림 트리거 생성
 
 var V3_APPLY_COLS = ['신청번호', '상태', '입금기한', '알림'];
-var V3_RENT_COLS = ['신청번호', '상태', '알림'];
+var V3_RENT_COLS = ['신청번호', '상태', '금액', '입금기한', '알림'];
 var V3_WD = ['일', '월', '화', '수', '목', '금', '토'];
 
 function v3Prop_(k, d) {
@@ -727,9 +735,15 @@ function v5SmsPaid_(v) {
   return '[비북스] ' + v['#{이름}'] + '님, ' + v['#{모임명}'] + ' 참가가 확정됐어요.\n' +
     '일정 ' + v['#{일정}'] + '\n장소 비북스 (부천로136번길 24 지하 B02호)\n신청번호 ' + v['#{신청번호}'];
 }
-function v5SmsRent_(v) {
+function v5SmsRent_(v, amount) {
   return '[비북스] ' + v['#{이름}'] + '님, ' + v['#{공간}'] + ' 대관 신청이 접수됐어요.\n' +
-    '일정 ' + v['#{일정}'] + '\n신청번호 ' + v['#{신청번호}'] + '\n담당자가 확인 후 금액과 입금 방법을 안내드려요.';
+    '일정 ' + v['#{일정}'] + '\n신청번호 ' + v['#{신청번호}'] + '\n' +
+    (amount > 0 ? '입금 ' + v['#{금액}'] + '\n' + v['#{계좌}'] + '\n입금기한 ' + v['#{기한}'] + '\n입금이 확인되면 신청이 완료돼요.\n' : '담당자가 확인 후 금액과 입금 방법을 안내드려요.\n') +
+    '확인 ' + v['#{확인링크}'];
+}
+function v11SmsRentPaid_(v) {
+  return '[비북스] ' + v['#{이름}'] + '님, ' + v['#{공간}'] + ' 대관 신청이 완료됐어요.\n' +
+    '일정 ' + v['#{일정}'] + '\n장소 비북스 (부천로136번길 24 지하 B02호)\n신청번호 ' + v['#{신청번호}'];
 }
 
 /** 편집기에서 실행: 발신번호(또는 스크립트 속성 TEST_PHONE)로 테스트 문자 1통. 결과는 실행 로그에 표시 */
@@ -774,17 +788,20 @@ function v3NotifyApply_(data, code, deadline, sheetRow) {
   return n;
 }
 
-function v3NotifyRent_(data, code, sheetRow) {
-  var vars = { '#{이름}': String(data.name || ''), '#{공간}': String(data.space || ''), '#{일정}': String(data.date || '') + ' ' + String(data.time || ''), '#{신청번호}': code, '#{확인링크}': v3Site_('my/?code=' + code) };
+function v3NotifyRent_(data, code, sheetRow, amount, deadline) {
+  amount = Number(amount) || 0;
+  var vars = { '#{이름}': String(data.name || ''), '#{공간}': String(data.space || ''), '#{일정}': String(data.date || '') + ' ' + String(data.time || ''), '#{신청번호}': code, '#{확인링크}': v3Site_('my/?code=' + code),
+    '#{금액}': v3Won_(amount), '#{계좌}': v3Bank_(), '#{기한}': amount > 0 ? v3Fmt_(deadline) : '' };
   var mail = m4RentMail_({ name: vars['#{이름}'], code: code, myUrl: vars['#{확인링크}'], space: vars['#{공간}'], date: String(data.date || ''), time: String(data.time || ''),
-    count: data.count || '', purpose: String(data.purpose || ''), instagram: v3Insta_(), siteUrl: v3Site_('') });
-  var t = v5Notify_(data.phone, 'TPL_RENT', vars, v5SmsRent_(vars), '대관 신청 접수');
+    count: data.count || '', purpose: String(data.purpose || ''), amount: vars['#{금액}'], amountNum: amount, bank: vars['#{계좌}'], deadline: vars['#{기한}'],
+    instagram: v3Insta_(), siteUrl: v3Site_('') });
+  var t = v5Notify_(data.phone, 'TPL_RENT', vars, v5SmsRent_(vars, amount), '대관 신청 접수');
   var n = { email: v3MailHtml_(data.email, mail), alimtalk: t.alimtalk, sms: t.sms };
   v3Ops_({
     kind: '대관', headline: vars['#{공간}'] + ' · ' + vars['#{일정}'], sub: vars['#{이름}'] + '님 신청',
     rows: [['신청번호', code], ['이름', vars['#{이름}']], ['연락처', data.phone], ['이메일', v2Email_(data.email)], ['공간', vars['#{공간}']], ['일정', vars['#{일정}']],
-      ['인원', data.count ? data.count + '명' : ''], ['목적', data.purpose || ''], ['유입', data.ref || '']],
-    todo: '일정을 확인한 뒤 신청자에게 금액과 입금 방법을 안내해 주세요. 대관신청 탭 <b>상태</b>에 진행 상황(확정·취소 등)을 적어 두면 내 신청 조회에 그대로 보여요.'
+      ['인원', data.count ? data.count + '명' : ''], ['예상 금액', amount > 0 ? vars['#{금액}'] : '담당자 안내'], ['입금 기한', vars['#{기한}']], ['목적', data.purpose || ''], ['유입', data.ref || '']],
+    todo: '입금이 확인되면 대관신청 탭 <b>상태</b>를 <b>입금확인</b>으로 바꿔 주세요. 신청 완료 안내가 자동으로 나가고, 내 신청 조회에도 <b>신청 완료</b>로 보여요.<br>금액이 다르면 <b>금액</b> 칸을 고친 뒤 신청자에게 알려 주세요. 기한까지 입금이 없으면 <b>취소</b>로 바꿔 주세요.'
   });
   v3Log_(SHEET_RENT, sheetRow, '접수 메일 ' + n.email + ' · 알림톡 ' + n.alimtalk + ' · 문자 ' + n.sms);
   return n;
@@ -807,13 +824,14 @@ function v3Mine_(phone) {
       kind: 'moim', code: String(r[ai.code]), at: new Date(r[0]).getTime(), title: String(r[2] || ''), optionLabel: v3Session_(r[3]),
       amount: Number(r[6]) || 0, status: String(r[ai.st] || '입금대기'), name: String(r[4] || ''), deadline: ai.dl > -1 && r[ai.dl] ? new Date(r[ai.dl]).getTime() : 0 } });
   });
-  var b = v3Rows_(SHEET_RENT), bi = { code: b.head.indexOf('신청번호'), st: b.head.indexOf('상태'), em: b.head.indexOf('이메일') };
+  var b = v3Rows_(SHEET_RENT), bi = { code: b.head.indexOf('신청번호'), st: b.head.indexOf('상태'), em: b.head.indexOf('이메일'), amt: b.head.indexOf('금액'), dl: b.head.indexOf('입금기한') };
   if (bi.code > -1) b.rows.forEach(function (r) {
     if (!r[bi.code] || v3Digits_(r[6]) !== phone) return;
     var d = r[3] instanceof Date ? Utilities.formatDate(r[3], 'Asia/Seoul', 'yyyy-MM-dd') : String(r[3] || '');
     out.push({ sheet: SHEET_RENT, row: r._row, email: bi.em > -1 ? r[bi.em] : '', name: r[5], pub: {
       kind: 'rent', code: String(r[bi.code]), at: new Date(r[0]).getTime(), title: '대관 · ' + r[2], optionLabel: d + ' ' + r[4],
-      amount: 0, status: String(r[bi.st] || '접수'), name: String(r[5] || ''), deadline: 0 } });
+      amount: bi.amt > -1 ? Number(r[bi.amt]) || 0 : 0, status: String(r[bi.st] || '접수'), name: String(r[5] || ''),
+      deadline: bi.dl > -1 && r[bi.dl] ? new Date(r[bi.dl]).getTime() : 0 } });
   });
   return out;
 }
@@ -868,10 +886,12 @@ function v3Resend_(data) {
 function onStatusEditV3(e) {
   try {
     var sh = e.range.getSheet();
-    if (sh.getName() !== SHEET_APPLY || e.range.getRow() < 2 || String(e.value || '') !== '입금확인') return;
+    var v = String(e.value || '').trim();
+    if ((sh.getName() !== SHEET_APPLY && sh.getName() !== SHEET_RENT) || e.range.getRow() < 2 || (v !== '입금확인' && v !== '신청완료')) return;
     var head = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(function (h) { return String(h || '').trim(); });
     if (head[e.range.getColumn() - 1] !== '상태') return;
     var r = sh.getRange(e.range.getRow(), 1, 1, head.length).getValues()[0];
+    if (sh.getName() === SHEET_RENT) return v11RentPaid_(sh, e.range.getRow(), head, r);
     var code = r[head.indexOf('신청번호')] || '';
     var vars = { '#{이름}': String(r[4] || ''), '#{모임명}': String(r[2] || ''), '#{일정}': v3Session_(r[3]), '#{신청번호}': String(code), '#{확인링크}': v3Site_('my/?code=' + code) };
     var info = {};
@@ -1018,7 +1038,7 @@ function m4Small_(title, html) {
 /** 모임 신청 접수 (입금 안내) */
 function m4ApplyMail_(d) {
   var paid = Number(d.amountNum) > 0;
-  var body = m4H1_('신청이 접수됐어요', m4Esc_(d.name) + '님, 비모임에 함께해 주셔서 고마워요.' + (paid ? '<br>아래 계좌로 입금해 주시면 자리가 확정돼요.' : '')) +
+  var body = m4H1_('신청이 접수됐어요', m4Esc_(d.name) + '님, 비모임에 함께해 주셔서 고마워요.' + (paid ? '<br>아래 계좌로 입금해 주시면 입금 확인 후 신청이 완료돼요.' : '')) +
     m4Moim_(d) +
     m4Code_(d.code) +
     (paid ? m4Pay_(d) : '') +
@@ -1046,10 +1066,14 @@ function m4PaidMail_(d) {
 
 /** 대관 신청 접수 */
 function m4RentMail_(d) {
-  var body = m4H1_('대관 신청이 접수됐어요', m4Esc_(d.name) + '님, 비북스 공간을 찾아 주셔서 고마워요.<br>담당자가 일정을 확인한 뒤 금액과 입금 방법을 안내드려요.') +
+  var paid = Number(d.amountNum) > 0;
+  var body = m4H1_('대관 신청이 접수됐어요', m4Esc_(d.name) + '님, 비북스 공간을 찾아 주셔서 고마워요.<br>' +
+      (paid ? '아래 계좌로 입금해 주시면 입금 확인 후 신청이 완료돼요.' : '담당자가 일정을 확인한 뒤 금액과 입금 방법을 안내드려요.')) +
     m4Code_(d.code, '이 번호와 휴대폰 번호로 <b>내 신청</b>에서 대관 신청 상태를 확인할 수 있어요.') +
     m4Rows_([['공간', d.space], ['날짜', d.date], ['시간', d.time], ['인원', d.count ? d.count + '명' : ''], ['사용 목적', d.purpose]]) +
-    m4Steps_([{ t: '신청 접수', on: true }, { t: '담당자 확인', on: false }, { t: '입금', on: false }, { t: '이용', on: false }]) +
+    (paid ? m4Pay_(d) : '') +
+    m4Steps_(paid ? [{ t: '신청 접수', on: true }, { t: '입금', on: false }, { t: '신청 완료', on: false }, { t: '이용', on: false }]
+      : [{ t: '신청 접수', on: true }, { t: '담당자 확인', on: false }, { t: '입금', on: false }, { t: '이용', on: false }]) +
     m4Button_(d.myUrl, '내 신청 확인하기') +
     m4Small_('오시는 길', m4Esc_(M4.address) + '<br><a href="' + M4.mapUrl + '" style="color:' + M4.accentInk + ';">네이버 지도에서 보기</a>');
   return { subject: '[비북스] 대관 신청이 접수됐어요 (' + d.date + ' ' + d.time + ')',
@@ -1073,4 +1097,63 @@ function m4OperatorMail_(d) {
     m4Button_(d.sheetUrl, '구글 시트에서 보기') +
     (d.todo ? m4Small_('처리 방법', d.todo) : '');
   return { subject: '[비모임 ' + d.kind + '] ' + d.headline, html: m4Layout_({ title: d.kind, badge: d.kind, preheader: d.headline, body: body, footnote: '비모임 운영자 알림 메일입니다.' }) };
+}
+
+
+// ══ v11 입금 후 신청 완료 · 시트 상태 관리 (2026-10) ═════════════════
+// 상태 칸 드롭다운: 입금대기 → 입금확인(=신청 완료) / 취소요청 / 취소
+// 입금확인으로 바꾸면 신청자에게 완료 안내(메일·문자)가 나가고, 내 신청 조회에 '신청 완료'로 보여요.
+var V11_STATUS = ['입금대기', '입금확인', '취소요청', '취소'];
+
+/** 대관 입금 확인 → 신청 완료 안내 */
+function v11RentPaid_(sh, row, head, r) {
+  var code = String(r[head.indexOf('신청번호')] || '');
+  var d = r[3] instanceof Date ? Utilities.formatDate(r[3], 'Asia/Seoul', 'yyyy-MM-dd') : String(r[3] || '');
+  var vars = { '#{이름}': String(r[5] || ''), '#{공간}': String(r[2] || ''), '#{일정}': d + ' ' + String(r[4] || ''), '#{신청번호}': code, '#{확인링크}': v3Site_('my/?code=' + code) };
+  var em = v3MailHtml_(r[head.indexOf('이메일')], m4RentPaidMail_({ name: vars['#{이름}'], space: vars['#{공간}'], date: d, time: String(r[4] || ''), code: code,
+    myUrl: vars['#{확인링크}'], instagram: v3Insta_(), siteUrl: v3Site_('') }));
+  var tt = v5Notify_(r[6], 'TPL_RENT_PAID', vars, v11SmsRentPaid_(vars), '대관 신청 완료');
+  v3Log_(SHEET_RENT, row, '완료 메일 ' + em + ' · 알림톡 ' + tt.alimtalk + ' · 문자 ' + tt.sms);
+}
+
+function m4RentPaidMail_(d) {
+  var body = m4H1_('대관 신청이 완료됐어요', m4Esc_(d.name) + '님, 입금이 확인되었어요.<br>예약하신 날 비북스에서 반갑게 맞을게요.') +
+    m4Rows_([['신청번호', d.code], ['공간', d.space], ['날짜', d.date], ['시간', d.time], ['장소', '비북스 · ' + M4.address]]) +
+    m4Steps_([{ t: '신청 접수', on: true }, { t: '입금', on: true }, { t: '신청 완료', on: true }, { t: '이용', on: false }]) +
+    m4Button_(d.myUrl, '내 신청 확인하기') +
+    m4Small_('이용 안내', '모니터·프로젝터·앰프·복합기는 무료로 쓰실 수 있어요. 노트북만 챙겨 와 주세요.') +
+    m4Small_('오시는 길', m4Esc_(M4.address) + '<br><a href="' + M4.mapUrl + '" style="color:' + M4.accentInk + ';">네이버 지도에서 보기</a>');
+  return { subject: '[비북스] 대관 신청이 완료됐어요 (' + d.date + ' ' + d.time + ')',
+    html: m4Layout_({ title: '대관 신청 완료', badge: '신청 완료', badgeColor: M4.ok, preheader: d.space + ' · ' + d.date + ' ' + d.time, body: body, instagram: d.instagram, siteUrl: d.siteUrl }) };
+}
+
+/** 모임신청·대관신청 탭의 '상태' 칸에 드롭다운 + 색 표시. once=true면 한 번만 (이후 신청 땐 건너뜀) */
+function v11StatusUi_(once) {
+  var props = PropertiesService.getScriptProperties();
+  if (once && props.getProperty('V11_STATUS_UI') === '1') return { ok: true, skipped: true };
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID), done = [];
+  [[SHEET_APPLY, V2_APPLY_COLS.concat(V3_APPLY_COLS)], [SHEET_RENT, V2_RENT_COLS.concat(V3_RENT_COLS)]].forEach(function (t) {
+    var sh = ss.getSheetByName(t[0]);
+    if (!sh) return;
+    var col = v2Columns_(sh, t[1])['상태'];
+    if (sh.getMaxRows() < 2000) sh.insertRowsAfter(sh.getMaxRows(), 2000 - sh.getMaxRows());
+    var rng = sh.getRange(2, col, sh.getMaxRows() - 1, 1);
+    rng.setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(V11_STATUS, true).setAllowInvalid(true)
+      .setHelpText('입금이 확인되면 입금확인으로 바꿔 주세요. 신청자에게 완료 안내가 나가고 내 신청에 "신청 완료"로 보여요.').build());
+    var keep = sh.getConditionalFormatRules().filter(function (r) {
+      return !r.getRanges().some(function (g) { return g.getColumn() === col && g.getNumColumns() === 1; });
+    });
+    function rule(fn, bg, fg) { return fn(SpreadsheetApp.newConditionalFormatRule()).setBackground(bg).setFontColor(fg).setRanges([rng]).build(); }
+    keep.push(
+      rule(function (b) { return b.whenTextEqualTo('입금대기'); }, '#fff4d6', '#8a5a00'),
+      rule(function (b) { return b.whenTextEqualTo('입금확인'); }, '#dff3e4', '#1e6b3a'),
+      rule(function (b) { return b.whenTextEqualTo('신청완료'); }, '#dff3e4', '#1e6b3a'),
+      rule(function (b) { return b.whenTextEqualTo('취소요청'); }, '#fde3d6', '#a8491a'),
+      rule(function (b) { return b.whenTextStartsWith('취소'); }, '#eeeeee', '#777777'));
+    sh.setConditionalFormatRules(keep);
+    sh.getRange(1, col).setNote('입금대기 → 입금확인(신청 완료)\n입금확인으로 바꾸면 신청자에게 완료 메일·문자가 자동 발송돼요.\n취소요청: 신청자가 내 신청에서 요청\n취소: 자리·시간이 다시 열려요');
+    done.push(t[0]);
+  });
+  props.setProperty('V11_STATUS_UI', '1');
+  return { ok: true, sheets: done };
 }

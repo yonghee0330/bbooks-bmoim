@@ -6,7 +6,7 @@
   'use strict';
   const BM = window.BM;
   if (!BM || document.body.dataset.page !== 'space') return;
-  const { CAT, api, kst, kp, ymd, pad, nowMs, won, esc, toast, setBusy, formAlert, validPhone, validEmail, markInvalid, readConsent, refOut, sentChips, rememberCode, REL } = BM;
+  const { CFG, CAT, api, kst, kp, ymd, pad, nowMs, won, esc, toast, setBusy, formAlert, validPhone, validEmail, markInvalid, readConsent, refOut, sentChips, rememberCode, REL } = BM;
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const SP = CAT.spaces;
@@ -246,7 +246,7 @@
     else note.textContent = '시작 칸과 끝 칸을 차례로 눌러 주세요';
     const ready = space && date && selA != null && selB != null && $('#rentForm');
     box.classList.toggle('ready', !!ready);
-    if (!ready) { box.textContent = [space ? SPACE[space].name : '공간', date || '날짜', '시간'].join(' · ') + ' 을 골라 주세요'; return; }
+    if (!ready) { box.textContent = [space ? SPACE[space].name : '공간', date || '날짜', '시간'].join(' · ') + ' 을 골라 주세요'; renderPay(null); return; }
     const p = kp(kst(date));
     const hours = (selB - selA) / 60;
     const people = Number($('#rentForm').elements.namedItem('count').value) || (SPACE[space].pricing.type === 'perPerson' ? 1 : 0);
@@ -256,6 +256,20 @@
       : (pr.type !== 'inquiry' && billedHours(pr, hours) !== hours ? ` · ${billedHours(pr, hours)}시간 요금` : '');
     const estText = est == null ? '요금은 담당자가 안내드려요' : `예상 ${won(est)}${pr.type === 'perPerson' ? ` · ${people || 1}명 기준` : ''}${dpNote}`;
     box.innerHTML = `${esc(SPACE[space].name)} · ${p.m}월 ${p.d}일 (${WD[p.wd]}) ${toHM(selA)}–${toHM(selB)} <span class="muted">(${hours}시간)</span><br><small>${estText}</small>`;
+    renderPay(est);
+  }
+  // 입금 안내: 금액 + 계좌 (먼저 입금하고 신청해도 됨)
+  function renderPay(est) {
+    const el = $('#rentPay');
+    if (!el) return;
+    el.hidden = !est;
+    $('#rentSubmit').textContent = est ? `대관 신청하기 · ${won(est)}` : '대관 신청하기';
+    if (!est) return;
+    el.innerHTML = `<div class="paybox-row"><span>입금할 금액</span><span class="muted">신청 후 ${CFG.payDeadlineHours}시간 안에</span></div>
+      <div class="paybox-amount">${won(est)}</div>
+      <div class="paybox-bank"><span>${esc(CFG.bank.name)} <b>${esc(CFG.bank.number)}</b><br><small class="muted">예금주 ${esc(CFG.bank.holder)} · 입금자명은 신청자 이름으로</small></span>
+        <button type="button" class="btn dark sm" data-copy="${esc(CFG.bank.name + ' ' + CFG.bank.number)}">계좌 복사</button></div>`;
+    $('[data-copy]', el).onclick = e => BM.copy(e.currentTarget.dataset.copy, '계좌번호를 복사했어요');
   }
   $('#rentForm').elements.namedItem('count').addEventListener('input', renderSummary);
 
@@ -280,11 +294,14 @@
     try {
       const res = await api('rent', {
         space, date, time, name: F('name').value.trim(), phone: F('phone').value.trim(), email: F('email').value.trim(),
-        purpose: F('purpose').value.trim(), count, estimate: estimate(space, count || 1, (selB - selA) / 60, selA) || '',
+        purpose: F('purpose').value.trim(), count, amount: estimate(space, count || 1, (selB - selA) / 60, selA) || 0,
         consent, ref: refOut(), website: F('website').value
       });
       if (res.code) rememberCode({ code: res.code, title: `대관 · ${space}`, at: Date.now() });
       const p = kp(kst(date));
+      const amt = estimate(space, count || 1, (selB - selA) / 60, selA) || 0;
+      const dl = res.deadline || Date.now() + CFG.payDeadlineHours * 3600e3;
+      const name = F('name').value.trim();
       f.outerHTML = `<div class="card-form done"><div class="done-icon">✓</div><h3>대관 신청이 접수됐어요</h3>
         <p class="muted">${esc(SPACE[space].name)} · ${p.m}월 ${p.d}일 (${WD[p.wd]}) ${time}</p>
         ${res.code ? `<div class="codecard">
@@ -292,10 +309,17 @@
           <div class="code-box">${esc(res.code)} <button type="button" class="btn ghost sm" data-copy="${esc(res.code)}">복사</button></div>
           <p class="codecard-hint">이 번호와 휴대폰 번호로 상단 ‘내 신청’에서 대관 신청 상태를 확인하고 취소를 요청할 수 있어요.</p>
         </div>` : ''}
-        <p class="muted small">담당자가 일정 확인 후 금액과 입금 방법을 안내드려요. 입금이 확인되면 예약이 확정됩니다.</p>
+        ${amt ? `<div class="paybox">
+          <div class="paybox-row"><span>입금할 금액</span><span class="muted">${esc(BM.flong(dl))} ${BM.hm(dl)}까지</span></div>
+          <div class="paybox-amount">${won(amt)}</div>
+          <div class="paybox-bank"><span>${esc(CFG.bank.name)} <b>${esc(CFG.bank.number)}</b><br><small class="muted">예금주 ${esc(CFG.bank.holder)} · 입금자명 <b>${esc(name)}</b></small></span>
+            <button type="button" class="btn dark sm" data-copy="${esc(CFG.bank.name + ' ' + CFG.bank.number)}">계좌 복사</button></div>
+        </div>
+        <p class="muted small">이미 입금하셨다면 따로 연락하지 않으셔도 돼요. 입금이 확인되면 신청이 완료되고, 내 신청에서 <b>신청 완료</b>로 바뀌어요.</p>`
+        : `<p class="muted small">담당자가 일정 확인 후 금액과 입금 방법을 안내드려요. 입금이 확인되면 신청이 완료돼요.</p>`}
         ${res.code ? sentChips(res.notified, true) : ''}
         ${res.code ? `<a class="btn outline" href="${esc(BM.page('my/', `?code=${encodeURIComponent(res.code)}`))}">내 신청 확인</a>` : ''}</div>`;
-      $('.book .done [data-copy]')?.addEventListener('click', e => BM.copy(e.currentTarget.dataset.copy, '신청번호를 복사했어요'));
+      $$('.book .done [data-copy]').forEach(b => b.addEventListener('click', e => BM.copy(e.currentTarget.dataset.copy, /^B[RM]-/.test(e.currentTarget.dataset.copy) ? '신청번호를 복사했어요' : '계좌번호를 복사했어요')));
       await loadBlocks();
     } catch (err) { formAlert(alertEl, err.message); setBusy(btn, false); }
   });
