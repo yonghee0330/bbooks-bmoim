@@ -1316,7 +1316,7 @@
                 </tbody></table></div>` : '<p class="dash-empty">아직 신청이 없어요.</p>'}</div>`;
             }).join('')}</section>`;
         }).join('')}
-        <p class="muted small" style="margin-top:16px">개인정보 보호를 위해 이름 일부와 연락처 뒷자리만 보여요. 참가자에게 연락이 필요하면 비북스에 요청해 주세요.</p>`;
+        ${d.moims.some(m => m.sessions.some(s => s.applicants.some(a => String(a.phone).includes('*')))) ? '<p class="muted small" style="margin-top:16px">코드로 들어오면 이름 일부와 연락처 뒷자리만 보여요. 전체 정보는 비북스가 보내 드린 현황 링크로 확인해 주세요.</p>' : ''}`;
       $('[data-reload]', box).addEventListener('click', () => load(token));
     }
     box.addEventListener('click', e => { const c = e.target.closest('[data-copy]'); if (c) copy(c.dataset.copy, '공유 링크를 복사했어요'); });
