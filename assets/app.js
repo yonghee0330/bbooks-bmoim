@@ -292,20 +292,9 @@
       return { ok: true, code: '' };
     },
     async rentBlocks() {
-      // 기존 페이지와 같은 방식(대관신청 탭)으로 날짜·공간·시간만 읽습니다
-      const r = await fetch(SH.rentGviz, { redirect: 'follow' });
-      const m = String(await r.text()).match(/setResponse\(([\s\S]*)\);/);
-      const data = m ? JSON.parse(m[1]) : null;
-      const blocks = [];
-      (data?.table?.rows || []).forEach(row => {
-        const c = row.c || [];
-        if (!(SH.rentMonths || []).includes(c[1]?.v)) return;
-        if (String(c[9]?.v || '').includes('취소')) return;
-        const date = sheetDate(c[3]?.f || c[3]?.v);
-        const time = String(c[4]?.v || '');
-        if (date && time) blocks.push({ date, space: sheetSpace(c[2]?.v), time });
-      });
-      return { blocks };
+      // 날짜·공간·시간만 웹앱에서 받음 (시트는 비공개)
+      const r = await sheetGet({ action: 'rentBlocks' });
+      return { blocks: (r.blocks || []).map(b => ({ date: b.date, space: sheetSpace(b.space), time: b.time })) };
     },
     async hostDashboard(d) {
       const code = String(d.token || '').trim();

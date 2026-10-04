@@ -47,6 +47,9 @@ function doGet(e) {
     if (action === 'count') {
       return jsonOutput(getCounts_(e.parameter.month));
     }
+    if (action === 'rentBlocks') {
+      return jsonOutput(v14RentBlocks_());
+    }
     return jsonOutput({ error: 'unknown action: ' + action });
   } catch (err) {
     return jsonOutput({ error: String(err) });
@@ -1268,4 +1271,36 @@ function v12Board_(data) {
     }) };
   });
   return { ok: true, host: { name: String(mine[0][1] || '') }, month: String(mine[0][3] || ''), updatedAt: Date.now(), moims: out };
+}
+
+
+// ══ v14 대관 시간대 공개 조회 (시트 공개 공유 없이) ═══════════════════
+// 대관신청 탭에서 날짜·공간·시간만 돌려줌 (이름·연락처 없음). 취소 건과 지난 날짜 제외.
+function v14RentBlocks_() {
+  var cache = CacheService.getScriptCache(), hit = cache.get('v14blocks');
+  if (hit) return JSON.parse(hit);
+  var b = v3Rows_(SHEET_RENT), st = b.head.indexOf('상태');
+  var today = Utilities.formatDate(new Date(), 'Asia/Seoul', 'yyyy-MM-dd');
+  var out = [];
+  b.rows.forEach(function (r) {
+    if (String(r[9] || '').indexOf('취소') > -1) return;
+    if (st > -1 && String(r[st] || '').indexOf('취소') === 0) return;
+    var d = r[3] instanceof Date ? Utilities.formatDate(r[3], 'Asia/Seoul', 'yyyy-MM-dd') : v14Date_(r[3], r[0]);
+    var t = r[4] instanceof Date ? '' : String(r[4] || '').trim();
+    if (!d || !t || d < today) return;
+    out.push({ date: d, space: String(r[2] || '').trim(), time: t });
+  });
+  var res = { ok: true, blocks: out };
+  try { cache.put('v14blocks', JSON.stringify(res), 60); } catch (e) {}
+  return res;
+}
+// '2026-10-05' · '10월5일' · '10/5' 같은 값을 yyyy-MM-dd로 (연도는 신청 시각 기준)
+function v14Date_(v, at) {
+  var s = String(v || '').trim(), m;
+  if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2);
+  if ((m = s.match(/(\d{1,2})\s*[월\/.]\s*(\d{1,2})/))) {
+    var y = (at instanceof Date ? at : new Date()).getFullYear();
+    return y + '-' + ('0' + m[1]).slice(-2) + '-' + ('0' + m[2]).slice(-2);
+  }
+  return '';
 }

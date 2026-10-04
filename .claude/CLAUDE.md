@@ -10,7 +10,7 @@
 | 사이트 저장소 (GitHub Pages, main 푸시 = 배포) | `~/Documents/bbooks-bmoim` |
 | 원본 (사이트에 공개 안 됨) | `_bmoim-v2-src/` — `data/moims.json · spaces.json · site.json`, `assets/app.js · rent.js · app.css · cards.js`, `build.py` |
 | 생성물 (직접 수정 금지) | 루트 `index.html`, `m/ space/ open/ my/ cards/ assets/ data/ exports/ v2/`, `bmoim.ics`, 옛 월별 `*.html` 리다이렉트 |
-| Apps Script 운영 코드 사본 | `apps-script/live/Code.js` (현재 배포 **버전 13**) |
+| Apps Script 운영 코드 사본 | `apps-script/live/Code.js` (현재 배포 **버전 14**) |
 | Apps Script 배포 도구 | `/Users/mac/Desktop/INBOX-B/bmoim-v2/apps-script/clasp/deploy.sh` |
 | 구글 시트 | `186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM` (탭: 모임신청 · 대관신청 · 점주코드 · 개설신청) |
 | 로컬 미리보기 | launch.json `bmoim-root` (port 8799) — 아래 4번 |
@@ -39,7 +39,7 @@
 - **절대 "새 배포"를 만들지 않는다.** 배포 ID `AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ` 가 사이트에 박혀 있다. 롤백은 `deploy -V <이전 버전>`.
 - 새 권한(스코프)이 필요한 코드는 사용자가 편집기에서 함수를 한 번 실행해 승인한 뒤에 배포해야 한다. 편집기: https://script.google.com/d/1La7qXwWHKPVus9equlZi672_PUF0YtKwhohz6EYq7UcjUPu8fj61WmFD/edit
 - 웹앱 호출 테스트: `curl -sL -H 'Content-Type: text/plain' -d '{"action":"..."}' "https://script.google.com/macros/s/<배포ID>/exec"` (`-X POST` 쓰지 말 것 — 리다이렉트에서 깨짐).
-- 버전 이력: 6 이관 전 · 7 이메일/동의 · 8 신청번호·조회/취소·메일 · 9 메일 디자인·매니저 알림 · 10 솔라피 문자 · 11 입금 후 신청 완료·상태 드롭다운 · 12–13 호스트 현황 링크.
+- 버전 이력: 6 이관 전 · 7 이메일/동의 · 8 신청번호·조회/취소·메일 · 9 메일 디자인·매니저 알림 · 10 솔라피 문자 · 11 입금 후 신청 완료·상태 드롭다운 · 12–13 호스트 현황 링크 · 14 대관 시간대 조회(rentBlocks, 시트 비공개 전환).
 - 스크립트 속성(키·비밀번호)은 사용자가 편집기에서 직접 넣는다. **API 키·토큰을 채팅으로 받거나 파일에 쓰지 않는다.** (SOLAPI_API_KEY/SECRET/SENDER 는 아직 미설정 — 문자는 "추후 연동")
 
 ### 시트 운영 규칙 (사용자가 시트에서 하는 일)
@@ -51,9 +51,10 @@
 
 ## 4. 확인 (미리보기)
 
-샌드박스가 `~/Documents` 를 직접 서빙하지 못하므로 사본을 쓴다.
+미리보기 서버는 `~/Documents`·`~/Desktop` 을 읽지 못하므로 `/private/tmp/bmoim-preview/` 에 사본을 두고 서빙한다(재부팅하면 지워지니 매번 다시 만든다).
 ```
-rsync -a --delete --exclude .git --exclude _bmoim-v2-src --exclude apps-script --exclude node_modules ~/Documents/bbooks-bmoim/ /Users/mac/Desktop/INBOX-B/bmoim-v2/preview/site/
+mkdir -p /private/tmp/bmoim-preview && cp /Users/mac/Desktop/INBOX-B/bmoim-v2/preview/serve.py /private/tmp/bmoim-preview/
+rsync -a --delete --exclude .git --exclude _bmoim-v2-src --exclude apps-script --exclude node_modules ~/Documents/bbooks-bmoim/ /private/tmp/bmoim-preview/site/
 ```
 그다음 `preview_start {name: "bmoim-root"}` → http://localhost:8799/. 미리보기도 실제 시트/웹앱에 연결돼 있으니 **신청 제출 버튼은 누르지 않는다**(실제 행·메일이 생김). 스크린샷이 이전 화면으로 남는 일이 있어, `scrollIntoView({behavior:'instant'})` 후 다시 찍는다.
 
@@ -66,7 +67,7 @@ rsync -a --delete --exclude .git --exclude _bmoim-v2-src --exclude apps-script -
 
 ## 6. 남은 일 (사용자 결정 대기)
 
-1. **개인정보**: 시트가 "링크가 있는 모든 사용자" 공유라 gviz로 신청자 탭·점주코드(링크키)가 읽힘. 해결: 대관 시간대만 주는 `rentBlocks` 액션 추가 → `app.js` `sheetApi.rentBlocks` 교체 → 시트 공유 "제한됨". (제안만 한 상태)
+1. **개인정보 (v14, 2026-10-04)**: 사이트는 더 이상 시트를 직접(gviz) 읽지 않는다. 대관 시간대는 웹앱 `rentBlocks`(GET, 날짜·공간·시간만). 옛 `/apply/` 는 `/open/` 으로 리다이렉트. **시트 공유는 "제한됨"이어야 한다** — 다시 "링크가 있는 모든 사용자"로 바꾸지 말 것. 새 기능도 시트를 브라우저에서 직접 읽게 만들지 말고 웹앱 액션으로 필요한 값만 내보낸다.
 2. 솔라피 문자 키 입력(사용자), 알림톡 템플릿.
 3. 토스페이먼츠 카드 결제(미결정).
 4. 10월 대관 프로모션(얼리버드 30%·1인실 무료 체험·다회 20%·친구 추천)은 기획안만 있음 — 사이트 반영은 사용자가 혜택 확정 후.
