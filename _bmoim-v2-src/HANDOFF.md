@@ -15,7 +15,7 @@ bbooks-bmoim/  (GitHub Pages · Cursor 규칙상 작업 후 자동 커밋·푸�
 ├─ v2/  → 새 주소로 넘겨 주는 페이지만 있음  ※ 생성물
 ├─ host/  ← 옛 호스트 현황 페이지들 (그대로 둠, 새 현황은 open/status/)
 ├─ images/  ← 포스터·공간 사진
-├─ apps-script/live/  ← 운영 중인 Apps Script 코드 (배포 버전 7)
+├─ apps-script/live/  ← 운영 중인 Apps Script 코드 (배포 버전 13)
 └─ _bmoim-v2-src/     ← 원본 (밑줄 폴더라 사이트에 공개되지 않음)
    ├─ data/moims.json · spaces.json · site.json
    ├─ assets/app.css app.js rent.js cards.js
@@ -53,10 +53,11 @@ python3 _bmoim-v2-src/build.py --sheet
 - 시트가 `10월10일` 같은 회차 값을 날짜로 바꿔 저장하는 문제가 있어, 인원 집계는 날짜로도 맞춥니다 (`app.js` → `sheetApi.counts`).
 - 새 액션(`applyV2` 등)이 서버에 없으면 페이지가 자동으로 기존 `apply`/`rent`로 보냅니다. 이때 이메일·소식수신 동의는 **비고(H열)** 에 들어갑니다. 개설 신청은 인스타 DM용 복사 문구로 안내됩니다.
 
-## 4. Apps Script (배포 버전 8 · 2026-10)
+## 4. Apps Script (배포 버전 13 · 2026-10)
 
 - 웹앱 = 구글 파일 `1XM5bF5…`에 연결된 스크립트 프로젝트 (편집기: https://script.google.com/d/1La7qXwWHKPVus9equlZi672_PUF0YtKwhohz6EYq7UcjUPu8fj61WmFD/edit). 배포 ID `AKfycbx7…6HQ` 유지.
-- 운영 코드 사본 = `apps-script/live/Code.js`. 버전 이력: 6 이관 전 · 7 이메일/동의/개설신청 · 8 신청번호·조회/취소·메일/알림톡 · 9 안내 메일 디자인 + 매니저 수신 · **10 솔라피 문자(SMS/LMS)**.
+- 운영 코드 사본 = `apps-script/live/Code.js`. 버전 이력: 6 이관 전 · 7 이메일/동의/개설신청 · 8 신청번호·조회/취소·메일/알림톡 · 9 안내 메일 디자인 + 매니저 수신 · 10 솔라피 문자(SMS/LMS) · 11 입금 후 신청 완료·상태 드롭다운 · **12–13 호스트 현황 링크**.
+- 배포 도구: `bash /Users/mac/Desktop/INBOX-B/bmoim-v2/apps-script/clasp/deploy.sh "설명"` (push → 버전 → 기존 배포 갱신). Claude용 요약 지침: `.claude/CLAUDE.md`.
 - 메일 디자인 = `Code.js` 맨 아래 `m4…Mail_` 함수들 (같은 내용 `_bmoim-v2-src/apps-script/mail-templates.js` — 미리보기용). 운영자 알림 받는 사람 = 스크립트 속성 `OPERATOR_EMAIL`(기본: 소유 계정) + `MANAGER_EMAILS`(기본: yorokobi720@gmail.com, 쉼표로 여러 명).
 - 액션: GET `count`·`hostStatus` / POST `applyV2`·`rentV2`·`hostApply`·`lookup`·`cancelRequest`·`resend` (+ 옛 `apply`·`rent`·`eventApply`).
 - 모임신청 탭 오른쪽 열(제목으로 찾음): 신청 메모 · 도서 요청 · 이메일 · 소식수신동의 · 개인정보동의 · 유입 · **신청번호 · 상태 · 입금기한 · 알림**. 대관신청도 신청번호·상태·알림.
