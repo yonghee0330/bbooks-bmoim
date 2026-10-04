@@ -309,6 +309,8 @@
     },
     async hostDashboard(d) {
       const code = String(d.token || '').trim();
+      // 새 현황 링크(#k=링크키): 이름·연락처·상태·메모 전체
+      if (/^[a-z0-9]{16,}$/.test(code)) return sheetPost({ action: 'hostBoard', k: code });
       const groups = {};
       let hostName = '';
       let found = false;
@@ -1269,6 +1271,8 @@
   }
 
   // ── 호스트 현황 (비공개 링크) ───────────────────────
+  const PAID_ST = ['입금확인', '신청완료', '확정'];
+  const dashLabel = s => PAID_ST.includes(s) ? '신청 완료' : s === '입금대기' ? '입금 대기' : s === '취소요청' ? '취소 요청' : s;
   function initDashboard() {
     const box = $('#dash');
     const tf = $('#tokenForm');
@@ -1288,16 +1292,17 @@
       let total = 0, paid = 0, cap = 0;
       d.moims.forEach(m => m.sessions.forEach(s => {
         const act = s.applicants.filter(a => !String(a.status).startsWith('취소'));
-        total += act.length; paid += act.filter(a => a.status === '입금확인' || a.status === '신청완료').length; cap += s.capacity;
+        total += act.length; paid += act.filter(a => PAID_ST.includes(a.status)).length; cap += s.capacity;
       }));
       box.innerHTML = `
         <p><b>${esc(d.host?.name || '')}</b> 님의 모임 · <span class="muted small">${esc(flong(d.updatedAt))} ${hm(d.updatedAt)} 기준</span>
           <button type="button" class="btn ghost sm" data-reload style="margin-left:6px">새로고침</button></p>
         <div class="dash-cards">
           <div class="kpi"><b>${total}</b><span>전체 신청</span></div>
-          <div class="kpi"><b>${paid}</b><span>입금 확인</span></div>
+          <div class="kpi"><b>${paid}</b><span>신청 완료</span></div>
           <div class="kpi"><b>${Math.max(0, cap - total)}</b><span>남은 자리</span></div>
         </div>
+        <p class="small muted dash-note">‘신청 완료’는 입금이 확인된 신청이에요. 신청자 연락처는 모임 안내·참가 확인에만 써 주시고, 이 링크는 다른 분께 공유하지 말아 주세요.</p>
         ${d.moims.map(m => {
           const item = BY_SLUG[m.slug];
           const share = item ? itemUrl(item, 'host') : '';
@@ -1307,7 +1312,7 @@
               const act = s.applicants.filter(a => !String(a.status).startsWith('취소'));
               return `<div class="dash-sess"><h3><span>${esc(s.label)}</span><span class="muted small">${act.length} / ${s.capacity}명</span></h3>
                 ${s.applicants.length ? `<div class="table-wrap" style="border:0"><table class="dtable"><thead><tr><th>이름</th><th>연락처</th><th>상태</th><th>신청일</th><th>메모</th></tr></thead><tbody>
-                ${s.applicants.sort((a, b) => a.at - b.at).map(a => `<tr><td>${esc(a.name)}</td><td>${esc(a.phone)}</td><td><span class="st ${a.status === '입금확인' || a.status === '신청완료' ? 'st-paid' : String(a.status).startsWith('취소') ? 'st-cancel' : 'st-pending'}">${esc(a.status)}</span></td><td>${esc(fshort(a.at))}</td><td>${esc(a.memo || '')}</td></tr>`).join('')}
+                ${s.applicants.sort((a, b) => a.at - b.at).map(a => `<tr><td>${esc(a.name)}</td><td>${/\d{4}$/.test(a.phone) && !a.phone.includes('*') ? `<a href="tel:${esc(a.phone.replace(/\D/g, ''))}">${esc(a.phone)}</a>` : esc(a.phone)}</td><td><span class="st ${PAID_ST.includes(a.status) ? 'st-paid' : String(a.status).startsWith('취소') ? 'st-cancel' : 'st-pending'}">${esc(dashLabel(a.status))}</span></td><td>${esc(fshort(a.at))}</td><td>${esc([a.memo, a.books ? '도서: ' + a.books : ''].filter(Boolean).join(' · '))}</td></tr>`).join('')}
                 </tbody></table></div>` : '<p class="dash-empty">아직 신청이 없어요.</p>'}</div>`;
             }).join('')}</section>`;
         }).join('')}

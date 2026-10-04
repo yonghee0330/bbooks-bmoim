@@ -58,6 +58,12 @@ function doPost(e) {
     var data = parseBody_(e);
     var action = data.action || '';
 
+    if (action === 'hostBoard') {
+      return jsonOutput(v12Board_(data));
+    }
+    if (action === 'syncHostLinks') {
+      return jsonOutput(v12Sync_());
+    }
     if (action === 'setupStatusUi') {
       return jsonOutput(v11StatusUi_());
     }
@@ -1156,4 +1162,110 @@ function v11StatusUi_(once) {
   });
   props.setProperty('V11_STATUS_UI', '1');
   return { ok: true, sheets: done };
+}
+
+// ══ v12 호스트 현황 링크 (점주코드 탭 기반, 2026-10) ═══════════════════
+// 점주코드 탭: A 코드 · B 호스트 · C 모임명(시트 이름) · D 월 + '링크키' · '현황 링크' 열
+// syncHostLinks: 사이트 catalog.json의 이번 달 모임 중 빠진 행을 추가하고, 호스트·월마다 링크키를 만들어 링크를 채움 (매일 자동 실행)
+// hostBoard: 링크키로 그 호스트의 모임 신청자(이름·연락처·상태·메모)를 돌려줌
+var V12_LINK_COLS = ['링크키', '현황 링크'];
+
+function v12Catalog_() {
+  var cache = CacheService.getScriptCache(), hit = cache.get('v12cat2');
+  if (hit) return JSON.parse(hit);
+  var res = UrlFetchApp.fetch(v3Site_('data/catalog.json'), { muteHttpExceptions: true });
+  var d = JSON.parse(res.getContentText());
+  var month = String((d.config.sheet && d.config.sheet.month) || '');
+  var slim = { month: month, items: d.items.filter(function (i) { return !i.applyUrl; }).map(function (i) {
+    return { slug: i.slug, title: i.title, sheetName: i.sheetName || i.title, months: i.sheetMonths || [month], host: (i.host && i.host.name) || '',
+      sessions: i.sessions.map(function (s) {
+        var st = s.dates && s.dates[0] ? s.dates[0].start : '';
+        return { label: s.name || (st ? Number(st.slice(5, 7)) + '/' + Number(st.slice(8, 10)) + ' ' + st.slice(11, 16) : ''), sheetSession: s.sheetSession || s.id, capacity: s.capacity || 0 };
+      }) };
+  }) };
+  try { cache.put('v12cat2', JSON.stringify(slim), 600); } catch (e) {}
+  return slim;
+}
+function v12Key_() {
+  var abc = 'abcdefghijkmnpqrstuvwxyz23456789', k = '';
+  for (var i = 0; i < 20; i++) k += abc[Math.floor(Math.random() * abc.length)];
+  return k;
+}
+
+function syncHostLinksV12() { return v12Sync_(); }
+function v12Sync_() {
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sh = ss.getSheetByName(SHEET_CODES);
+  if (!sh) { sh = ss.insertSheet(SHEET_CODES); sh.getRange(1, 1, 1, 4).setValues([['코드', '호스트', '모임명', '월']]).setFontWeight('bold'); sh.setFrozenRows(1); }
+  var cols = v2Columns_(sh, V12_LINK_COLS);
+  var cat = v12Catalog_(), month = cat.month;
+  if (!/^\d+월$/.test(month)) throw new Error('catalog month 확인 필요: ' + month);
+  var v = sh.getDataRange().getValues();
+  for (var x = v.length - 1; x >= 1; x--) if (String(v[x][3] || '').charAt(0) === '{') sh.deleteRow(x + 1);  // 잘못 들어간 행 정리
+  v = sh.getDataRange().getValues();
+  var have = {}, keyOf = {}, codeOf = {};
+  for (var i = 1; i < v.length; i++) {
+    var m = String(v[i][3] || '').trim(), host = String(v[i][1] || '').trim();
+    have[m + '|' + String(v[i][2] || '').trim()] = true;
+    if (v[i][cols['링크키'] - 1]) keyOf[m + '|' + host] = String(v[i][cols['링크키'] - 1]);
+    if (v[i][0]) codeOf[m + '|' + host] = String(v[i][0]);
+  }
+  var added = 0;
+  cat.items.forEach(function (it) {
+    if (it.months.indexOf(month) === -1 || have[month + '|' + it.sheetName]) return;
+    var hk = month + '|' + it.host;
+    if (!codeOf[hk]) codeOf[hk] = v3NewCode_('H').replace('-', '');
+    sh.appendRow([codeOf[hk], it.host, it.sheetName, month]);
+    have[month + '|' + it.sheetName] = true; added++;
+  });
+  // 링크키 · 링크 채우기 (같은 호스트·같은 월은 같은 링크)
+  v = sh.getDataRange().getValues();
+  for (var r = 1; r < v.length; r++) {
+    var mm = String(v[r][3] || '').trim(), hh = String(v[r][1] || '').trim();
+    if (!v[r][2]) continue;
+    var key = String(v[r][cols['링크키'] - 1] || '') || keyOf[mm + '|' + hh] || (keyOf[mm + '|' + hh] = v12Key_());
+    if (!v[r][cols['링크키'] - 1]) sh.getRange(r + 1, cols['링크키']).setValue(key);
+    var url = v3Site_('open/status/#k=' + key);
+    if (v[r][cols['현황 링크'] - 1] !== url) sh.getRange(r + 1, cols['현황 링크']).setValue(url);
+  }
+  sh.getRange(1, cols['현황 링크']).setNote('호스트에게 이 링크만 보내 주세요. 링크를 가진 사람은 그 호스트 모임의 신청자 이름·연락처를 볼 수 있어요.\n링크를 바꾸려면 링크키 칸을 지우면 다음 동기화 때 새로 만들어져요.');
+  if (!ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'syncHostLinksV12'; })) {
+    ScriptApp.newTrigger('syncHostLinksV12').timeBased().everyDays(1).atHour(9).create();
+  }
+  return { ok: true, added: added };
+}
+
+function v12Board_(data) {
+  var key = String(data.k || '').trim();
+  if (!/^[a-z0-9]{16,}$/.test(key)) throw new Error('링크가 올바르지 않아요. 비북스에 확인해 주세요.');
+  v3RateLimit_('hb:' + key.slice(0, 8), 30);
+  var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
+  var sh = ss.getSheetByName(SHEET_CODES);
+  var v = sh.getDataRange().getValues(), head = v[0].map(function (h) { return String(h || '').trim(); }), kc = head.indexOf('링크키');
+  var mine = v.slice(1).filter(function (r) { return kc > -1 && String(r[kc]) === key; });
+  if (!mine.length) throw new Error('링크가 만료됐거나 올바르지 않아요. 비북스에 새 링크를 요청해 주세요.');
+  var cat = v12Catalog_();
+  var moims = mine.map(function (r) {
+    var name = String(r[2] || '').trim(), it = cat.items.filter(function (i) { return i.sheetName === name; })[0];
+    return { name: name, month: String(r[3] || '').trim(), it: it };
+  });
+  var a = v3Rows_(SHEET_APPLY), H = a.head;
+  var ix = { st: H.indexOf('상태'), memo: H.indexOf('신청 메모'), books: H.indexOf('도서 요청'), code: H.indexOf('신청번호') };
+  var out = moims.map(function (m) {
+    var months = m.it ? m.it.months : [m.month];
+    var apps = a.rows.filter(function (r) { return String(r[2] || '').trim() === m.name && months.indexOf(String(r[1] || '').trim()) > -1 && String(r[4] || '').trim(); })
+      .map(function (r) {
+        var note = String(r[7] || '');
+        var st = ix.st > -1 ? String(r[ix.st] || '').trim() : '';
+        if (!st && note.indexOf('취소') > -1) st = '취소';
+        return { session: formatSession_(r[3]), name: String(r[4]).trim(), phone: formatPhone_(r[5]), amount: Number(r[6]) || 0, status: st || '신청',
+          at: r[0] instanceof Date ? r[0].getTime() : Date.parse(r[0]) || 0,
+          memo: ix.memo > -1 ? String(r[ix.memo] || '') : '', books: ix.books > -1 ? String(r[ix.books] || '') : '' };
+      });
+    var sess = m.it ? m.it.sessions : [{ label: '신청자', sheetSession: '', capacity: 0 }];
+    return { slug: m.it ? m.it.slug : '', title: m.it ? m.it.title : m.name, sessions: sess.map(function (s) {
+      return { label: s.label, capacity: s.capacity, applicants: apps.filter(function (x) { return sess.length === 1 || x.session === s.sheetSession; }) };
+    }) };
+  });
+  return { ok: true, host: { name: String(mine[0][1] || '') }, month: String(mine[0][3] || ''), updatedAt: Date.now(), moims: out };
 }
