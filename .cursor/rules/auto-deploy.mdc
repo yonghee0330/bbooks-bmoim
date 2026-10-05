@@ -5,6 +5,8 @@ alwaysApply: true
 
 # Auto-deploy (bbooks-bmoim)
 
+비모임 사이트(bbooks.co.kr/moim)는 이 저장소가 아니라 메인 저장소로 나간다: `sh _bmoim-v2-src/deploy.sh "메시지"` 를 실행(빌드+커밋+푸시)한 뒤, 이 저장소의 원본 변경도 커밋·푸시한다. 아래는 이 저장소의 나머지 페이지(voice, btalk 등)용.
+
 After finishing user-requested site updates (HTML, images, apply pages, etc.):
 
 1. **Commit** the relevant changes (exclude `node_modules/`, `.DS_Store`, secrets, credentials).

@@ -33,13 +33,31 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA = os.path.join(ROOT, 'data')
 ASSETS = os.path.join(ROOT, 'assets')
 SHARE = '--share' in sys.argv  # 공유용(클로드 아티팩트 등): 폴더 주소 대신 index.html, 허용된 폰트만
-SHEET = '--sheet' in sys.argv  # 운영 빌드: 구글 시트 연결 + 저장소 루트(moim.bbooks.co.kr/)에 바로 생성
-DIST = os.path.abspath(os.path.join(ROOT, '..')) if SHEET else os.path.join(ROOT, 'share' if SHARE else 'dist')
+SHEET = '--sheet' in sys.argv  # 운영 빌드: 구글 시트 연결 + bbooks.co.kr/moim/ 폴더에 생성
+STUBS = '--stubs' in sys.argv  # 옛 주소(moim.bbooks.co.kr) 저장소를 '새 주소로 넘겨 주는 페이지'로 바꿈
+
+
+def _arg(name):
+    a = sys.argv
+    for i, x in enumerate(a):
+        if x == name and i + 1 < len(a):
+            return a[i + 1]
+        if x.startswith(name + '='):
+            return x.split('=', 1)[1]
+    return None
+
+
+REPO = os.path.abspath(os.path.join(ROOT, '..'))
+# 운영 출력 폴더: 메인 사이트 저장소(~/Documents/bbooks)의 moim/ — --out 으로 바꿀 수 있음
+OUT = os.path.abspath(os.path.expanduser(_arg('--out') or '~/Documents/bbooks/moim'))
+OLD_BASE = 'https://moim.bbooks.co.kr'  # 예전 주소 (넘겨 주기용으로만 남김)
+DIST = REPO if STUBS else (OUT if SHEET else os.path.join(ROOT, 'share' if SHARE else 'dist'))
 # 운영 사이트 루트에는 기존 host/ 폴더(옛 호스트 현황)가 있어서 '모임 열기'는 open/ 에 둡니다
 HOST_DIR = 'open/' if SHEET else 'host/'
 DASH_DIR = 'open/status/' if SHEET else 'host/dashboard/'
 # 운영 빌드가 루트에 만드는 폴더·파일 (다시 만들기 전에 이것만 지움)
-GENERATED = ['m', 'space', 'open', 'my', 'cards', 'assets', 'data', 'exports', 'v2']
+GENERATED = ['m', 'space', 'open', 'my', 'cards', 'assets', 'data', 'exports', 'images', 'v2']
+OLD_GENERATED = ['m', 'space', 'open', 'my', 'cards', 'assets', 'data', 'exports', 'v2']  # 옛 주소 저장소에서 치울 폴더
 KST = timezone(timedelta(hours=9))
 WD = '월화수목금토일'
 ASSET_VER = datetime.now().strftime('%m%d%H%M')
@@ -54,7 +72,7 @@ SITE = load('site.json')
 if '--sheet' in sys.argv:
     # 저장소 루트의 images/ 폴더를 그대로 사용
     SITE['images']['baseUrl'] = 'images/'
-    SITE['baseUrl'] = SITE['sheet'].get('siteUrl', 'https://moim.bbooks.co.kr')
+    SITE['baseUrl'] = _arg('--base') or SITE['sheet'].get('siteUrl', 'https://bbooks.co.kr/moim')
     SITE['indexable'] = SITE['sheet'].get('indexable', True)
     SITE['apiUrl'] = SITE['sheet']['apiUrl']
     SITE['refund']['contact'] = '취소는 ‘내 신청’에서 요청하거나 비북스 인스타그램 DM으로 문의해 주세요.'
@@ -396,7 +414,7 @@ def layout(*, page_id, title, desc, body, depth, path, og_image=None, og_type='w
   <div class="foot-in">
     <p class="foot-brand"><span class="logo-ko">비북스</span> <span class="logo-en">b<i>.</i>moim</span></p>
     <p>{esc(st["address"])}</p>
-    <p class="foot-links"><a href="https://instagram.com/{esc(st["instagram"])}" target="_blank" rel="noopener">인스타그램 @{esc(st["instagram"])}</a><a href="{rel}bmoim.ics">캘린더 구독</a><a href="{rel}my/">내 신청 확인</a><a href="{rel}host/">모임 열기</a><a href="#privacy" data-open-privacy>개인정보 처리 안내</a></p>
+    <p class="foot-links"><a href="https://instagram.com/{esc(st["instagram"])}" target="_blank" rel="noopener">인스타그램 @{esc(st["instagram"])}</a><a href="{rel}bmoim.ics">캘린더 구독</a><a href="{rel}my/">내 신청 확인</a><a href="{rel}{HOST_DIR}">모임 열기</a><a href="#privacy" data-open-privacy>개인정보 처리 안내</a></p>
   </div>
 </footer>
 {after_main}
@@ -1251,7 +1269,7 @@ def copy_assets():
     shutil.copytree(ASSETS, os.path.join(DIST, 'assets'))
     src = image_src_dir()
     if not src or SHEET:
-        return []
+        return []  # 운영 빌드의 이미지는 build 마지막에 copy_repo_images()가 씀
     names = {SITE['month']['heroImage']} | {i['poster'] for i in ITEMS} | {
         p['src'] for sp in SPACES['spaces'] for p in sp['photos']}
     missing = []
@@ -1319,6 +1337,107 @@ def poster_report():
     return lines
 
 
+IMG_TOKEN = re.compile(r'[\w가-힣%\-./]+\.(?:jpg|jpeg|png|webp|gif|svg)', re.I)
+TEXT_EXT = ('.html', '.json', '.js', '.css', '.xml', '.txt', '.ics')
+
+
+def copy_repo_images():
+    """운영 빌드: 만든 파일 안에서 쓰이는 이미지 이름을 찾아, 저장소 images/ 에서 moim/images/ 로 복사"""
+    from urllib.parse import unquote
+    src = os.path.join(REPO, 'images')
+    dst = os.path.join(DIST, 'images')
+    names = set()
+    for root, _, files in os.walk(DIST):
+        if os.path.abspath(root).startswith(os.path.abspath(dst)):
+            continue
+        for fn in files:
+            if fn.endswith(TEXT_EXT):
+                with open(os.path.join(root, fn), encoding='utf-8', errors='ignore') as f:
+                    for t in IMG_TOKEN.findall(f.read()):
+                        names.add(unquote(t.split('images/')[-1]))
+    copied, missing = 0, []
+    for n in sorted(names):
+        sp = os.path.join(src, n)
+        if os.path.isfile(sp):
+            os.makedirs(os.path.dirname(os.path.join(dst, n)), exist_ok=True)
+            shutil.copy2(sp, os.path.join(dst, n))
+            copied += 1
+    return copied
+
+
+LOCAL_REF = re.compile(r'(?:href|src)="((?!https?:|//|#|mailto:|tel:|data:|javascript:)[^"#?]+)')
+
+
+def check_links():
+    """만든 페이지 안의 상대 링크·이미지가 실제로 있는지 검사"""
+    bad = []
+    for root, _, files in os.walk(DIST):
+        for fn in files:
+            if not fn.endswith('.html'):
+                continue
+            fp = os.path.join(root, fn)
+            with open(fp, encoding='utf-8') as f:
+                html = f.read()
+            for ref in LOCAL_REF.findall(html):
+                t = os.path.normpath(os.path.join(root, ref))
+                if ref.endswith('/'):
+                    t = os.path.join(t, 'index.html')
+                if not os.path.exists(t):
+                    bad.append(f'{os.path.relpath(fp, DIST)} → {ref}')
+    return bad
+
+
+def stub_page(path):
+    """옛 주소 페이지: 새 주소의 같은 경로로 (검색어·#해시 유지) 넘김"""
+    new = f'{BASE}/{path}'
+    return f'''<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>비북스 b.moim</title>
+<link rel="canonical" href="{esc(new)}">
+<meta http-equiv="refresh" content="0; url={esc(new)}">
+<script>location.replace({json.dumps(new)} + location.search + location.hash);</script>
+</head>
+<body style="font-family:sans-serif;padding:40px;text-align:center">
+<p>비모임 주소가 <b>bbooks.co.kr/moim</b> 으로 바뀌었어요. <a href="{esc(new)}">여기를 눌러 이동하세요</a>.</p>
+</body>
+</html>
+'''
+
+
+def write_old_domain_stubs():
+    """moim.bbooks.co.kr 저장소(이 저장소 루트)를 새 주소로 넘겨 주는 페이지로 정리"""
+    for g in OLD_GENERATED:
+        gp = os.path.join(DIST, g)
+        if os.path.isdir(gp):
+            shutil.rmtree(gp)
+    for f in ('sitemap.xml',):
+        fp = os.path.join(DIST, f)
+        if os.path.exists(fp):
+            os.remove(fp)
+    paths = {'index.html': '', 'space/index.html': 'space/', 'my/index.html': 'my/', 'open/index.html': 'open/',
+             'open/status/index.html': 'open/status/', 'cards/index.html': 'cards/',
+             'v2/index.html': '', 'v2/space/index.html': 'space/', 'v2/my/index.html': 'my/',
+             'v2/host/index.html': 'open/', 'v2/host/dashboard/index.html': 'open/status/', 'host.html': 'open/status/'}
+    for it in ITEMS:
+        paths[f'm/{it["slug"]}/index.html'] = f'm/{it["slug"]}/'
+        paths[f'v2/m/{it["slug"]}/index.html'] = f'm/{it["slug"]}/'
+    for name in SITE['sheet'].get('legacyPages', []):
+        if name != 'host.html':
+            paths[name] = ''
+    for rel, target in paths.items():
+        write(rel, stub_page(target))
+    # 없는 주소로 들어와도 같은 경로의 새 주소로
+    write('404.html', stub_page('').replace(
+        'location.replace(' + json.dumps(f'{BASE}/') + ' + location.search + location.hash);',
+        'location.replace(' + json.dumps(f'{BASE}/') + ' + location.pathname.replace(/^\\//, "") + location.search + location.hash);'))
+    write('robots.txt', 'User-agent: *\nAllow: /\n')
+    return len(paths)
+
+
 def redirect_page(target, note='비모임 페이지가 한곳으로 모였어요.'):
     return f'''<!DOCTYPE html>
 <html lang="ko">
@@ -1377,7 +1496,12 @@ def main():
         print(e)
     if hard:
         sys.exit('데이터 오류로 빌드를 멈춥니다.')
+    if STUBS:
+        n = write_old_domain_stubs()
+        print(f'✓ 옛 주소 저장소 정리 — 새 주소({BASE}/)로 넘겨 주는 페이지 {n}개 + 404.html')
+        return
     if SHEET:
+        os.makedirs(DIST, exist_ok=True)
         for g in GENERATED:
             gp = os.path.join(DIST, g)
             if os.path.isdir(gp):
@@ -1400,9 +1524,12 @@ def main():
     write('exports/lineup.txt', lineup_text())
     write('data/catalog.json', json.dumps(CATALOG, ensure_ascii=False, indent=1))
     write('sitemap.xml', sitemap())
-    write('robots.txt', robots())
+    if not SHEET:
+        write('robots.txt', robots())
     if SHEET:
-        write_legacy_redirects()
+        n_img = copy_repo_images()
+        bad = check_links()
+        print(f'ℹ 이미지 {n_img}개 복사' + (f' · ⚠ 깨진 링크 {len(bad)}개:\n   ' + '\n   '.join(bad[:20]) if bad else ' · 링크 검사 통과'))
     print(f'✓ {os.path.basename(DIST)}/ 생성 — 모임·행사 {len(ITEMS)}개, 개별 페이지 {len(ITEMS)}개')
     rep = poster_report()
     if rep:
@@ -1411,7 +1538,7 @@ def main():
     if missing:
         print('⚠ 이미지 없음:', ', '.join(missing))
     if SHEET:
-        print('ℹ 운영 빌드 → 저장소 루트(moim.bbooks.co.kr/) 갱신 + 예전 월별·v2 주소 연결')
+        print(f'ℹ 운영 빌드 → {DIST} ({BASE}/) 갱신. 올리기: sh _bmoim-v2-src/deploy.sh "메시지"')
     elif not SITE['apiUrl']:
         print('ℹ apiUrl 비어 있음 → 테스트(데모) 모드: 신청은 브라우저에만 저장됩니다.')
     if '--serve' in sys.argv:

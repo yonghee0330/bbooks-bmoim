@@ -42,7 +42,7 @@ function m4Layout_(o) {
     '<b style="color:' + c.ink2 + ';">비북스 BeeBooks</b> · 느슨하고 단단하게 함께 자라가는 모임<br>' +
     m4Esc_(c.address) + ' · <a href="' + c.mapUrl + '" style="color:' + c.accentInk + ';">지도</a><br>' +
     '문의 인스타그램 <a href="https://instagram.com/' + m4Esc_(String(o.instagram || '@b_books2026').replace('@', '')) + '" style="color:' + c.accentInk + ';">' + m4Esc_(o.instagram || '@b_books2026') + '</a>' +
-    ' · <a href="' + m4Esc_(o.siteUrl || 'https://moim.bbooks.co.kr/') + '" style="color:' + c.accentInk + ';">moim.bbooks.co.kr</a><br>' +
+    ' · <a href="' + m4Esc_(o.siteUrl || 'https://bbooks.co.kr/moim/') + '" style="color:' + c.accentInk + ';">bbooks.co.kr/moim</a><br>' +
     '<span style="font-size:11.5px;">' + m4Esc_(o.footnote || '이 메일은 비모임 신청 안내를 위해 발송되었습니다.') + '</span>' +
     '</td></tr></table></td></tr></table></body></html>';
 }

@@ -572,7 +572,7 @@ function buildNewsletterList() {
 // ══ v3 추가 (2026-10): 신청번호 · 내 신청 조회/취소 · 메일·알림톡 ══════════════════
 // 설정은 [프로젝트 설정 → 스크립트 속성]. 없으면 기본값을 씁니다.
 //   OPERATOR_EMAIL   운영자 알림 메일 (기본: 이 스크립트를 배포한 계정)
-//   SITE_URL         https://moim.bbooks.co.kr/
+//   SITE_URL         https://bbooks.co.kr/moim/  (비워 두면 기본값)
 //   BANK_TEXT        카카오뱅크 7942-33-45474 (예금주 경규환)
 //   INSTAGRAM        @b_books2026
 //   PAY_DEADLINE_HOURS  24
@@ -588,7 +588,12 @@ function v3Prop_(k, d) {
   var v = PropertiesService.getScriptProperties().getProperty(k);
   return v === null || v === '' ? d : v;
 }
-function v3Site_(path) { return String(v3Prop_('SITE_URL', 'https://moim.bbooks.co.kr/')).replace(/\/?$/, '/') + (path || ''); }
+var V3_SITE = 'https://bbooks.co.kr/moim/';  // 2026-10-05: moim.bbooks.co.kr → bbooks.co.kr/moim/ 이전
+function v3Site_(path) {
+  var u = String(v3Prop_('SITE_URL', V3_SITE));
+  if (u.indexOf('moim.bbooks.co.kr') > -1) u = V3_SITE;  // 예전 속성값이 남아 있어도 새 주소로
+  return u.replace(/\/?$/, '/') + (path || '');
+}
 function v3Bank_() { return v3Prop_('BANK_TEXT', '카카오뱅크 7942-33-45474 (예금주 경규환)'); }
 function v3Insta_() { return v3Prop_('INSTAGRAM', '@b_books2026'); }
 function v3Digits_(s) { return String(s || '').replace(/\D/g, ''); }
@@ -970,7 +975,7 @@ function m4Layout_(o) {
     '<b style="color:' + c.ink2 + ';">비북스 BeeBooks</b> · 느슨하고 단단하게 함께 자라가는 모임<br>' +
     m4Esc_(c.address) + ' · <a href="' + c.mapUrl + '" style="color:' + c.accentInk + ';">지도</a><br>' +
     '문의 인스타그램 <a href="https://instagram.com/' + m4Esc_(String(o.instagram || '@b_books2026').replace('@', '')) + '" style="color:' + c.accentInk + ';">' + m4Esc_(o.instagram || '@b_books2026') + '</a>' +
-    ' · <a href="' + m4Esc_(o.siteUrl || 'https://moim.bbooks.co.kr/') + '" style="color:' + c.accentInk + ';">moim.bbooks.co.kr</a><br>' +
+    ' · <a href="' + m4Esc_(o.siteUrl || 'https://bbooks.co.kr/moim/') + '" style="color:' + c.accentInk + ';">bbooks.co.kr/moim</a><br>' +
     '<span style="font-size:11.5px;">' + m4Esc_(o.footnote || '이 메일은 비모임 신청 안내를 위해 발송되었습니다.') + '</span>' +
     '</td></tr></table></td></tr></table></body></html>';
 }
