@@ -15,7 +15,7 @@
 | 운영 사이트 | https://bbooks.co.kr/moim/ — 파일은 `~/Documents/bbooks/moim/` (생성물, 직접 수정 금지) |
 | 원본 | 이 저장소 `_bmoim-v2-src/` — `data/moims.json · spaces.json · site.json`, `assets/app.js · rent.js · app.css · cards.js`, `build.py`, `deploy.sh` |
 | 옛 주소 | moim.bbooks.co.kr → 이 저장소(GitHub Pages)가 새 주소로 넘김. 지우지 말 것(이미 퍼진 링크·메일) |
-| Apps Script 운영 코드 사본 | `apps-script/live/Code.js` (현재 배포 **버전 16**) |
+| Apps Script 운영 코드 사본 | `apps-script/live/Code.js` (현재 배포 **버전 17**) |
 | Apps Script 배포 도구 | `/Users/mac/Desktop/INBOX-B/bmoim-v2/apps-script/clasp/deploy.sh` |
 | 구글 시트 | `186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM` (탭: 모임신청 · 대관신청 · 점주코드 · 개설신청), 공유 "제한됨" |
 | 로컬 미리보기 | launch.json `bmoim-root` (port 8799) — 아래 4번 |
@@ -41,14 +41,14 @@
 - **절대 "새 배포"를 만들지 않는다.** 배포 ID `AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ` 가 사이트에 박혀 있다. 롤백은 `deploy -V <이전 버전>`.
 - 새 권한(스코프)이 필요한 코드는 사용자가 편집기에서 함수를 한 번 실행해 승인한 뒤에 배포해야 한다. 편집기: https://script.google.com/d/1La7qXwWHKPVus9equlZi672_PUF0YtKwhohz6EYq7UcjUPu8fj61WmFD/edit
 - 웹앱 호출 테스트: `curl -sL -H 'Content-Type: text/plain' -d '{"action":"..."}' "https://script.google.com/macros/s/<배포ID>/exec"` (`-X POST` 쓰지 말 것 — 리다이렉트에서 깨짐).
-- 버전 이력: 6 이관 전 · 7 이메일/동의 · 8 신청번호·조회/취소·메일 · 9 메일 디자인·매니저 알림 · 10 솔라피 문자 · 11 입금 후 신청 완료·상태 드롭다운 · 12–13 호스트 현황 링크 · 14 대관 시간대 조회(rentBlocks, 시트 비공개 전환) · 15 사이트 주소 bbooks.co.kr/moim · 16 개설 신청 진행 상태.
+- 버전 이력: 6 이관 전 · 7 이메일/동의 · 8 신청번호·조회/취소·메일 · 9 메일 디자인·매니저 알림 · 10 솔라피 문자 · 11 입금 후 신청 완료·상태 드롭다운 · 12–13 호스트 현황 링크 · 14 대관 시간대 조회(rentBlocks, 시트 비공개 전환) · 15 사이트 주소 bbooks.co.kr/moim · 16 개설 신청 진행 상태 · 17 호스트 링크 즉시 동기화.
 - 스크립트 속성(키·비밀번호)은 사용자가 편집기에서 직접 넣는다. **API 키·토큰을 채팅으로 받거나 파일에 쓰지 않는다.** (SOLAPI_API_KEY/SECRET/SENDER 는 아직 미설정 — 문자는 "추후 연동")
 
 ### 시트 운영 규칙 (사용자가 시트에서 하는 일)
 - `상태` 칸 드롭다운: **입금대기 → 입금확인**(= 신청 완료) / 취소요청 / 취소. 입금확인으로 바꾸면 신청자에게 완료 메일·문자 자동 발송(설치형 트리거 `onStatusEditV3`). "신청완료"라고 적어도 같은 처리.
 - 내 신청(`/my/`) 표시: 입금확인·신청완료 → "신청 완료", 입금대기 → "입금 대기", 접수 → "담당자 확인 중".
 - 대관도 예상 금액이 `금액` 열에 들어가고 `입금대기`로 시작. 원칙: **입금 확인 후 신청 완료**(먼저 입금하고 신청해도 됨).
-- 호스트 현황: 점주코드 탭 `현황 링크` 열을 호스트에게 보냄. 같은 호스트·같은 달은 링크 하나. 매일 9시 `syncHostLinksV12` 가 사이트 `data/catalog.json` 의 이번 달(`config.sheet.month`) 모임 중 빠진 행·링크를 채움. 즉시: `{"action":"syncHostLinks"}`. 링크 교체: 링크키 칸 비우고 동기화.
+- 호스트 현황: 점주코드 탭 `현황 링크` 열을 호스트에게 보냄. 같은 호스트·같은 달은 링크 하나. **`deploy.sh` 가 사이트 반영을 확인한 직후 자동으로 `syncHostLinks` 를 호출**해 사이트 `data/catalog.json` 의 이번 달(`config.sheet.month`) 모임 중 빠진 행·링크를 채우고, 새 링크가 생기면 운영자(사장님·매니저)에게만 메일로 알림(링크는 호스트에게 사람이 전달). 수동: `{"action":"syncHostLinks"}`(항상 최신 catalog 사용). 매일 9시 `syncHostLinksV12` 는 안전망으로 남아 있음. 링크 교체: 링크키 칸 비우고 동기화.
 - **모임 개설 신청 진행 (v16)**: 시트 `개설신청` 탭 `상태` 드롭다운 **접수 → 접수완료 → 모임등록**(+ 보류=안내 없음). 신청 직후 신청자(이메일 필수)에게 접수 확인 메일(+`신청번호` BH-…, 시트 `신청번호` 열). `접수완료`·`모임등록`으로 바꾸면 안내 메일 자동 발송(`v16HostStatusEdit_`, onStatusEditV3 트리거). `모임등록` 메일에는 제목이 사이트 모임과 정확히 한 곳만 맞을 때 모임 페이지 링크가 들어감. **호스트 전용 현황 링크는 자동으로 보내지 않는다**(개인정보 — 점주코드 탭에서 사람이 확인해 따로 전달). 문자는 솔라피 키가 설정되면 같이 나감. 탭 준비 재실행: `{"action":"setupHostFlow"}`(안내 발송 없음, 멱등). 메일 문구 = `m4HostMail_`(Code.js 맨 아래 + `_bmoim-v2-src/apps-script/mail-templates.js`).
 - 이미 신청이 들어온 모임의 `sheetName`/`sheetSession`/`sheetMonths` 는 바꾸지 않는다(집계·현황 키).
 

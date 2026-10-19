@@ -68,7 +68,7 @@ function doPost(e) {
       return jsonOutput(v12Board_(data));
     }
     if (action === 'syncHostLinks') {
-      return jsonOutput(v12Sync_());
+      return jsonOutput(v12Sync_(true));
     }
     if (action === 'setupStatusUi') {
       return jsonOutput(v11StatusUi_());
@@ -1189,10 +1189,10 @@ function v11StatusUi_(once) {
 // hostBoard: 링크키로 그 호스트의 모임 신청자(이름·연락처·상태·메모)를 돌려줌
 var V12_LINK_COLS = ['링크키', '현황 링크'];
 
-function v12Catalog_() {
-  var cache = CacheService.getScriptCache(), hit = cache.get('v12cat2');
+function v12Catalog_(fresh) {
+  var cache = CacheService.getScriptCache(), hit = fresh ? null : cache.get('v12cat2');
   if (hit) return JSON.parse(hit);
-  var res = UrlFetchApp.fetch(v3Site_('data/catalog.json'), { muteHttpExceptions: true });
+  var res = UrlFetchApp.fetch(v3Site_('data/catalog.json') + '?t=' + Date.now(), { muteHttpExceptions: true });
   var d = JSON.parse(res.getContentText());
   var month = String((d.config.sheet && d.config.sheet.month) || '');
   var slim = { month: month, items: d.items.filter(function (i) { return !i.applyUrl; }).map(function (i) {
@@ -1211,13 +1211,13 @@ function v12Key_() {
   return k;
 }
 
-function syncHostLinksV12() { return v12Sync_(); }
-function v12Sync_() {
+function syncHostLinksV12() { return v12Sync_(true); }
+function v12Sync_(fresh) {
   var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
   var sh = ss.getSheetByName(SHEET_CODES);
   if (!sh) { sh = ss.insertSheet(SHEET_CODES); sh.getRange(1, 1, 1, 4).setValues([['코드', '호스트', '모임명', '월']]).setFontWeight('bold'); sh.setFrozenRows(1); }
   var cols = v2Columns_(sh, V12_LINK_COLS);
-  var cat = v12Catalog_(), month = cat.month;
+  var cat = v12Catalog_(fresh), month = cat.month;
   if (!/^\d+월$/.test(month)) throw new Error('catalog month 확인 필요: ' + month);
   var v = sh.getDataRange().getValues();
   for (var x = v.length - 1; x >= 1; x--) if (String(v[x][3] || '').charAt(0) === '{') sh.deleteRow(x + 1);  // 잘못 들어간 행 정리
@@ -1229,29 +1229,45 @@ function v12Sync_() {
     if (v[i][cols['링크키'] - 1]) keyOf[m + '|' + host] = String(v[i][cols['링크키'] - 1]);
     if (v[i][0]) codeOf[m + '|' + host] = String(v[i][0]);
   }
-  var added = 0;
+  var added = 0, newMoims = [];
   cat.items.forEach(function (it) {
     if (it.months.indexOf(month) === -1 || have[month + '|' + it.sheetName]) return;
     var hk = month + '|' + it.host;
     if (!codeOf[hk]) codeOf[hk] = v3NewCode_('H').replace('-', '');
     sh.appendRow([codeOf[hk], it.host, it.sheetName, month]);
-    have[month + '|' + it.sheetName] = true; added++;
+    have[month + '|' + it.sheetName] = true; added++; newMoims.push(it.sheetName);
   });
   // 링크키 · 링크 채우기 (같은 호스트·같은 월은 같은 링크)
   v = sh.getDataRange().getValues();
+  var made = {};  // 이번에 새로 만든 링크: 호스트|월 → {host, moims, url, key}
   for (var r = 1; r < v.length; r++) {
     var mm = String(v[r][3] || '').trim(), hh = String(v[r][1] || '').trim();
     if (!v[r][2]) continue;
+    var isNew = !v[r][cols['링크키'] - 1];
     var key = String(v[r][cols['링크키'] - 1] || '') || keyOf[mm + '|' + hh] || (keyOf[mm + '|' + hh] = v12Key_());
-    if (!v[r][cols['링크키'] - 1]) sh.getRange(r + 1, cols['링크키']).setValue(key);
+    if (isNew) sh.getRange(r + 1, cols['링크키']).setValue(key);
     var url = v3Site_('open/status/#k=' + key);
     if (v[r][cols['현황 링크'] - 1] !== url) sh.getRange(r + 1, cols['현황 링크']).setValue(url);
+    if (isNew) {
+      var mk = mm + '|' + hh;
+      (made[mk] = made[mk] || { host: hh, moims: [], url: url, key: key }).moims.push(String(v[r][2]).trim());
+    }
   }
+  // 새 링크는 운영자(사장님·매니저)에게만 메일로 알림 — 호스트에게는 사람이 확인해 전달
+  var links = Object.keys(made).map(function (k) { return made[k]; }), verified = 0;
+  links.forEach(function (L) {
+    var ok = false;
+    try { ok = !!v12Board_({ k: L.key }).ok; } catch (e) { ok = false; }
+    if (ok) verified++;
+    v3Ops_({ kind: '호스트 링크', headline: L.host + ' · 현황 링크가 만들어졌어요', sub: L.moims.join(', '),
+      rows: [['호스트', L.host], ['모임', L.moims.join(', ')], ['현황 링크', '<a href="' + v3Esc_(L.url) + '">' + v3Esc_(L.url) + '</a>', true]],
+      todo: '이 링크를 호스트에게 전달해 주세요. 신청자 이름·연락처가 보이는 링크라 다른 분께는 공유하지 않도록 안내해 주세요.<br>링크를 바꾸려면 점주코드 탭에서 해당 행의 <b>링크키</b> 칸을 비우세요.' });
+  });
   sh.getRange(1, cols['현황 링크']).setNote('호스트에게 이 링크만 보내 주세요. 링크를 가진 사람은 그 호스트 모임의 신청자 이름·연락처를 볼 수 있어요.\n링크를 바꾸려면 링크키 칸을 지우면 다음 동기화 때 새로 만들어져요.');
   if (!ScriptApp.getProjectTriggers().some(function (t) { return t.getHandlerFunction() === 'syncHostLinksV12'; })) {
     ScriptApp.newTrigger('syncHostLinksV12').timeBased().everyDays(1).atHour(9).create();
   }
-  return { ok: true, added: added };
+  return { ok: true, added: added, newMoims: newMoims, newLinks: links.length, verified: verified };
 }
 
 function v12Board_(data) {

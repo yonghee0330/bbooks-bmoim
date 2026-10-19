@@ -6,6 +6,7 @@ set -e
 SRC="$(cd "$(dirname "$0")" && pwd)"
 DST="$HOME/Documents/bbooks"
 MSG="${1:-비모임 업데이트}"
+EXEC="https://script.google.com/macros/s/AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ/exec"
 cd "$DST" && git pull -q --ff-only
 python3 "$SRC/build.py" --sheet --out "$DST/moim"
 cd "$DST" && git add moim
@@ -14,4 +15,13 @@ git commit -q -m "$MSG
 
 Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
 git push 2>&1 | sed -E 's/ghp_[A-Za-z0-9]+/ghp_***/g' | tail -1
-echo "→ https://bbooks.co.kr/moim/ (1~2분 뒤 반영)"
+echo "→ https://bbooks.co.kr/moim/ 반영 대기 중…"
+# 사이트가 실제로 반영되면 호스트 현황 링크를 바로 동기화 (점주코드 탭에 새 모임 행·링크 생성 + 운영자 메일 알림)
+i=0
+until curl -s "https://bbooks.co.kr/moim/data/catalog.json?t=$$.$i" | cmp -s - "$DST/moim/data/catalog.json"; do
+  i=$((i+1))
+  if [ "$i" -gt 36 ]; then echo "반영이 늦어요 — 잠시 뒤 아래 명령으로 동기화하세요:"; echo "  curl -sL -H 'Content-Type: text/plain' -d '{\"action\":\"syncHostLinks\"}' $EXEC"; exit 0; fi
+  sleep 10
+done
+echo "✓ 사이트 반영됨 — 호스트 현황 링크 동기화:"
+curl -sL -H 'Content-Type: text/plain' -d '{"action":"syncHostLinks"}' "$EXEC"; echo

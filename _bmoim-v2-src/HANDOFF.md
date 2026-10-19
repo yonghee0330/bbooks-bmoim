@@ -87,7 +87,7 @@ python3 _bmoim-v2-src/build.py --sheet
 ## 4-3. 호스트 현황 링크 (Apps Script v13)
 - 시트 `점주코드` 탭: 코드 · 점주명 · 모임명 · 월 + **링크키 · 현황 링크**. 호스트에게는 `현황 링크`(https://moim.bbooks.co.kr/open/status/#k=링크키)만 보내면 됨.
 - 같은 호스트·같은 달 모임은 같은 링크 하나로 모두 보임. 신청자 이름·연락처·상태·메모·도서 요청 표시.
-- 매일 9시 `syncHostLinksV12` 트리거가 사이트 `data/catalog.json`의 이번 달(`config.sheet.month`) 모임 중 빠진 행을 추가하고 링크를 채움. 즉시 돌리려면 웹앱에 `{"action":"syncHostLinks"}` POST.
+- `deploy.sh` 가 사이트 반영을 확인한 직후 웹앱에 `{"action":"syncHostLinks"}` 를 POST → 사이트 `data/catalog.json`의 이번 달(`config.sheet.month`) 모임 중 빠진 행을 추가하고 링크를 채움(새 링크는 운영자 메일로 알림). 매일 9시 `syncHostLinksV12` 는 안전망.
 - 링크를 바꾸려면 링크키 칸을 지우고 동기화. 외부 신청(applyUrl) 모임은 제외.
 - 예전 방식(코드 직접 입력)은 그대로 동작하지만 이름·연락처가 가려져 보임.
 
