@@ -61,6 +61,9 @@ function doPost(e) {
     var data = parseBody_(e);
     var action = data.action || '';
 
+    if (action === 'setupHostFlow') {
+      return jsonOutput(v16HostFlow_());
+    }
     if (action === 'hostBoard') {
       return jsonOutput(v12Board_(data));
     }
@@ -510,18 +513,25 @@ function appendHostApply_(data) {
     if (!String(data[k] || '').trim()) throw new Error('필수 항목이 비어 있어요.');
   });
   var d = data;
-  v2HostSheet_().appendRow([
+  var hsh = v2HostSheet_();
+  var code = v3NewCode_('BH');
+  v2Append_(hsh, [
     new Date(), v2Clean_(d.month, 10), v2Clean_(d.hostName, 40), v2Clean_(d.phone, 20), v2Email_(d.email), v2Clean_(d.insta, 40),
     v2Clean_(d.hostBio, 500), v2Clean_(d.title, 100), v2Clean_(d.oneLiner, 60), v2Clean_(d.category, 20), v2Clean_(d.audience, 60),
     v2Clean_(d.description, 3000), v2Clean_(d.date1, 20), v2Clean_(d.date2, 20), v2Clean_(d.duration, 20), v2Clean_(d.space, 20),
     v2Clean_(d.capacity, 10), v2Clean_(d.price, 10), v2Clean_(d.materials, 10), v2Clean_(d.regular, 10), v2Clean_(d.posterUrl, 300),
     v2Clean_(d.request, 1000), v2Stamp_(true), v2Stamp_(d.consent.marketing), v2Clean_(d.ref, 40), '접수'
-  ]);
+  ], { '신청번호': code });
+  v16HostFlow_once_();
+  var notified;
+  try { notified = v16SendHost_('received', { name: d.hostName, title: d.title, date1: d.date1, date2: d.date2, space: d.space, capacity: d.capacity, price: d.price }, code, d.phone, d.email); }
+  catch (err) { notified = { email: 'failed', alimtalk: 'skipped', sms: 'skipped' }; }  // 안내 실패가 신청 자체를 막지 않게
+  v3Log_(V2_HOST_SHEET, hsh.getLastRow(), '접수 메일 ' + notified.email + ' · 알림톡 ' + notified.alimtalk + ' · 문자 ' + notified.sms);
   v3Ops_({ kind: '개설 신청', headline: String(d.title || '') + ' · ' + String(d.hostName || ''), sub: String(d.oneLiner || ''),
-    rows: [['호스트', d.hostName], ['연락처', d.phone], ['이메일', v2Email_(d.email)], ['인스타', d.insta || ''], ['분야', d.category || ''], ['희망 일정', [d.date1, d.date2].filter(String).join(' / ')],
+    rows: [['신청번호', code], ['호스트', d.hostName], ['연락처', d.phone], ['이메일', v2Email_(d.email)], ['인스타', d.insta || ''], ['분야', d.category || ''], ['희망 일정', [d.date1, d.date2].filter(String).join(' / ')],
       ['공간', d.space || ''], ['정원', d.capacity ? d.capacity + '명' : ''], ['참가비', d.price ? v3Won_(d.price) : ''], ['재료', d.materials || ''], ['포스터', d.posterUrl || ''], ['요청', d.request || '']],
-    todo: '개설신청 탭에서 상세 소개를 확인하고 호스트에게 연락해 주세요.' });
-  return { ok: true, v: 2 };
+    todo: '개설신청 탭에서 상세 소개를 확인하세요. 신청자에게는 접수 확인 메일이 이미 나갔어요.<br>확인을 마치면 <b>상태</b>를 <b>접수완료</b>로, 모임을 사이트에 올린 뒤에는 <b>모임등록</b>으로 바꿔 주세요. 바꿀 때마다 신청자에게 안내가 자동으로 나가요.' });
+  return { ok: true, v: 3, code: code, notified: notified };
 }
 
 /** 새 열 제목·개설신청 탭 미리 만들기 (편집기에서 한 번 실행해도 되고, 첫 신청 때 자동으로도 생김) */
@@ -900,6 +910,7 @@ function v3Resend_(data) {
 function onStatusEditV3(e) {
   try {
     var sh = e.range.getSheet();
+    if (sh.getName() === V2_HOST_SHEET) return v16HostStatusEdit_(e, sh);
     var v = String(e.value || '').trim();
     if ((sh.getName() !== SHEET_APPLY && sh.getName() !== SHEET_RENT) || e.range.getRow() < 2 || (v !== '입금확인' && v !== '신청완료')) return;
     var head = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(function (h) { return String(h || '').trim(); });
@@ -1308,4 +1319,138 @@ function v14Date_(v, at) {
     return y + '-' + ('0' + m[1]).slice(-2) + '-' + ('0' + m[2]).slice(-2);
   }
   return '';
+}
+
+// ══ v16 모임 개설 신청 진행 상태 (2026-10) ═══════════════════════════
+// 개설신청 탭 '상태' 칸 드롭다운: 접수 → 접수완료 → 모임등록 (+ 보류: 안내 없음)
+// 접수완료·모임등록으로 바꾸면 신청자(이메일)에게 안내 메일(+문자 설정 시 문자)이 자동 발송.
+// 신청 직후에는 접수 확인 메일이 나가고 '신청번호'(BH-…)가 시트에 기록됨.
+var V16_STATUS = ['접수', '접수완료', '모임등록', '보류'];
+
+function v16Cell_(v) {
+  if (v instanceof Date) {
+    var k = new Date(v.getTime() + 9 * 3600e3);
+    return (k.getUTCHours() === 0 && k.getUTCMinutes() === 0) ? (k.getUTCMonth() + 1) + '월 ' + k.getUTCDate() + '일 (' + V3_WD[k.getUTCDay()] + ')' : v3Fmt_(v);
+  }
+  return String(v == null ? '' : v).trim();
+}
+function v16Norm_(s) { return String(s || '').toLowerCase().replace(/[\s·.,:;!?'"“”‘’《》〈〉()\[\]\-_\/]/g, ''); }
+/** 모임 제목이 사이트의 등록된 모임과 한 곳만 맞을 때 그 모임 (애매하면 null) */
+function v16FindMoim_(title) {
+  var n = v16Norm_(title);
+  if (n.length < 3) return null;
+  try {
+    var hit = v12Catalog_().items.filter(function (i) {
+      return [i.title, i.sheetName].some(function (t) {
+        var m = v16Norm_(t);
+        return m && (m === n || (Math.min(m.length, n.length) >= 4 && (m.indexOf(n) > -1 || n.indexOf(m) > -1)));
+      });
+    });
+    return hit.length === 1 ? hit[0] : null;
+  } catch (e) { return null; }
+}
+function v16Price_(p) { var s = String(p == null ? '' : p).trim(); return /^\d+$/.test(s) ? v3Won_(Number(s)) : s; }
+
+function v16Info_(d, code) {
+  return { name: String(d.name || ''), code: code, title: String(d.title || ''),
+    when: [d.date1, d.date2].map(v16Cell_).filter(String).join(' / '), space: String(d.space || ''), capacity: d.capacity || '', price: v16Price_(d.price),
+    posterUrl: v3Site_('open/#poster'), instagram: v3Insta_(), siteUrl: v3Site_('') };
+}
+function v16Sms_(stage, v) {
+  var head = '[비북스] ' + v.name + '님, ';
+  if (stage === 'received') return head + '모임 개설 신청이 접수됐어요.\n모임 ' + v.title + '\n신청번호 ' + v.code + '\n확인 후 접수 완료 안내를 드릴게요.';
+  if (stage === 'confirmed') return head + '모임 개설 접수가 완료됐어요.\n모임 ' + v.title + '\n신청번호 ' + v.code + '\n일정·공간을 맞춰 모임 등록을 준비할게요.';
+  return head + v.title + ' 모임이 등록됐어요.\n' + (v.pageUrl || v.siteUrl) + '\n참가자에게 이 주소를 공유해 주세요.';
+}
+/** 한 단계 안내 보내기 → {email, alimtalk, sms} */
+function v16SendHost_(stage, d, code, phone, email) {
+  var v = v16Info_(d, code);
+  if (stage === 'listed') { var m = v16FindMoim_(v.title); if (m) v.pageUrl = v3Site_('m/' + m.slug + '/'); }
+  var mail = m4HostMail_(stage, v);
+  var key = { received: 'TPL_HOST_RECEIVED', confirmed: 'TPL_HOST_CONFIRMED', listed: 'TPL_HOST_LISTED' }[stage];
+  var t = v5Notify_(phone, key, { '#{이름}': v.name, '#{모임명}': v.title, '#{신청번호}': code, '#{확인링크}': v.pageUrl || v.siteUrl }, v16Sms_(stage, v), '모임 개설 안내');
+  return { email: v3MailHtml_(email, mail), alimtalk: t.alimtalk, sms: t.sms };
+}
+
+/** 개설신청 '상태' 편집 → 접수완료 · 모임등록 안내 (onStatusEditV3에서 호출) */
+function v16HostStatusEdit_(e, sh) {
+  var v = String(e.value || '').trim();
+  if (e.range.getRow() < 2 || (v !== '접수완료' && v !== '모임등록')) return;
+  if (e.oldValue !== undefined && String(e.oldValue).trim() === v) return;
+  var row = e.range.getRow();
+  v2Columns_(sh, ['신청번호', '알림']);
+  var head = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0].map(function (h) { return String(h || '').trim(); });
+  if (head[e.range.getColumn() - 1] !== '상태') return;
+  var r = sh.getRange(row, 1, 1, head.length).getValues()[0];
+  function f(n) { return r[head.indexOf(n)]; }
+  var ci = head.indexOf('신청번호'), code = String(r[ci] || '');
+  if (!code) { code = v3NewCode_('BH'); sh.getRange(row, ci + 1).setValue(code); }
+  var d = { name: f('호스트'), title: f('모임제목'), date1: f('희망일정1'), date2: f('희망일정2'), space: f('희망공간'), capacity: f('정원'), price: f('참가비') };
+  var stage = v === '접수완료' ? 'confirmed' : 'listed';
+  var n = v16SendHost_(stage, d, code, f('연락처'), f('이메일'));
+  v3Log_(V2_HOST_SHEET, row, v + ' 안내 메일 ' + n.email + ' · 알림톡 ' + n.alimtalk + ' · 문자 ' + n.sms);
+}
+
+/** 개설신청 탭 준비: 신청번호·알림 열, 상태 드롭다운·색, 기존 행 신청번호 채우기 (안내는 보내지 않음). 멱등 */
+function v16HostFlow_() {
+  var sh = v2HostSheet_();
+  var cols = v2Columns_(sh, ['신청번호', '알림', '상태']);
+  var last = sh.getLastRow(), filled = 0, statusSet = 0;
+  if (last >= 2) {
+    var v = sh.getRange(2, 1, last - 1, sh.getLastColumn()).getValues();
+    v.forEach(function (r, i) {
+      if (!r[0]) return;
+      if (!r[cols['신청번호'] - 1]) { sh.getRange(i + 2, cols['신청번호']).setValue(v3NewCode_('BH')); filled++; }
+      if (!String(r[cols['상태'] - 1] || '').trim()) { sh.getRange(i + 2, cols['상태']).setValue('접수'); statusSet++; }
+    });
+  }
+  if (sh.getMaxRows() < 2000) sh.insertRowsAfter(sh.getMaxRows(), 2000 - sh.getMaxRows());
+  var col = cols['상태'], rng = sh.getRange(2, col, sh.getMaxRows() - 1, 1);
+  rng.setDataValidation(SpreadsheetApp.newDataValidation().requireValueInList(V16_STATUS, true).setAllowInvalid(true)
+    .setHelpText('접수완료·모임등록으로 바꾸면 신청자에게 안내 메일이 자동으로 나가요.').build());
+  var keep = sh.getConditionalFormatRules().filter(function (r) { return !r.getRanges().some(function (g) { return g.getColumn() === col && g.getNumColumns() === 1; }); });
+  function rule(t, bg, fg) { return SpreadsheetApp.newConditionalFormatRule().whenTextEqualTo(t).setBackground(bg).setFontColor(fg).setRanges([rng]).build(); }
+  keep.push(rule('접수', '#fff4d6', '#8a5a00'), rule('접수완료', '#e3eefb', '#1f4e8c'), rule('모임등록', '#dff3e4', '#1e6b3a'), rule('보류', '#eeeeee', '#777777'));
+  sh.setConditionalFormatRules(keep);
+  sh.getRange(1, col).setNote('접수 → 접수완료 → 모임등록\n접수완료·모임등록으로 바꾸면 신청자(이메일)에게 안내가 자동 발송돼요.\n보류: 안내 없음(직접 연락)');
+  return { ok: true, codesAdded: filled, statusFilled: statusSet };
+}
+
+/** 개설신청 탭 드롭다운·열을 처음 신청이 들어올 때 한 번만 준비 */
+function v16HostFlow_once_() {
+  var props = PropertiesService.getScriptProperties();
+  if (props.getProperty('V16_HOST_UI') === '1') return;
+  v16HostFlow_();
+  props.setProperty('V16_HOST_UI', '1');
+}
+
+// ── 모임 개설 신청 안내 (v16) ─────────────────────────────
+/** stage: received(접수) · confirmed(접수완료) · listed(모임등록). d: name, code, title, when, space, capacity, price, pageUrl, siteUrl, posterUrl, instagram */
+function m4HostMail_(stage, d) {
+  var P = {
+    received: { n: 1, badge: '개설 신청 접수', h: '개설 신청이 접수됐어요',
+      sub: m4Esc_(d.name) + '님, 비북스에서 모임을 열어 주셔서 고마워요.<br>담당자가 내용을 확인한 뒤 접수 완료 안내를 드릴게요.',
+      subject: '모임 개설 신청이 접수됐어요', pre: '신청번호 ' + d.code },
+    confirmed: { n: 2, badge: '접수 완료', h: '접수가 완료됐어요',
+      sub: m4Esc_(d.name) + '님, 보내 주신 내용을 확인했어요.<br>일정과 공간을 맞춰 모임 등록을 준비하고 있어요.',
+      subject: '모임 개설 접수가 완료됐어요', pre: d.title },
+    listed: { n: 3, badge: '모임 등록', badgeColor: M4.ok, h: '모임이 등록됐어요',
+      sub: m4Esc_(d.name) + '님의 모임이 비모임에 등록됐어요.<br>이제 참가 신청을 받을 수 있어요.',
+      subject: '모임이 등록됐어요', pre: d.title + ' · 비모임에 등록됐어요' }
+  }[stage];
+  var body = m4H1_(P.h, P.sub) +
+    m4Code_(d.code, '문의하실 때 이 신청번호를 알려 주세요.') +
+    m4Rows_([['모임', d.title], ['희망 일정', d.when], ['희망 공간', d.space], ['정원', d.capacity ? d.capacity + '명' : ''], ['참가비', d.price]]) +
+    m4Steps_([{ t: '접수', on: P.n >= 1 }, { t: '접수 완료', on: P.n >= 2 }, { t: '모임 등록', on: P.n >= 3 }]);
+  if (stage === 'listed') {
+    body += m4Button_(d.pageUrl || d.siteUrl, d.pageUrl ? '모임 페이지 보기' : '비모임 보러 가기') +
+      m4Small_('이제 이렇게 해 주세요', '참가자에게 모임 페이지 주소를 공유해 주세요.<br>신청자 현황을 볼 수 있는 호스트 전용 링크는 담당자가 따로 보내 드려요.');
+  } else if (stage === 'confirmed') {
+    body += m4Small_('다음 단계', '일정과 공간이 정해지면 모임 페이지를 열고 다시 알려 드려요.<br>수정할 내용이 있으면 인스타그램 DM(' + m4Esc_(d.instagram) + ')으로 알려 주세요.');
+  } else {
+    body += m4Small_('이후 진행', '1. 접수 완료 — 내용을 확인하면 메일로 알려 드려요.<br>2. 모임 등록 — 일정과 공간을 정한 뒤 모임 페이지를 열어요.') +
+      (d.posterUrl ? m4Small_('포스터 준비', '포스터는 <a href="' + m4Esc_(d.posterUrl) + '" style="color:' + M4.accentInk + ';">포스터 규격</a>에 맞춰 준비해 주세요.') : '');
+  }
+  return { subject: '[비북스 b.moim] ' + P.subject + ' (' + d.code + ')',
+    html: m4Layout_({ title: P.badge, badge: P.badge, badgeColor: P.badgeColor, preheader: P.pre, body: body, instagram: d.instagram, siteUrl: d.siteUrl }) };
 }

@@ -175,3 +175,34 @@ function m4OperatorMail_(d) {
     (d.todo ? m4Small_('처리 방법', d.todo) : '');
   return { subject: '[비모임 ' + d.kind + '] ' + d.headline, html: m4Layout_({ title: d.kind, badge: d.kind, preheader: d.headline, body: body, footnote: '비모임 운영자 알림 메일입니다.' }) };
 }
+
+// ── 모임 개설 신청 안내 (v16) ─────────────────────────────
+/** stage: received(접수) · confirmed(접수완료) · listed(모임등록). d: name, code, title, when, space, capacity, price, pageUrl, siteUrl, posterUrl, instagram */
+function m4HostMail_(stage, d) {
+  var P = {
+    received: { n: 1, badge: '개설 신청 접수', h: '개설 신청이 접수됐어요',
+      sub: m4Esc_(d.name) + '님, 비북스에서 모임을 열어 주셔서 고마워요.<br>담당자가 내용을 확인한 뒤 접수 완료 안내를 드릴게요.',
+      subject: '모임 개설 신청이 접수됐어요', pre: '신청번호 ' + d.code },
+    confirmed: { n: 2, badge: '접수 완료', h: '접수가 완료됐어요',
+      sub: m4Esc_(d.name) + '님, 보내 주신 내용을 확인했어요.<br>일정과 공간을 맞춰 모임 등록을 준비하고 있어요.',
+      subject: '모임 개설 접수가 완료됐어요', pre: d.title },
+    listed: { n: 3, badge: '모임 등록', badgeColor: M4.ok, h: '모임이 등록됐어요',
+      sub: m4Esc_(d.name) + '님의 모임이 비모임에 등록됐어요.<br>이제 참가 신청을 받을 수 있어요.',
+      subject: '모임이 등록됐어요', pre: d.title + ' · 비모임에 등록됐어요' }
+  }[stage];
+  var body = m4H1_(P.h, P.sub) +
+    m4Code_(d.code, '문의하실 때 이 신청번호를 알려 주세요.') +
+    m4Rows_([['모임', d.title], ['희망 일정', d.when], ['희망 공간', d.space], ['정원', d.capacity ? d.capacity + '명' : ''], ['참가비', d.price]]) +
+    m4Steps_([{ t: '접수', on: P.n >= 1 }, { t: '접수 완료', on: P.n >= 2 }, { t: '모임 등록', on: P.n >= 3 }]);
+  if (stage === 'listed') {
+    body += m4Button_(d.pageUrl || d.siteUrl, d.pageUrl ? '모임 페이지 보기' : '비모임 보러 가기') +
+      m4Small_('이제 이렇게 해 주세요', '참가자에게 모임 페이지 주소를 공유해 주세요.<br>신청자 현황을 볼 수 있는 호스트 전용 링크는 담당자가 따로 보내 드려요.');
+  } else if (stage === 'confirmed') {
+    body += m4Small_('다음 단계', '일정과 공간이 정해지면 모임 페이지를 열고 다시 알려 드려요.<br>수정할 내용이 있으면 인스타그램 DM(' + m4Esc_(d.instagram) + ')으로 알려 주세요.');
+  } else {
+    body += m4Small_('이후 진행', '1. 접수 완료 — 내용을 확인하면 메일로 알려 드려요.<br>2. 모임 등록 — 일정과 공간을 정한 뒤 모임 페이지를 열어요.') +
+      (d.posterUrl ? m4Small_('포스터 준비', '포스터는 <a href="' + m4Esc_(d.posterUrl) + '" style="color:' + M4.accentInk + ';">포스터 규격</a>에 맞춰 준비해 주세요.') : '');
+  }
+  return { subject: '[비북스 b.moim] ' + P.subject + ' (' + d.code + ')',
+    html: m4Layout_({ title: P.badge, badge: P.badge, badgeColor: P.badgeColor, preheader: P.pre, body: body, instagram: d.instagram, siteUrl: d.siteUrl }) };
+}

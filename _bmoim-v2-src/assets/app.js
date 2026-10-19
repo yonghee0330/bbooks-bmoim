@@ -284,12 +284,12 @@
     async resend(d) { return sheetPost({ action: 'resend', name: d.name, phone: d.phone }); },
     async hostApply(d) {
       try {
-        await sheetPost({ action: 'hostApply', month: SH.month, ...d });
+        const out = await sheetPost({ action: 'hostApply', month: SH.month, ...d });
+        return { ok: true, code: out?.code || '', notified: out?.notified || {} };
       } catch (e) {
         if (isUnknown(e)) { const err = new Error('fallback'); err.fallback = true; throw err; }
         throw e;
       }
-      return { ok: true, code: '' };
     },
     async rentBlocks() {
       // 날짜·공간·시간만 웹앱에서 받음 (시트는 비공개)
@@ -1228,9 +1228,10 @@
       if (SHEET) {
         try {
           setBusy(btn, true, '보내는 중…');
-          await api('hostApply', { ...data, consent, ref: refOut() });
+          const res = await api('hostApply', { ...data, consent, ref: refOut() });
           form.outerHTML = `<div class="card-form done"><div class="done-icon">✓</div><h3>개설 신청이 접수됐어요</h3>
-            <p class="muted">담당자가 확인 후 연락드릴게요. 포스터는 <a href="#poster">포스터 규격</a>에 맞춰 준비해 주세요.</p>
+            ${res.code ? `<div class="codecard"><span class="codecard-label">신청번호</span><div class="code-box">${esc(res.code)}</div></div>` : ''}
+            <p class="muted">${res.notified?.email === 'sent' ? '접수 확인 메일을 보냈어요. ' : ''}담당자가 확인하면 <b>접수 완료</b>, 모임이 열리면 <b>모임 등록</b> 안내를 메일로 드려요.<br>포스터는 <a href="#poster">포스터 규격</a>에 맞춰 준비해 주세요.</p>
             <a class="btn outline" href="${esc(page(''))}">비모임 둘러보기</a></div>`;
           return;
         } catch (err) {
