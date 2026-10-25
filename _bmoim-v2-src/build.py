@@ -246,6 +246,8 @@ def occurrences(item):
 
 
 def date_text(item, long=True):
+    if item.get('dateLabel'):  # 회차가 많은 모임: 직접 쓴 일시 문구 (예: 매주 토 14:00–15:30)
+        return item['dateLabel']
     occ = occurrences(item)
     if len(occ) == 1:
         o = occ[0]
@@ -260,6 +262,8 @@ def date_text(item, long=True):
 
 def card_date(item):
     """카드용 (도서 목록 카드 표기): 10.15 (목) 19:00  /  10.25 · 11.29 · 12.27 (일) 16:00"""
+    if item.get('cardDateLabel'):
+        return item['cardDateLabel']
     occ = occurrences(item)
     o = occ[0]
     if len(occ) == 1:
@@ -466,7 +470,10 @@ def moim_card(it, rel):
 </article>'''
 
 
-def refund_block(materials):
+def refund_block(materials, custom=None):
+    if custom:  # 모임별로 환불 규정이 다를 때 (moims.json refundNote: 문장 목록)
+        lis = ''.join(f'<li>{esc(r)}</li>' for r in custom)
+        return f'<ul class="refund-list">{lis}</ul>'
     rows = SITE['refund']['materials' if materials else 'noMaterials']
     kind = '재료 준비가 있는 모임' if materials else '재료 준비가 없는 모임'
     lis = ''.join(f'<li>{esc(r)}</li>' for r in rows)
@@ -642,6 +649,8 @@ def build_detail(it, others):
     when = ''.join(
         f'<li><time datetime="{iso(o["start"])}">{fdate(o["start"])} {ftime(o["start"])}–{ftime(o["end"])}</time>'
         f'{" · " + esc(o["space"]) if multi_space else ""}</li>' for o in occ)
+    if it.get('compactDates'):  # 회차가 많으면 날짜를 하나씩 나열하지 않고 기간·정기 문구만
+        when = ''
     if it.get('period'):
         when = f'<li class="muted">{esc(it["period"])}</li>' + when
     if it.get('regular'):
@@ -668,13 +677,15 @@ def build_detail(it, others):
 
     if it.get('applyUrl'):
         apply_btn = f'<a class="btn primary" href="{esc(it["applyUrl"])}" target="_blank" rel="noopener" data-apply-ext>{esc(it.get("applyLabel", "신청하러 가기"))}</a>'
-        apply_note = '이 행사는 파트너 페이지에서 신청합니다.'
+        apply_note = it.get('applyNote') or '이 행사는 파트너 페이지에서 신청합니다.'
     else:
         apply_btn = '<button type="button" class="btn primary" data-apply>신청하기</button>'
         apply_note = f'신청하면 신청번호가 나와요 · {SITE["payDeadlineHours"]}시간 안에 입금하면 확정' if SHEET else f'신청 후 {SITE["payDeadlineHours"]}시간 안에 입금하면 확정돼요 · 알림톡·메일로 안내'
 
     # 판권면 표기 (일시)
-    if len(occ) == 1:
+    if it.get('whenShort'):
+        when_short = it['whenShort']
+    elif len(occ) == 1:
         o = occ[0]
         when_short = f'{fdate(o["start"])} {ftime(o["start"])}–{ftime(o["end"])}'
     else:
@@ -748,7 +759,7 @@ def build_detail(it, others):
 
   <section class="d-sec">
     <h2>환불 규정</h2>
-    {refund_block(it.get("materials"))}
+    {refund_block(it.get("materials"), it.get("refundNote"))}
   </section>
 
   <section class="d-sec more">

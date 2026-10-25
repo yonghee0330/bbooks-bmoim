@@ -111,7 +111,7 @@
     if (info.state === 'ended') return ev ? '행사 종료' : '모임 종료';
     if (info.state === 'full') return '모집 완료';
     if (info.state === 'closed') return info.external ? '접수 마감' : '신청 마감';
-    if (info.external) return '파트너 신청';
+    if (info.external) return item.stateLabel || '파트너 신청';
     if (!info.known) return '모집 중';
     const showSeats = info.single ? info.single.filled >= 3 : false;
     if (!showSeats) return '모집 중';
@@ -838,7 +838,7 @@
       const label = stateLabel(info, item);
       const closed = ['ended', 'full', 'closed'].includes(info.state);
       const badge = $('[data-badge]', card);
-      const bt = info.external && !closed ? '파트너 신청' : badgeText(info);
+      const bt = info.external && !closed ? (item.badge || '파트너 신청') : badgeText(info);
       badge.hidden = !bt;
       badge.textContent = bt;
       badge.className = 'ribbon' + (info.external ? ' dark' : '');
@@ -848,7 +848,7 @@
       card.classList.toggle('is-closed', closed);
       const seats = $('[data-seats]', card);
       seats.className = 'seats';
-      if (info.external) seats.textContent = `선착순 ${item.sessions[0].capacity}명`;
+      if (info.external) seats.textContent = item.seatsText || `선착순 ${item.sessions[0].capacity}명`;
       else if (closed) { seats.textContent = label; seats.classList.add('off'); }
       else if (info.known && info.single && info.single.filled >= 3) {
         seats.textContent = `남은 자리 ${info.single.remaining}/${info.single.cap}`;
@@ -1055,10 +1055,10 @@
       const label = stateLabel(info, item);
       const closed = ['ended', 'full', 'closed'].includes(info.state);
       const badge = $('.d-poster [data-badge]');
-      const bt = closed ? label : badgeText(info);
+      const bt = closed ? label : (info.external ? (item.badge || '') : badgeText(info));
       badge.hidden = !bt;
       badge.textContent = bt;
-      badge.className = 'ribbon' + (closed ? ' dark' : '');
+      badge.className = 'ribbon' + (closed || info.external ? ' dark' : '');
 
       $$('[data-apply], [data-apply-ext]').forEach(b => {
         if (closed) {
