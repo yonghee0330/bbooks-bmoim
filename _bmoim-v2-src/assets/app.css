@@ -820,8 +820,12 @@ body.has-cta .toast { bottom: 104px; }
 /* 신청창: 책 고르기 */
 .bk-pick .hint { margin: 2px 0 8px; }
 .bk-opts { display: grid; gap: 8px; }
-.bk-opt { display: grid; grid-template-columns: auto 40px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 12px 8px 10px; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; cursor: pointer; }
-.bk-opt:has(input:checked) { border-color: var(--accent); background: var(--accent-soft, #fbeee4); }
+.bk-opt { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; }
+.bk-opt.on { border-color: var(--accent); background: var(--accent-soft, #fbeee4); }
+.bk-qty { display: inline-flex; align-items: center; gap: 2px; border: 1px solid var(--line-2); border-radius: 999px; background: #fff; }
+.bk-qty button { width: 34px; height: 34px; border: 0; background: transparent; font-size: 20px; line-height: 1; cursor: pointer; color: var(--ink); border-radius: 50%; }
+.bk-qty button:active { background: var(--paper); }
+.bk-qty output { min-width: 22px; text-align: center; font-weight: 800; font-size: 15px; }
 .bk-opt img { width: 40px; height: 54px; object-fit: contain; background: #fff; border-radius: 2px; }
 .bk-opt-main { display: grid; min-width: 0; }
 .bk-opt-main b { font-size: 14.5px; }

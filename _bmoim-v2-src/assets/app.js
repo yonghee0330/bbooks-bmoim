@@ -721,10 +721,10 @@
     const bookHtml = books.length ? `<div class="field bk-pick">
         <span>함께 읽는 책 미리 신청 <small class="muted">(선택)</small></span>
         <p class="hint">고른 책은 비북스에서 준비해 둘게요. 모임 날 받아 가시면 돼요.</p>
-        <div class="bk-opts">${books.map(b => `<label class="bk-opt"><input type="checkbox" name="book" value="${esc(b.id)}">
+        <div class="bk-opts">${books.map(b => `<div class="bk-opt" data-book="${esc(b.id)}">
           <img src="${esc(imgUrl(b.cover))}" alt="" loading="lazy">
-          <span class="bk-opt-main"><b>${esc(b.title)}</b><small>${esc(b.author)} · ${esc(b.publisher)}</small></span>
-          <span class="bk-opt-price">${won(b.price)}</span></label>`).join('')}</div>
+          <span class="bk-opt-main"><b>${esc(b.title)}</b><small>${esc(b.author)} · ${won(b.price)}</small></span>
+          <span class="bk-qty" role="group" aria-label="${esc(b.title)} 수량"><button type="button" data-q="-1" aria-label="한 권 빼기">−</button><output data-qv>0</output><button type="button" data-q="1" aria-label="한 권 더하기">+</button></span></div>`).join('')}</div>
         <div class="bk-pay" data-bookpay hidden role="radiogroup" aria-label="도서비 결제 방법">
           <label class="bk-radio"><input type="radio" name="bookpay" value="prepay" checked><span><b>회비와 함께 미리 입금</b><small data-bk-prepay></small></span></label>
           <label class="bk-radio"><input type="radio" name="bookpay" value="onsite"><span><b>책은 모임 날 현장에서 결제</b><small>회비만 먼저 입금해요</small></span></label>
@@ -767,10 +767,22 @@
       return v ? opts.find(o => `${o.type}:${o.id}` === v) : null;
     };
     // 책 고르기: 선택한 책과 도서비 결제 방법(회비와 함께 미리 입금 / 현장 결제)
+    const bq = {};  // 책별 수량
+    const BOOK_MAX = 9;
     const bookState = () => {
-      const sel = books.filter(b => $(`input[name="book"][value="${b.id}"]`, form)?.checked);
-      return { sel, sum: sel.reduce((a, b) => a + b.price, 0), mode: $('input[name="bookpay"]:checked', form)?.value || 'prepay' };
+      const sel = books.filter(b => (bq[b.id] || 0) > 0).map(b => ({ ...b, qty: bq[b.id] }));
+      return { sel, n: sel.reduce((a, b) => a + b.qty, 0), sum: sel.reduce((a, b) => a + b.price * b.qty, 0), mode: $('input[name="bookpay"]:checked', form)?.value || 'prepay' };
     };
+    $('.bk-opts', form)?.addEventListener('click', e => {
+      const btn = e.target.closest('[data-q]');
+      if (!btn) return;
+      const row = btn.closest('[data-book]');
+      const id = row.dataset.book;
+      bq[id] = Math.max(0, Math.min(BOOK_MAX, (bq[id] || 0) + Number(btn.dataset.q)));
+      $('[data-qv]', row).textContent = bq[id];
+      row.classList.toggle('on', bq[id] > 0);
+      refresh();
+    });
     // 참가자(아이) 수와 이름·나이 입력칸
     const countSel = $('select[name="pcount"]', form);
     const pCount = () => (countSel ? Number(countSel.value) || 1 : 1);
@@ -800,7 +812,7 @@
       if (pf.length && n !== renderedN) renderPeople();
       const fee = o.price * n;
       const feeTxt = `회비 ${won(o.price)}${n > 1 ? ` × ${n}명` : ''}`;
-      const bs = books.length ? bookState() : { sel: [], sum: 0, mode: 'prepay' };
+      const bs = books.length ? bookState() : { sel: [], n: 0, sum: 0, mode: 'prepay' };
       const split = $('[data-split]', form);
       if (books.length) {
         $('[data-bookpay]', form).hidden = !bs.sel.length;
@@ -811,14 +823,14 @@
       $('[data-amount]', form).textContent = won(total);
       if (bs.sel.length) {
         split.hidden = false;
-        split.textContent = bs.mode === 'prepay' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.sel.length}권)` : `${feeTxt}만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
+        split.textContent = bs.mode === 'prepay' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권)` : `${feeTxt}만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
       } else if (n > 1) {
         split.hidden = false;
         split.textContent = `${feeTxt} = ${won(fee)}`;
       } else if (split) split.hidden = true;
       submitBtn.textContent = `신청하기 · ${won(total)}`;
     };
-    form.addEventListener('change', e => { if (['opt', 'book', 'bookpay', 'pcount'].includes(e.target.name)) refresh(); });
+    form.addEventListener('change', e => { if (['opt', 'bookpay', 'pcount'].includes(e.target.name)) refresh(); });
     $('[data-copy-bank]', form).addEventListener('click', e => copy(e.currentTarget.dataset.copyBank, '계좌번호를 복사했어요'));
     if (pf.length) renderPeople();
     refresh();
@@ -848,9 +860,9 @@
       const consent = readConsent(consentBox);
       if (!consent.ok) { consentBox.scrollIntoView({ block: 'center', behavior: 'smooth' }); return formAlert(alertEl, '필수 동의 항목에 체크해 주세요.'); }
       setBusy(submitBtn, true, '신청 중…');
-      const bs = books.length ? bookState() : { sel: [], sum: 0, mode: 'prepay' };
+      const bs = books.length ? bookState() : { sel: [], n: 0, sum: 0, mode: 'prepay' };
       const prepay = bs.sel.length > 0 && bs.mode === 'prepay';
-      const bookText = bs.sel.length ? `책 ${bs.sel.map(b => `《${b.title}》`).join(', ')} · 도서비 ${won(bs.sum)} ${prepay ? '(선입금 포함)' : '(현장 결제)'}` : '';
+      const bookText = bs.sel.length ? `책 ${bs.sel.map(b => `《${b.title}》${b.qty > 1 ? ` ×${b.qty}` : ''}`).join(', ')} · 총 ${bs.n}권 · 도서비 ${won(bs.sum)} ${prepay ? '(선입금 포함)' : '(현장 결제)'}` : '';
       const feeTxt = `회비 ${won(o.price)}${n > 1 ? ` × ${n}명` : ''}`;
       const payNote = bs.sel.length ? (prepay ? `${feeTxt} + 도서비 ${won(bs.sum)}` : `${feeTxt} · 도서비 ${won(bs.sum)}은 모임 날 현장 결제`) : (n > 1 ? feeTxt : '');
       try {
