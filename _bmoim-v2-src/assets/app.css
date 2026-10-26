@@ -833,3 +833,4 @@ body.has-cta .toast { bottom: 104px; }
 .bk-radio span { display: grid; gap: 2px; }
 .bk-radio small { color: var(--muted); font-size: 12.5px; }
 .paybox-split { margin: -4px 0 10px; }
+.pf-note { margin: -4px 0 6px; }

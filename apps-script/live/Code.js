@@ -444,7 +444,7 @@ function appendApplyV2_(data) {
     data.amount != null ? data.amount : '',
     reqDate,
     ''
-  ], {
+  ], v16ExtraApply_(data, {
     '신청 메모': v2Clean_(data.note, 500),
     '도서 요청': v2Clean_(data.books, 300),
     '이메일': v2Email_(data.email),
@@ -455,7 +455,7 @@ function appendApplyV2_(data) {
     '상태': follow ? '' : (amount > 0 ? '입금대기' : '신청확정'),
     '입금기한': follow || amount <= 0 ? '' : deadline,
     '메일정보': follow ? '' : JSON.stringify(v3MailInfo_(data))
-  });
+  }));
   var notified = follow ? {} : v3NotifyApply_(data, code, deadline, sheet.getLastRow());
   return { ok: true, v: 3, code: code, amount: amount, deadline: deadline.getTime(), notified: notified };
 }
@@ -798,13 +798,13 @@ function v3NotifyApply_(data, code, deadline, sheetRow) {
   var mail = m4ApplyMail_({
     name: vars['#{이름}'], title: info.title, kindLabel: info.kindLabel, when: info.when, place: info.place, poster: info.poster, pageUrl: info.pageUrl,
     code: code, myUrl: vars['#{확인링크}'], amount: vars['#{금액}'], amountNum: amount, bank: vars['#{계좌}'], deadline: vars['#{기한}'],
-    memo: String(data.memo || ''), books: String(data.books || ''), payNote: v2Clean_(data.payNote, 160), refund: String(data.refund || ''), instagram: v3Insta_(), siteUrl: v3Site_('')
+    memo: String(data.memo || ''), books: String(data.books || ''), payNote: v2Clean_(data.payNote, 160), participant: v16Participant_(data), refund: String(data.refund || ''), instagram: v3Insta_(), siteUrl: v3Site_('')
   });
   var t = v5Notify_(data.phone, 'TPL_APPLY', vars, v5SmsApply_(vars, amount), '비모임 신청 접수');
   var n = { email: v3MailHtml_(data.email, mail), alimtalk: t.alimtalk, sms: t.sms };
   v3Ops_({
     kind: '신청', headline: info.title + ' · ' + vars['#{이름}'], sub: info.when,
-    rows: [['신청번호', code], ['이름', vars['#{이름}']], ['연락처', data.phone], ['이메일', v2Email_(data.email)], ['금액', vars['#{금액}']], ['결제 내역', v2Clean_(data.payNote, 160)],
+    rows: [['신청번호', code], ['이름', vars['#{이름}']], ['연락처', data.phone], ['이메일', v2Email_(data.email)], ['참가 아이', v16Participant_(data)], ['금액', vars['#{금액}']], ['결제 내역', v2Clean_(data.payNote, 160)],
       ['입금 기한', amount > 0 ? vars['#{기한}'] : ''], ['메모', data.memo || ''], ['도서 요청', data.books || ''], ['유입', data.ref || '']],
     todo: amount > 0 ? '입금이 확인되면 모임신청 탭 <b>상태</b>를 <b>입금확인</b>으로 바꿔 주세요. 참가 확정 메일이 자동으로 나가요.<br>기한까지 입금이 없으면 <b>취소</b>로 바꾸면 남은 자리로 돌아가요.' : ''
   });
@@ -1071,6 +1071,7 @@ function m4ApplyMail_(d) {
     m4Steps_(paid ? [{ t: '신청 접수', on: true }, { t: '입금', on: false }, { t: '확정 메일', on: false }, { t: '비북스에서 만나요', on: false }]
       : [{ t: '신청 접수', on: true }, { t: '비북스에서 만나요', on: false }]) +
     m4Button_(d.myUrl, '내 신청 확인하기') +
+    (d.participant ? m4Small_('참가하는 아이', m4Esc_(d.participant)) : '') +
     (d.books ? m4Small_('함께 신청한 도서', m4Esc_(d.books)) : '') +
     (d.memo ? m4Small_('남겨 주신 메모', m4Esc_(d.memo)) : '') +
     m4Small_('오시는 길', m4Esc_(M4.address) + '<br><a href="' + M4.mapUrl + '" style="color:' + M4.accentInk + ';">네이버 지도에서 보기</a>') +
@@ -1287,7 +1288,7 @@ function v12Board_(data) {
     return { name: name, month: String(r[3] || '').trim(), it: it };
   });
   var a = v3Rows_(SHEET_APPLY), H = a.head;
-  var ix = { st: H.indexOf('상태'), memo: H.indexOf('신청 메모'), books: H.indexOf('도서 요청'), code: H.indexOf('신청번호') };
+  var ix = { st: H.indexOf('상태'), memo: H.indexOf('신청 메모'), books: H.indexOf('도서 요청'), code: H.indexOf('신청번호'), pn: H.indexOf('참가자 이름'), pa: H.indexOf('참가자 나이') };
   var out = moims.map(function (m) {
     var months = m.it ? m.it.months : [m.month];
     var apps = a.rows.filter(function (r) { return String(r[2] || '').trim() === m.name && months.indexOf(String(r[1] || '').trim()) > -1 && String(r[4] || '').trim(); })
@@ -1297,7 +1298,8 @@ function v12Board_(data) {
         if (!st && note.indexOf('취소') > -1) st = '취소';
         return { session: formatSession_(r[3]), name: String(r[4]).trim(), phone: formatPhone_(r[5]), amount: Number(r[6]) || 0, status: st || '신청',
           at: r[0] instanceof Date ? r[0].getTime() : Date.parse(r[0]) || 0,
-          memo: ix.memo > -1 ? String(r[ix.memo] || '') : '', books: ix.books > -1 ? String(r[ix.books] || '') : '' };
+          memo: ix.memo > -1 ? String(r[ix.memo] || '') : '', books: ix.books > -1 ? String(r[ix.books] || '') : '',
+          child: ix.pn > -1 ? String(r[ix.pn] || '') : '', age: ix.pa > -1 ? String(r[ix.pa] || '') : '' };
       });
     var sess = m.it ? m.it.sessions : [{ label: '신청자', sheetSession: '', capacity: 0 }];
     return { slug: m.it ? m.it.slug : '', title: m.it ? m.it.title : m.name, sessions: sess.map(function (s) {
@@ -1475,4 +1477,17 @@ function m4HostMail_(stage, d) {
   }
   return { subject: '[비북스 b.moim] ' + P.subject + ' (' + d.code + ')',
     html: m4Layout_({ title: P.badge, badge: P.badge, badgeColor: P.badgeColor, preheader: P.pre, body: body, instagram: d.instagram, siteUrl: d.siteUrl }) };
+}
+
+
+// ══ v20 참가 아이 이름·나이 (아동 대상 모임) ═══════════════════════════
+// 클라이언트가 pName·pAge 를 보내면 모임신청 탭의 '참가자 이름'·'참가자 나이' 열(없으면 생성)에 기록. 허용 열은 이 둘뿐.
+function v16ExtraApply_(data, extra) {
+  var n = v2Clean_(data.pName, 40), a = v2Clean_(data.pAge, 20);
+  if (n || a) { extra['참가자 이름'] = n; extra['참가자 나이'] = a; }
+  return extra;
+}
+function v16Participant_(data) {
+  var n = v2Clean_(data.pName, 40), a = v2Clean_(data.pAge, 20);
+  return n ? n + (a ? ' (' + a + ')' : '') : '';
 }

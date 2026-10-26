@@ -232,6 +232,7 @@
       const pkg = d.optionType === 'package' ? (item.packages || []).find(p => p.id === d.optionId) : null;
       const noteBase = [
         pkg ? (pkg.sheetNote || pkg.name) : '',
+        d.pName ? `참가 아이 ${d.pName}${d.pAge ? `(${d.pAge})` : ''}` : '',
         d.memo ? `요청: ${d.memo}` : '',
         d.consent?.marketing ? '소식수신 동의' : '',
         d.ref && d.ref !== 'direct' ? `유입 ${d.ref}` : ''
@@ -245,7 +246,7 @@
           note: noteBase, books: i === 0 ? (d.extra || '') : '', date: sheetNow()
         };
         const out = await sheetPostV2(
-          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '', payNote: d.payNote || '',
+          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '', payNote: d.payNote || '', pName: d.pName || '', pAge: d.pAge || '',
             // 안내 메일용: 모임 이름·포스터·페이지·장소·메모·환불 규정
             title: item.title, kindLabel: [item.kindLabel, ...(item.tags || []).slice(0, 1)].filter(Boolean).join(' · '),
             place: [...new Set(sessions.flatMap(x => x.dates.map(dd => dd.space)))].join(' · '),
@@ -712,6 +713,8 @@
       <label class="opt${o.info.open ? '' : ' disabled'}"><input type="radio" name="opt" value="${o.type}:${o.id}" ${o.info.open ? '' : 'disabled'} ${defaultOpt === o ? 'checked' : ''}>
         <span class="opt-main"><b>${esc(o.label)}</b><small>${esc(o.sub)} · ${esc(optStatus(o.info))}</small></span><span class="opt-price">${won(o.price)}</span></label>`).join('')}</div></div>` : '';
     const ex = item.extraField;
+    const pf = item.applyFields || [];
+    const pfHtml = pf.length ? `<div class="row2">${pf.map(f => `<label class="field"><span>${esc(f.label)}${f.required ? ' *' : ''}</span><input name="pf_${esc(f.id)}" autocomplete="off" placeholder="${esc(f.placeholder || '')}"${f.required ? ' required' : ''}></label>`).join('')}</div>${item.applyFieldsNote ? `<p class="hint pf-note">${esc(item.applyFieldsNote)}</p>` : ''}` : '';
     const books = item.books || [];
     const bookHtml = books.length ? `<div class="field bk-pick">
         <span>함께 읽는 책 미리 신청 <small class="muted">(선택)</small></span>
@@ -729,9 +732,10 @@
       html: `<form class="form" novalidate>
         ${optHtml}
         <div class="row2">
-          <label class="field"><span>이름 *</span><input name="name" autocomplete="name" required></label>
+          <label class="field"><span>${esc(item.nameLabel || '이름')} *</span><input name="name" autocomplete="name" required></label>
           <label class="field"><span>휴대폰 *</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="010-0000-0000" required></label>
         </div>
+        ${pfHtml}
         <label class="field"><span>이메일 <small class="muted">${SHEET ? '(선택 · 모임 안내와 비북스 소식을 메일로 받아요)' : '(선택 · 안내 메일을 함께 받아요)'}</small></span><input name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com"></label>
         ${ex ? `<label class="field"><span>${esc(ex.label)}</span>${ex.hint ? `<p class="hint">${esc(ex.hint)}</p>` : ''}<textarea name="extra" rows="2" placeholder="${esc(ex.placeholder || '')}"></textarea></label>` : ''}
         ${bookHtml}
@@ -797,7 +801,11 @@
       const phone = F('phone').value.trim();
       const email = F('email').value.trim();
       if (!o) return formAlert(alertEl, '회차를 선택해 주세요.');
-      if (!name) { markInvalid(F('name')); return formAlert(alertEl, '이름을 입력해 주세요.'); }
+      if (!name) { markInvalid(F('name')); return formAlert(alertEl, `${item.nameLabel || '이름'}을 입력해 주세요.`); }
+      for (const f of pf) {
+        const el = F(`pf_${f.id}`);
+        if (f.required && !el.value.trim()) { markInvalid(el); return formAlert(alertEl, `${f.label}을 입력해 주세요.`); }
+      }
       if (!validPhone(phone)) { markInvalid(F('phone')); return formAlert(alertEl, '휴대폰 번호를 확인해 주세요. (알림톡이 이 번호로 가요)'); }
       if (!validEmail(email)) { markInvalid(F('email')); return formAlert(alertEl, '이메일 형식을 확인해 주세요.'); }
       const consentBox = $('[data-consent-box]', form);
@@ -813,6 +821,7 @@
           slug: item.slug, title: item.title, optionType: o.type, optionId: o.id, optionLabel: o.label, sessionIds: o.sessionIds,
           amount: o.price + (prepay ? bs.sum : 0), name, phone, email,
           extra: [F('extra')?.value.trim(), bookText].filter(Boolean).join(' · '), payNote, memo: F('memo').value.trim(),
+          pName: pf[0] ? F(`pf_${pf[0].id}`).value.trim() : '', pAge: pf[1] ? F(`pf_${pf[1].id}`).value.trim() : '',
           consent, ref: refOut(), website: F('website').value
         });
         res.payNote = payNote;
@@ -1341,8 +1350,8 @@
             ${m.sessions.map(s => {
               const act = s.applicants.filter(a => !String(a.status).startsWith('취소'));
               return `<div class="dash-sess"><h3><span>${esc(s.label)}</span><span class="muted small">${act.length} / ${s.capacity}명</span></h3>
-                ${s.applicants.length ? `<div class="table-wrap" style="border:0"><table class="dtable"><thead><tr><th>이름</th><th>연락처</th><th>상태</th><th>신청일</th><th>메모</th></tr></thead><tbody>
-                ${s.applicants.sort((a, b) => a.at - b.at).map(a => `<tr><td>${esc(a.name)}</td><td>${/\d{4}$/.test(a.phone) && !a.phone.includes('*') ? `<a href="tel:${esc(a.phone.replace(/\D/g, ''))}">${esc(a.phone)}</a>` : esc(a.phone)}</td><td><span class="st ${PAID_ST.includes(a.status) ? 'st-paid' : String(a.status).startsWith('취소') ? 'st-cancel' : 'st-pending'}">${esc(dashLabel(a.status))}</span></td><td>${esc(fshort(a.at))}</td><td>${esc([a.memo, a.books ? '도서: ' + a.books : ''].filter(Boolean).join(' · '))}</td></tr>`).join('')}
+                ${s.applicants.length ? `<div class="table-wrap" style="border:0"><table class="dtable"><thead><tr><th>이름</th>${s.applicants.some(a => a.child || a.age) ? '<th>참가 아이</th>' : ''}<th>연락처</th><th>상태</th><th>신청일</th><th>메모</th></tr></thead><tbody>
+                ${s.applicants.sort((a, b) => a.at - b.at).map(a => `<tr><td>${esc(a.name)}</td>${s.applicants.some(x => x.child || x.age) ? `<td>${esc(a.child || '')}${a.age ? ` (${esc(a.age)})` : ''}</td>` : ''}<td>${/\d{4}$/.test(a.phone) && !a.phone.includes('*') ? `<a href="tel:${esc(a.phone.replace(/\D/g, ''))}">${esc(a.phone)}</a>` : esc(a.phone)}</td><td><span class="st ${PAID_ST.includes(a.status) ? 'st-paid' : String(a.status).startsWith('취소') ? 'st-cancel' : 'st-pending'}">${esc(dashLabel(a.status))}</span></td><td>${esc(fshort(a.at))}</td><td>${esc([a.memo, a.books ? '도서: ' + a.books : ''].filter(Boolean).join(' · '))}</td></tr>`).join('')}
                 </tbody></table></div>` : '<p class="dash-empty">아직 신청이 없어요.</p>'}</div>`;
             }).join('')}</section>`;
         }).join('')}

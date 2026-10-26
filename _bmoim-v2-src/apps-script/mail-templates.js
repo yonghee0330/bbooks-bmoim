@@ -127,6 +127,7 @@ function m4ApplyMail_(d) {
     m4Steps_(paid ? [{ t: '신청 접수', on: true }, { t: '입금', on: false }, { t: '확정 메일', on: false }, { t: '비북스에서 만나요', on: false }]
       : [{ t: '신청 접수', on: true }, { t: '비북스에서 만나요', on: false }]) +
     m4Button_(d.myUrl, '내 신청 확인하기') +
+    (d.participant ? m4Small_('참가하는 아이', m4Esc_(d.participant)) : '') +
     (d.books ? m4Small_('함께 신청한 도서', m4Esc_(d.books)) : '') +
     (d.memo ? m4Small_('남겨 주신 메모', m4Esc_(d.memo)) : '') +
     m4Small_('오시는 길', m4Esc_(M4.address) + '<br><a href="' + M4.mapUrl + '" style="color:' + M4.accentInk + ';">네이버 지도에서 보기</a>') +
