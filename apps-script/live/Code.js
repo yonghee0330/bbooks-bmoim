@@ -189,7 +189,9 @@ function getCounts_(month) {
 
   var rows = sheet.getDataRange().getValues();
   var counts = {};
-  var statusCol = rows.length ? rows[0].map(function (h) { return String(h || '').trim(); }).indexOf('상태') : -1;
+  var head0 = rows.length ? rows[0].map(function (h) { return String(h || '').trim(); }) : [];
+  var statusCol = head0.indexOf('상태');
+  var headCountCol = head0.indexOf('참가 인원');  // 한 신청에 여러 명(아이 여러 명)이면 인원수로 셈
   for (var i = 1; i < rows.length; i++) {
     var row = rows[i];
     if (String(row[1] || '').trim() !== month) continue;
@@ -200,10 +202,11 @@ function getCounts_(month) {
     var session = String(row[3] || '').trim();
     var name = String(row[4] || '').trim();
     if (!moimName || !name) continue;
+    var persons = headCountCol > -1 ? Math.max(1, Math.round(Number(row[headCountCol]) || 1)) : 1;
     if (session) {
-      counts[moimName + '_' + session] = (counts[moimName + '_' + session] || 0) + 1;
+      counts[moimName + '_' + session] = (counts[moimName + '_' + session] || 0) + persons;
     }
-    counts[moimName] = (counts[moimName] || 0) + 1;
+    counts[moimName] = (counts[moimName] || 0) + persons;
   }
   return { counts: counts };
 }
@@ -1288,7 +1291,7 @@ function v12Board_(data) {
     return { name: name, month: String(r[3] || '').trim(), it: it };
   });
   var a = v3Rows_(SHEET_APPLY), H = a.head;
-  var ix = { st: H.indexOf('상태'), memo: H.indexOf('신청 메모'), books: H.indexOf('도서 요청'), code: H.indexOf('신청번호'), pn: H.indexOf('참가자 이름'), pa: H.indexOf('참가자 나이') };
+  var ix = { st: H.indexOf('상태'), memo: H.indexOf('신청 메모'), books: H.indexOf('도서 요청'), code: H.indexOf('신청번호'), pn: H.indexOf('참가자 이름'), pa: H.indexOf('참가자 나이'), pc: H.indexOf('참가 인원') };
   var out = moims.map(function (m) {
     var months = m.it ? m.it.months : [m.month];
     var apps = a.rows.filter(function (r) { return String(r[2] || '').trim() === m.name && months.indexOf(String(r[1] || '').trim()) > -1 && String(r[4] || '').trim(); })
@@ -1299,7 +1302,8 @@ function v12Board_(data) {
         return { session: formatSession_(r[3]), name: String(r[4]).trim(), phone: formatPhone_(r[5]), amount: Number(r[6]) || 0, status: st || '신청',
           at: r[0] instanceof Date ? r[0].getTime() : Date.parse(r[0]) || 0,
           memo: ix.memo > -1 ? String(r[ix.memo] || '') : '', books: ix.books > -1 ? String(r[ix.books] || '') : '',
-          child: ix.pn > -1 ? String(r[ix.pn] || '') : '', age: ix.pa > -1 ? String(r[ix.pa] || '') : '' };
+          child: ix.pn > -1 ? v16Pair_(r[ix.pn], ix.pa > -1 ? r[ix.pa] : '') : '', age: '',
+          count: ix.pc > -1 ? Math.max(1, Math.round(Number(r[ix.pc]) || 1)) : 1 };
       });
     var sess = m.it ? m.it.sessions : [{ label: '신청자', sheetSession: '', capacity: 0 }];
     return { slug: m.it ? m.it.slug : '', title: m.it ? m.it.title : m.name, sessions: sess.map(function (s) {
@@ -1482,12 +1486,32 @@ function m4HostMail_(stage, d) {
 
 // ══ v20 참가 아이 이름·나이 (아동 대상 모임) ═══════════════════════════
 // 클라이언트가 pName·pAge 를 보내면 모임신청 탭의 '참가자 이름'·'참가자 나이' 열(없으면 생성)에 기록. 허용 열은 이 둘뿐.
+function v16People_(data) {
+  var out = [];
+  if (Object.prototype.toString.call(data.people) === '[object Array]') {
+    data.people.slice(0, 8).forEach(function (p) {
+      var n = v2Clean_(p && p.name, 40).replace(/,/g, ' '), a = v2Clean_(p && p.age, 20).replace(/,/g, ' ');
+      if (n || a) out.push({ name: n, age: a });
+    });
+  } else if (data.pName || data.pAge) {
+    out.push({ name: v2Clean_(data.pName, 40).replace(/,/g, ' '), age: v2Clean_(data.pAge, 20).replace(/,/g, ' ') });
+  }
+  return out;
+}
 function v16ExtraApply_(data, extra) {
-  var n = v2Clean_(data.pName, 40), a = v2Clean_(data.pAge, 20);
-  if (n || a) { extra['참가자 이름'] = n; extra['참가자 나이'] = a; }
+  var ps = v16People_(data);
+  if (ps.length) {
+    extra['참가 인원'] = ps.length;
+    extra['참가자 이름'] = ps.map(function (p) { return p.name; }).join(', ');
+    extra['참가자 나이'] = ps.map(function (p) { return p.age; }).join(', ');
+  }
   return extra;
 }
+function v16Pair_(names, ages) {
+  var n = String(names || '').split(',').map(function (x) { return x.trim(); }).filter(String);
+  var a = String(ages || '').split(',').map(function (x) { return x.trim(); });
+  return n.map(function (x, i) { return x + (a[i] ? ' (' + a[i] + ')' : ''); }).join(', ');
+}
 function v16Participant_(data) {
-  var n = v2Clean_(data.pName, 40), a = v2Clean_(data.pAge, 20);
-  return n ? n + (a ? ' (' + a + ')' : '') : '';
+  return v16People_(data).map(function (p) { return p.name + (p.age ? ' (' + p.age + ')' : ''); }).join(', ');
 }

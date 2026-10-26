@@ -232,7 +232,7 @@
       const pkg = d.optionType === 'package' ? (item.packages || []).find(p => p.id === d.optionId) : null;
       const noteBase = [
         pkg ? (pkg.sheetNote || pkg.name) : '',
-        d.pName ? `참가 아이 ${d.pName}${d.pAge ? `(${d.pAge})` : ''}` : '',
+        d.people?.length ? `참가 아이 ${d.people.map(p => `${p.name}${p.age ? `(${p.age})` : ''}`).join(', ')}` : '',
         d.memo ? `요청: ${d.memo}` : '',
         d.consent?.marketing ? '소식수신 동의' : '',
         d.ref && d.ref !== 'direct' ? `유입 ${d.ref}` : ''
@@ -246,7 +246,7 @@
           note: noteBase, books: i === 0 ? (d.extra || '') : '', date: sheetNow()
         };
         const out = await sheetPostV2(
-          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '', payNote: d.payNote || '', pName: d.pName || '', pAge: d.pAge || '',
+          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '', payNote: d.payNote || '', people: d.people || [],
             // 안내 메일용: 모임 이름·포스터·페이지·장소·메모·환불 규정
             title: item.title, kindLabel: [item.kindLabel, ...(item.tags || []).slice(0, 1)].filter(Boolean).join(' · '),
             place: [...new Set(sessions.flatMap(x => x.dates.map(dd => dd.space)))].join(' · '),
@@ -714,7 +714,9 @@
         <span class="opt-main"><b>${esc(o.label)}</b><small>${esc(o.sub)} · ${esc(optStatus(o.info))}</small></span><span class="opt-price">${won(o.price)}</span></label>`).join('')}</div></div>` : '';
     const ex = item.extraField;
     const pf = item.applyFields || [];
-    const pfHtml = pf.length ? `<div class="row2">${pf.map(f => `<label class="field"><span>${esc(f.label)}${f.required ? ' *' : ''}</span><input name="pf_${esc(f.id)}" autocomplete="off" placeholder="${esc(f.placeholder || '')}"${f.required ? ' required' : ''}></label>`).join('')}</div>${item.applyFieldsNote ? `<p class="hint pf-note">${esc(item.applyFieldsNote)}</p>` : ''}` : '';
+    const ac = item.applyCount || null;  // 참가 인원을 고르게 할 때 (예: 아이 여러 명)
+    const pv = {};  // 참가자별 입력값 보관 (인원이 바뀌어 다시 그려도 유지)
+    const pfHtml = pf.length ? `<div class="pf-box">${ac ? `<label class="field"><span>${esc(ac.label || '참가 인원')} *</span><select name="pcount"></select></label>` : ''}<div data-people></div>${item.applyFieldsNote ? `<p class="hint pf-note">${esc(item.applyFieldsNote)}</p>` : ''}</div>` : '';
     const books = item.books || [];
     const bookHtml = books.length ? `<div class="field bk-pick">
         <span>함께 읽는 책 미리 신청 <small class="muted">(선택)</small></span>
@@ -769,27 +771,56 @@
       const sel = books.filter(b => $(`input[name="book"][value="${b.id}"]`, form)?.checked);
       return { sel, sum: sel.reduce((a, b) => a + b.price, 0), mode: $('input[name="bookpay"]:checked', form)?.value || 'prepay' };
     };
+    // 참가자(아이) 수와 이름·나이 입력칸
+    const countSel = $('select[name="pcount"]', form);
+    const pCount = () => (countSel ? Number(countSel.value) || 1 : 1);
+    let renderedN = 0;
+    const renderPeople = () => {
+      const box = $('[data-people]', form);
+      if (!box) return;
+      const n = pCount();
+      box.innerHTML = Array.from({ length: n }, (_, i) => `<div class="row2">${pf.map((f, k) => `<label class="field"><span>${esc(f.label)}${n > 1 ? ` ${i + 1}` : ''}${f.required ? ' *' : ''}</span><input data-pi="${i}" data-pk="${k}" autocomplete="off" placeholder="${esc(f.placeholder || '')}" value="${esc(pv[`${i}:${k}`] || '')}"></label>`).join('')}</div>`).join('');
+      renderedN = n;
+    };
+    const syncCount = o => {
+      if (!countSel) return;
+      const rem = o && o.info && o.info.known ? o.info.remaining : Infinity;  // 남은 자리를 넘지 않게
+      const max = Math.max(1, Math.min(ac.max || 5, rem));
+      const cur = Math.min(pCount(), max);
+      if (countSel.options.length !== max) countSel.innerHTML = Array.from({ length: max }, (_, i) => `<option value="${i + 1}">${i + 1}명</option>`).join('');
+      countSel.value = String(cur);
+    };
+    form.addEventListener('input', e => { const t = e.target; if (t.dataset && t.dataset.pi !== undefined) pv[`${t.dataset.pi}:${t.dataset.pk}`] = t.value; });
     const refresh = () => {
       const o = current();
       $('[data-paybox]', form).hidden = !o;
       if (!o) return;
+      syncCount(o);
+      const n = pCount();
+      if (pf.length && n !== renderedN) renderPeople();
+      const fee = o.price * n;
+      const feeTxt = `회비 ${won(o.price)}${n > 1 ? ` × ${n}명` : ''}`;
       const bs = books.length ? bookState() : { sel: [], sum: 0, mode: 'prepay' };
       const split = $('[data-split]', form);
       if (books.length) {
         $('[data-bookpay]', form).hidden = !bs.sel.length;
         const pp = $('[data-bk-prepay]', form);
-        if (pp) pp.textContent = `총 ${won(o.price + bs.sum)} (회비 ${won(o.price)} + 도서 ${won(bs.sum)})`;
+        if (pp) pp.textContent = `총 ${won(fee + bs.sum)} (${feeTxt} + 도서 ${won(bs.sum)})`;
       }
-      const total = o.price + (bs.sel.length && bs.mode === 'prepay' ? bs.sum : 0);
+      const total = fee + (bs.sel.length && bs.mode === 'prepay' ? bs.sum : 0);
       $('[data-amount]', form).textContent = won(total);
       if (bs.sel.length) {
         split.hidden = false;
-        split.textContent = bs.mode === 'prepay' ? `회비 ${won(o.price)} + 도서비 ${won(bs.sum)} (책 ${bs.sel.length}권)` : `회비만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
+        split.textContent = bs.mode === 'prepay' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.sel.length}권)` : `${feeTxt}만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
+      } else if (n > 1) {
+        split.hidden = false;
+        split.textContent = `${feeTxt} = ${won(fee)}`;
       } else if (split) split.hidden = true;
       submitBtn.textContent = `신청하기 · ${won(total)}`;
     };
-    form.addEventListener('change', e => { if (['opt', 'book', 'bookpay'].includes(e.target.name)) refresh(); });
+    form.addEventListener('change', e => { if (['opt', 'book', 'bookpay', 'pcount'].includes(e.target.name)) refresh(); });
     $('[data-copy-bank]', form).addEventListener('click', e => copy(e.currentTarget.dataset.copyBank, '계좌번호를 복사했어요'));
+    if (pf.length) renderPeople();
     refresh();
 
     const F = n => form.elements.namedItem(n);
@@ -802,9 +833,14 @@
       const email = F('email').value.trim();
       if (!o) return formAlert(alertEl, '회차를 선택해 주세요.');
       if (!name) { markInvalid(F('name')); return formAlert(alertEl, `${item.nameLabel || '이름'}을 입력해 주세요.`); }
-      for (const f of pf) {
-        const el = F(`pf_${f.id}`);
-        if (f.required && !el.value.trim()) { markInvalid(el); return formAlert(alertEl, `${f.label}을 입력해 주세요.`); }
+      const n = pCount();
+      const people = [];
+      for (let i = 0; i < n && pf.length; i++) {
+        const els = pf.map((f, k) => $(`input[data-pi="${i}"][data-pk="${k}"]`, form));
+        for (let k = 0; k < pf.length; k++) {
+          if (pf[k].required && !els[k].value.trim()) { markInvalid(els[k]); return formAlert(alertEl, `${pf[k].label}${n > 1 ? ` ${i + 1}` : ''}을 입력해 주세요.`); }
+        }
+        people.push({ name: els[0] ? els[0].value.trim() : '', age: els[1] ? els[1].value.trim() : '' });
       }
       if (!validPhone(phone)) { markInvalid(F('phone')); return formAlert(alertEl, '휴대폰 번호를 확인해 주세요. (알림톡이 이 번호로 가요)'); }
       if (!validEmail(email)) { markInvalid(F('email')); return formAlert(alertEl, '이메일 형식을 확인해 주세요.'); }
@@ -815,13 +851,14 @@
       const bs = books.length ? bookState() : { sel: [], sum: 0, mode: 'prepay' };
       const prepay = bs.sel.length > 0 && bs.mode === 'prepay';
       const bookText = bs.sel.length ? `책 ${bs.sel.map(b => `《${b.title}》`).join(', ')} · 도서비 ${won(bs.sum)} ${prepay ? '(선입금 포함)' : '(현장 결제)'}` : '';
-      const payNote = bs.sel.length ? (prepay ? `회비 ${won(o.price)} + 도서비 ${won(bs.sum)}` : `회비 ${won(o.price)} · 도서비 ${won(bs.sum)}은 모임 날 현장 결제`) : '';
+      const feeTxt = `회비 ${won(o.price)}${n > 1 ? ` × ${n}명` : ''}`;
+      const payNote = bs.sel.length ? (prepay ? `${feeTxt} + 도서비 ${won(bs.sum)}` : `${feeTxt} · 도서비 ${won(bs.sum)}은 모임 날 현장 결제`) : (n > 1 ? feeTxt : '');
       try {
         const res = await api('apply', {
           slug: item.slug, title: item.title, optionType: o.type, optionId: o.id, optionLabel: o.label, sessionIds: o.sessionIds,
-          amount: o.price + (prepay ? bs.sum : 0), name, phone, email,
+          amount: o.price * n + (prepay ? bs.sum : 0), name, phone, email,
           extra: [F('extra')?.value.trim(), bookText].filter(Boolean).join(' · '), payNote, memo: F('memo').value.trim(),
-          pName: pf[0] ? F(`pf_${pf[0].id}`).value.trim() : '', pAge: pf[1] ? F(`pf_${pf[1].id}`).value.trim() : '',
+          people,
           consent, ref: refOut(), website: F('website').value
         });
         res.payNote = payNote;
@@ -1311,6 +1348,7 @@
 
   // ── 호스트 현황 (비공개 링크) ───────────────────────
   const PAID_ST = ['입금확인', '신청완료', '확정'];
+  const nOf = list => list.reduce((x, a) => x + (a.count || 1), 0);  // 신청 한 건에 아이가 여러 명이면 인원수로 셈
   const dashLabel = s => PAID_ST.includes(s) ? '신청 완료' : s === '입금대기' ? '입금 대기' : s === '취소요청' ? '취소 요청' : s;
   function initDashboard() {
     const box = $('#dash');
@@ -1331,7 +1369,7 @@
       let total = 0, paid = 0, cap = 0;
       d.moims.forEach(m => m.sessions.forEach(s => {
         const act = s.applicants.filter(a => !String(a.status).startsWith('취소'));
-        total += act.length; paid += act.filter(a => PAID_ST.includes(a.status)).length; cap += s.capacity;
+        total += nOf(act); paid += nOf(act.filter(a => PAID_ST.includes(a.status))); cap += s.capacity;
       }));
       box.innerHTML = `
         <p><b>${esc(d.host?.name || '')}</b> 님의 모임 · <span class="muted small">${esc(flong(d.updatedAt))} ${hm(d.updatedAt)} 기준</span>
@@ -1349,7 +1387,7 @@
             ${share ? `<p class="small muted" style="margin:6px 0 0">호스트 공유 링크 (신청 경로가 ‘호스트’로 집계돼요) <button type="button" class="btn ghost sm" data-copy="${esc(share)}">링크 복사</button></p>` : ''}
             ${m.sessions.map(s => {
               const act = s.applicants.filter(a => !String(a.status).startsWith('취소'));
-              return `<div class="dash-sess"><h3><span>${esc(s.label)}</span><span class="muted small">${act.length} / ${s.capacity}명</span></h3>
+              return `<div class="dash-sess"><h3><span>${esc(s.label)}</span><span class="muted small">${nOf(act)} / ${s.capacity}명</span></h3>
                 ${s.applicants.length ? `<div class="table-wrap" style="border:0"><table class="dtable"><thead><tr><th>이름</th>${s.applicants.some(a => a.child || a.age) ? '<th>참가 아이</th>' : ''}<th>연락처</th><th>상태</th><th>신청일</th><th>메모</th></tr></thead><tbody>
                 ${s.applicants.sort((a, b) => a.at - b.at).map(a => `<tr><td>${esc(a.name)}</td>${s.applicants.some(x => x.child || x.age) ? `<td>${esc(a.child || '')}${a.age ? ` (${esc(a.age)})` : ''}</td>` : ''}<td>${/\d{4}$/.test(a.phone) && !a.phone.includes('*') ? `<a href="tel:${esc(a.phone.replace(/\D/g, ''))}">${esc(a.phone)}</a>` : esc(a.phone)}</td><td><span class="st ${PAID_ST.includes(a.status) ? 'st-paid' : String(a.status).startsWith('취소') ? 'st-cancel' : 'st-pending'}">${esc(dashLabel(a.status))}</span></td><td>${esc(fshort(a.at))}</td><td>${esc([a.memo, a.books ? '도서: ' + a.books : ''].filter(Boolean).join(' · '))}</td></tr>`).join('')}
                 </tbody></table></div>` : '<p class="dash-empty">아직 신청이 없어요.</p>'}</div>`;
