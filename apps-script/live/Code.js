@@ -1356,13 +1356,17 @@ function v16FindMoim_(title) {
   var n = v16Norm_(title);
   if (n.length < 3) return null;
   try {
-    var hit = v12Catalog_().items.filter(function (i) {
+    var items = v12Catalog_().items;
+    // 제목이 똑같은 모임이 여러 개(매달 이어지는 모임)면 가장 최근에 올라온 모임
+    var exact = items.filter(function (i) { return v16Norm_(i.title) === n || v16Norm_(i.sheetName) === n; });
+    if (exact.length) return exact[exact.length - 1];
+    var part = items.filter(function (i) {
       return [i.title, i.sheetName].some(function (t) {
         var m = v16Norm_(t);
-        return m && (m === n || (Math.min(m.length, n.length) >= 4 && (m.indexOf(n) > -1 || n.indexOf(m) > -1)));
+        return m && Math.min(m.length, n.length) >= 4 && (m.indexOf(n) > -1 || n.indexOf(m) > -1);
       });
     });
-    return hit.length === 1 ? hit[0] : null;
+    return part.length === 1 ? part[0] : null;
   } catch (e) { return null; }
 }
 function v16Price_(p) { var s = String(p == null ? '' : p).trim(); return /^\d+$/.test(s) ? v3Won_(Number(s)) : s; }
