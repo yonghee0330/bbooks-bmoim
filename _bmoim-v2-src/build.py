@@ -637,6 +637,27 @@ def event_jsonld(it):
     return out
 
 
+def books_section(it, rel):
+    """함께 읽는 책 (표지·소개·정가) — moims.json 의 books"""
+    books = it.get('books')
+    if not books:
+        return ''
+    cards = ''
+    for b in books:
+        facts = ' · '.join(x for x in [b.get('age'), f'{b["pages"]}쪽' if b.get('pages') else ''] if x)
+        cards += (
+            '<li class="bk">'
+            f'<img class="bk-cover" src="{esc(img_rel(b["cover"], rel))}" alt="{esc(b["title"])} 표지" loading="lazy">'
+            '<div class="bk-info">'
+            f'<h3>{esc(b["title"])}</h3>'
+            f'<p class="bk-meta">{esc(b["author"])} · {esc(b["publisher"])}</p>'
+            f'<p class="bk-sum">{esc(b["summary"])}</p>'
+            f'<p class="bk-facts">{esc(facts)}{" · " if facts else ""}<b>정가 {won(b["price"])}</b></p>'
+            '</div></li>')
+    note = f'<p class="bk-note muted small">{esc(it["bookNote"])}</p>' if it.get('bookNote') else ''
+    return f'<section class="d-sec" id="books"><h2>함께 읽는 책</h2><ul class="bk-list">{cards}</ul>{note}</section>'
+
+
 def build_detail(it, others):
     rel = '../../'
     slug = it['slug']
@@ -741,6 +762,7 @@ def build_detail(it, others):
     {highlights}
     {notes}
   </section>
+  {books_section(it, rel)}
   {host_sec}
 
   <section class="d-sec" id="sessions" {"hidden" if it.get("applyUrl") else ""}>

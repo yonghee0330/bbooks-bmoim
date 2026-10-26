@@ -804,3 +804,32 @@ body.has-cta .toast { bottom: 104px; }
 .paybox .pay-rule { text-align: left; }
 .app-hint { margin: 2px 0 0; font-size: 13px; color: var(--muted, #85766a); }
 .dash-note { margin: -4px 0 16px; }
+
+/* 함께 읽는 책 (상세) */
+.bk-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.bk { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 18px; padding: 16px; background: var(--paper); border-radius: 10px; align-items: start; }
+.bk-cover { width: 112px; height: 150px; object-fit: contain; background: #fff; border-radius: 4px; box-shadow: 0 2px 8px rgba(43, 33, 27, .18); }
+.bk-info h3 { margin: 0 0 2px; font-family: var(--serif); font-size: 18px; }
+.bk-meta { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+.bk-sum { margin: 0 0 8px; font-size: 14.5px; line-height: 1.65; color: var(--ink-2); }
+.bk-facts { margin: 0; font-size: 13px; color: var(--muted); }
+.bk-facts b { color: var(--ink); }
+.bk-note { margin: 12px 2px 0; }
+@media (max-width: 520px) { .bk { grid-template-columns: 84px minmax(0, 1fr); gap: 12px; padding: 12px; } .bk-cover { width: 84px; height: 116px; } }
+
+/* 신청창: 책 고르기 */
+.bk-pick .hint { margin: 2px 0 8px; }
+.bk-opts { display: grid; gap: 8px; }
+.bk-opt { display: grid; grid-template-columns: auto 40px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 12px 8px 10px; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; cursor: pointer; }
+.bk-opt:has(input:checked) { border-color: var(--accent); background: var(--accent-soft, #fbeee4); }
+.bk-opt img { width: 40px; height: 54px; object-fit: contain; background: #fff; border-radius: 2px; }
+.bk-opt-main { display: grid; min-width: 0; }
+.bk-opt-main b { font-size: 14.5px; }
+.bk-opt-main small { color: var(--muted); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bk-opt-price { font-size: 13.5px; font-weight: 700; white-space: nowrap; }
+.bk-pay { display: grid; gap: 6px; margin-top: 10px; }
+.bk-radio { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; cursor: pointer; }
+.bk-radio:has(input:checked) { border-color: var(--ink); }
+.bk-radio span { display: grid; gap: 2px; }
+.bk-radio small { color: var(--muted); font-size: 12.5px; }
+.paybox-split { margin: -4px 0 10px; }

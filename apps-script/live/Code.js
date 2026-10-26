@@ -798,13 +798,13 @@ function v3NotifyApply_(data, code, deadline, sheetRow) {
   var mail = m4ApplyMail_({
     name: vars['#{이름}'], title: info.title, kindLabel: info.kindLabel, when: info.when, place: info.place, poster: info.poster, pageUrl: info.pageUrl,
     code: code, myUrl: vars['#{확인링크}'], amount: vars['#{금액}'], amountNum: amount, bank: vars['#{계좌}'], deadline: vars['#{기한}'],
-    memo: String(data.memo || ''), refund: String(data.refund || ''), instagram: v3Insta_(), siteUrl: v3Site_('')
+    memo: String(data.memo || ''), books: String(data.books || ''), payNote: v2Clean_(data.payNote, 160), refund: String(data.refund || ''), instagram: v3Insta_(), siteUrl: v3Site_('')
   });
   var t = v5Notify_(data.phone, 'TPL_APPLY', vars, v5SmsApply_(vars, amount), '비모임 신청 접수');
   var n = { email: v3MailHtml_(data.email, mail), alimtalk: t.alimtalk, sms: t.sms };
   v3Ops_({
     kind: '신청', headline: info.title + ' · ' + vars['#{이름}'], sub: info.when,
-    rows: [['신청번호', code], ['이름', vars['#{이름}']], ['연락처', data.phone], ['이메일', v2Email_(data.email)], ['금액', vars['#{금액}']],
+    rows: [['신청번호', code], ['이름', vars['#{이름}']], ['연락처', data.phone], ['이메일', v2Email_(data.email)], ['금액', vars['#{금액}']], ['결제 내역', v2Clean_(data.payNote, 160)],
       ['입금 기한', amount > 0 ? vars['#{기한}'] : ''], ['메모', data.memo || ''], ['도서 요청', data.books || ''], ['유입', data.ref || '']],
     todo: amount > 0 ? '입금이 확인되면 모임신청 탭 <b>상태</b>를 <b>입금확인</b>으로 바꿔 주세요. 참가 확정 메일이 자동으로 나가요.<br>기한까지 입금이 없으면 <b>취소</b>로 바꾸면 남은 자리로 돌아가요.' : ''
   });
@@ -1032,7 +1032,8 @@ function m4Pay_(d) {
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>' +
     '<td style="font:13px ' + M4.font + ';color:' + M4.muted + ';">입금할 금액</td>' +
     '<td align="right" style="font:13px ' + M4.font + ';color:' + M4.accentInk + ';font-weight:700;">' + m4Esc_(d.deadline) + '까지</td></tr></table>' +
-    '<div style="font:800 28px ' + M4.font + ';color:' + M4.ink + ';margin:2px 0 12px;letter-spacing:-.02em;">' + m4Esc_(d.amount) + '</div>' +
+    '<div style="font:800 28px ' + M4.font + ';color:' + M4.ink + ';margin:2px 0 ' + (d.payNote ? '4px' : '12px') + ';letter-spacing:-.02em;">' + m4Esc_(d.amount) + '</div>' +
+    (d.payNote ? '<div style="font:13px/1.5 ' + M4.font + ';color:' + M4.muted + ';margin:0 0 12px;">' + m4Esc_(d.payNote) + '</div>' : '') +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:8px;"><tr><td style="padding:12px 14px;font:14px/1.6 ' + M4.font + ';color:' + M4.ink + ';">' +
     '<b>' + m4Esc_(d.bank) + '</b><br><span style="color:' + M4.muted + ';font-size:13px;">입금자명은 <b style="color:' + M4.ink + ';">' + m4Esc_(d.name) + '</b>(신청자 이름)으로 해 주세요</span>' +
     '</td></tr></table></td></tr></table>';
@@ -1070,6 +1071,7 @@ function m4ApplyMail_(d) {
     m4Steps_(paid ? [{ t: '신청 접수', on: true }, { t: '입금', on: false }, { t: '확정 메일', on: false }, { t: '비북스에서 만나요', on: false }]
       : [{ t: '신청 접수', on: true }, { t: '비북스에서 만나요', on: false }]) +
     m4Button_(d.myUrl, '내 신청 확인하기') +
+    (d.books ? m4Small_('함께 신청한 도서', m4Esc_(d.books)) : '') +
     (d.memo ? m4Small_('남겨 주신 메모', m4Esc_(d.memo)) : '') +
     m4Small_('오시는 길', m4Esc_(M4.address) + '<br><a href="' + M4.mapUrl + '" style="color:' + M4.accentInk + ';">네이버 지도에서 보기</a>') +
     (d.refund ? m4Small_('환불 규정', m4Esc_(d.refund) + '<br>취소는 내 신청에서 요청하거나 인스타그램 DM으로 알려 주세요.') : '');

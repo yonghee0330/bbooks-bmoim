@@ -88,7 +88,8 @@ function m4Pay_(d) {
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>' +
     '<td style="font:13px ' + M4.font + ';color:' + M4.muted + ';">입금할 금액</td>' +
     '<td align="right" style="font:13px ' + M4.font + ';color:' + M4.accentInk + ';font-weight:700;">' + m4Esc_(d.deadline) + '까지</td></tr></table>' +
-    '<div style="font:800 28px ' + M4.font + ';color:' + M4.ink + ';margin:2px 0 12px;letter-spacing:-.02em;">' + m4Esc_(d.amount) + '</div>' +
+    '<div style="font:800 28px ' + M4.font + ';color:' + M4.ink + ';margin:2px 0 ' + (d.payNote ? '4px' : '12px') + ';letter-spacing:-.02em;">' + m4Esc_(d.amount) + '</div>' +
+    (d.payNote ? '<div style="font:13px/1.5 ' + M4.font + ';color:' + M4.muted + ';margin:0 0 12px;">' + m4Esc_(d.payNote) + '</div>' : '') +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#fff;border-radius:8px;"><tr><td style="padding:12px 14px;font:14px/1.6 ' + M4.font + ';color:' + M4.ink + ';">' +
     '<b>' + m4Esc_(d.bank) + '</b><br><span style="color:' + M4.muted + ';font-size:13px;">입금자명은 <b style="color:' + M4.ink + ';">' + m4Esc_(d.name) + '</b>(신청자 이름)으로 해 주세요</span>' +
     '</td></tr></table></td></tr></table>';
@@ -126,6 +127,7 @@ function m4ApplyMail_(d) {
     m4Steps_(paid ? [{ t: '신청 접수', on: true }, { t: '입금', on: false }, { t: '확정 메일', on: false }, { t: '비북스에서 만나요', on: false }]
       : [{ t: '신청 접수', on: true }, { t: '비북스에서 만나요', on: false }]) +
     m4Button_(d.myUrl, '내 신청 확인하기') +
+    (d.books ? m4Small_('함께 신청한 도서', m4Esc_(d.books)) : '') +
     (d.memo ? m4Small_('남겨 주신 메모', m4Esc_(d.memo)) : '') +
     m4Small_('오시는 길', m4Esc_(M4.address) + '<br><a href="' + M4.mapUrl + '" style="color:' + M4.accentInk + ';">네이버 지도에서 보기</a>') +
     (d.refund ? m4Small_('환불 규정', m4Esc_(d.refund) + '<br>취소는 내 신청에서 요청하거나 인스타그램 DM으로 알려 주세요.') : '');

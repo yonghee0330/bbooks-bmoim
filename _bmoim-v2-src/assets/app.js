@@ -245,7 +245,7 @@
           note: noteBase, books: i === 0 ? (d.extra || '') : '', date: sheetNow()
         };
         const out = await sheetPostV2(
-          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '',
+          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '', payNote: d.payNote || '',
             // 안내 메일용: 모임 이름·포스터·페이지·장소·메모·환불 규정
             title: item.title, kindLabel: [item.kindLabel, ...(item.tags || []).slice(0, 1)].filter(Boolean).join(' · '),
             place: [...new Set(sessions.flatMap(x => x.dates.map(dd => dd.space)))].join(' · '),
@@ -712,6 +712,18 @@
       <label class="opt${o.info.open ? '' : ' disabled'}"><input type="radio" name="opt" value="${o.type}:${o.id}" ${o.info.open ? '' : 'disabled'} ${defaultOpt === o ? 'checked' : ''}>
         <span class="opt-main"><b>${esc(o.label)}</b><small>${esc(o.sub)} · ${esc(optStatus(o.info))}</small></span><span class="opt-price">${won(o.price)}</span></label>`).join('')}</div></div>` : '';
     const ex = item.extraField;
+    const books = item.books || [];
+    const bookHtml = books.length ? `<div class="field bk-pick">
+        <span>함께 읽는 책 미리 신청 <small class="muted">(선택)</small></span>
+        <p class="hint">고른 책은 비북스에서 준비해 둘게요. 모임 날 받아 가시면 돼요.</p>
+        <div class="bk-opts">${books.map(b => `<label class="bk-opt"><input type="checkbox" name="book" value="${esc(b.id)}">
+          <img src="${esc(imgUrl(b.cover))}" alt="" loading="lazy">
+          <span class="bk-opt-main"><b>${esc(b.title)}</b><small>${esc(b.author)} · ${esc(b.publisher)}</small></span>
+          <span class="bk-opt-price">${won(b.price)}</span></label>`).join('')}</div>
+        <div class="bk-pay" data-bookpay hidden role="radiogroup" aria-label="도서비 결제 방법">
+          <label class="bk-radio"><input type="radio" name="bookpay" value="prepay" checked><span><b>회비와 함께 미리 입금</b><small data-bk-prepay></small></span></label>
+          <label class="bk-radio"><input type="radio" name="bookpay" value="onsite"><span><b>책은 모임 날 현장에서 결제</b><small>회비만 먼저 입금해요</small></span></label>
+        </div></div>` : '';
     const { body, close } = openSheet({
       title: item.title, sub: pick ? `${item.dateText}` : `${opts[0].label}${opts[0].sub ? ' · ' + opts[0].sub : ''}`,
       html: `<form class="form" novalidate>
@@ -722,12 +734,14 @@
         </div>
         <label class="field"><span>이메일 <small class="muted">${SHEET ? '(선택 · 모임 안내와 비북스 소식을 메일로 받아요)' : '(선택 · 안내 메일을 함께 받아요)'}</small></span><input name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com"></label>
         ${ex ? `<label class="field"><span>${esc(ex.label)}</span>${ex.hint ? `<p class="hint">${esc(ex.hint)}</p>` : ''}<textarea name="extra" rows="2" placeholder="${esc(ex.placeholder || '')}"></textarea></label>` : ''}
+        ${bookHtml}
         <label class="field"><span>호스트에게 한마디 <small class="muted">(선택)</small></span><textarea name="memo" rows="2" placeholder="알레르기, 동반 인원, 궁금한 점 등"></textarea></label>
         <input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div data-consent data-consent-kind="apply"></div>
         <div class="paybox" data-paybox hidden>
           <div class="paybox-row"><span>입금할 금액</span><span class="muted">신청 후 ${CFG.payDeadlineHours}시간 안에</span></div>
           <div class="paybox-amount" data-amount></div>
+          <p class="paybox-split muted small" data-split hidden></p>
           <div class="paybox-bank"><span>${esc(CFG.bank.name)} <b>${esc(CFG.bank.number)}</b><br><small class="muted">예금주 ${esc(CFG.bank.holder)} · 입금자명은 신청자 이름으로</small></span>
             <button type="button" class="btn dark sm" data-copy-bank="${esc(CFG.bank.name + ' ' + CFG.bank.number)}">계좌 복사</button></div>
           <p class="muted small pay-rule">입금이 확인되면 신청이 완료돼요. 지금 먼저 입금하고 신청하셔도 되고, 신청 후 기한 안에 입금하셔도 돼요.</p>
@@ -746,12 +760,31 @@
       const v = $('input[name="opt"]:checked', form)?.value;
       return v ? opts.find(o => `${o.type}:${o.id}` === v) : null;
     };
+    // 책 고르기: 선택한 책과 도서비 결제 방법(회비와 함께 미리 입금 / 현장 결제)
+    const bookState = () => {
+      const sel = books.filter(b => $(`input[name="book"][value="${b.id}"]`, form)?.checked);
+      return { sel, sum: sel.reduce((a, b) => a + b.price, 0), mode: $('input[name="bookpay"]:checked', form)?.value || 'prepay' };
+    };
     const refresh = () => {
       const o = current();
       $('[data-paybox]', form).hidden = !o;
-      if (o) { $('[data-amount]', form).textContent = won(o.price); submitBtn.textContent = `신청하기 · ${won(o.price)}`; }
+      if (!o) return;
+      const bs = books.length ? bookState() : { sel: [], sum: 0, mode: 'prepay' };
+      const split = $('[data-split]', form);
+      if (books.length) {
+        $('[data-bookpay]', form).hidden = !bs.sel.length;
+        const pp = $('[data-bk-prepay]', form);
+        if (pp) pp.textContent = `총 ${won(o.price + bs.sum)} (회비 ${won(o.price)} + 도서 ${won(bs.sum)})`;
+      }
+      const total = o.price + (bs.sel.length && bs.mode === 'prepay' ? bs.sum : 0);
+      $('[data-amount]', form).textContent = won(total);
+      if (bs.sel.length) {
+        split.hidden = false;
+        split.textContent = bs.mode === 'prepay' ? `회비 ${won(o.price)} + 도서비 ${won(bs.sum)} (책 ${bs.sel.length}권)` : `회비만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
+      } else if (split) split.hidden = true;
+      submitBtn.textContent = `신청하기 · ${won(total)}`;
     };
-    form.addEventListener('change', e => { if (e.target.name === 'opt') refresh(); });
+    form.addEventListener('change', e => { if (['opt', 'book', 'bookpay'].includes(e.target.name)) refresh(); });
     $('[data-copy-bank]', form).addEventListener('click', e => copy(e.currentTarget.dataset.copyBank, '계좌번호를 복사했어요'));
     refresh();
 
@@ -771,12 +804,18 @@
       const consent = readConsent(consentBox);
       if (!consent.ok) { consentBox.scrollIntoView({ block: 'center', behavior: 'smooth' }); return formAlert(alertEl, '필수 동의 항목에 체크해 주세요.'); }
       setBusy(submitBtn, true, '신청 중…');
+      const bs = books.length ? bookState() : { sel: [], sum: 0, mode: 'prepay' };
+      const prepay = bs.sel.length > 0 && bs.mode === 'prepay';
+      const bookText = bs.sel.length ? `책 ${bs.sel.map(b => `《${b.title}》`).join(', ')} · 도서비 ${won(bs.sum)} ${prepay ? '(선입금 포함)' : '(현장 결제)'}` : '';
+      const payNote = bs.sel.length ? (prepay ? `회비 ${won(o.price)} + 도서비 ${won(bs.sum)}` : `회비 ${won(o.price)} · 도서비 ${won(bs.sum)}은 모임 날 현장 결제`) : '';
       try {
         const res = await api('apply', {
           slug: item.slug, title: item.title, optionType: o.type, optionId: o.id, optionLabel: o.label, sessionIds: o.sessionIds,
-          amount: o.price, name, phone, email, extra: F('extra')?.value.trim() || '', memo: F('memo').value.trim(),
+          amount: o.price + (prepay ? bs.sum : 0), name, phone, email,
+          extra: [F('extra')?.value.trim(), bookText].filter(Boolean).join(' · '), payNote, memo: F('memo').value.trim(),
           consent, ref: refOut(), website: F('website').value
         });
+        res.payNote = payNote;
         if (res.code) rememberCode({ code: res.code, title: item.title, at: Date.now() });
         store.sset('bmoim-counts', '');
         countsPromise = null;
@@ -810,6 +849,7 @@
       <div class="paybox">
         <div class="paybox-row"><span>입금할 금액</span><span class="muted">${esc(deadline)}</span></div>
         <div class="paybox-amount">${won(res.amount ?? o.price)}</div>
+        ${res.payNote ? `<p class="paybox-split muted small">${esc(res.payNote)}</p>` : ''}
         <div class="paybox-bank"><span>${esc(CFG.bank.name)} <b>${esc(CFG.bank.number)}</b><br><small class="muted">예금주 ${esc(CFG.bank.holder)} · 입금자명 <b>${esc(name)}</b></small></span>
           <button type="button" class="btn dark sm" data-copy="${esc(CFG.bank.name + ' ' + CFG.bank.number)}">계좌 복사</button></div>
       </div>
