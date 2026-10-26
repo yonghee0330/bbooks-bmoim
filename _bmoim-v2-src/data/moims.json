@@ -116,6 +116,58 @@
       "sheetName": "그림책 읽어주는 이모"
     },
     {
+      "slug": "storyaunt-2611",
+      "kind": "moim",
+      "status": "open",
+      "title": "그림책 읽어주는 이모",
+      "short": "그림책 이모",
+      "oneLiner": "그림책 읽고, 손으로 만드는 STORY TIME",
+      "tags": [
+        "어린이",
+        "독서"
+      ],
+      "audience": "유치원생~초등 저학년",
+      "host": {
+        "name": "@sammycomma",
+        "insta": "sammycomma",
+        "bio": ""
+      },
+      "poster": "story_aunt_november.jpg",
+      "summary": "유치원생~초등 저학년과 그림책을 읽고 독후활동을 하는 시간. 11/14(토) 오전 10:30 부천 비북스.",
+      "body": [
+        "책을 읽고 독후활동을 합니다 :-)",
+        "유치원생~초등학교 저학년과 함께 그림책을 읽고, 읽은 뒤 독후활동을 하는 시간입니다."
+      ],
+      "highlights": [
+        {
+          "label": "함께 읽는 책",
+          "value": "《가을 고양이》 · 《호박 목욕탕》 · 《달하난 도토리》"
+        }
+      ],
+      "sessions": [
+        {
+          "id": "1114",
+          "dates": [
+            {
+              "start": "2026-11-14T10:30",
+              "end": "2026-11-14T12:00",
+              "space": "계단 좌석"
+            }
+          ],
+          "capacity": 15,
+          "price": 10000,
+          "sheetSession": "11월14일"
+        }
+      ],
+      "materials": true,
+      "priceNote": "재료 준비 있음",
+      "sheetName": "그림책 읽어주는 이모 11월",
+      "sheetMonths": [
+        "10월",
+        "11월"
+      ]
+    },
+    {
       "slug": "daon-bookclub-2610",
       "kind": "moim",
       "status": "open",

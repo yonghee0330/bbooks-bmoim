@@ -42,7 +42,7 @@ python3 _bmoim-v2-src/build.py --sheet
 | 할 일 | 고칠 곳 |
 |---|---|
 | 모임 추가·수정 | `data/moims.json` 의 `items` |
-| **새 달로 넘어가기** | `moims.json`에 새 달 모임 추가(지난 모임은 `"status": "hidden"` 또는 삭제), `site.json`의 `month`(제목·부제·이미지·`calendarMonths`), `sheet.month`(시트 B열에 쓸 달), 이어지는 모임은 `sheetMonths` 확인. 주소는 그대로 |
+| **새 달로 넘어가기** (제목은 `.claude/CLAUDE.md` 의 '월 전환·첫 화면 제목 규칙' 우선: 10-11월 → 11월 → 11-12월 …) | `moims.json`에 새 달 모임 추가(지난 모임은 `"status": "hidden"` 또는 삭제), `site.json`의 `month`(제목·부제·이미지·`calendarMonths`), `sheet.month`(시트 B열에 쓸 달), 이어지는 모임은 `sheetMonths` 확인. 주소는 그대로 |
 | 계좌·환불·개인정보 문구 | `site.json` (운영 문구는 `build.py` 상단 `if '--sheet'` 블록에서 덮어씀) |
 | 디자인 | `assets/app.css` (색은 맨 위 `:root`) |
 
