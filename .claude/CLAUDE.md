@@ -15,7 +15,7 @@
 | 운영 사이트 | https://bbooks.co.kr/moim/ — 파일은 `~/Documents/bbooks/moim/` (생성물, 직접 수정 금지) |
 | 원본 | 이 저장소 `_bmoim-v2-src/` — `data/moims.json · spaces.json · site.json`, `assets/app.js · rent.js · app.css · cards.js`, `build.py`, `deploy.sh` |
 | 옛 주소 | moim.bbooks.co.kr → 이 저장소(GitHub Pages)가 새 주소로 넘김. 지우지 말 것(이미 퍼진 링크·메일) |
-| Apps Script 운영 코드 사본 | `apps-script/live/Code.js` (현재 배포 **버전 21**) |
+| Apps Script 운영 코드 사본 | `apps-script/live/Code.js` (현재 배포 **버전 22**) |
 | Apps Script 배포 도구 | `/Users/mac/Desktop/INBOX-B/bmoim-v2/apps-script/clasp/deploy.sh` |
 | 구글 시트 | `186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM` (탭: 모임신청 · 대관신청 · 점주코드 · 개설신청), 공유 "제한됨" |
 | 로컬 미리보기 | launch.json `bmoim-root` (port 8799) — 아래 4번 |
@@ -41,7 +41,7 @@
 - **절대 "새 배포"를 만들지 않는다.** 배포 ID `AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ` 가 사이트에 박혀 있다. 롤백은 `deploy -V <이전 버전>`.
 - 새 권한(스코프)이 필요한 코드는 사용자가 편집기에서 함수를 한 번 실행해 승인한 뒤에 배포해야 한다. 편집기: https://script.google.com/d/1La7qXwWHKPVus9equlZi672_PUF0YtKwhohz6EYq7UcjUPu8fj61WmFD/edit
 - 웹앱 호출 테스트: `curl -sL -H 'Content-Type: text/plain' -d '{"action":"..."}' "https://script.google.com/macros/s/<배포ID>/exec"` (`-X POST` 쓰지 말 것 — 리다이렉트에서 깨짐).
-- 버전 이력: 6 이관 전 · 7 이메일/동의 · 8 신청번호·조회/취소·메일 · 9 메일 디자인·매니저 알림 · 10 솔라피 문자 · 11 입금 후 신청 완료·상태 드롭다운 · 12–13 호스트 현황 링크 · 14 대관 시간대 조회(rentBlocks, 시트 비공개 전환) · 15 사이트 주소 bbooks.co.kr/moim · 16 개설 신청 진행 상태 · 17 호스트 링크 즉시 동기화 · 18 개설 안내 모임 매칭 · 19 도서 결제 내역(payNote) · 20 참가자 이름·나이 열 · 21 참가 인원(여러 명) 집계.
+- 버전 이력: 6 이관 전 · 7 이메일/동의 · 8 신청번호·조회/취소·메일 · 9 메일 디자인·매니저 알림 · 10 솔라피 문자 · 11 입금 후 신청 완료·상태 드롭다운 · 12–13 호스트 현황 링크 · 14 대관 시간대 조회(rentBlocks, 시트 비공개 전환) · 15 사이트 주소 bbooks.co.kr/moim · 16 개설 신청 진행 상태 · 17 호스트 링크 즉시 동기화 · 18 개설 안내 모임 매칭 · 19 도서 결제 내역(payNote) · 20 참가자 이름·나이 열 · 21 참가 인원(여러 명) 집계 · 22 개설 안내 일정 문구.
 - 스크립트 속성(키·비밀번호)은 사용자가 편집기에서 직접 넣는다. **API 키·토큰을 채팅으로 받거나 파일에 쓰지 않는다.** (SOLAPI_API_KEY/SECRET/SENDER 는 아직 미설정 — 문자는 "추후 연동")
 
 ### 시트 운영 규칙 (사용자가 시트에서 하는 일)
@@ -54,6 +54,7 @@
 - **월 전환·첫 화면 제목 규칙 (사용자 확정 2026-10-26)**: 다음 달 모임을 등록하기 시작하면 `site.json` `month.title` 을 "A-B월 비모임"(예: 10-11월 비모임)으로 바꾸고, A월이 끝나면 "B월 비모임"으로, B월 중순이 되면 다시 "B-C월 비모임"(11-12월 비모임)으로 바꾼다. **제목만 바꾼다** — `month.key`·`sub`·`desc`·`heroImage`·`sheet.month`·`countMonths`·`hostMonths` 등 다른 값은 사용자가 시키기 전에는 건드리지 않는다. 다음 달 모임은 새 항목(slug `…-YYMM`, 새 포스터)으로 추가하고, 같은 모임의 반복이면 `sheetName` 을 "모임명 N월"처럼 달라지게 하고 `sheetMonths`(예: ["10월","11월"])를 넣어 시트 집계·호스트 현황이 이전 달과 섞이지 않게 한다. 반복 모임의 소개·재료·정원은 직전 달 항목을 복사하되, 포스터에 없는 값은 "직전 달과 같다고 가정"한 것이므로 사용자에게 알린다.
 - **모임에 책 붙이기 (`books`, `bookNote`)**: `moims.json` 항목에 `books:[{id,title,author,publisher,pages,age,price,isbn,cover,summary}]`. 상세 페이지에 "함께 읽는 책"(표지·소개·정가)이 생기고, 신청창에 책별 수량(−/+, 최대 9권) 고르기 + 도서비 결제 선택(회비와 함께 미리 입금 / 모임 날 현장 결제)이 나온다. 시트에는 `금액`=회비(+선입금 도서비), `도서 요청`=고른 책·도서비·결제 방식, 메일·운영자 알림에 "결제 내역(payNote)"이 들어간다. `price`는 정가이고 비북스 판매가를 정하면 그 값으로 고친다. 표지는 `images/books/<isbn13>.jpg`(교보 CDN `contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/<isbn13>.jpg`에서 한 번 받아 저장), 소개 `summary`는 서점 책소개를 읽고 **내 말로 짧게** 쓴다(그대로 복사 금지). 서점 사이트는 예의 있게: 교보 검색 4초 이상 간격, 알라딘 검색 금지(상품 페이지만).
 - **참가자 정보 입력칸 (`applyFields`, `nameLabel`, `applyFieldsNote`)**: 아동 모임처럼 신청자(보호자)와 참가자가 다를 때 `moims.json` 항목에 `nameLabel`(예: "입금자 이름 (보호자)") + `applyFields:[{id,label,required,placeholder}]`(앞의 두 칸 = 참가자 이름·나이)를 둔다. `applyCount:{label,max}` 를 더하면 신청할 때 참가 인원을 고르고(남은 자리를 넘지 않게) 아이마다 이름·나이를 받으며, 참가비는 **1인 × 인원**이다. 시트 `모임신청` 탭의 **`참가 인원`·`참가자 이름`·`참가자 나이`** 열(자동 생성, 서버가 이 열들만 허용; 이름·나이는 쉼표로 이어 붙임)과 `신청 메모`("참가 아이 …")에 기록되고, **정원 집계(`getCounts_`)와 호스트 현황의 인원은 `참가 인원`으로 센다**. 그 정보는, 접수 메일·운영자 알림·호스트 현황(참가 아이 열)에 나온다. 개인정보 수집 항목에 "참가 아동의 이름·나이(보호자가 대신 입력)"가 추가돼 있다(`build.py` SHEET 블록).
+- **개설 신청서 일정 칸 (2026-10-27 사용자 결정)**: "첫 회차 일정"(필수) + "추가 회차 일정"(여러 번 열 때만). 1순위·2순위 같은 **희망 후보가 아니라, 적은 날짜는 모두 회차로 연다.** 개설신청 탭 열 이름(`희망일정1`·`희망일정2`)은 그대로 두었다. 모임을 등록할 때 날짜가 둘이면 회차 둘, 하나면 하나로 `sessions`를 만든다.
 - 이미 신청이 들어온 모임의 `sheetName`/`sheetSession`/`sheetMonths` 는 바꾸지 않는다(집계·현황 키).
 
 ## 4. 확인 (미리보기)

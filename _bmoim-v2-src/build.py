@@ -1105,9 +1105,10 @@ def build_host():
       </fieldset>
       <fieldset><legend>일정 · 공간 · 비용</legend>
         <div class="row2">
-          <label class="field"><span>희망 일정 1 *</span><input name="date1" type="datetime-local" required></label>
-          <label class="field"><span>희망 일정 2</span><input name="date2" type="datetime-local"></label>
+          <label class="field"><span>첫 회차 일정 *</span><input name="date1" type="datetime-local" required></label>
+          <label class="field"><span>추가 회차 일정 <small>(여러 번 열 때만)</small></span><input name="date2" type="datetime-local"></label>
         </div>
+        <p class="muted small">적어 주신 일정은 모두 회차로 열려요. 한 번만 여는 모임이면 추가 회차는 비워 두세요.</p>
         <div class="row3">
           <label class="field"><span>진행 시간</span><select name="duration"><option>1시간</option><option>1시간 30분</option><option selected>2시간</option><option>2시간 30분</option><option>3시간 이상</option></select></label>
           <label class="field"><span>희망 공간</span><select name="space">{space_opts}</select></label>

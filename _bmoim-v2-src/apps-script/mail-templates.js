@@ -195,7 +195,7 @@ function m4HostMail_(stage, d) {
   }[stage];
   var body = m4H1_(P.h, P.sub) +
     m4Code_(d.code, '문의하실 때 이 신청번호를 알려 주세요.') +
-    m4Rows_([['모임', d.title], ['희망 일정', d.when], ['희망 공간', d.space], ['정원', d.capacity ? d.capacity + '명' : ''], ['참가비', d.price]]) +
+    m4Rows_([['모임', d.title], ['일정', d.when], ['희망 공간', d.space], ['정원', d.capacity ? d.capacity + '명' : ''], ['참가비', d.price]]) +
     m4Steps_([{ t: '접수', on: P.n >= 1 }, { t: '접수 완료', on: P.n >= 2 }, { t: '모임 등록', on: P.n >= 3 }]);
   if (stage === 'listed') {
     body += m4Button_(d.pageUrl || d.siteUrl, d.pageUrl ? '모임 페이지 보기' : '비모임 보러 가기') +

@@ -531,7 +531,7 @@ function appendHostApply_(data) {
   catch (err) { notified = { email: 'failed', alimtalk: 'skipped', sms: 'skipped' }; }  // 안내 실패가 신청 자체를 막지 않게
   v3Log_(V2_HOST_SHEET, hsh.getLastRow(), '접수 메일 ' + notified.email + ' · 알림톡 ' + notified.alimtalk + ' · 문자 ' + notified.sms);
   v3Ops_({ kind: '개설 신청', headline: String(d.title || '') + ' · ' + String(d.hostName || ''), sub: String(d.oneLiner || ''),
-    rows: [['신청번호', code], ['호스트', d.hostName], ['연락처', d.phone], ['이메일', v2Email_(d.email)], ['인스타', d.insta || ''], ['분야', d.category || ''], ['희망 일정', [d.date1, d.date2].filter(String).join(' / ')],
+    rows: [['신청번호', code], ['호스트', d.hostName], ['연락처', d.phone], ['이메일', v2Email_(d.email)], ['인스타', d.insta || ''], ['분야', d.category || ''], ['회차 일정', [d.date1, d.date2].filter(String).join(' / ')],
       ['공간', d.space || ''], ['정원', d.capacity ? d.capacity + '명' : ''], ['참가비', d.price ? v3Won_(d.price) : ''], ['재료', d.materials || ''], ['포스터', d.posterUrl || ''], ['요청', d.request || '']],
     todo: '개설신청 탭에서 상세 소개를 확인하세요. 신청자에게는 접수 확인 메일이 이미 나갔어요.<br>확인을 마치면 <b>상태</b>를 <b>접수완료</b>로, 모임을 사이트에 올린 뒤에는 <b>모임등록</b>으로 바꿔 주세요. 바꿀 때마다 신청자에게 안내가 자동으로 나가요.' });
   return { ok: true, v: 3, code: code, notified: notified };
@@ -1468,7 +1468,7 @@ function m4HostMail_(stage, d) {
   }[stage];
   var body = m4H1_(P.h, P.sub) +
     m4Code_(d.code, '문의하실 때 이 신청번호를 알려 주세요.') +
-    m4Rows_([['모임', d.title], ['희망 일정', d.when], ['희망 공간', d.space], ['정원', d.capacity ? d.capacity + '명' : ''], ['참가비', d.price]]) +
+    m4Rows_([['모임', d.title], ['일정', d.when], ['희망 공간', d.space], ['정원', d.capacity ? d.capacity + '명' : ''], ['참가비', d.price]]) +
     m4Steps_([{ t: '접수', on: P.n >= 1 }, { t: '접수 완료', on: P.n >= 2 }, { t: '모임 등록', on: P.n >= 3 }]);
   if (stage === 'listed') {
     body += m4Button_(d.pageUrl || d.siteUrl, d.pageUrl ? '모임 페이지 보기' : '비모임 보러 가기') +

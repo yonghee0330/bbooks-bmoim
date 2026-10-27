@@ -1339,7 +1339,7 @@
         }
       }
       if (hostFallback) {
-        const label = { hostName: '호스트', insta: '인스타', phone: '연락처', email: '이메일', hostBio: '소개', title: '모임 제목', oneLiner: '한 줄 소개', category: '분야', audience: '대상', description: '상세 소개', date1: '희망 일정1', date2: '희망 일정2', duration: '진행 시간', space: '희망 공간', capacity: '정원', price: '참가비', materials: '재료 준비', regular: '정기', posterUrl: '포스터', request: '요청' };
+        const label = { hostName: '호스트', insta: '인스타', phone: '연락처', email: '이메일', hostBio: '소개', title: '모임 제목', oneLiner: '한 줄 소개', category: '분야', audience: '대상', description: '상세 소개', date1: '첫 회차 일정', date2: '추가 회차 일정', duration: '진행 시간', space: '희망 공간', capacity: '정원', price: '참가비', materials: '재료 준비', regular: '정기', posterUrl: '포스터', request: '요청' };
         const text = '[비모임 개설 신청]\n' + Object.entries(label).filter(([k]) => String(data[k] || '').trim()).map(([k, l]) => `${l}: ${String(data[k]).trim()}`).join('\n');
         form.outerHTML = `<div class="card-form" id="hostDone"><h3 style="margin-bottom:8px">신청 내용을 비북스에 보내 주세요</h3>
           <p class="muted small">아래 내용을 복사해 인스타그램 DM으로 보내 주시면 담당자가 확인 후 연락드려요.</p>

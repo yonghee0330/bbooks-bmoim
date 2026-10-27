@@ -667,6 +667,67 @@
       "sheetName": "Craft Club"
     },
     {
+      "slug": "craft-club-2611",
+      "kind": "moim",
+      "status": "open",
+      "title": "Craft Club",
+      "short": "Craft Club",
+      "oneLiner": "자유롭게 만들고 놀며 영국 문화도 나누는 크래프트 모임",
+      "tags": [
+        "언어"
+      ],
+      "audience": "성인 누구나 · 영알못 환영",
+      "host": {
+        "name": "Lovey · 0.1평 서점 영국정원",
+        "insta": "englishgardenbooks",
+        "bio": "영국 출신 원어민 과외쌤. 한국 생활 10년차, 비북스 0.1평 서점에서 부천에 작은 나의 고향을 만들어 가는 중"
+      },
+      "poster": "craft_club_nov2026.jpg",
+      "summary": "영국 출신 Lovey쌤과 11월 크래프트. 추워지는 날씨에 마음이 따뜻해지는 미술공예, 정해진 작품 없이 자유롭게. 11/15(일) 14:30 비북스.",
+      "body": [
+        "추워지는 날씨에 마음이 따뜻해지는 미술공예. 정해진 작품 없이, 자유롭게 만들고 놀아요.",
+        "영알못도 환영이고, 영국의 연말 문화가 궁금하신 분도 대환영이에요.",
+        "간단한 다과와 소소한 미술 재료는 준비해 둘게요. 만들고 싶은 게 있다면 Pinterest·인스타에서 본 프로젝트를 가져와 함께해도 좋아요.",
+        "Let's get creative~"
+      ],
+      "highlights": [
+        {
+          "label": "이번 테마",
+          "value": "마음이 따뜻해지는 미술공예 · 영국의 연말 문화"
+        },
+        {
+          "label": "진행 시간",
+          "value": "1시간 30분 (14:30–16:00)"
+        },
+        {
+          "label": "준비물",
+          "value": "없음 (원하면 나만의 프로젝트·재료 지참)"
+        }
+      ],
+      "sessions": [
+        {
+          "id": "1115",
+          "dates": [
+            {
+              "start": "2026-11-15T14:30",
+              "end": "2026-11-15T16:00",
+              "space": "세미나실"
+            }
+          ],
+          "capacity": 5,
+          "price": 20000,
+          "sheetSession": "11월15일_CraftClub"
+        }
+      ],
+      "materials": true,
+      "priceNote": "간단한 다과·미술 재료 포함",
+      "sheetName": "Craft Club 11월",
+      "sheetMonths": [
+        "10월",
+        "11월"
+      ]
+    },
+    {
       "slug": "ai-club-1gi",
       "kind": "moim",
       "status": "open",
