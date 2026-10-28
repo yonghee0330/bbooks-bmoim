@@ -433,8 +433,20 @@
           "sheetSession": "11월21일_동서서가"
         }
       ],
+      "packages": [
+        {
+          "id": "both",
+          "name": "①② 둘 다 (11/14 · 11/21)",
+          "price": 20000,
+          "sessions": [
+            "1114",
+            "1121"
+          ],
+          "sheetNote": "①② 둘 다"
+        }
+      ],
       "materials": false,
-      "priceNote": "대관료·간식비 포함 · 회차별 개별 신청",
+      "priceNote": "대관료·간식비 포함 · 회차 선택 또는 둘 다 신청",
       "sheetName": "클래식 음악 감상 모임 11월",
       "sheetMonths": [
         "10월",
