@@ -56,7 +56,7 @@ DIST = REPO if STUBS else (OUT if SHEET else os.path.join(ROOT, 'share' if SHARE
 HOST_DIR = 'open/' if SHEET else 'host/'
 DASH_DIR = 'open/status/' if SHEET else 'host/dashboard/'
 # 운영 빌드가 루트에 만드는 폴더·파일 (다시 만들기 전에 이것만 지움)
-GENERATED = ['m', 'space', 'open', 'my', 'cards', 'assets', 'data', 'exports', 'images', 'v2']
+GENERATED = ['m', 'events', 'space', 'open', 'my', 'cards', 'assets', 'data', 'exports', 'images', 'v2']
 OLD_GENERATED = ['m', 'space', 'open', 'my', 'cards', 'assets', 'data', 'exports', 'v2']  # 옛 주소 저장소에서 치울 폴더
 KST = timezone(timedelta(hours=9))
 WD = '월화수목금토일'
@@ -142,6 +142,8 @@ def iso(d):
 
 
 def img_rel(name, rel):
+    if re.match(r'https?://', name):  # 바깥 주소(예: 서점 표지)는 그대로
+        return name
     base = SITE['images']['baseUrl']
     if base.startswith('http'):
         return base.rstrip('/') + '/' + name
@@ -319,9 +321,13 @@ def blocks():
     for it in MOIMS['items']:
         if it.get('status') == 'hidden':
             continue
+        # 행사(kind=event)는 매장 전체를 쓰므로 그 시간엔 모든 공간을 막는다 (blockSpaces 로 좁힐 수 있음)
+        whole = it['kind'] == 'event' and not it.get('blockSpaces')
         for o in occurrences(it):
-            out.append({'date': o['start'].strftime('%Y-%m-%d'), 'space': o['space'],
-                        'start': ftime(o['start']), 'end': ftime(o['end']), 'tag': it['title']})
+            spaces = [sp['id'] for sp in SPACES['spaces']] if whole else (it.get('blockSpaces') or [o['space']])
+            for sp in spaces:
+                out.append({'date': o['start'].strftime('%Y-%m-%d'), 'space': sp, 'slug': it['slug'],
+                            'start': ftime(o['start']), 'end': ftime(o['end']), 'tag': it['title']})
     return sorted(out, key=lambda b: (b['date'], b['start']))
 
 
@@ -356,15 +362,15 @@ CATALOG = catalog()
 
 
 # ── 공통 레이아웃 ─────────────────────────────────────
-NAV = [('hub', '', '이번 달 모임'), ('cal', '#cal', '일정 달력'), ('space', 'space/', '공간 대관'), ('host', HOST_DIR, '모임 열기')]
+NAV = [('hub', '', '이번 달 모임'), ('events', 'events/', '이번 달 행사'), ('cal', '#cal', '일정 달력'), ('space', 'space/', '공간 대관'), ('host', HOST_DIR, '모임 열기')]
 
 
 def layout(*, page_id, title, desc, body, depth, path, og_image=None, og_type='website',
-           jsonld=None, private=False, extra_scripts=(), head_extra='', after_main=''):
+           jsonld=None, private=False, extra_scripts=(), head_extra='', after_main='', active=None):
     rel = '../' * depth
     index = SITE['indexable'] and not private
     og_image = og_image or img_abs(SITE['month']['heroImage'])
-    active = 'hub' if page_id == 'detail' else ('host' if page_id == 'dashboard' else page_id)
+    active = active or ('hub' if page_id == 'detail' else ('host' if page_id == 'dashboard' else page_id))
 
     def nav_href(href):
         if href.startswith('#'):
@@ -484,36 +490,40 @@ def refund_block(materials, custom=None):
 SPINE_H = [100, 88, 94, 82, 97, 86, 91, 84]  # 책등 높이(%) — 서가처럼 들쭉날쭉하게
 
 
-def build_hub():
-    rel = ''
+def build_hub(kind='moim'):
+    """첫 화면(모임)과 '이번 달 행사'(events/) — 같은 틀에 kind 만 다르게"""
+    ev = kind == 'event'
+    rel = '../' if ev else ''
     m = SITE['month']
     n_moim = sum(1 for i in ITEMS if i['kind'] == 'moim')
     n_event = sum(1 for i in ITEMS if i['kind'] == 'event')
+    LIST = [i for i in ITEMS if i['kind'] == kind]
+    noun = '행사' if ev else '모임'
     y, mo = m['key'].split('-')
 
     # 분야 = 서가에 꽂힌 책등
-    spines = [f'<button type="button" class="spine on" data-cat="all" aria-pressed="true" style="--cat:#2b211b;--h:{SPINE_H[0]}%"><span class="spine-t">전체</span><span class="spine-n">{len(ITEMS)}</span></button>']
+    spines = [f'<button type="button" class="spine on" data-cat="all" aria-pressed="true" style="--cat:#2b211b;--h:{SPINE_H[0]}%"><span class="spine-t">전체</span><span class="spine-n">{len(LIST)}</span></button>']
     k = 1
     for t in MOIMS['tags']:
-        n = sum(1 for i in ITEMS if t in i.get('tags', []))
+        n = sum(1 for i in LIST if t in i.get('tags', []))
         if not n:
             continue
         spines.append(f'<button type="button" class="spine" data-cat="{esc(t)}" aria-pressed="false" style="--cat:{TAG_COLORS.get(t, "#555")};--h:{SPINE_H[k % len(SPINE_H)]}%"><span class="spine-t">{esc(t)}</span><span class="spine-n">{n}</span></button>')
         k += 1
 
-    cards = ''.join(moim_card(i, rel) for i in ITEMS)
-    desc = f'{m["title"]} — 부천 원미동 독립서점 비북스의 독서모임·글쓰기·음악·어린이 모임 {n_moim}개와 행사 {n_event}개. 일정 확인과 신청을 한 곳에서.'
+    cards = ''.join(moim_card(i, rel) for i in LIST)
+    desc = (f'비북스 이번 달 행사 — 작가와의 만남 비톡스(b.talks)와 특별 행사 {n_event}개. 부천 원미동 독립서점 비북스에서 일정 확인과 신청을 한 곳에서.' if ev else None) or f'{m["title"]} — 부천 원미동 독립서점 비북스의 독서모임·글쓰기·음악·어린이 모임 {n_moim}개와 행사 {n_event}개. 일정 확인과 신청을 한 곳에서.'
     body = f'''
-<main id="main" class="wrap">
+<main id="main" class="wrap" data-kind="{kind}">
   <section class="hub-head">
     <div class="hub-copy">
-      <p class="eyebrow">이달의 서가 · {y}.{mo}</p>
-      <h1 class="page-title">{esc(m["title"])}</h1>
-      <p class="page-desc">{esc(m["sub"])}<br>{esc(m.get("desc", ""))}</p>
+      <p class="eyebrow">{"이달의 행사" if ev else "이달의 서가"} · {y}.{mo}</p>
+      <h1 class="page-title">{"이번 달 행사" if ev else esc(m["title"])}</h1>
+      <p class="page-desc">{"작가와의 만남 비톡스(b.talks)처럼 비북스가 여는 특별한 자리를 모았어요.<br>행사가 있는 시간에는 매장 전체를 행사에 써요." if ev else f'{esc(m["sub"])}<br>{esc(m.get("desc", ""))}'}</p>
     </div>
     <dl class="stamp">
-      <div><dt>모임</dt><dd>{n_moim}</dd></div>
-      <div><dt>행사</dt><dd>{n_event}</dd></div>
+      <div><dt>모임</dt><dd>{f'<a href="{rel}./">{n_moim}</a>' if ev else n_moim}</dd></div>
+      <div><dt>행사</dt><dd>{n_event if ev else f'<a href="events/">{n_event}</a>'}</dd></div>
       <div><dt>모집 중</dt><dd data-stat="seats">–</dd></div>
     </dl>
   </section>
@@ -525,8 +535,8 @@ def build_hub():
 
   <div class="itabs" role="group" aria-label="신청 상태">
     <button type="button" class="itab on" data-status="open" aria-pressed="true">모집 중 <b data-count="open"></b></button>
-    <button type="button" class="itab" data-status="all" aria-pressed="false">이번 달 전체 <b data-count="all">{len(ITEMS)}</b></button>
-    <button type="button" class="itab" data-status="closed" aria-pressed="false">마감·지난 모임 <b data-count="closed"></b></button>
+    <button type="button" class="itab" data-status="all" aria-pressed="false">이번 달 전체 <b data-count="all">{len(LIST)}</b></button>
+    <button type="button" class="itab" data-status="closed" aria-pressed="false">마감·지난 {noun} <b data-count="closed"></b></button>
   </div>
 
   <div class="toolbar" id="toolbar">
@@ -548,9 +558,9 @@ def build_hub():
     </div>
   </div>
 
-  <section id="viewList" class="grid" aria-label="모임 목록">{cards}
+  <section id="viewList" class="grid" aria-label="{noun} 목록">{cards}
   </section>
-  <div class="empty" id="emptyNote" hidden><p>조건에 맞는 모임이 없어요.</p><button type="button" class="btn ghost sm" data-show-all>이번 달 전체 보기</button></div>
+  <div class="empty" id="emptyNote" hidden><p>{"아직 열린 행사가 없어요. 곧 새 행사로 찾아올게요." if ev and not LIST else f"조건에 맞는 {noun}이 없어요."}</p><button type="button" class="btn ghost sm" data-show-all>이번 달 전체 보기</button></div>
   <section id="viewCal" class="calbox" aria-label="모임 전체 일정 달력" hidden></section>
 
   <section class="guide" aria-labelledby="guideH">
@@ -563,17 +573,17 @@ def build_hub():
         <p class="refund-kind">재료 준비가 없는 모임</p>
         <ul class="refund-list">{"".join(f"<li>{esc(r)}</li>" for r in SITE["refund"]["noMaterials"])}</ul>
       </div>
-      <a class="guide-card link" href="space/">
+      <a class="guide-card link" href="{rel}space/">
         <h3>공간 대관</h3>
         <p>세미나실 · 매장 테이블 · 계단 좌석 · 1인실 · 전체 대관. 사진과 요금을 보고 바로 시간을 골라 신청하세요.</p>
         <span class="go">대관 보러 가기 {ICON["arrow"]}</span>
       </a>
-      <a class="guide-card link" href="{HOST_DIR}">
+      <a class="guide-card link" href="{rel}{HOST_DIR}">
         <h3>모임 열기</h3>
         <p>비북스에서 나만의 모임을 열어 보세요. 공간·신청 관리·홍보 페이지를 함께 준비합니다.</p>
         <span class="go">개설 신청하기 {ICON["arrow"]}</span>
       </a>
-      <a class="guide-card link" href="bmoim.ics">
+      <a class="guide-card link" href="{rel}bmoim.ics">
         <h3>캘린더 구독</h3>
         <p>휴대폰·구글 캘린더에 비모임 일정을 구독해 두면 새 모임이 자동으로 들어와요.</p>
         <span class="go">구독 링크 열기 {ICON["arrow"]}</span>
@@ -593,9 +603,13 @@ def build_hub():
             '@context': 'https://schema.org', '@type': 'ItemList', 'name': m['title'],
             'itemListElement': [
                 {'@type': 'ListItem', 'position': n + 1, 'url': page_abs(f'm/{i["slug"]}/'), 'name': i['title']}
-                for n, i in enumerate(ITEMS)],
+                for n, i in enumerate(LIST)],
         },
     ]
+    if ev:
+        write('events/index.html', layout(page_id='events', title='이번 달 행사 · 비북스 b.moim', desc=desc, body=body,
+                                          depth=1, path='events/', jsonld=jsonld[1:]))
+        return
     write('index.html', layout(page_id='hub', title=f'{m["title"]} · 비북스 b.moim', desc=desc, body=body,
                                depth=0, path='', jsonld=jsonld))
 
@@ -637,25 +651,43 @@ def event_jsonld(it):
     return out
 
 
+def book_sale(it, price):
+    """북토크 특별가 — moims.json 의 bookDiscount(%)가 있으면 할인가(10원 단위 버림)"""
+    pct = it.get('bookDiscount') or 0
+    return price * (100 - pct) // 100 // 10 * 10 if pct else price
+
+
 def books_section(it, rel):
     """함께 읽는 책 (표지·소개·정가) — moims.json 의 books"""
     books = it.get('books')
     if not books:
         return ''
+    pct = it.get('bookDiscount') or 0
     cards = ''
     for b in books:
-        facts = ' · '.join(x for x in [b.get('age'), f'{b["pages"]}쪽' if b.get('pages') else ''] if x)
+        facts = ' · '.join(x for x in [b.get('year') and f'{b["year"]}년', b.get('age'), f'{b["pages"]}쪽' if b.get('pages') else ''] if x)
+        if not b.get('price'):
+            price = '<b>재고·가격 문의</b>'
+        elif pct:
+            price = f'<s>정가 {won(b["price"])}</s> <b>북토크가 {won(book_sale(it, b["price"]))}</b>'
+        else:
+            price = f'<b>정가 {won(b["price"])}</b>'
+        # 표지를 못 불러오면 제목 글자 표지로 (서점 이미지 주소가 바뀌는 경우 대비)
+        cover = (f'<span class="bk-cover bk-cover-wrap" data-title="{esc(b["title"])}"><img src="{esc(img_rel(b["cover"], rel))}" alt="{esc(b["title"])} 표지" loading="lazy" onerror="this.parentNode.classList.add(\'bk-cover-txt\');this.remove()"></span>'
+                 if b.get('cover') else f'<span class="bk-cover bk-cover-txt" data-title="{esc(b["title"])}"></span>')
         cards += (
-            '<li class="bk">'
-            f'<img class="bk-cover" src="{esc(img_rel(b["cover"], rel))}" alt="{esc(b["title"])} 표지" loading="lazy">'
+            f'<li class="bk{" bk-feat" if b.get("featured") else ""}">'
+            f'{cover}'
             '<div class="bk-info">'
+            f'{"<p class=bk-flag>이번 북토크의 책 · 신간</p>" if b.get("featured") else ""}'
             f'<h3>{esc(b["title"])}</h3>'
             f'<p class="bk-meta">{esc(b["author"])} · {esc(b["publisher"])}</p>'
             f'<p class="bk-sum">{esc(b["summary"])}</p>'
-            f'<p class="bk-facts">{esc(facts)}{" · " if facts else ""}<b>정가 {won(b["price"])}</b></p>'
+            f'<p class="bk-facts">{esc(facts)}{" · " if facts else ""}{price}</p>'
             '</div></li>')
     note = f'<p class="bk-note muted small">{esc(it["bookNote"])}</p>' if it.get('bookNote') else ''
-    return f'<section class="d-sec" id="books"><h2>함께 읽는 책</h2><ul class="bk-list">{cards}</ul>{note}</section>'
+    sub = '<p class="muted small bk-order">출간 연도 기준 최근 작부터 모았어요. 신청할 때 원하는 책을 함께 고를 수 있어요.</p>' if it.get('booksTitle') else ''
+    return f'<section class="d-sec" id="books"><h2>{esc(it.get("booksTitle") or "함께 읽는 책")}</h2>{sub}<ul class="bk-list">{cards}</ul>{note}</section>'
 
 
 def build_detail(it, others):
@@ -725,8 +757,8 @@ def build_detail(it, others):
     </div>
   </section>"""
     body = f"""
-<main id="main" class="wrap detail" data-slug="{esc(slug)}" style="--cat:{color}">
-  <a class="back" href="{rel}./">{ICON["back"]} {esc(SITE["month"]["title"])}</a>
+<main id="main" class="wrap detail{" theme-" + esc(it["theme"]) if it.get("theme") else ""}" data-slug="{esc(slug)}" style="--cat:{color}">
+  <a class="back" href="{rel}{"events/" if it["kind"] == "event" else "./"}">{ICON["back"]} {"이번 달 행사" if it["kind"] == "event" else esc(SITE["month"]["title"])}</a>
 
   <div class="d-grid">
     <div class="d-left">
@@ -785,7 +817,7 @@ def build_detail(it, others):
   </section>
 
   <section class="d-sec more">
-    <h2>이번 달 서가의 다른 모임</h2>
+    <h2>{"이번 달 다른 행사와 모임" if it["kind"] == "event" else "이번 달 서가의 다른 모임"}</h2>
     <div class="grid grid-3">{others_html}</div>
   </section>
 </main>"""
@@ -804,7 +836,8 @@ def build_detail(it, others):
     desc = it.get('summary') or it.get('oneLiner', '')
     write(f'm/{slug}/index.html', layout(page_id='detail', title=title, desc=desc, body=body, depth=2,
                                           path=f'm/{slug}/', og_image=img_abs(it['poster']), og_type='article',
-                                          jsonld=event_jsonld(it), after_main=cta))
+                                          jsonld=event_jsonld(it), after_main=cta,
+                                          active='events' if it['kind'] == 'event' else None))
     write(f'm/{slug}/event.ics', ics([it], name=it['title']))
 
 
@@ -1259,7 +1292,7 @@ def lineup_text():
 
 def sitemap():
     today = datetime.now(KST).strftime('%Y-%m-%d')
-    urls = ['', 'space/', HOST_DIR] + [f'm/{i["slug"]}/' for i in ITEMS]
+    urls = ['', 'events/', 'space/', HOST_DIR] + [f'm/{i["slug"]}/' for i in ITEMS]
     body = ''.join(f'<url><loc>{esc(page_abs(u))}</loc><lastmod>{today}</lastmod></url>' for u in urls)
     return f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{body}</urlset>\n'
 
@@ -1347,7 +1380,7 @@ def validate():
     for a in range(len(bl)):
         for b in range(a + 1, len(bl)):
             x, y = bl[a], bl[b]
-            if x['date'] == y['date'] and y['space'] in conflicts[x['space']] and x['start'] < y['end'] and y['start'] < x['end']:
+            if x['slug'] != y['slug'] and x['date'] == y['date'] and y['space'] in conflicts[x['space']] and x['start'] < y['end'] and y['start'] < x['end']:
                 errs.append(f'⚠ 일정 겹침: {x["date"]} {x["tag"]}({x["space"]}) ↔ {y["tag"]}({y["space"]})')
     return errs
 
@@ -1546,8 +1579,9 @@ def main():
         os.makedirs(DIST)
     missing = copy_assets()
     build_hub()
+    build_hub('event')
     for it in ITEMS:
-        others = [o for o in ITEMS if o['slug'] != it['slug']][:3]
+        others = sorted((o for o in ITEMS if o['slug'] != it['slug']), key=lambda o: o['kind'] != it['kind'])[:3]
         build_detail(it, others)
     build_space()
     build_host()

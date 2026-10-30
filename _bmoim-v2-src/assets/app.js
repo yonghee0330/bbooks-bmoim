@@ -519,7 +519,7 @@
     document.body.appendChild(lb);
     document.body.style.overflow = 'hidden';
   }
-  const imgUrl = name => (/^https?:/.test(CFG.imageBase) ? CFG.imageBase.replace(/\/?$/, '/') : REL + CFG.imageBase) + name;
+  const imgUrl = name => /^https?:/.test(name) ? name : (/^https?:/.test(CFG.imageBase) ? CFG.imageBase.replace(/\/?$/, '/') : REL + CFG.imageBase) + name;
   const absUrl = path => new URL(path, location.href).href;
   function setBusy(btn, busy, label) {
     if (busy) { btn.dataset.label = btn.innerHTML; btn.disabled = true; btn.innerHTML = `<span class="spin"></span>${esc(label || '처리 중…')}`; }
@@ -717,13 +717,18 @@
     const ac = item.applyCount || null;  // 참가 인원을 고르게 할 때 (예: 아이 여러 명)
     const pv = {};  // 참가자별 입력값 보관 (인원이 바뀌어 다시 그려도 유지)
     const pfHtml = pf.length ? `<div class="pf-box">${ac ? `<label class="field"><span>${esc(ac.label || '참가 인원')} *</span><select name="pcount"></select></label>` : ''}<div data-people></div>${item.applyFieldsNote ? `<p class="hint pf-note">${esc(item.applyFieldsNote)}</p>` : ''}</div>` : '';
-    const books = item.books || [];
+    // 북토크처럼 책 할인(bookDiscount %)·책 구입 시 회비 차감(bookFeeCredit 원)이 있는 행사
+    const bkPct = item.bookDiscount || 0;
+    const feeCredit = item.bookFeeCredit || 0;
+    const sale = p => bkPct ? Math.floor(p * (100 - bkPct) / 100 / 10) * 10 : p;
+    const books = (item.books || []).filter(b => b.price).map(b => ({ ...b, list: b.price, price: sale(b.price) }));
+    const bookHint = feeCredit || bkPct ? `${bkPct ? `북토크 특별가로 정가에서 ${bkPct}% 할인해 드려요. ` : ''}${feeCredit ? `책을 한 권 이상 고르면 회비에서 ${won(feeCredit)}을 빼 드려요.` : ''}` : '고른 책은 비북스에서 준비해 둘게요. 모임 날 받아 가시면 돼요.';
     const bookHtml = books.length ? `<div class="field bk-pick">
-        <span>함께 읽는 책 미리 신청 <small class="muted">(선택)</small></span>
-        <p class="hint">고른 책은 비북스에서 준비해 둘게요. 모임 날 받아 가시면 돼요.</p>
+        <span>${esc(item.booksTitle ? item.booksTitle + ' 함께 주문' : '함께 읽는 책 미리 신청')} <small class="muted">(선택)</small></span>
+        <p class="hint">${esc(bookHint)}</p>
         <div class="bk-opts">${books.map(b => `<div class="bk-opt" data-book="${esc(b.id)}">
-          <img src="${esc(imgUrl(b.cover))}" alt="" loading="lazy">
-          <span class="bk-opt-main"><b>${esc(b.title)}</b><small>${esc(b.author)} · ${won(b.price)}</small></span>
+          ${b.cover ? `<img src="${esc(imgUrl(b.cover))}" alt="" loading="lazy" onerror="this.style.visibility='hidden'">` : '<span></span>'}
+          <span class="bk-opt-main"><b>${esc(b.title)}</b><small>${esc(b.author)} · ${bkPct ? `<s>${won(b.list)}</s> ${won(b.price)}` : won(b.price)}</small></span>
           <span class="bk-qty" role="group" aria-label="${esc(b.title)} 수량"><button type="button" data-q="-1" aria-label="한 권 빼기">−</button><output data-qv>0</output><button type="button" data-q="1" aria-label="한 권 더하기">+</button></span></div>`).join('')}</div>
         <div class="bk-pay" data-bookpay hidden role="radiogroup" aria-label="도서비 결제 방법">
           <label class="bk-radio"><input type="radio" name="bookpay" value="prepay" checked><span><b>회비와 함께 미리 입금</b><small data-bk-prepay></small></span></label>
@@ -810,9 +815,10 @@
       syncCount(o);
       const n = pCount();
       if (pf.length && n !== renderedN) renderPeople();
-      const fee = o.price * n;
-      const feeTxt = `회비 ${won(o.price)}${n > 1 ? ` × ${n}명` : ''}`;
       const bs = books.length ? bookState() : { sel: [], n: 0, sum: 0, mode: 'prepay' };
+      const credit = bs.n && feeCredit ? Math.min(feeCredit, o.price * n) : 0;
+      const fee = o.price * n - credit;
+      const feeTxt = `회비 ${won(o.price)}${n > 1 ? ` × ${n}명` : ''}${credit ? ` − 책 구입 차감 ${won(credit)}` : ''}`;
       const split = $('[data-split]', form);
       if (books.length) {
         $('[data-bookpay]', form).hidden = !bs.sel.length;
@@ -823,7 +829,7 @@
       $('[data-amount]', form).textContent = won(total);
       if (bs.sel.length) {
         split.hidden = false;
-        split.textContent = bs.mode === 'prepay' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권)` : `${feeTxt}만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
+        split.textContent = bs.mode === 'prepay' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권)` : `${credit ? `${feeTxt} = ${won(fee)}` : feeTxt}만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
       } else if (n > 1) {
         split.hidden = false;
         split.textContent = `${feeTxt} = ${won(fee)}`;
@@ -862,13 +868,14 @@
       setBusy(submitBtn, true, '신청 중…');
       const bs = books.length ? bookState() : { sel: [], n: 0, sum: 0, mode: 'prepay' };
       const prepay = bs.sel.length > 0 && bs.mode === 'prepay';
-      const bookText = bs.sel.length ? `책 ${bs.sel.map(b => `《${b.title}》${b.qty > 1 ? ` ×${b.qty}` : ''}`).join(', ')} · 총 ${bs.n}권 · 도서비 ${won(bs.sum)} ${prepay ? '(선입금 포함)' : '(현장 결제)'}` : '';
-      const feeTxt = `회비 ${won(o.price)}${n > 1 ? ` × ${n}명` : ''}`;
+      const bookText = bs.sel.length ? `책 ${bs.sel.map(b => `《${b.title}》${b.qty > 1 ? ` ×${b.qty}` : ''}`).join(', ')} · 총 ${bs.n}권 · 도서비 ${won(bs.sum)}${bkPct ? ` (${bkPct}% 할인가)` : ''} ${prepay ? '(선입금 포함)' : '(현장 결제)'}` : '';
+      const credit = bs.n && feeCredit ? Math.min(feeCredit, o.price * n) : 0;
+      const feeTxt = `회비 ${won(o.price)}${n > 1 ? ` × ${n}명` : ''}${credit ? ` − 책 구입 차감 ${won(credit)}` : ''}`;
       const payNote = bs.sel.length ? (prepay ? `${feeTxt} + 도서비 ${won(bs.sum)}` : `${feeTxt} · 도서비 ${won(bs.sum)}은 모임 날 현장 결제`) : (n > 1 ? feeTxt : '');
       try {
         const res = await api('apply', {
           slug: item.slug, title: item.title, optionType: o.type, optionId: o.id, optionLabel: o.label, sessionIds: o.sessionIds,
-          amount: o.price * n + (prepay ? bs.sum : 0), name, phone, email,
+          amount: o.price * n - credit + (prepay ? bs.sum : 0), name, phone, email,
           extra: [F('extra')?.value.trim(), bookText].filter(Boolean).join(' · '), payNote, memo: F('memo').value.trim(),
           people,
           consent, ref: refOut(), website: F('website').value
@@ -959,6 +966,11 @@
   // ── 허브 ──────────────────────────────────────────
   function initHub() {
     const main = $('#main');
+    // 첫 화면은 모임(kind=moim), '이번 달 행사'(events/)는 행사(kind=event)만 목록에 — 일정 달력은 첫 화면에선 전부 보여 줌
+    const KIND = main.dataset.kind;
+    const LIST = KIND ? ITEMS.filter(i => i.kind === KIND) : ITEMS;
+    const CAL_ITEMS = PAGE === 'hub' ? ITEMS : LIST;
+    const viewKey = PAGE === 'hub' ? 'bmoim-view' : `bmoim-view-${PAGE}`;
     const listEl = $('#viewList');
     const calEl = $('#viewCal');
     const emptyEl = $('#emptyNote');
@@ -1007,13 +1019,13 @@
       cards.sort(cmp).forEach(c => listEl.appendChild(c));
       let shown = 0;
       cards.forEach(c => { const ok = match(BY_SLUG[c.dataset.slug]); c.hidden = !ok; if (ok) shown++; });
-      const base = ITEMS.filter(matchBase);
+      const base = LIST.filter(matchBase);
       $('[data-count="open"]').textContent = base.filter(isOpen).length;
       $('[data-count="all"]').textContent = base.length;
       $('[data-count="closed"]').textContent = base.filter(i => !isOpen(i)).length;
       const cal = st.view === 'cal';
       main.classList.toggle('is-cal', cal);
-      $$('.nav[data-nav="hub"], .nav[data-nav="cal"]').forEach(n => {
+      if (PAGE === 'hub') $$('.nav[data-nav="hub"], .nav[data-nav="cal"]').forEach(n => {
         const on = (n.dataset.nav === 'cal') === cal;
         n.classList.toggle('on', on);
         if (on) n.setAttribute('aria-current', 'page'); else n.removeAttribute('aria-current');
@@ -1043,13 +1055,13 @@
     function setView(v) {
       st.view = v;
       press('.vs[data-view]', 'view', v);
-      store.set('bmoim-view', v);
+      store.set(viewKey, v);
       history.replaceState(null, '', v === 'cal' ? '#cal' : location.pathname + location.search);
       apply();
     }
     $$('.vs[data-view]').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
     // 상단 메뉴 '이번 달 모임' / '일정 달력' — 같은 페이지 안에서 전환
-    $$('.nav[data-nav="hub"], .nav[data-nav="cal"]').forEach(n => n.addEventListener('click', e => {
+    if (PAGE === 'hub') $$('.nav[data-nav="hub"], .nav[data-nav="cal"]').forEach(n => n.addEventListener('click', e => {
       e.preventDefault();
       setView(n.dataset.nav === 'cal' ? 'cal' : 'list');
       $('#toolbar').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1063,7 +1075,7 @@
     let selDay = null;
     function dayEvents() {
       const map = {};
-      ITEMS.filter(matchBase).forEach(item => {
+      CAL_ITEMS.filter(matchBase).forEach(item => {
         const info = itemInfo(item, counts);
         occ(item).forEach(o => {
           const sInfo = item.applyUrl ? { full: false } : sessInfo(item, item.sessions.find(s => s.id === o.sid), counts);
@@ -1121,7 +1133,7 @@
       if (cell) { selDay = cell.dataset.day; renderCal(); }
     });
 
-    const startView = location.hash === '#cal' ? 'cal' : (store.get('bmoim-view', 'list') === 'cal' ? 'cal' : 'list');
+    const startView = location.hash === '#cal' ? 'cal' : (store.get(viewKey, 'list') === 'cal' ? 'cal' : 'list');
     paintCards(null);
     setView(startView);
     const paint = c => {
@@ -1129,7 +1141,7 @@
       paintCards(c);
       if (c) {
         const el = $('[data-stat="seats"]');
-        if (el) el.textContent = ITEMS.filter(i => ['open', 'hot'].includes(itemInfo(i, c).state)).length;
+        if (el) el.textContent = LIST.filter(i => ['open', 'hot'].includes(itemInfo(i, c).state)).length;
       }
       apply();
     };
@@ -1430,5 +1442,5 @@
   };
 
   mountConsents();
-  ({ hub: initHub, detail: initDetail, my: initMy, host: initHost, dashboard: initDashboard }[PAGE] || (() => {}))();
+  ({ hub: initHub, events: initHub, detail: initDetail, my: initMy, host: initHost, dashboard: initDashboard }[PAGE] || (() => {}))();
 })();
