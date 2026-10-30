@@ -966,6 +966,11 @@
   // ── 허브 ──────────────────────────────────────────
   function initHub() {
     const main = $('#main');
+    // 첫 화면은 모임(kind=moim), '이번 달 행사'(events/)는 행사(kind=event)만 목록에 — 일정 달력은 첫 화면에선 전부 보여 줌
+    const KIND = main.dataset.kind;
+    const LIST = KIND ? ITEMS.filter(i => i.kind === KIND) : ITEMS;
+    const CAL_ITEMS = PAGE === 'hub' ? ITEMS : LIST;
+    const viewKey = PAGE === 'hub' ? 'bmoim-view' : `bmoim-view-${PAGE}`;
     const listEl = $('#viewList');
     const calEl = $('#viewCal');
     const emptyEl = $('#emptyNote');
@@ -1014,13 +1019,13 @@
       cards.sort(cmp).forEach(c => listEl.appendChild(c));
       let shown = 0;
       cards.forEach(c => { const ok = match(BY_SLUG[c.dataset.slug]); c.hidden = !ok; if (ok) shown++; });
-      const base = ITEMS.filter(matchBase);
+      const base = LIST.filter(matchBase);
       $('[data-count="open"]').textContent = base.filter(isOpen).length;
       $('[data-count="all"]').textContent = base.length;
       $('[data-count="closed"]').textContent = base.filter(i => !isOpen(i)).length;
       const cal = st.view === 'cal';
       main.classList.toggle('is-cal', cal);
-      $$('.nav[data-nav="hub"], .nav[data-nav="cal"]').forEach(n => {
+      if (PAGE === 'hub') $$('.nav[data-nav="hub"], .nav[data-nav="cal"]').forEach(n => {
         const on = (n.dataset.nav === 'cal') === cal;
         n.classList.toggle('on', on);
         if (on) n.setAttribute('aria-current', 'page'); else n.removeAttribute('aria-current');
@@ -1050,13 +1055,13 @@
     function setView(v) {
       st.view = v;
       press('.vs[data-view]', 'view', v);
-      store.set('bmoim-view', v);
+      store.set(viewKey, v);
       history.replaceState(null, '', v === 'cal' ? '#cal' : location.pathname + location.search);
       apply();
     }
     $$('.vs[data-view]').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
     // 상단 메뉴 '이번 달 모임' / '일정 달력' — 같은 페이지 안에서 전환
-    $$('.nav[data-nav="hub"], .nav[data-nav="cal"]').forEach(n => n.addEventListener('click', e => {
+    if (PAGE === 'hub') $$('.nav[data-nav="hub"], .nav[data-nav="cal"]').forEach(n => n.addEventListener('click', e => {
       e.preventDefault();
       setView(n.dataset.nav === 'cal' ? 'cal' : 'list');
       $('#toolbar').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1070,7 +1075,7 @@
     let selDay = null;
     function dayEvents() {
       const map = {};
-      ITEMS.filter(matchBase).forEach(item => {
+      CAL_ITEMS.filter(matchBase).forEach(item => {
         const info = itemInfo(item, counts);
         occ(item).forEach(o => {
           const sInfo = item.applyUrl ? { full: false } : sessInfo(item, item.sessions.find(s => s.id === o.sid), counts);
@@ -1128,7 +1133,7 @@
       if (cell) { selDay = cell.dataset.day; renderCal(); }
     });
 
-    const startView = location.hash === '#cal' ? 'cal' : (store.get('bmoim-view', 'list') === 'cal' ? 'cal' : 'list');
+    const startView = location.hash === '#cal' ? 'cal' : (store.get(viewKey, 'list') === 'cal' ? 'cal' : 'list');
     paintCards(null);
     setView(startView);
     const paint = c => {
@@ -1136,7 +1141,7 @@
       paintCards(c);
       if (c) {
         const el = $('[data-stat="seats"]');
-        if (el) el.textContent = ITEMS.filter(i => ['open', 'hot'].includes(itemInfo(i, c).state)).length;
+        if (el) el.textContent = LIST.filter(i => ['open', 'hot'].includes(itemInfo(i, c).state)).length;
       }
       apply();
     };
@@ -1437,5 +1442,5 @@
   };
 
   mountConsents();
-  ({ hub: initHub, detail: initDetail, my: initMy, host: initHost, dashboard: initDashboard }[PAGE] || (() => {}))();
+  ({ hub: initHub, events: initHub, detail: initDetail, my: initMy, host: initHost, dashboard: initDashboard }[PAGE] || (() => {}))();
 })();
