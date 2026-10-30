@@ -722,6 +722,7 @@
     const feeCredit = item.bookFeeCredit || 0;
     const sale = p => bkPct ? Math.floor(p * (100 - bkPct) / 100 / 10) * 10 : p;
     const books = (item.books || []).filter(b => b.price).map(b => ({ ...b, list: b.price, price: sale(b.price) }));
+    const coupon = item.coupon || null;  // 참가자 선물 쿠폰 (예: 행사 당일 쓰는 5,000원 도서 쿠폰) — 입금액과는 따로
     const bookHint = feeCredit || bkPct ? `${bkPct ? `북토크 특별가로 정가에서 ${bkPct}% 할인해 드려요. ` : ''}${feeCredit ? `책을 한 권 이상 고르면 회비에서 ${won(feeCredit)}을 빼 드려요.` : ''}` : '고른 책은 비북스에서 준비해 둘게요. 모임 날 받아 가시면 돼요.';
     const bookHtml = books.length ? `<div class="field bk-pick">
         <span>${esc(item.booksTitle ? item.booksTitle + ' 함께 주문' : '함께 읽는 책 미리 신청')} <small class="muted">(선택)</small></span>
@@ -732,7 +733,7 @@
           <span class="bk-qty" role="group" aria-label="${esc(b.title)} 수량"><button type="button" data-q="-1" aria-label="한 권 빼기">−</button><output data-qv>0</output><button type="button" data-q="1" aria-label="한 권 더하기">+</button></span></div>`).join('')}</div>
         <div class="bk-pay" data-bookpay hidden role="radiogroup" aria-label="도서비 결제 방법">
           <label class="bk-radio"><input type="radio" name="bookpay" value="prepay" checked><span><b>회비와 함께 미리 입금</b><small data-bk-prepay></small></span></label>
-          <label class="bk-radio"><input type="radio" name="bookpay" value="onsite"><span><b>책은 모임 날 현장에서 결제</b><small>회비만 먼저 입금해요</small></span></label>
+          <label class="bk-radio"><input type="radio" name="bookpay" value="onsite"><span><b>책은 ${item.kind === 'event' ? '행사' : '모임'} 날 현장에서 결제</b><small>회비만 먼저 입금해요${coupon ? ` · 당일 ${won(coupon.amount)} 쿠폰을 책값에 쓸 수 있어요` : ''}</small></span></label>
         </div></div>` : '';
     const { body, close } = openSheet({
       title: item.title, sub: pick ? `${item.dateText}` : `${opts[0].label}${opts[0].sub ? ' · ' + opts[0].sub : ''}`,
@@ -753,6 +754,7 @@
           <div class="paybox-row"><span>입금할 금액</span><span class="muted">신청 후 ${CFG.payDeadlineHours}시간 안에</span></div>
           <div class="paybox-amount" data-amount></div>
           <p class="paybox-split muted small" data-split hidden></p>
+          ${coupon ? `<p class="paybox-coupon">🎟 ${esc(coupon.text)}</p>` : ''}
           <div class="paybox-bank"><span>${esc(CFG.bank.name)} <b>${esc(CFG.bank.number)}</b><br><small class="muted">예금주 ${esc(CFG.bank.holder)} · 입금자명은 신청자 이름으로</small></span>
             <button type="button" class="btn dark sm" data-copy-bank="${esc(CFG.bank.name + ' ' + CFG.bank.number)}">계좌 복사</button></div>
           <p class="muted small pay-rule">입금이 확인되면 신청이 완료돼요. 지금 먼저 입금하고 신청하셔도 되고, 신청 후 기한 안에 입금하셔도 돼요.</p>

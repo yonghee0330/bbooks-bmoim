@@ -891,7 +891,7 @@ body.has-cta .toast { bottom: 104px; }
 .theme-chaedal .hl dd { font-size: 17px; font-weight: 800; }
 .theme-chaedal .notes { border-color: var(--cd-purple); background: #fbf6fd; }
 .theme-chaedal .bk { background: #fff; border: 1px solid var(--line-2); }
-.theme-chaedal .bk-feat { grid-template-columns: 150px minmax(0, 1fr); border: 0; color: var(--cd-cream); background: linear-gradient(135deg, var(--cd-purple) 0%, var(--cd-purple-dk) 100%); box-shadow: 0 10px 28px rgba(94, 31, 115, .3); }
+.theme-chaedal .bk-feat { grid-template-columns: 150px minmax(0, 1fr); border: 0; border-top: 6px solid var(--cd-red); color: var(--cd-cream); background: linear-gradient(135deg, #1f4fb8 0%, #14306f 100%); box-shadow: 0 10px 28px rgba(20, 48, 111, .32); }
 .theme-chaedal .bk-feat .bk-cover { width: 150px; height: 230px; box-shadow: 0 10px 24px rgba(20, 0, 30, .45); }
 .theme-chaedal .bk-feat h3 { color: #fff; font-size: 22px; }
 .theme-chaedal .bk-feat .bk-meta, .theme-chaedal .bk-feat .bk-sum, .theme-chaedal .bk-feat .bk-facts { color: var(--cd-cream); }
@@ -911,3 +911,16 @@ body:has(.theme-chaedal) .bk-opt.on { border-color: #e4390d; background: #fde9e2
   .theme-chaedal .bk-feat { grid-template-columns: 96px minmax(0, 1fr); }
   .theme-chaedal .bk-feat .bk-cover { width: 96px; height: 150px; }
 }
+
+/* 호스트 사진 */
+.host-photo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex: none; background: var(--paper); }
+.paybox-coupon { margin: 8px 0 0; padding: 8px 10px; border-radius: 6px; background: var(--warn-soft); color: var(--ink-2); font-size: 13px; line-height: 1.55; }
+
+/* chaedal: 글꼴을 Noto Sans KR 하나로 */
+body:has(.theme-chaedal) {
+  --font: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --serif: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  --display: 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+  font-family: var(--font);
+}
+.theme-chaedal .host-photo { width: 88px; height: 88px; box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--cd-purple); }
