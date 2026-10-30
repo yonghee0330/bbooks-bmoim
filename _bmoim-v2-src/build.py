@@ -290,11 +290,19 @@ def card_date(item):
 
 
 def space_text(item):
+    if item.get('spaceLabel'):  # 공간 이름 대신 보여 줄 장소 (예: 행사는 그냥 '비북스')
+        return item['spaceLabel']
     seen = []
     for o in occurrences(item):
         if o['space'] not in seen:
             seen.append(o['space'])
     return ' · '.join(seen)
+
+
+def place_text(item, sep=' '):
+    """'비북스 세미나실' 처럼 매장 이름을 붙인 장소 (spaceLabel 이 '비북스'로 시작하면 그대로)"""
+    t = space_text(item)
+    return t if t.startswith(SITE['store']['name']) else f'{SITE["store"]["name"]}{sep}{t}'
 
 
 def price_text(item):
@@ -650,7 +658,7 @@ def event_jsonld(it):
             'startDate': iso(o['start']), 'endDate': iso(o['end']),
             'eventStatus': 'https://schema.org/EventScheduled',
             'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
-            'location': {'@type': 'Place', 'name': f'{SITE["store"]["name"]} {SITE["store"]["nameEn"]} · {o["space"]}',
+            'location': {'@type': 'Place', 'name': f'{SITE["store"]["name"]} {SITE["store"]["nameEn"]}' + ('' if it.get('spaceLabel') else f' · {o["space"]}'),
                          'address': postal_address()},
             'image': [img_abs(it['poster'])],
             'organizer': {'@type': 'Organization', 'name': f'{SITE["store"]["name"]} ({SITE["store"]["nameEn"]})', 'url': page_abs('')},
@@ -787,7 +795,7 @@ def build_detail(it, others):
       <p class="d-one">{esc(it.get("oneLiner", ""))}</p>
       <dl class="colophon">
         <div><dt>일시</dt><dd>{esc(when_short)}</dd></div>
-        <div><dt>장소</dt><dd>비북스 {esc(space_text(it))}</dd></div>
+        <div><dt>장소</dt><dd>{esc(place_text(it))}</dd></div>
         <div><dt>대상</dt><dd>{esc(it.get("audience", "누구나"))}</dd></div>
         <div><dt>정원</dt><dd>{esc(capacity_text(it))}</dd></div>
         <div><dt>{esc(price_label)}</dt><dd>{price_html}</dd></div>
@@ -819,7 +827,7 @@ def build_detail(it, others):
     <h2>일시와 장소</h2>
     <dl class="facts">
       <div><dt>일시</dt><dd><ul class="plain">{when}</ul></dd></div>
-      <div><dt>장소</dt><dd>비북스 · {esc(space_text(it))}<br><small class="muted">{esc(SITE["store"]["address"])}</small><br><a class="link" href="{esc(SITE["store"]["mapUrl"])}" target="_blank" rel="noopener">네이버 지도에서 보기</a></dd></div>
+      <div><dt>장소</dt><dd>{esc(place_text(it, " · "))}<br><small class="muted">{esc(SITE["store"]["address"])}</small><br><a class="link" href="{esc(SITE["store"]["mapUrl"])}" target="_blank" rel="noopener">네이버 지도에서 보기</a></dd></div>
       {contact}
     </dl>
   </section>
@@ -1280,7 +1288,7 @@ def ics(items, name='비북스 b.moim'):
                       f'DTSTART:{o["start"].astimezone(timezone.utc).strftime("%Y%m%dT%H%M%SZ")}',
                       f'DTEND:{o["end"].astimezone(timezone.utc).strftime("%Y%m%dT%H%M%SZ")}',
                       f'SUMMARY:{ics_escape(it["title"] + " · 비북스")}',
-                      f'LOCATION:{ics_escape("비북스 " + o["space"] + ", " + SITE["store"]["address"])}',
+                      f'LOCATION:{ics_escape(("비북스" if it.get("spaceLabel") else "비북스 " + o["space"]) + ", " + SITE["store"]["address"])}',
                       f'DESCRIPTION:{ics_escape((it.get("summary") or "") + chr(10) + url)}',
                       f'URL:{url}',
                       'END:VEVENT']

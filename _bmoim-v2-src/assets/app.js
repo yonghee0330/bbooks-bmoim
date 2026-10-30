@@ -71,7 +71,7 @@
 
   // ── 일정 · 정원 상태 ──────────────────────────────
   function occ(item) {
-    return item.sessions.flatMap(s => s.dates.map(d => ({ sid: s.id, start: kst(d.start), end: kst(d.end), space: d.space })))
+    return item.sessions.flatMap(s => s.dates.map(d => ({ sid: s.id, start: kst(d.start), end: kst(d.end), space: item.spaceLabel || d.space })))
       .sort((a, b) => a.start - b.start);
   }
   function sessDateText(s) {
@@ -124,7 +124,7 @@
       return {
         type: 'session', id: s.id, price: s.price, sessionIds: [s.id], info: i,
         label: s.name || sessDateText(s),
-        sub: s.name ? `${sessDateText(s)} · ${[...new Set(s.dates.map(d => d.space))].join('·')}` : [...new Set(s.dates.map(d => d.space))].join('·')
+        sub: s.name ? `${sessDateText(s)} · ${item.spaceLabel || [...new Set(s.dates.map(d => d.space))].join('·')}` : (item.spaceLabel || [...new Set(s.dates.map(d => d.space))].join('·'))
       };
     });
     (item.packages || []).forEach(p => {
@@ -680,7 +680,7 @@
     const f = ms => new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
     const q = new URLSearchParams({
       action: 'TEMPLATE', text: `${item.title} · 비북스`, dates: `${f(o.start)}/${f(o.end)}`,
-      details: `${item.summary || item.oneLiner || ''}\n${itemUrl(item)}`, location: `비북스 ${o.space}, ${CFG.store.address}`, ctz: 'Asia/Seoul'
+      details: `${item.summary || item.oneLiner || ''}\n${itemUrl(item)}`, location: `${item.spaceLabel ? item.spaceLabel : `비북스 ${o.space}`}, ${CFG.store.address}`, ctz: 'Asia/Seoul'
     });
     return `https://calendar.google.com/calendar/render?${q}`;
   }
