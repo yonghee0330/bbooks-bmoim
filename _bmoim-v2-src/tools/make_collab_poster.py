@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """예스24 × 동네책방 콜라보 「작가와의 만남」 포스터 (1080×1350) — 2026-10 서귤 북토크에서 처음 씀
 
-  python3 make_collab_poster.py <책표지.jpg> <작가 원형 이미지.png> <저장할 파일.jpg> <Pretendard OTF 폴더> images/brand/yes24_logo.png
+  python3 make_collab_poster.py <책표지.jpg> <작가 원형 이미지.png> <저장할 파일.jpg> <Pretendard OTF 폴더>
 
 문구(부제·제목·콜라보 알약·일정)는 아래 코드에서 바꾼다. 폰트: npm pack pretendard@1.3.9 후 package/dist/public/static
 오른쪽 위 220×300(남은 자리 책갈피 자리)은 비워 두려고 알약을 그 아래에 둔다.
@@ -10,25 +10,21 @@ import sys
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 cover_p, avatar_p, out = sys.argv[1:4]
 FD = sys.argv[4]
-LOGO = sys.argv[5]  # 예스24 로고 (흰 바탕)
 F = lambda w, s: ImageFont.truetype(f'{FD}/Pretendard-{w}.otf', s)
 W, H = 1080, 1350
 BG, WHITE, SUB, INK = (61, 74, 116), (255, 255, 255), (214, 220, 236), (28, 28, 34)
 im = Image.new('RGB', (W, H), BG); d = ImageDraw.Draw(im)
 
-# 1) 오른쪽 위 콜라보 알약 (책갈피 자리 220×300 아래로) — 끝에 예스24 로고 이미지
+# 1) 오른쪽 위 콜라보 알약 (책갈피 자리 220×300 아래로)
 pill_y, pill_h = 306, 64
-logo = Image.open(LOGO).convert('RGB')
-lh = 40; logo = logo.resize((round(logo.width * lh / logo.height), lh), Image.LANCZOS)
-parts = [('비북스 b.books', 'Bold'), (' × ', 'Light'), ('위즈덤하우스', 'Bold'), (' × ', 'Light')]
-tw = sum(d.textlength(t, font=F(w, 30)) for t, w in parts) + logo.width
+parts = [('비북스 b.books', 'Bold'), (' × ', 'Light'), ('위즈덤하우스', 'Bold'), (' × ', 'Light'), ('YES24', 'Black')]
+tw = sum(d.textlength(t, font=F(w, 30)) for t, w in parts)
 x0 = W - tw - 64
 d.rounded_rectangle([x0 - 34, pill_y, W + 40, pill_y + pill_h], radius=pill_h // 2, fill=WHITE)
 x = x0
 for t, w in parts:
-    d.text((x, pill_y + pill_h // 2), t, font=F(w, 30), fill=INK, anchor='lm')
+    d.text((x, pill_y + pill_h // 2), t, font=F(w, 30), fill=INK if w != 'Black' else (0, 82, 204), anchor='lm')
     x += d.textlength(t, font=F(w, 30))
-im.paste(logo, (round(x), pill_y + (pill_h - lh) // 2 + 2))
 
 # 2) 부제 + 큰 제목
 L = 72
