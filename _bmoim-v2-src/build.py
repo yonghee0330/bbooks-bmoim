@@ -783,8 +783,8 @@ def build_detail(it, others):
 
   <div class="d-grid">
     <div class="d-left">
-      <button type="button" class="d-poster" data-zoom="{esc(img_rel(it["poster"], rel))}" aria-label="포스터 크게 보기">
-        <img src="{esc(img_rel(it["poster"], rel))}" alt="{esc(it["title"])} 포스터">
+      <button type="button" class="d-poster{" d-cover" if it.get("detailImage") else ""}" data-zoom="{esc(img_rel(it.get("detailImage") or it["poster"], rel))}" aria-label="{"표지" if it.get("detailImage") else "포스터"} 크게 보기">
+        <img src="{esc(img_rel(it.get("detailImage") or it["poster"], rel))}" alt="{esc(it["title"])} {"책 표지" if it.get("detailImage") else "포스터"}">
         <span class="ribbon" data-badge hidden></span>
       </button>
       {temp}

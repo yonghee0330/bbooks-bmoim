@@ -1213,7 +1213,8 @@
       "bookShip": {
         "fee": 2500,
         "freeOver": 50000
-      }
+      },
+      "detailImage": "books/9791175911352.jpg"
     }
   ],
   "_sheetFields": "sheetName / sheetSession / sheetNote = 기존 구글 시트(모임신청 C·D·H열)에 들어가는 값. 기존 신청 인원 집계와 호스트 현황이 이 이름으로 이어집니다."
