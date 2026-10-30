@@ -142,6 +142,8 @@ def iso(d):
 
 
 def img_rel(name, rel):
+    if re.match(r'https?://', name):  # 바깥 주소(예: 서점 표지)는 그대로
+        return name
     base = SITE['images']['baseUrl']
     if base.startswith('http'):
         return base.rstrip('/') + '/' + name
@@ -637,25 +639,43 @@ def event_jsonld(it):
     return out
 
 
+def book_sale(it, price):
+    """북토크 특별가 — moims.json 의 bookDiscount(%)가 있으면 할인가(10원 단위 버림)"""
+    pct = it.get('bookDiscount') or 0
+    return price * (100 - pct) // 100 // 10 * 10 if pct else price
+
+
 def books_section(it, rel):
     """함께 읽는 책 (표지·소개·정가) — moims.json 의 books"""
     books = it.get('books')
     if not books:
         return ''
+    pct = it.get('bookDiscount') or 0
     cards = ''
     for b in books:
-        facts = ' · '.join(x for x in [b.get('age'), f'{b["pages"]}쪽' if b.get('pages') else ''] if x)
+        facts = ' · '.join(x for x in [b.get('year') and f'{b["year"]}년', b.get('age'), f'{b["pages"]}쪽' if b.get('pages') else ''] if x)
+        if not b.get('price'):
+            price = '<b>재고·가격 문의</b>'
+        elif pct:
+            price = f'<s>정가 {won(b["price"])}</s> <b>북토크가 {won(book_sale(it, b["price"]))}</b>'
+        else:
+            price = f'<b>정가 {won(b["price"])}</b>'
+        # 표지를 못 불러오면 제목 글자 표지로 (서점 이미지 주소가 바뀌는 경우 대비)
+        cover = (f'<span class="bk-cover bk-cover-wrap" data-title="{esc(b["title"])}"><img src="{esc(img_rel(b["cover"], rel))}" alt="{esc(b["title"])} 표지" loading="lazy" onerror="this.parentNode.classList.add(\'bk-cover-txt\');this.remove()"></span>'
+                 if b.get('cover') else f'<span class="bk-cover bk-cover-txt" data-title="{esc(b["title"])}"></span>')
         cards += (
-            '<li class="bk">'
-            f'<img class="bk-cover" src="{esc(img_rel(b["cover"], rel))}" alt="{esc(b["title"])} 표지" loading="lazy">'
+            f'<li class="bk{" bk-feat" if b.get("featured") else ""}">'
+            f'{cover}'
             '<div class="bk-info">'
+            f'{"<p class=bk-flag>이번 북토크의 책 · 신간</p>" if b.get("featured") else ""}'
             f'<h3>{esc(b["title"])}</h3>'
             f'<p class="bk-meta">{esc(b["author"])} · {esc(b["publisher"])}</p>'
             f'<p class="bk-sum">{esc(b["summary"])}</p>'
-            f'<p class="bk-facts">{esc(facts)}{" · " if facts else ""}<b>정가 {won(b["price"])}</b></p>'
+            f'<p class="bk-facts">{esc(facts)}{" · " if facts else ""}{price}</p>'
             '</div></li>')
     note = f'<p class="bk-note muted small">{esc(it["bookNote"])}</p>' if it.get('bookNote') else ''
-    return f'<section class="d-sec" id="books"><h2>함께 읽는 책</h2><ul class="bk-list">{cards}</ul>{note}</section>'
+    sub = '<p class="muted small bk-order">출간 연도 기준 최근 작부터 모았어요. 신청할 때 원하는 책을 함께 고를 수 있어요.</p>' if it.get('booksTitle') else ''
+    return f'<section class="d-sec" id="books"><h2>{esc(it.get("booksTitle") or "함께 읽는 책")}</h2>{sub}<ul class="bk-list">{cards}</ul>{note}</section>'
 
 
 def build_detail(it, others):
@@ -725,7 +745,7 @@ def build_detail(it, others):
     </div>
   </section>"""
     body = f"""
-<main id="main" class="wrap detail" data-slug="{esc(slug)}" style="--cat:{color}">
+<main id="main" class="wrap detail{" theme-" + esc(it["theme"]) if it.get("theme") else ""}" data-slug="{esc(slug)}" style="--cat:{color}">
   <a class="back" href="{rel}./">{ICON["back"]} {esc(SITE["month"]["title"])}</a>
 
   <div class="d-grid">
