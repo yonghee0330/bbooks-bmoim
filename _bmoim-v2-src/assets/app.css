@@ -924,3 +924,5 @@ body:has(.theme-chaedal) {
   font-family: var(--font);
 }
 .theme-chaedal .host-photo { width: 88px; height: 88px; box-shadow: 0 0 0 4px #fff, 0 0 0 7px var(--cd-purple); }
+.bk-ship { display: grid; gap: 6px; padding: 10px 12px; border: 1px dashed var(--line-2); border-radius: 8px; background: #fff; }
+.bk-ship .hint { margin: 0; }

@@ -722,7 +722,9 @@
     const feeCredit = item.bookFeeCredit || 0;
     const sale = p => bkPct ? Math.floor(p * (100 - bkPct) / 100 / 10) * 10 : p;
     const books = (item.books || []).filter(b => b.price).map(b => ({ ...b, list: b.price, price: sale(b.price) }));
-    const coupon = item.coupon || null;  // 참가자 선물 쿠폰 (예: 행사 당일 쓰는 5,000원 도서 쿠폰) — 입금액과는 따로
+    const coupon = item.coupon || null;
+    const ship = item.bookShip || null;  // 책 택배 배송 (배송비 fee, 책값 freeOver 원 이상 무료)
+    const shipFeeOf = sum => (ship && sum < (ship.freeOver || Infinity) ? ship.fee : 0);  // 참가자 선물 쿠폰 (예: 행사 당일 쓰는 5,000원 도서 쿠폰) — 입금액과는 따로
     const bookHint = feeCredit || bkPct ? `${bkPct ? `북토크 특별가로 정가에서 ${bkPct}% 할인해 드려요. ` : ''}${feeCredit ? `책을 한 권 이상 고르면 회비에서 ${won(feeCredit)}을 빼 드려요.` : ''}` : '고른 책은 비북스에서 준비해 둘게요. 모임 날 받아 가시면 돼요.';
     const bookHtml = books.length ? `<div class="field bk-pick">
         <span>${esc(item.booksTitle ? item.booksTitle + ' 함께 주문' : '함께 읽는 책 미리 신청')} <small class="muted">(선택)</small></span>
@@ -734,6 +736,11 @@
         <div class="bk-pay" data-bookpay hidden role="radiogroup" aria-label="도서비 결제 방법">
           <label class="bk-radio"><input type="radio" name="bookpay" value="prepay" checked><span><b>회비와 함께 미리 입금</b><small data-bk-prepay></small></span></label>
           <label class="bk-radio"><input type="radio" name="bookpay" value="onsite"><span><b>책은 ${item.kind === 'event' ? '행사' : '모임'} 날 현장에서 결제</b><small>회비만 먼저 입금해요${coupon ? ` · 당일 ${won(coupon.amount)} 쿠폰을 책값에 쓸 수 있어요` : ''}</small></span></label>
+          ${ship ? `<label class="bk-radio"><input type="radio" name="bookpay" value="ship"><span><b>${item.kind === 'event' ? '행사' : '모임'} 전에 택배로 미리 받기</b><small data-bk-ship></small></span></label>
+          <div class="bk-ship" data-ship hidden>
+            <label class="field"><span>받는 주소 *</span><input name="shipAddr" autocomplete="street-address" placeholder="도로명 주소, 동·호수까지"></label>
+            <p class="hint">책값과 배송비를 회비와 함께 입금하시면 입금 확인 후 보내드려요. 주소는 책 배송에만 쓰고 배송이 끝나면 파기해요.</p>
+          </div>` : ''}
         </div></div>` : '';
     const { body, close } = openSheet({
       title: item.title, sub: pick ? `${item.dateText}` : `${opts[0].label}${opts[0].sub ? ' · ' + opts[0].sub : ''}`,
@@ -826,12 +833,17 @@
         $('[data-bookpay]', form).hidden = !bs.sel.length;
         const pp = $('[data-bk-prepay]', form);
         if (pp) pp.textContent = `총 ${won(fee + bs.sum)} (${feeTxt} + 도서 ${won(bs.sum)})`;
+        const sp = $('[data-bk-ship]', form);
+        if (sp) sp.textContent = `총 ${won(fee + bs.sum + shipFeeOf(bs.sum))} (도서 ${won(bs.sum)} + 배송비 ${shipFeeOf(bs.sum) ? won(ship.fee) : '무료'}) · 책값 ${won(ship.freeOver)} 이상 무료 배송`;
+        const sh = $('[data-ship]', form);
+        if (sh) sh.hidden = !(bs.sel.length && bs.mode === 'ship');
       }
-      const total = fee + (bs.sel.length && bs.mode === 'prepay' ? bs.sum : 0);
+      const shipFee = bs.sel.length && bs.mode === 'ship' ? shipFeeOf(bs.sum) : 0;
+      const total = fee + (bs.sel.length && ['prepay', 'ship'].includes(bs.mode) ? bs.sum + shipFee : 0);
       $('[data-amount]', form).textContent = won(total);
       if (bs.sel.length) {
         split.hidden = false;
-        split.textContent = bs.mode === 'prepay' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권)` : `${credit ? `${feeTxt} = ${won(fee)}` : feeTxt}만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
+        split.textContent = bs.mode === 'ship' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권) + 배송비 ${shipFee ? won(shipFee) : '무료'}` : bs.mode === 'prepay' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권)` : `${credit ? `${feeTxt} = ${won(fee)}` : feeTxt}만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
       } else if (n > 1) {
         split.hidden = false;
         split.textContent = `${feeTxt} = ${won(fee)}`;
@@ -867,17 +879,21 @@
       const consentBox = $('[data-consent-box]', form);
       const consent = readConsent(consentBox);
       if (!consent.ok) { consentBox.scrollIntoView({ block: 'center', behavior: 'smooth' }); return formAlert(alertEl, '필수 동의 항목에 체크해 주세요.'); }
-      setBusy(submitBtn, true, '신청 중…');
       const bs = books.length ? bookState() : { sel: [], n: 0, sum: 0, mode: 'prepay' };
-      const prepay = bs.sel.length > 0 && bs.mode === 'prepay';
-      const bookText = bs.sel.length ? `책 ${bs.sel.map(b => `《${b.title}》${b.qty > 1 ? ` ×${b.qty}` : ''}`).join(', ')} · 총 ${bs.n}권 · 도서비 ${won(bs.sum)}${bkPct ? ` (${bkPct}% 할인가)` : ''} ${prepay ? '(선입금 포함)' : '(현장 결제)'}` : '';
+      const shipping = bs.sel.length > 0 && bs.mode === 'ship';
+      const addr = shipping ? F('shipAddr').value.trim() : '';
+      if (shipping && addr.length < 6) { markInvalid(F('shipAddr')); return formAlert(alertEl, '책을 받을 주소를 적어 주세요.'); }
+      setBusy(submitBtn, true, '신청 중…');
+      const prepay = bs.sel.length > 0 && ['prepay', 'ship'].includes(bs.mode);
+      const shipFee = shipping ? shipFeeOf(bs.sum) : 0;
+      const bookText = bs.sel.length ? `책 ${bs.sel.map(b => `《${b.title}》${b.qty > 1 ? ` ×${b.qty}` : ''}`).join(', ')} · 총 ${bs.n}권 · 도서비 ${won(bs.sum)}${bkPct ? ` (${bkPct}% 할인가)` : ''} ${shipping ? `(택배 배송 · 배송비 ${shipFee ? won(shipFee) : '무료'} · 선입금 포함) · 배송지 ${addr}` : prepay ? '(선입금 포함)' : '(현장 결제)'}` : '';
       const credit = bs.n && feeCredit ? Math.min(feeCredit, o.price * n) : 0;
       const feeTxt = `회비 ${won(o.price)}${n > 1 ? ` × ${n}명` : ''}${credit ? ` − 책 구입 차감 ${won(credit)}` : ''}`;
-      const payNote = bs.sel.length ? (prepay ? `${feeTxt} + 도서비 ${won(bs.sum)}` : `${feeTxt} · 도서비 ${won(bs.sum)}은 모임 날 현장 결제`) : (n > 1 ? feeTxt : '');
+      const payNote = bs.sel.length ? (shipping ? `${feeTxt} + 도서비 ${won(bs.sum)} + 배송비 ${shipFee ? won(shipFee) : '무료'} (택배)` : prepay ? `${feeTxt} + 도서비 ${won(bs.sum)}` : `${feeTxt} · 도서비 ${won(bs.sum)}은 모임 날 현장 결제`) : (n > 1 ? feeTxt : '');
       try {
         const res = await api('apply', {
           slug: item.slug, title: item.title, optionType: o.type, optionId: o.id, optionLabel: o.label, sessionIds: o.sessionIds,
-          amount: o.price * n - credit + (prepay ? bs.sum : 0), name, phone, email,
+          amount: o.price * n - credit + (prepay ? bs.sum + shipFee : 0), name, phone, email,
           extra: [F('extra')?.value.trim(), bookText].filter(Boolean).join(' · '), payNote, memo: F('memo').value.trim(),
           people,
           consent, ref: refOut(), website: F('website').value
