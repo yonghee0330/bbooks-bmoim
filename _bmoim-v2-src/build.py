@@ -202,6 +202,19 @@ def image_src_dir():
     return src if os.path.isabs(src) else os.path.join(ROOT, src)
 
 
+def use_local_covers():
+    """images/books/<isbn>.jpg 가 있으면 바깥 표지 주소 대신 그 파일을 쓴다 (tools/fetch_covers.py 로 받아 둔 표지)"""
+    d = image_src_dir()
+    for it in MOIMS['items']:
+        for b in it.get('books', []):
+            name = f'books/{b["isbn"]}.jpg' if b.get('isbn') else ''
+            if d and name and os.path.exists(os.path.join(d, name)):
+                b['cover'] = name
+
+
+use_local_covers()
+
+
 POSTER_INFO = {}
 
 
@@ -404,7 +417,7 @@ def layout(*, page_id, title, desc, body, depth, path, og_image=None, og_type='w
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Noto+Serif+KR:wght@600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700&family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@600;700&display=swap">
 <link rel="stylesheet" href="{rel}assets/app.css?v={ASSET_VER}">
 <link rel="alternate" type="text/calendar" title="비북스 b.moim 일정" href="{rel}bmoim.ics">
 {head_extra}{ld}
@@ -751,7 +764,7 @@ def build_detail(it, others):
   <section class="d-sec">
     <h2>호스트 소개</h2>
     <div class="author">
-      <span class="host-ava" aria-hidden="true">{esc(host["name"].lstrip("@")[:1])}</span>
+      {f'<img class="host-photo" src="{esc(img_rel(host["photo"], rel))}" alt="{esc(host.get("photoAlt") or host["name"])}" loading="lazy">' if host.get("photo") else f'<span class="host-ava" aria-hidden="true">{esc(host["name"].lstrip("@")[:1])}</span>'}
       <div class="author-txt"><b>{esc(host["name"])}</b>{f'<p>{esc(host["bio"])}</p>' if host.get("bio") else ''}</div>
       {insta}
     </div>
