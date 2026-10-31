@@ -754,7 +754,7 @@
         <label class="field"><span>이메일 <small class="muted">${SHEET ? '(선택 · 모임 안내와 비북스 소식을 메일로 받아요)' : '(선택 · 안내 메일을 함께 받아요)'}</small></span><input name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@example.com"></label>
         ${ex ? `<label class="field"><span>${esc(ex.label)}</span>${ex.hint ? `<p class="hint">${esc(ex.hint)}</p>` : ''}<textarea name="extra" rows="2" placeholder="${esc(ex.placeholder || '')}"></textarea></label>` : ''}
         ${bookHtml}
-        <label class="field"><span>호스트에게 한마디 <small class="muted">(선택)</small></span><textarea name="memo" rows="2" placeholder="알레르기, 동반 인원, 궁금한 점 등"></textarea></label>
+        <label class="field"><span>${esc(item.memoLabel || '호스트에게 한마디')} <small class="muted">(선택)</small></span>${item.memoHint ? `<p class="hint">${esc(item.memoHint)}</p>` : ''}<textarea name="memo" rows="${item.memoLabel ? 3 : 2}" placeholder="${esc(item.memoPlaceholder || '알레르기, 동반 인원, 궁금한 점 등')}"></textarea></label>
         <input name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div data-consent data-consent-kind="apply"></div>
         <div class="paybox" data-paybox hidden>

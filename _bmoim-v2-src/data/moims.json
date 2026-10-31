@@ -1214,7 +1214,10 @@
         "fee": 2500,
         "freeOver": 50000
       },
-      "detailImage": "books/9791175911352.jpg"
+      "detailImage": "books/9791175911352.jpg",
+      "memoLabel": "서귤 작가에게 한마디",
+      "memoHint": "작가님께 궁금한 점이나 북토크에서 묻고 싶은 질문을 남겨 주세요. 미리 모아 전해 드릴게요.",
+      "memoPlaceholder": "예) 채달금이라는 인물은 어떻게 떠올리셨나요?"
     }
   ],
   "_sheetFields": "sheetName / sheetSession / sheetNote = 기존 구글 시트(모임신청 C·D·H열)에 들어가는 값. 기존 신청 인원 집계와 호스트 현황이 이 이름으로 이어집니다."
