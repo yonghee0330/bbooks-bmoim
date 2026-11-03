@@ -672,6 +672,18 @@ def event_jsonld(it):
     return out
 
 
+def gallery_section(it, rel):
+    """공식 포스터·카드 이미지 모음 — moims.json 의 gallery (파일명 목록, 눌러서 크게 보기)"""
+    g = it.get('gallery')
+    if not g:
+        return ''
+    cells = ''.join(
+        f'<li><button type="button" class="gal-item" data-zoom="{esc(img_rel(n, rel))}" aria-label="포스터 {i + 1} 크게 보기">'
+        f'<img src="{esc(img_rel(n, rel))}" alt="{esc(it["title"])} 공식 포스터 {i + 1}" loading="lazy"></button></li>'
+        for i, n in enumerate(g))
+    return f'<section class="d-sec" id="posters"><h2>{esc(it.get("galleryTitle") or "공식 포스터")}</h2><ul class="gallery">{cells}</ul></section>'
+
+
 def book_sale(it, price):
     """북토크 특별가 — moims.json 의 bookDiscount(%)가 있으면 할인가(10원 단위 버림)"""
     pct = it.get('bookDiscount') or 0
@@ -815,6 +827,7 @@ def build_detail(it, others):
     {highlights}
     {notes}
   </section>
+  {gallery_section(it, rel)}
   {books_section(it, rel)}
   {host_sec}
 
