@@ -306,13 +306,11 @@ def place_text(item, sep=' '):
 
 
 def price_text(item):
-    prices = sorted({s['price'] for s in item['sessions']} | {p['price'] for p in item.get('packages', [])})
-    paid = [p for p in prices if p > 0]
-    if not prices or not paid:
+    # hidePrice 패키지(점주 무료 등)는 목록 금액에 넣지 않음 — 신청 화면에서만 보임
+    pkg_prices = {p['price'] for p in item.get('packages', []) if not p.get('hidePrice')}
+    prices = sorted({s['price'] for s in item['sessions']} | pkg_prices)
+    if not prices:
         return '무료'
-    # 무료 옵션이 섞여 있으면 유료 금액을 대표로 (상세에서 옵션별 표기)
-    if 0 in prices:
-        return won(paid[0]) if len(paid) == 1 else f'{won(paid[0])}~'
     if len(prices) == 1:
         return won(prices[0])
     return f'{won(prices[0])}~'
@@ -747,9 +745,10 @@ def build_detail(it, others):
         when = f'<li class="muted">{esc(it["period"])}</li>' + when
     if it.get('regular'):
         when += f'<li class="muted">{esc(it["regular"])}</li>'
+    visible_pkgs = [p for p in it.get('packages', []) if not p.get('hidePrice')]
     price_rows = ''.join(
-        f'<li>{esc(s.get("name") or fshort(dt(s["dates"][0]["start"])))} · <b>{won(s["price"])}</b></li>' for s in it['sessions']) if (len(it['sessions']) > 1 or it.get('packages')) else ''
-    price_rows += ''.join(f'<li>{esc(p["name"])} · <b>{won(p["price"])}</b></li>' for p in it.get('packages', []))
+        f'<li>{esc(s.get("name") or fshort(dt(s["dates"][0]["start"])))} · <b>{won(s["price"])}</b></li>' for s in it['sessions']) if (len(it['sessions']) > 1 or visible_pkgs) else ''
+    price_rows += ''.join(f'<li>{esc(p["name"])} · <b>{won(p["price"])}</b></li>' for p in visible_pkgs)
     price_html = f'<b>{esc(price_text(it))}</b>'
     if price_rows:
         price_html += f'<ul class="plain small">{price_rows}</ul>'
