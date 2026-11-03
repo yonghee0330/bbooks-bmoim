@@ -134,7 +134,7 @@ def ftime(d):
 
 
 def won(n):
-    return f'{n:,}원'
+    return '무료' if int(n or 0) == 0 else f'{n:,}원'
 
 
 def iso(d):
@@ -766,7 +766,13 @@ def build_detail(it, others):
         apply_note = it.get('applyNote') or '이 행사는 파트너 페이지에서 신청합니다.'
     else:
         apply_btn = '<button type="button" class="btn primary" data-apply>신청하기</button>'
-        apply_note = f'신청하면 신청번호가 나와요 · {SITE["payDeadlineHours"]}시간 안에 입금하면 확정' if SHEET else f'신청 후 {SITE["payDeadlineHours"]}시간 안에 입금하면 확정돼요 · 알림톡·메일로 안내'
+        free = all(s.get('price', 0) == 0 for s in it['sessions']) and all(p.get('price', 0) == 0 for p in it.get('packages', []))
+        if it.get('applyNote'):
+            apply_note = it['applyNote']
+        elif free:
+            apply_note = '참가비 없는 모임이에요 · 신청하면 바로 접수돼요'
+        else:
+            apply_note = f'신청하면 신청번호가 나와요 · {SITE["payDeadlineHours"]}시간 안에 입금하면 확정' if SHEET else f'신청 후 {SITE["payDeadlineHours"]}시간 안에 입금하면 확정돼요 · 알림톡·메일로 안내'
 
     # 판권면 표기 (일시)
     if it.get('whenShort'):

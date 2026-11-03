@@ -38,7 +38,7 @@
   const hm = ms => { const p = kp(ms); return `${pad(p.hh)}:${pad(p.mm)}`; };
   const fshort = ms => { const p = kp(ms); return `${p.m}/${p.d}(${WD[p.wd]})`; };
   const flong = ms => { const p = kp(ms); return `${p.m}월 ${p.d}일 (${WD[p.wd]})`; };
-  const won = n => Number(n || 0).toLocaleString('ko-KR') + '원';
+  const won = n => { const v = Number(n || 0); return v === 0 ? '무료' : v.toLocaleString('ko-KR') + '원'; };
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const svg = body => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${body}</svg>`;
@@ -768,7 +768,7 @@
         </div>
         <div class="form-alert" role="alert"></div>
         <button class="btn primary big" type="submit">신청하기</button>
-        <p class="muted small" style="text-align:center;margin:0">${SHEET ? '신청하면 신청번호가 나와요. 이메일을 적으면 입금 안내 메일도 보내드려요.' : '신청 직후 카카오 알림톡으로 신청번호와 입금 안내를 보내드려요.'}</p>
+        <p class="muted small pay-hint" style="text-align:center;margin:0">${SHEET ? '신청하면 신청번호가 나와요. 이메일을 적으면 입금 안내 메일도 보내드려요.' : '신청 직후 카카오 알림톡으로 신청번호와 입금 안내를 보내드려요.'}</p>
       </form>`
     });
     const form = $('form', body);
@@ -817,10 +817,10 @@
       countSel.value = String(cur);
     };
     form.addEventListener('input', e => { const t = e.target; if (t.dataset && t.dataset.pi !== undefined) pv[`${t.dataset.pi}:${t.dataset.pk}`] = t.value; });
+    const payHint = form.querySelector('.pay-hint');
     const refresh = () => {
       const o = current();
-      $('[data-paybox]', form).hidden = !o;
-      if (!o) return;
+      if (!o) { $('[data-paybox]', form).hidden = true; return; }
       syncCount(o);
       const n = pCount();
       if (pf.length && n !== renderedN) renderPeople();
@@ -840,7 +840,11 @@
       }
       const shipFee = bs.sel.length && bs.mode === 'ship' ? shipFeeOf(bs.sum) : 0;
       const total = fee + (bs.sel.length && ['prepay', 'ship'].includes(bs.mode) ? bs.sum + shipFee : 0);
+      $('[data-paybox]', form).hidden = total <= 0;
       $('[data-amount]', form).textContent = won(total);
+      if (payHint) payHint.textContent = total <= 0
+        ? (SHEET ? '신청하면 신청번호가 나와요. 참가비는 없어요.' : '신청하면 바로 접수돼요. 참가비는 없어요.')
+        : (SHEET ? '신청하면 신청번호가 나와요. 이메일을 적으면 입금 안내 메일도 보내드려요.' : '신청 직후 카카오 알림톡으로 신청번호와 입금 안내를 보내드려요.');
       if (bs.sel.length) {
         split.hidden = false;
         split.textContent = bs.mode === 'ship' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권) + 배송비 ${shipFee ? won(shipFee) : '무료'}` : bs.mode === 'prepay' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권)` : `${credit ? `${feeTxt} = ${won(fee)}` : feeTxt}만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
@@ -848,7 +852,7 @@
         split.hidden = false;
         split.textContent = `${feeTxt} = ${won(fee)}`;
       } else if (split) split.hidden = true;
-      submitBtn.textContent = `신청하기 · ${won(total)}`;
+      submitBtn.textContent = total <= 0 ? '신청하기' : `신청하기 · ${won(total)}`;
     };
     form.addEventListener('change', e => { if (['opt', 'bookpay', 'pcount'].includes(e.target.name)) refresh(); });
     $('[data-copy-bank]', form).addEventListener('click', e => copy(e.currentTarget.dataset.copyBank, '계좌번호를 복사했어요'));
@@ -919,24 +923,26 @@
     return `<div class="sent">${chips.join('')}</div>${DEMO && demoNote ? '<p class="muted small">테스트 모드라 실제 알림은 발송되지 않았어요.</p>' : ''}`;
   }
   function showDone(body, item, o, res, name, close) {
+    const amount = Number(res.amount ?? o.price) || 0;
+    const free = amount <= 0;
     const deadline = res.deadline ? `${flong(res.deadline)} ${hm(res.deadline)}까지` : `${CFG.payDeadlineHours}시간 안에`;
     body.innerHTML = `<div class="done">
       <div class="done-icon">✓</div>
       <h3>신청이 접수됐어요</h3>
-      <p class="muted">입금이 확인되면 신청이 완료돼요. 이미 입금하셨다면 따로 연락하지 않으셔도 돼요.</p>
+      <p class="muted">${free ? '참가비가 없는 모임이에요. 신청이 접수됐어요.' : '입금이 확인되면 신청이 완료돼요. 이미 입금하셨다면 따로 연락하지 않으셔도 돼요.'}</p>
       ${res.code ? `<div class="codecard">
         <span class="codecard-label">신청번호</span>
         <div class="code-box">${esc(res.code)} <button type="button" class="btn ghost sm" data-copy="${esc(res.code)}">복사</button></div>
-        <p class="codecard-hint">이 번호와 휴대폰 번호로 <a href="${esc(page('my/', `?code=${encodeURIComponent(res.code)}`))}">내 신청</a>에서 신청 내역·입금 상태를 확인하고 취소를 요청할 수 있어요. 캡처하거나 복사해 두세요.</p>
+        <p class="codecard-hint">이 번호와 휴대폰 번호로 <a href="${esc(page('my/', `?code=${encodeURIComponent(res.code)}`))}">내 신청</a>에서 신청 내역${free ? '' : '·입금 상태'}를 확인하고 취소를 요청할 수 있어요. 캡처하거나 복사해 두세요.</p>
       </div>` : '<div style="height:12px"></div>'}
-      <div class="paybox">
+      ${free ? '' : `<div class="paybox">
         <div class="paybox-row"><span>입금할 금액</span><span class="muted">${esc(deadline)}</span></div>
-        <div class="paybox-amount">${won(res.amount ?? o.price)}</div>
+        <div class="paybox-amount">${won(amount)}</div>
         ${res.payNote ? `<p class="paybox-split muted small">${esc(res.payNote)}</p>` : ''}
         <div class="paybox-bank"><span>${esc(CFG.bank.name)} <b>${esc(CFG.bank.number)}</b><br><small class="muted">예금주 ${esc(CFG.bank.holder)} · 입금자명 <b>${esc(name)}</b></small></span>
           <button type="button" class="btn dark sm" data-copy="${esc(CFG.bank.name + ' ' + CFG.bank.number)}">계좌 복사</button></div>
-      </div>
-      ${res.code ? sentChips(res.notified, true) : `<p class="muted small" style="margin-top:12px">입금 확인 후 비북스가 연락드려요. 취소·변경은 인스타그램 <a href="https://instagram.com/${esc(CFG.store.instagram)}" target="_blank" rel="noopener">@${esc(CFG.store.instagram)}</a> DM으로 알려 주세요.</p>`}
+      </div>`}
+      ${res.code ? sentChips(res.notified, true) : `<p class="muted small" style="margin-top:12px">${free ? '취소·변경은' : '입금 확인 후 비북스가 연락드려요. 취소·변경은'} 인스타그램 <a href="https://instagram.com/${esc(CFG.store.instagram)}" target="_blank" rel="noopener">@${esc(CFG.store.instagram)}</a> DM으로 알려 주세요.</p>`}
       <div class="done-actions"${res.code ? '' : ' style="grid-template-columns:1fr"'}>
         <button type="button" class="btn outline" data-a="cal">${IC.cal} 캘린더에 추가</button>
         ${res.code ? `<a class="btn outline" href="${esc(page('my/', `?code=${encodeURIComponent(res.code)}`))}">내 신청 확인</a>` : ''}
