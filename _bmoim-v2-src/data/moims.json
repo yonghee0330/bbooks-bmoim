@@ -415,7 +415,7 @@
             }
           ],
           "capacity": 6,
-          "price": 10000,
+          "price": 20000,
           "sheetSession": "11월14일_동서서가"
         },
         {
@@ -429,7 +429,7 @@
             }
           ],
           "capacity": 6,
-          "price": 10000,
+          "price": 20000,
           "sheetSession": "11월21일_동서서가"
         }
       ],
@@ -437,7 +437,7 @@
         {
           "id": "both",
           "name": "①② 둘 다 (11/14 · 11/21)",
-          "price": 20000,
+          "price": 30000,
           "sessions": [
             "1114",
             "1121"
@@ -446,7 +446,7 @@
         }
       ],
       "materials": false,
-      "priceNote": "대관료·간식비 포함 · 회차 선택 또는 둘 다 신청",
+      "priceNote": "회차당 20,000원 · ①② 모두 참석 시 30,000원",
       "sheetName": "클래식 음악 감상 모임 11월",
       "sheetMonths": [
         "10월",
