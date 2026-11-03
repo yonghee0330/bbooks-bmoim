@@ -131,7 +131,8 @@
       const infos = p.sessions.map(id => sessInfo(item, item.sessions.find(s => s.id === id), counts));
       opts.push({
         type: 'package', id: p.id, label: p.name, price: p.price, sessionIds: p.sessions,
-        sub: p.sessions.map(id => fshort(kst(item.sessions.find(s => s.id === id).dates[0].start))).join(' + ') + ' 일괄',
+        noCoupon: !!p.noCoupon,
+        sub: p.sub || (p.sessions.map(id => fshort(kst(item.sessions.find(s => s.id === id).dates[0].start))).join(' + ') + ' 일괄'),
         info: {
           open: infos.every(i => i.open), full: infos.some(i => i.full), ended: infos.some(i => i.ended),
           closed: infos.some(i => i.closed), remaining: Math.min(...infos.map(i => i.remaining)),
@@ -709,7 +710,7 @@
     if (!openOpts.length) { toast('지금은 신청할 수 있는 회차가 없어요'); return; }
     const pick = opts.length > 1;
     const defaultOpt = (preselect && openOpts.find(o => o.id === preselect)) || (openOpts.length === 1 ? openOpts[0] : null);
-    const optHtml = pick ? `<div class="field"><span>회차 선택 *</span><div class="opts" role="radiogroup">${opts.map(o => `
+    const optHtml = pick ? `<div class="field"><span>신청 옵션 *</span><div class="opts" role="radiogroup">${opts.map(o => `
       <label class="opt${o.info.open ? '' : ' disabled'}"><input type="radio" name="opt" value="${o.type}:${o.id}" ${o.info.open ? '' : 'disabled'} ${defaultOpt === o ? 'checked' : ''}>
         <span class="opt-main"><b>${esc(o.label)}</b><small>${esc(o.sub)} · ${esc(optStatus(o.info))}</small></span><span class="opt-price">${won(o.price)}</span></label>`).join('')}</div></div>` : '';
     const ex = item.extraField;
@@ -734,8 +735,8 @@
           <span class="bk-opt-main"><b>${esc(b.title)}</b><small>${esc(b.author)} · ${bkPct ? `<s>${won(b.list)}</s> ${won(b.price)}` : won(b.price)}</small></span>
           <span class="bk-qty" role="group" aria-label="${esc(b.title)} 수량"><button type="button" data-q="-1" aria-label="한 권 빼기">−</button><output data-qv>0</output><button type="button" data-q="1" aria-label="한 권 더하기">+</button></span></div>`).join('')}</div>
         <div class="bk-pay" data-bookpay hidden role="radiogroup" aria-label="도서비 결제 방법">
-          <label class="bk-radio"><input type="radio" name="bookpay" value="prepay" checked><span><b>회비와 함께 미리 입금</b><small data-bk-prepay></small></span></label>
-          <label class="bk-radio"><input type="radio" name="bookpay" value="onsite"><span><b>책은 ${item.kind === 'event' ? '행사' : '모임'} 날 현장에서 결제</b><small>회비만 먼저 입금해요${coupon ? ` · 당일 ${won(coupon.amount)} 쿠폰을 책값에 쓸 수 있어요` : ''}</small></span></label>
+          <label class="bk-radio"><input type="radio" name="bookpay" value="prepay" checked><span><b data-bk-prepay-label>회비와 함께 미리 입금</b><small data-bk-prepay></small></span></label>
+          <label class="bk-radio"><input type="radio" name="bookpay" value="onsite"><span><b>책은 ${item.kind === 'event' ? '행사' : '모임'} 날 현장에서 결제</b><small data-bk-onsite></small></span></label>
           ${ship ? `<label class="bk-radio"><input type="radio" name="bookpay" value="ship"><span><b>${item.kind === 'event' ? '행사' : '모임'} 전에 택배로 미리 받기</b><small data-bk-ship></small></span></label>
           <div class="bk-ship" data-ship hidden>
             <label class="field"><span>받는 주소 *</span><input name="shipAddr" autocomplete="street-address" placeholder="도로명 주소, 동·호수까지"></label>
@@ -761,7 +762,7 @@
           <div class="paybox-row"><span>입금할 금액</span><span class="muted">신청 후 ${CFG.payDeadlineHours}시간 안에</span></div>
           <div class="paybox-amount" data-amount></div>
           <p class="paybox-split muted small" data-split hidden></p>
-          ${coupon ? `<p class="paybox-coupon">🎟 ${esc(coupon.text)}</p>` : ''}
+          ${coupon ? `<p class="paybox-coupon" data-coupon>🎟 ${esc(coupon.text)}</p>` : ''}
           <div class="paybox-bank"><span>${esc(CFG.bank.name)} <b>${esc(CFG.bank.number)}</b><br><small class="muted">예금주 ${esc(CFG.bank.holder)} · 입금자명은 신청자 이름으로</small></span>
             <button type="button" class="btn dark sm" data-copy-bank="${esc(CFG.bank.name + ' ' + CFG.bank.number)}">계좌 복사</button></div>
           <p class="muted small pay-rule">입금이 확인되면 신청이 완료돼요. 지금 먼저 입금하고 신청하셔도 되고, 신청 후 기한 안에 입금하셔도 돼요.</p>
@@ -825,16 +826,32 @@
       const n = pCount();
       if (pf.length && n !== renderedN) renderPeople();
       const bs = books.length ? bookState() : { sel: [], n: 0, sum: 0, mode: 'prepay' };
+      const hasCoupon = !!(coupon && !o.noCoupon);
       const credit = bs.n && feeCredit ? Math.min(feeCredit, o.price * n) : 0;
       const fee = o.price * n - credit;
       const feeTxt = `회비 ${won(o.price)}${n > 1 ? ` × ${n}명` : ''}${credit ? ` − 책 구입 차감 ${won(credit)}` : ''}`;
       const split = $('[data-split]', form);
+      const couponEl = $('[data-coupon]', form);
+      if (couponEl) couponEl.hidden = !hasCoupon || fee <= 0;
+      const prepayLabel = $('[data-bk-prepay-label]', form);
+      if (prepayLabel) prepayLabel.textContent = fee > 0 ? '회비와 함께 미리 입금' : '도서비 미리 입금';
+      const onsiteHint = $('[data-bk-onsite]', form);
+      if (onsiteHint) {
+        if (fee > 0) onsiteHint.textContent = hasCoupon
+          ? `회비만 먼저 입금해요 · 당일 ${won(coupon.amount)} 쿠폰을 책값에 쓸 수 있어요`
+          : '회비만 먼저 입금해요';
+        else onsiteHint.textContent = '도서비만 현장에서 결제해요';
+      }
       if (books.length) {
         $('[data-bookpay]', form).hidden = !bs.sel.length;
         const pp = $('[data-bk-prepay]', form);
-        if (pp) pp.textContent = `총 ${won(fee + bs.sum)} (${feeTxt} + 도서 ${won(bs.sum)})`;
+        if (pp) pp.textContent = fee > 0
+          ? `총 ${won(fee + bs.sum)} (${feeTxt} + 도서 ${won(bs.sum)})`
+          : `도서 ${won(bs.sum)}`;
         const sp = $('[data-bk-ship]', form);
-        if (sp) sp.textContent = `총 ${won(fee + bs.sum + shipFeeOf(bs.sum))} (도서 ${won(bs.sum)} + 배송비 ${shipFeeOf(bs.sum) ? won(ship.fee) : '무료'}) · 책값 ${won(ship.freeOver)} 이상 무료 배송`;
+        if (sp) sp.textContent = fee > 0
+          ? `총 ${won(fee + bs.sum + shipFeeOf(bs.sum))} (도서 ${won(bs.sum)} + 배송비 ${shipFeeOf(bs.sum) ? won(ship.fee) : '무료'}) · 책값 ${won(ship.freeOver)} 이상 무료 배송`
+          : `도서 ${won(bs.sum)} + 배송비 ${shipFeeOf(bs.sum) ? won(ship.fee) : '무료'} · 책값 ${won(ship.freeOver)} 이상 무료 배송`;
         const sh = $('[data-ship]', form);
         if (sh) sh.hidden = !(bs.sel.length && bs.mode === 'ship');
       }
@@ -847,7 +864,15 @@
         : (SHEET ? '신청하면 신청번호가 나와요. 이메일을 적으면 입금 안내 메일도 보내드려요.' : '신청 직후 카카오 알림톡으로 신청번호와 입금 안내를 보내드려요.');
       if (bs.sel.length) {
         split.hidden = false;
-        split.textContent = bs.mode === 'ship' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권) + 배송비 ${shipFee ? won(shipFee) : '무료'}` : bs.mode === 'prepay' ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권)` : `${credit ? `${feeTxt} = ${won(fee)}` : feeTxt}만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
+        if (bs.mode === 'ship') split.textContent = fee > 0
+          ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권) + 배송비 ${shipFee ? won(shipFee) : '무료'}`
+          : `도서비 ${won(bs.sum)} (책 ${bs.n}권) + 배송비 ${shipFee ? won(shipFee) : '무료'}`;
+        else if (bs.mode === 'prepay') split.textContent = fee > 0
+          ? `${feeTxt} + 도서비 ${won(bs.sum)} (책 ${bs.n}권)`
+          : `도서비 ${won(bs.sum)} (책 ${bs.n}권)`;
+        else split.textContent = fee > 0
+          ? `${credit ? `${feeTxt} = ${won(fee)}` : feeTxt}만 입금해요 · 도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`
+          : `도서비 ${won(bs.sum)}은 모임 날 현장에서 결제`;
       } else if (n > 1) {
         split.hidden = false;
         split.textContent = `${feeTxt} = ${won(fee)}`;
@@ -867,7 +892,7 @@
       const name = F('name').value.trim();
       const phone = F('phone').value.trim();
       const email = F('email').value.trim();
-      if (!o) return formAlert(alertEl, '회차를 선택해 주세요.');
+      if (!o) return formAlert(alertEl, '신청 옵션을 선택해 주세요.');
       if (!name) { markInvalid(F('name')); return formAlert(alertEl, `${item.nameLabel || '이름'}을 입력해 주세요.`); }
       const n = pCount();
       const people = [];

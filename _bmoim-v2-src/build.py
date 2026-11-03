@@ -307,6 +307,12 @@ def place_text(item, sep=' '):
 
 def price_text(item):
     prices = sorted({s['price'] for s in item['sessions']} | {p['price'] for p in item.get('packages', [])})
+    paid = [p for p in prices if p > 0]
+    if not prices or not paid:
+        return '무료'
+    # 무료 옵션이 섞여 있으면 유료 금액을 대표로 (상세에서 옵션별 표기)
+    if 0 in prices:
+        return won(paid[0]) if len(paid) == 1 else f'{won(paid[0])}~'
     if len(prices) == 1:
         return won(prices[0])
     return f'{won(prices[0])}~'
