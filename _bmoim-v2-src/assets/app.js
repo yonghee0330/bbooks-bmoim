@@ -1240,7 +1240,13 @@
 
       const box = $('[data-sessions]');
       if (box && !item.applyUrl) {
-        box.innerHTML = optionsOf(item, counts).map(o => {
+        // 점주 무료 옵션(hidePrice)은 신청 화면에서만 보이고, 남은 자리는 일반·점주 구분 없이 회차 하나로 합쳐 보여줘요
+        const hiddenPkg = new Set((item.packages || []).filter(p => p.hidePrice).map(p => p.id));
+        const merged = hiddenPkg.size > 0 && item.sessions.length === 1;
+        const listOpts = optionsOf(item, counts).filter(o => !(o.type === 'package' && hiddenPkg.has(o.id))).map(o => merged && o.type === 'session'
+          ? { ...o, label: sessDateText(item.sessions[0]), sub: `${item.spaceLabel || [...new Set(item.sessions[0].dates.map(d => d.space))].join('·')} · 전체 ${o.info.cap}명` }
+          : o);
+        box.innerHTML = listOpts.map(o => {
           const low = o.info.open && o.info.known && o.info.filled >= 3 && o.info.remaining <= 2;
           return `<div class="sess${o.info.open ? '' : ' off'}">
             <div class="sess-l"><div class="sess-name">${esc(o.label)}</div><div class="sess-sub">${esc(o.sub)}</div></div>
