@@ -25,7 +25,7 @@
     {
       "slug": "offbook-2610",
       "kind": "event",
-      "status": "open",
+      "status": "hidden",
       "title": "OFF-BOOK",
       "short": "OFF-BOOK",
       "oneLiner": "읽는 감각을 깨우는 새로운 독서 소모임",
@@ -72,7 +72,7 @@
     {
       "slug": "storyaunt-2610",
       "kind": "moim",
-      "status": "open",
+      "status": "hidden",
       "title": "그림책 읽어주는 이모",
       "short": "그림책 이모",
       "oneLiner": "그림책 읽고, 손으로 만드는 STORY TIME",
@@ -236,7 +236,7 @@
     {
       "slug": "daon-bookclub-2610",
       "kind": "moim",
-      "status": "open",
+      "status": "hidden",
       "title": "목요 독서모임",
       "short": "목요 독서",
       "oneLiner": "천천히 깊어지는 목요일 저녁",
@@ -278,7 +278,7 @@
     {
       "slug": "daon-teablend-2610",
       "kind": "moim",
-      "status": "closed",
+      "status": "hidden",
       "title": "중국차 블렌딩 다회",
       "short": "중국차 다회",
       "oneLiner": "차와 함께 천천히 머무는 일요일 오후",
@@ -321,7 +321,7 @@
     {
       "slug": "dongseo-classic-2610",
       "kind": "moim",
-      "status": "open",
+      "status": "hidden",
       "title": "클래식 음악 감상 모임",
       "short": "클래식 감상",
       "oneLiner": "피아니스트의 연주와 해설, 그리고 서로의 추억",
@@ -613,7 +613,7 @@
     {
       "slug": "sunny-classic-2610",
       "kind": "moim",
-      "status": "open",
+      "status": "hidden",
       "title": "써니와 함께 고전 읽고 글쓰기",
       "short": "써니 고전",
       "oneLiner": "톨스토이와 함께한 7주, 마지막은 오프라인에서",
@@ -661,7 +661,7 @@
     {
       "slug": "letter-2610",
       "kind": "moim",
-      "status": "open",
+      "status": "hidden",
       "title": "한 사람을 위한 편지",
       "short": "편지 모임",
       "oneLiner": "타자기로 쓰고, 우표를 붙이는 두 시간",
@@ -703,7 +703,7 @@
     {
       "slug": "craft-club-2610",
       "kind": "moim",
-      "status": "open",
+      "status": "hidden",
       "title": "Craft Club",
       "short": "Craft Club",
       "oneLiner": "자유롭게 만들고 놀며 영국 문화도 나누는 크래프트 모임",
