@@ -319,6 +319,69 @@
       "sheetName": "중국차 블렌딩 다회"
     },
     {
+      "slug": "little-friday-2611",
+      "kind": "moim",
+      "status": "open",
+      "title": "Little Friday Salon",
+      "short": "리틀 프라이데이",
+      "oneLiner": "책과 차가 머무는 목요일 저녁",
+      "tags": [
+        "독서",
+        "음악·차"
+      ],
+      "audience": "성인 누구나",
+      "host": {
+        "name": "다온 글방",
+        "insta": "daon_gulbang",
+        "bio": "책과 차의 조합을 제안하는 사람"
+      },
+      "poster": "little_friday_salon_nov2026.jpg",
+      "summary": "매월 선정 책과 티페어링, 30분 묵독 뒤 다정한 대화. 11/19(목) 19시 비북스. 《영국 정원 일기》 개별 지참.",
+      "body": [
+        "책과 차가 머무는 목요일 저녁이에요. 매월 선정된 책과 티페어링을 경험해요.",
+        "페어링 차와 함께 30분 묵독한 뒤, 다정한 대화를 나눠요.",
+        "첫 모임 도서는 개별 지참이고, 이후에는 다온 글방이 준비해요."
+      ],
+      "highlights": [
+        {
+          "label": "이번 도서",
+          "value": "《영국 정원 일기》 (개별 지참)"
+        },
+        {
+          "label": "진행",
+          "value": "티페어링 · 30분 묵독 · 대화"
+        },
+        {
+          "label": "참가비",
+          "value": "30,000원 (티페어링 · 12월 도서 포함)"
+        }
+      ],
+      "notes": [
+        "11월 첫 모임 도서는 각자 챙겨 와 주세요. 12월부터는 다온 글방이 준비해요."
+      ],
+      "sessions": [
+        {
+          "id": "1119",
+          "dates": [
+            {
+              "start": "2026-11-19T19:00",
+              "end": "2026-11-19T21:00",
+              "space": "세미나실"
+            }
+          ],
+          "capacity": 4,
+          "price": 30000,
+          "sheetSession": "11월19일_리틀프라이데이"
+        }
+      ],
+      "materials": true,
+      "priceNote": "티페어링 · 12월 도서 포함",
+      "sheetName": "리틀 프라이데이 살롱",
+      "sheetMonths": [
+        "11월"
+      ]
+    },
+    {
       "slug": "dongseo-classic-2610",
       "kind": "moim",
       "status": "hidden",
