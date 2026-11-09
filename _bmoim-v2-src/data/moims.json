@@ -382,6 +382,101 @@
       ]
     },
     {
+      "slug": "rainbow-fish-2611",
+      "kind": "moim",
+      "status": "open",
+      "title": "무지개 물고기 Tea Party",
+      "short": "무지개 물고기",
+      "oneLiner": "A Little Book, A Little Tea, A Big Friendship!",
+      "tags": [
+        "어린이",
+        "언어"
+      ],
+      "audience": "5–7세 · 보호자 없이 진행",
+      "host": {
+        "name": "다온 글방",
+        "insta": "daon_gulbang",
+        "bio": "책과 차의 조합을 제안하는 사람"
+      },
+      "poster": "rainbow_fish_tea_nov2026.jpg",
+      "summary": "무지개 물고기와 함께하는 키즈 북&티 파티. 그림책·티타임·영어 활동. 11/29(일) 1부 13시 · 2부 15시, 5–7세.",
+      "body": [
+        "무지개 물고기와 함께하는 티파티에 초대해요. 그림책을 읽고, 차와 간식을 나누며, 영어로 활동하는 시간이에요.",
+        "Story Time(한글 그림책) → Tea Time(다과 티파티) → English Activity(영어 표현 활동) 순으로 진행해요.",
+        "5–7세 대상이고, 수업은 보호자 없이 진행돼요."
+      ],
+      "highlights": [
+        {
+          "label": "대상",
+          "value": "5–7세 · 보호자 없이 진행"
+        },
+        {
+          "label": "구성",
+          "value": "Story Time · Tea Time · English Activity"
+        },
+        {
+          "label": "참가비",
+          "value": "35,000원 (정가 45,000원 · 첫 방문 1만원 할인)"
+        }
+      ],
+      "sessions": [
+        {
+          "id": "p1",
+          "name": "1부 13:00",
+          "dates": [
+            {
+              "start": "2026-11-29T13:00",
+              "end": "2026-11-29T14:00",
+              "space": "세미나실"
+            }
+          ],
+          "capacity": 6,
+          "price": 35000,
+          "sheetSession": "11월29일_1부"
+        },
+        {
+          "id": "p2",
+          "name": "2부 15:00",
+          "dates": [
+            {
+              "start": "2026-11-29T15:00",
+              "end": "2026-11-29T16:00",
+              "space": "세미나실"
+            }
+          ],
+          "capacity": 6,
+          "price": 35000,
+          "sheetSession": "11월29일_2부"
+        }
+      ],
+      "materials": true,
+      "priceNote": "정가 45,000원 · 첫 방문 1만원 할인 적용가",
+      "nameLabel": "입금자 이름 (보호자)",
+      "applyFields": [
+        {
+          "id": "childName",
+          "label": "아이 이름",
+          "required": true,
+          "placeholder": "예) 김하늘"
+        },
+        {
+          "id": "childAge",
+          "label": "아이 나이",
+          "required": true,
+          "placeholder": "예) 6세 · 만 5세"
+        }
+      ],
+      "applyFieldsNote": "아이 이름과 나이는 활동 준비에 써요. 참가비는 아이 한 명당이에요. 아이가 여러 명이면 인원을 고르고 아이마다 적어 주세요.",
+      "applyCount": {
+        "label": "참가 아이 수",
+        "max": 3
+      },
+      "sheetName": "무지개 물고기 Tea Party",
+      "sheetMonths": [
+        "11월"
+      ]
+    },
+    {
       "slug": "dongseo-classic-2610",
       "kind": "moim",
       "status": "hidden",
