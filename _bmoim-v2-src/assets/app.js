@@ -1429,6 +1429,9 @@
   const PAID_ST = ['입금확인', '신청완료', '확정'];
   const nOf = list => list.reduce((x, a) => x + (a.count || 1), 0);  // 신청 한 건에 아이가 여러 명이면 인원수로 셈
   const dashLabel = s => PAID_ST.includes(s) ? '신청 완료' : s === '입금대기' ? '입금 대기' : s === '취소요청' ? '취소 요청' : s;
+  // 도서 요청 문구에서 배송지(개인정보)는 빼고, 책 제목·권수·결제 방식만 보여 줌
+  const bookShow = t => String(t || '').replace(/\s*·\s*배송지.*$/, '').replace(/^책\s*/, '').trim();
+  const bookQty = t => { let n = 0; String(t || '').replace(/《[^》]+》(?:\s*[×x]\s*(\d+))?/g, (_, q) => { n += Number(q) || 1; }); return n; };
   function initDashboard() {
     const box = $('#dash');
     const tf = $('#tokenForm');
@@ -1466,9 +1469,9 @@
             ${share ? `<p class="small muted" style="margin:6px 0 0">호스트 공유 링크 (신청 경로가 ‘호스트’로 집계돼요) <button type="button" class="btn ghost sm" data-copy="${esc(share)}">링크 복사</button></p>` : ''}
             ${m.sessions.map(s => {
               const act = s.applicants.filter(a => !String(a.status).startsWith('취소'));
-              return `<div class="dash-sess"><h3><span>${esc(s.label)}</span><span class="muted small">${nOf(act)} / ${s.capacity}명</span></h3>
-                ${s.applicants.length ? `<div class="table-wrap" style="border:0"><table class="dtable"><thead><tr><th>이름</th>${s.applicants.some(a => a.child || a.age) ? '<th>참가 아이</th>' : ''}<th>연락처</th><th>상태</th><th>신청일</th><th>메모</th></tr></thead><tbody>
-                ${s.applicants.sort((a, b) => a.at - b.at).map(a => `<tr><td>${esc(a.name)}</td>${s.applicants.some(x => x.child || x.age) ? `<td>${esc(a.child || '')}${a.age ? ` (${esc(a.age)})` : ''}</td>` : ''}<td>${/\d{4}$/.test(a.phone) && !a.phone.includes('*') ? `<a href="tel:${esc(a.phone.replace(/\D/g, ''))}">${esc(a.phone)}</a>` : esc(a.phone)}</td><td><span class="st ${PAID_ST.includes(a.status) ? 'st-paid' : String(a.status).startsWith('취소') ? 'st-cancel' : 'st-pending'}">${esc(dashLabel(a.status))}</span></td><td>${esc(fshort(a.at))}</td><td>${esc([a.memo, a.books ? '도서: ' + a.books : ''].filter(Boolean).join(' · '))}</td></tr>`).join('')}
+              return `<div class="dash-sess"><h3><span>${esc(s.label)}</span><span class="muted small">${nOf(act)} / ${s.capacity}명${act.some(a => a.books) ? ` · 도서 신청 ${act.filter(a => a.books).length}명 · ${act.reduce((n, a) => n + bookQty(a.books), 0)}권` : ''}</span></h3>
+                ${s.applicants.length ? `<div class="table-wrap" style="border:0"><table class="dtable"><thead><tr><th>이름</th>${s.applicants.some(a => a.child || a.age) ? '<th>참가 아이</th>' : ''}<th>연락처</th><th>상태</th>${s.applicants.some(a => a.books) ? '<th>도서 신청</th>' : ''}<th>신청일</th><th>메모</th></tr></thead><tbody>
+                ${s.applicants.sort((a, b) => a.at - b.at).map(a => `<tr><td>${esc(a.name)}</td>${s.applicants.some(x => x.child || x.age) ? `<td>${esc(a.child || '')}${a.age ? ` (${esc(a.age)})` : ''}</td>` : ''}<td>${/\d{4}$/.test(a.phone) && !a.phone.includes('*') ? `<a href="tel:${esc(a.phone.replace(/\D/g, ''))}">${esc(a.phone)}</a>` : esc(a.phone)}</td><td><span class="st ${PAID_ST.includes(a.status) ? 'st-paid' : String(a.status).startsWith('취소') ? 'st-cancel' : 'st-pending'}">${esc(dashLabel(a.status))}</span></td>${s.applicants.some(x => x.books) ? `<td>${a.books ? esc(bookShow(a.books)) : '<span class="muted">신청 안 함</span>'}</td>` : ''}<td>${esc(fshort(a.at))}</td><td>${esc(a.memo)}</td></tr>`).join('')}
                 </tbody></table></div>` : '<p class="dash-empty">아직 신청이 없어요.</p>'}</div>`;
             }).join('')}</section>`;
         }).join('')}
