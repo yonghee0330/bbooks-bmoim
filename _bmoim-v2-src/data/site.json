@@ -9,9 +9,10 @@
   "kakaoJsKey": "",
   "month": {
     "key": "2026-11",
-    "title": "11월 비모임",
+    "title": "11-12월 비모임",
+    "period": "11-12월",
     "sub": "단풍처럼 천천히 물들어가는 계절, 책과 함께",
-    "desc": "부천 원미동 비북스에서 열리는 이번 달 모임과 행사를 한 칸의 서가처럼 모았어요.",
+    "desc": "부천 원미동 비북스에서 열리는 11–12월 모임과 행사를 한 칸의 서가처럼 모았어요.",
     "heroImage": "october_hero_fall_bleed.jpg",
     "calendarMonths": [
       "2026-11",
@@ -107,7 +108,8 @@
     "month": "11월",
     "countMonths": [
       "10월",
-      "11월"
+      "11월",
+      "12월"
     ],
     "rentMonths": [
       "10월",
@@ -116,7 +118,8 @@
     ],
     "hostMonths": [
       "10월",
-      "11월"
+      "11월",
+      "12월"
     ],
     "siteUrl": "https://bbooks.co.kr/moim",
     "indexable": true,

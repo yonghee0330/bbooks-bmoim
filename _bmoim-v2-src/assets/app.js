@@ -239,22 +239,42 @@
         d.ref && d.ref !== 'direct' ? `유입 ${d.ref}` : ''
       ].filter(Boolean).join(' · ');
       const sessions = d.sessionIds.map(id => item.sessions.find(s => s.id === id));
+      const toEventSheet = item.applySheet === 'event' || item.sheetTab === '행사';
       let first = null;
       for (let i = 0; i < sessions.length; i++) {
+        const month = (item.sheetMonths && item.sheetMonths[0]) || SH.month;
         const row = {
-          month: SH.month, moimName: sheetName(item), session: sheetSession(sessions[i]),
+          month, moimName: sheetName(item), session: sheetSession(sessions[i]),
           name: d.name, phone: sheetPhone(d.phone), amount: i === 0 ? d.amount : '',
           note: noteBase, books: i === 0 ? (d.extra || '') : '', date: sheetNow()
         };
-        const out = await sheetPostV2(
-          { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '', payNote: d.payNote || '', people: d.people || [],
-            // 안내 메일용: 모임 이름·포스터·페이지·장소·메모·환불 규정
-            title: item.title, kindLabel: [item.kindLabel, ...(item.tags || []).slice(0, 1)].filter(Boolean).join(' · '),
-            place: [...new Set(sessions.flatMap(x => x.dates.map(dd => dd.space)))].join(' · '),
-            poster: absUrl(imgUrl(item.poster)), pageUrl: itemUrl(item), memo: d.memo || '',
-            refund: (CFG.refund[item.materials ? 'materials' : 'noMaterials'] || []).join(' · ') },
-          { action: 'apply', ...row, note: [noteBase, d.email ? `메일 ${d.email}` : ''].filter(Boolean).join(' · ') }
-        );
+        let out;
+        if (toEventSheet) {
+          // 행사 탭(eventApply): 월·유형·행사명·회차·이름·연락처·금액·접수일·비고·도서주문
+          out = await sheetPost({
+            action: 'eventApply',
+            month,
+            eventType: item.eventType || 'b.talks',
+            eventName: sheetName(item),
+            session: sheetSession(sessions[i]),
+            name: d.name,
+            phone: sheetPhone(d.phone),
+            amount: i === 0 ? d.amount : '',
+            note: [noteBase, d.email ? `메일 ${d.email}` : ''].filter(Boolean).join(' · '),
+            books: i === 0 ? (d.extra || '') : '',
+            date: sheetNow()
+          });
+        } else {
+          out = await sheetPostV2(
+            { action: 'applyV2', ...row, email: d.email || '', consent: d.consent, ref: d.ref || '', optionLabel: d.optionLabel || '', code: first?.code || '', payNote: d.payNote || '', people: d.people || [],
+              // 안내 메일용: 모임 이름·포스터·페이지·장소·메모·환불 규정
+              title: item.title, kindLabel: [item.kindLabel, ...(item.tags || []).slice(0, 1)].filter(Boolean).join(' · '),
+              place: [...new Set(sessions.flatMap(x => x.dates.map(dd => dd.space)))].join(' · '),
+              poster: absUrl(imgUrl(item.poster)), pageUrl: itemUrl(item), memo: d.memo || '',
+              refund: (CFG.refund[item.materials ? 'materials' : 'noMaterials'] || []).join(' · ') },
+            { action: 'apply', ...row, note: [noteBase, d.email ? `메일 ${d.email}` : ''].filter(Boolean).join(' · ') }
+          );
+        }
         if (i === 0) first = out || {};
       }
       return { ok: true, code: first?.code || '', amount: d.amount, deadline: first?.deadline || Date.now() + CFG.payDeadlineHours * 3600e3, notified: first?.notified || {} };

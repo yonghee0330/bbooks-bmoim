@@ -387,7 +387,8 @@ CATALOG = catalog()
 
 
 # ── 공통 레이아웃 ─────────────────────────────────────
-NAV = [('hub', '', '이번 달 모임'), ('events', 'events/', '이번 달 행사'), ('cal', '#cal', '일정 달력'), ('space', 'space/', '공간 대관'), ('host', HOST_DIR, '모임 열기')]
+PERIOD = SITE['month'].get('period') or SITE['month']['title'].replace(' 비모임', '').replace('비모임', '').strip() or '이번 달'
+NAV = [('hub', '', f'{PERIOD} 모임'), ('events', 'events/', f'{PERIOD} 행사'), ('cal', '#cal', '일정 달력'), ('space', 'space/', '공간 대관'), ('host', HOST_DIR, '모임 열기')]
 
 
 def layout(*, page_id, title, desc, body, depth, path, og_image=None, og_type='website',
@@ -537,13 +538,13 @@ def build_hub(kind='moim'):
         k += 1
 
     cards = ''.join(moim_card(i, rel) for i in LIST)
-    desc = (f'비북스 이번 달 행사 — 작가와의 만남 비톡스(b.talks)와 특별 행사 {n_event}개. 부천 원미동 독립서점 비북스에서 일정 확인과 신청을 한 곳에서.' if ev else None) or f'{m["title"]} — 부천 원미동 독립서점 비북스의 독서모임·글쓰기·음악·어린이 모임 {n_moim}개와 행사 {n_event}개. 일정 확인과 신청을 한 곳에서.'
+    desc = (f'비북스 {PERIOD} 행사 — 작가와의 만남 비톡스(b.talks)와 특별 행사 {n_event}개. 부천 원미동 독립서점 비북스에서 일정 확인과 신청을 한 곳에서.' if ev else None) or f'{m["title"]} — 부천 원미동 독립서점 비북스의 독서모임·글쓰기·음악·어린이 모임 {n_moim}개와 행사 {n_event}개. 일정 확인과 신청을 한 곳에서.'
     body = f'''
 <main id="main" class="wrap" data-kind="{kind}">
   <section class="hub-head">
     <div class="hub-copy">
       <p class="eyebrow">{"이달의 행사" if ev else "이달의 서가"} · {y}.{mo}</p>
-      <h1 class="page-title">{"이번 달 행사" if ev else esc(m["title"])}</h1>
+      <h1 class="page-title">{esc(f"{PERIOD} 행사" if ev else m["title"])}</h1>
       <p class="page-desc">{"작가와의 만남 비톡스(b.talks)처럼 비북스가 여는 특별한 자리를 모았어요.<br>행사가 있는 시간에는 매장 전체를 행사에 써요." if ev else f'{esc(m["sub"])}<br>{esc(m.get("desc", ""))}'}</p>
     </div>
     <dl class="stamp">
@@ -632,7 +633,7 @@ def build_hub(kind='moim'):
         },
     ]
     if ev:
-        write('events/index.html', layout(page_id='events', title='이번 달 행사 · 비북스 b.moim', desc=desc, body=body,
+        write('events/index.html', layout(page_id='events', title=f'{PERIOD} 행사 · 비북스 b.moim', desc=desc, body=body,
                                           depth=1, path='events/', jsonld=jsonld[1:]))
         return
     write('index.html', layout(page_id='hub', title=f'{m["title"]} · 비북스 b.moim', desc=desc, body=body,
@@ -802,7 +803,7 @@ def build_detail(it, others):
   </section>"""
     body = f"""
 <main id="main" class="wrap detail{" theme-" + esc(it["theme"]) if it.get("theme") else ""}" data-slug="{esc(slug)}" style="--cat:{color}">
-  <a class="back" href="{rel}{"events/" if it["kind"] == "event" else "./"}">{ICON["back"]} {"이번 달 행사" if it["kind"] == "event" else esc(SITE["month"]["title"])}</a>
+  <a class="back" href="{rel}{"events/" if it["kind"] == "event" else "./"}">{ICON["back"]} {esc(f"{PERIOD} 행사" if it["kind"] == "event" else SITE["month"]["title"])}</a>
 
   <div class="d-grid">
     <div class="d-left">
@@ -862,7 +863,7 @@ def build_detail(it, others):
   </section>
 
   <section class="d-sec more">
-    <h2>{"이번 달 다른 행사와 모임" if it["kind"] == "event" else "이번 달 서가의 다른 모임"}</h2>
+    <h2>{esc(f"{PERIOD} 다른 행사와 모임" if it["kind"] == "event" else f"{PERIOD} 서가의 다른 모임")}</h2>
     <div class="grid grid-3">{others_html}</div>
   </section>
 </main>"""

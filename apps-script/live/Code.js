@@ -184,30 +184,42 @@ function appendEventApply_(data) {
 function getCounts_(month) {
   month = String(month || '7월').trim();
   var ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  var sheet = ss.getSheetByName(SHEET_APPLY);
-  if (!sheet) return { counts: {} };
-
-  var rows = sheet.getDataRange().getValues();
   var counts = {};
-  var head0 = rows.length ? rows[0].map(function (h) { return String(h || '').trim(); }) : [];
-  var statusCol = head0.indexOf('상태');
-  var headCountCol = head0.indexOf('참가 인원');  // 한 신청에 여러 명(아이 여러 명)이면 인원수로 셈
-  for (var i = 1; i < rows.length; i++) {
-    var row = rows[i];
-    if (String(row[1] || '').trim() !== month) continue;
-    var note = String(row[7] || '');
-    if (note.indexOf('취소') !== -1) continue;
-    if (statusCol > -1 && String(row[statusCol] || '').indexOf('취소') === 0) continue;
-    var moimName = String(row[2] || '').trim();
-    var session = String(row[3] || '').trim();
-    var name = String(row[4] || '').trim();
-    if (!moimName || !name) continue;
-    var persons = headCountCol > -1 ? Math.max(1, Math.round(Number(row[headCountCol]) || 1)) : 1;
-    if (session) {
-      counts[moimName + '_' + session] = (counts[moimName + '_' + session] || 0) + persons;
+
+  function addFromSheet_(sheet, nameCol, sessionCol, noteCol, statusCol, headCountCol) {
+    if (!sheet) return;
+    var rows = sheet.getDataRange().getValues();
+    for (var i = 1; i < rows.length; i++) {
+      var row = rows[i];
+      if (String(row[1] || '').trim() !== month) continue;
+      var note = String(row[noteCol] || '');
+      if (note.indexOf('취소') !== -1) continue;
+      if (statusCol > -1 && String(row[statusCol] || '').indexOf('취소') === 0) continue;
+      var moimName = String(row[nameCol] || '').trim();
+      var session = String(row[sessionCol] || '').trim();
+      var name = String(row[nameCol + 2] || '').trim(); // 모임신청: 이름=E(4)=nameCol+2, 행사: 이름=F(5)=nameCol+2
+      if (!moimName || !name) continue;
+      var persons = headCountCol > -1 ? Math.max(1, Math.round(Number(row[headCountCol]) || 1)) : 1;
+      if (session) {
+        counts[moimName + '_' + session] = (counts[moimName + '_' + session] || 0) + persons;
+      }
+      counts[moimName] = (counts[moimName] || 0) + persons;
     }
-    counts[moimName] = (counts[moimName] || 0) + persons;
   }
+
+  var applySheet = ss.getSheetByName(SHEET_APPLY);
+  if (applySheet) {
+    var head0 = applySheet.getLastRow() ? applySheet.getRange(1, 1, 1, applySheet.getLastColumn()).getValues()[0].map(function (h) { return String(h || '').trim(); }) : [];
+    addFromSheet_(applySheet, 2, 3, 7, head0.indexOf('상태'), head0.indexOf('참가 인원'));
+  }
+
+  // 행사 탭: A신청일시 B월 C유형 D행사명 E회차 F이름 G연락처 … J비고
+  var eventSheet = ss.getSheetByName(SHEET_EVENT);
+  if (eventSheet) {
+    var headE = eventSheet.getLastRow() ? eventSheet.getRange(1, 1, 1, eventSheet.getLastColumn()).getValues()[0].map(function (h) { return String(h || '').trim(); }) : [];
+    addFromSheet_(eventSheet, 3, 4, 9, headE.indexOf('상태'), -1);
+  }
+
   return { counts: counts };
 }
 
