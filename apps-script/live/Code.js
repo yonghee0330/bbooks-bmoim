@@ -428,13 +428,29 @@ function v2Columns_(sheet, names) {
 
 /** 기존 앞부분 열(base) + 제목으로 찾은 뒷부분 열(extra)을 한 줄로 기록 */
 function v2Append_(sheet, base, extra) {
-  var cols = v2Columns_(sheet, Object.keys(extra));
-  var width = base.length;
-  Object.keys(cols).forEach(function (k) { width = Math.max(width, cols[k]); });
-  var row = [];
-  for (var i = 0; i < width; i++) row.push(i < base.length ? base[i] : '');
-  Object.keys(extra).forEach(function (k) { row[cols[k] - 1] = extra[k]; });
-  sheet.appendRow(row);
+  var lock = LockService.getScriptLock();
+  try { lock.waitLock(20000); } catch (e) { /* 동시에 몰려도 계속 진행 */ }
+  try {
+    var cols = v2Columns_(sheet, Object.keys(extra));
+    var width = base.length;
+    Object.keys(cols).forEach(function (k) { width = Math.max(width, cols[k]); });
+    var row = [];
+    for (var i = 0; i < width; i++) row.push(i < base.length ? base[i] : '');
+    Object.keys(extra).forEach(function (k) { row[cols[k] - 1] = extra[k]; });
+    // Date 객체가 빈 칸으로 저장되는 사고(2026-11) 방지: 서울 시각 문자열로 바꿔 쓰면 시트가 날짜로 읽는다
+    row = row.map(function (v) { return v instanceof Date ? Utilities.formatDate(v, 'Asia/Seoul', 'yyyy-MM-dd HH:mm:ss') : v; });
+    // 맨 아래 빈 줄을 직접 찾아 그 줄에 쓰고, 실제로 들어갔는지 다시 읽어 확인한다 (appendRow가 조용히 안 들어가는 사고 방지)
+    var colA = sheet.getRange(1, 1, Math.max(sheet.getLastRow(), 1), 1).getValues();
+    var last = colA.length;
+    while (last > 1 && String(colA[last - 1][0] === '' ? '' : colA[last - 1][0]).trim() === '') last--;
+    var target = Math.max(last, sheet.getLastRow()) + 1;
+    if (target > sheet.getMaxRows()) sheet.insertRowsAfter(sheet.getMaxRows(), target - sheet.getMaxRows());
+    sheet.getRange(target, 1, 1, width).setValues([row]);
+    SpreadsheetApp.flush();
+    var back = sheet.getRange(target, 1, 1, 1).getValues()[0][0];
+    if (back === '' || back === null) throw new Error('시트에 저장되지 않았어요. 잠시 후 다시 시도해 주세요.');
+    return target;
+  } finally { try { lock.releaseLock(); } catch (e2) {} }
 }
 
 /** 모임 신청 v2 — A~I는 기존 apply와 똑같이, 새 항목은 제목 열에 */
@@ -449,7 +465,7 @@ function appendApplyV2_(data) {
   var code = follow ? String(data.code) : v3NewCode_('BM');
   var amount = Number(data.amount) || 0;
   var deadline = new Date(Date.now() + Number(v3Prop_('PAY_DEADLINE_HOURS', '24')) * 3600e3);
-  v2Append_(sheet, [
+  var newRow = v2Append_(sheet, [
     new Date(),
     v2Clean_(data.month, 10),
     v2Clean_(data.moimName, 120),
@@ -471,7 +487,7 @@ function appendApplyV2_(data) {
     '입금기한': follow || amount <= 0 ? '' : deadline,
     '메일정보': follow ? '' : JSON.stringify(v3MailInfo_(data))
   }));
-  var notified = follow ? {} : v3NotifyApply_(data, code, deadline, sheet.getLastRow());
+  var notified = follow ? {} : v3NotifyApply_(data, code, deadline, newRow);
   return { ok: true, v: 3, code: code, amount: amount, deadline: deadline.getTime(), notified: notified };
 }
 
