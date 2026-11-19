@@ -15,7 +15,7 @@
 | 운영 사이트 | https://bbooks.co.kr/moim/ — 파일은 `~/Documents/bbooks/moim/` (생성물, 직접 수정 금지) |
 | 원본 | 이 저장소 `_bmoim-v2-src/` — `data/moims.json · spaces.json · site.json`, `assets/app.js · rent.js · app.css · cards.js`, `build.py`, `deploy.sh` |
 | 옛 주소 | moim.bbooks.co.kr → 이 저장소(GitHub Pages)가 새 주소로 넘김. 지우지 말 것(이미 퍼진 링크·메일) |
-| Apps Script 운영 코드 사본 | `apps-script/live/Code.js` (현재 배포 **버전 22**) |
+| Apps Script 운영 코드 사본 | `apps-script/live/Code.js` (현재 배포 **버전 24**) |
 | Apps Script 배포 도구 | `/Users/mac/Desktop/INBOX-B/bmoim-v2/apps-script/clasp/deploy.sh` |
 | 구글 시트 | `186sx_pR2M2chevM3HJtCNWnK0LJLrQGGCKj6YEjbYWM` (탭: 모임신청 · 대관신청 · 점주코드 · 개설신청), 공유 "제한됨" |
 | 로컬 미리보기 | launch.json `bmoim-root` (port 8799) — 아래 4번 |
@@ -41,7 +41,7 @@
 - **절대 "새 배포"를 만들지 않는다.** 배포 ID `AKfycbx7-YcNCpiwlEsIMBTvWAReULt_bNTZgLV908XNsBqv-bnurJZ5u-6sg32MgQIHWZW6HQ` 가 사이트에 박혀 있다. 롤백은 `deploy -V <이전 버전>`.
 - 새 권한(스코프)이 필요한 코드는 사용자가 편집기에서 함수를 한 번 실행해 승인한 뒤에 배포해야 한다. 편집기: https://script.google.com/d/1La7qXwWHKPVus9equlZi672_PUF0YtKwhohz6EYq7UcjUPu8fj61WmFD/edit
 - 웹앱 호출 테스트: `curl -sL -H 'Content-Type: text/plain' -d '{"action":"..."}' "https://script.google.com/macros/s/<배포ID>/exec"` (`-X POST` 쓰지 말 것 — 리다이렉트에서 깨짐).
-- 버전 이력: 6 이관 전 · 7 이메일/동의 · 8 신청번호·조회/취소·메일 · 9 메일 디자인·매니저 알림 · 10 솔라피 문자 · 11 입금 후 신청 완료·상태 드롭다운 · 12–13 호스트 현황 링크 · 14 대관 시간대 조회(rentBlocks, 시트 비공개 전환) · 15 사이트 주소 bbooks.co.kr/moim · 16 개설 신청 진행 상태 · 17 호스트 링크 즉시 동기화 · 18 개설 안내 모임 매칭 · 19 도서 결제 내역(payNote) · 20 참가자 이름·나이 열 · 21 참가 인원(여러 명) 집계 · 22 개설 안내 일정 문구.
+- 버전 이력: 6 이관 전 · 7 이메일/동의 · 8 신청번호·조회/취소·메일 · 9 메일 디자인·매니저 알림 · 10 솔라피 문자 · 11 입금 후 신청 완료·상태 드롭다운 · 12–13 호스트 현황 링크 · 14 대관 시간대 조회(rentBlocks, 시트 비공개 전환) · 15 사이트 주소 bbooks.co.kr/moim · 16 개설 신청 진행 상태 · 17 호스트 링크 즉시 동기화 · 18 개설 안내 모임 매칭 · 19 도서 결제 내역(payNote) · 20 참가자 이름·나이 열 · 21 참가 인원(여러 명) 집계 · 22 개설 안내 일정 문구 · 23-24 시트 저장 확인(빈 줄 직접 기록·재확인, Date 칸은 문자열로 — 2026-11 Date가 빈 칸으로 저장되던 사고).
 - 스크립트 속성(키·비밀번호)은 사용자가 편집기에서 직접 넣는다. **API 키·토큰을 채팅으로 받거나 파일에 쓰지 않는다.** (SOLAPI_API_KEY/SECRET/SENDER 는 아직 미설정 — 문자는 "추후 연동")
 
 ### 시트 운영 규칙 (사용자가 시트에서 하는 일)
