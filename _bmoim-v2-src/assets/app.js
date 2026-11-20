@@ -1311,7 +1311,7 @@
     }
     if (params.get('code')) form.code.value = params.get('code');
     let last = null;
-    const PAID = ['입금확인', '신청완료', '확정'];
+    const PAID = ['입금확인', '신청완료', '신청확정', '확정'];
     const statusCls = s => PAID.includes(s) ? 'st-paid' : s === '취소요청' ? 'st-cancelreq' : s?.startsWith('취소') ? 'st-cancel' : 'st-pending';
     const statusLabel = s => PAID.includes(s) ? '신청 완료' : s === '입금대기' ? '입금 대기' : s === '취소요청' ? '취소 요청됨' : s === '접수' ? '담당자 확인 중' : s;
     const statusHint = a => PAID.includes(a.status) ? '입금이 확인되어 신청이 완료됐어요.'
@@ -1446,7 +1446,7 @@
   }
 
   // ── 호스트 현황 (비공개 링크) ───────────────────────
-  const PAID_ST = ['입금확인', '신청완료', '확정'];
+  const PAID_ST = ['입금확인', '신청완료', '신청확정', '확정'];  // 신청확정 = 참가비 0원(무료) 신청
   const nOf = list => list.reduce((x, a) => x + (a.count || 1), 0);  // 신청 한 건에 아이가 여러 명이면 인원수로 셈
   const dashLabel = s => PAID_ST.includes(s) ? '신청 완료' : s === '입금대기' ? '입금 대기' : s === '취소요청' ? '취소 요청' : s;
   // 도서 요청 문구에서 배송지(개인정보)는 빼고, 책 제목·권수·결제 방식만 보여 줌
