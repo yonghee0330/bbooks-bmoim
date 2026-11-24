@@ -66,6 +66,8 @@ python3 _bmoim-v2-src/build.py --sheet --out /private/tmp/bmoim-preview/site/moi
 ```
 그다음 `preview_start {name: "bmoim-root"}` → http://localhost:8799/moim/ (서버가 꺼져 있으면 다시 start). 미리보기도 실제 시트/웹앱에 연결돼 있으니 **신청 제출 버튼은 누르지 않는다**(실제 행·메일이 생김). 스크린샷이 이전 화면으로 남는 일이 있어, `scrollIntoView({behavior:'instant'})` 후 다시 찍는다.
 
+- **카톡 미리보기(OG) 이미지**: 모임 상세는 포스터, 공간은 공간 사진, 나머지 페이지(메인·행사·모임 열기·호스트 현황·내 신청·카드)는 글자만 쓴 `images/og_*.png`. 월 제목(`site.json` month.period)이 바뀌면 `python3 _bmoim-v2-src/tools/make_og.py` 를 다시 실행해 이미지를 새로 만든다(build.py 의 `OG_BY_PAGE` 가 연결). 메인(hub) 썸네일은 12월 시즌용 겨울 일러스트 `og_hub_winter.png`(원본 SVG `tools/og_hub_winter.svg`, 크롬 headless 로 1200×630 캡처) — 1월 이후 `OG_BY_PAGE['hub']` 를 `og_hub.png`(글자판)로 되돌리거나 새 시즌 이미지로 교체. 임시 포스터는 `tools/make_temp_poster.py`(글자만 1080×1350). 배포 후 카톡은 미리보기를 캐시하니 카카오 디버거(developers.kakao.com/tool/debugger/sharing)에서 해당 주소를 '초기화'해야 새 모양이 나온다.
+
 ## 5. 지켜야 할 것
 
 - 신청자 이름·연락처 등 시트 데이터를 저장소에 넣거나 커밋하지 않는다. 확인용으로 읽어도 화면 출력은 개수·상태만.

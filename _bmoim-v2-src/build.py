@@ -391,11 +391,15 @@ PERIOD = SITE['month'].get('period') or SITE['month']['title'].replace(' 비모�
 NAV = [('hub', '', f'{PERIOD} 모임'), ('events', 'events/', f'{PERIOD} 행사'), ('cal', '#cal', '일정 달력'), ('space', 'space/', '공간 대관'), ('host', HOST_DIR, '모임 열기')]
 
 
+OG_BY_PAGE = {'hub': 'og_hub_winter.png', 'events': 'og_events.png', 'host': 'og_host.png', 'dashboard': 'og_dashboard.png', 'my': 'og_my.png', 'cards': 'og_cards.png'}
+
+
 def layout(*, page_id, title, desc, body, depth, path, og_image=None, og_type='website',
            jsonld=None, private=False, extra_scripts=(), head_extra='', after_main='', active=None):
     rel = '../' * depth
     index = SITE['indexable'] and not private
-    og_image = og_image or img_abs(SITE['month']['heroImage'])
+    # 카톡 미리보기: 모임 상세는 포스터, 공간은 공간 사진, 나머지 페이지는 사진 없이 글자만 (tools/make_og.py 로 만든 images/og_*.png)
+    og_image = og_image or img_abs(OG_BY_PAGE.get(page_id) or SITE['month']['heroImage'])
     active = active or ('hub' if page_id == 'detail' else ('host' if page_id == 'dashboard' else page_id))
 
     def nav_href(href):
