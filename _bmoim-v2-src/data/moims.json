@@ -1288,6 +1288,84 @@
         "label": "참가 아이 수",
         "max": 5
       }
+    },
+    {
+      "slug": "storyaunt-2612",
+      "kind": "moim",
+      "status": "open",
+      "title": "그림책 읽어주는 이모",
+      "short": "그림책 이모",
+      "oneLiner": "그림책을 읽고 독후활동을 합니다",
+      "tags": [
+        "어린이",
+        "독서"
+      ],
+      "audience": "유치원생~초등 저학년",
+      "host": {
+        "name": "@sammycomma",
+        "insta": "sammycomma",
+        "bio": "누구보다 그림책을 재미나고 즐겁게 읽어주는 이모입니다^^/"
+      },
+      "poster": "story_aunt_dec2026_temp.png",
+      "summary": "유치원생~초등 저학년과 겨울·크리스마스 그림책을 읽고 함께 독후활동을 하는 시간. 12/19(토) 오전 10:30 부천 비북스.",
+      "body": [
+        "“겨울&크리스마스”와 관련된 그림책을 재미나게 읽어 드려요!",
+        "그림책을 읽은 뒤에는 간단한 독후 활동을 해요.",
+        "진행 시간은 1시간 30분이에요. 매달 이어지는 모임이에요."
+      ],
+      "highlights": [
+        {
+          "label": "이번 테마",
+          "value": "겨울 · 크리스마스 그림책 읽기"
+        },
+        {
+          "label": "준비물",
+          "value": "없음"
+        }
+      ],
+      "sessions": [
+        {
+          "id": "1219",
+          "dates": [
+            {
+              "start": "2026-12-19T10:30",
+              "end": "2026-12-19T12:00",
+              "space": "계단 좌석"
+            }
+          ],
+          "capacity": 15,
+          "price": 10000,
+          "sheetSession": "12월19일"
+        }
+      ],
+      "materials": false,
+      "sheetName": "그림책 읽어주는 이모 12월",
+      "sheetMonths": [
+        "11월",
+        "12월"
+      ],
+      "regular": "매달 진행",
+      "nameLabel": "입금자 이름 (보호자)",
+      "applyFields": [
+        {
+          "id": "childName",
+          "label": "아이 이름",
+          "required": true,
+          "placeholder": "예) 김하늘"
+        },
+        {
+          "id": "childAge",
+          "label": "아이 나이",
+          "required": true,
+          "placeholder": "예) 7세 · 만 6세"
+        }
+      ],
+      "applyFieldsNote": "아이 이름과 나이는 활동을 준비하는 데 써요. 참가비는 아이 한 명당이에요. 아이가 여러 명이면 인원을 고르고 아이마다 적어 주세요.",
+      "applyCount": {
+        "label": "참가 아이 수",
+        "max": 5
+      },
+      "posterTemp": true
     }
   ],
   "_sheetFields": "sheetName / sheetSession / sheetNote = 기존 구글 시트(모임신청 C·D·H열)에 들어가는 값. 기존 신청 인원 집계와 호스트 현황이 이 이름으로 이어집니다."
