@@ -334,10 +334,19 @@ def kind_label(it):
     return '비모임'
 
 
+def shown_tags(it):
+    """화면에 보이는 태그. tagsShown 이 있으면 그것(최대 3개), 없으면 tags 앞 2개."""
+    return it.get('tagsShown') or it.get('tags', [])[:2]
+
+
+def tag_color(t):
+    return TAG_COLORS.get(t) or next((c for k, c in TAG_COLORS.items() if k.split('·')[0] == t), '#555')
+
+
 def strip_text(it):
     if it.get('partner'):
         return it['partner']
-    return ' · '.join(it.get('tags', [])[:2])
+    return ' · '.join(shown_tags(it))
 
 
 def blocks():
@@ -482,7 +491,7 @@ def moim_card(it, rel):
     src = esc(img_rel(it['poster'], rel))
     bg = f'<img class="card-bg" src="{src}" alt="" aria-hidden="true" loading="lazy">' if fit == 'contain' else ''
     occ = occurrences(it)
-    label = it.get('partner') if it.get('partner') else ' · '.join(it.get('tags', [])[:2])
+    label = it.get('partner') if it.get('partner') else ' · '.join(shown_tags(it))
     return f'''
 <article class="card" data-slug="{esc(it["slug"])}" style="--cat:{cat_color(it)}">
   <a class="card-link" href="{rel}m/{esc(it["slug"])}/">
@@ -793,7 +802,7 @@ def build_detail(it, others):
     else:
         when_short = f'{card_date(it)} 시작 · 총 {len(occ)}회'
     others_html = ''.join(moim_card(o, rel) for o in others)
-    tags_html = ''.join(f'<span class="tagchip" style="--cat:{TAG_COLORS.get(t, "#555")}">{esc(t)}</span>' for t in it.get('tags', [])[:2])
+    tags_html = ''.join(f'<span class="tagchip" style="--cat:{tag_color(t)}">{esc(t)}</span>' for t in shown_tags(it))
     host_sec = ''
     if host.get('bio') or host.get('insta'):
         host_sec = f"""
